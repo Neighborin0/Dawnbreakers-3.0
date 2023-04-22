@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LabGlow
-  m_Shader: {fileID: -6465566751694194690, guid: 062034cf6ecc46b4198255fb123d0f97,
+  m_Shader: {fileID: -6465566751694194690, guid: b08593594ecba9b41b5583797eb7da0d,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 2

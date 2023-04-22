@@ -163,7 +163,6 @@ public class ActionContainer : MonoBehaviour
                             LabCamera.Instance.ResetPosition();
                             BattleSystem.Instance.ResetBattleLog();
                             SetActive();
-
                         }
                     }
                     break;

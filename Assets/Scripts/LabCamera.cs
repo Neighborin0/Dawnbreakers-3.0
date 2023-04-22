@@ -48,14 +48,15 @@ public class LabCamera : MonoBehaviour
 			}
 
 	}
+	
 
-	public void ReadjustCam()
+    public void ReadjustCam()
 	{
         smoothingTime = 0f;
         state = CameraState.MOVING;
         if (BattleSystem.Instance.playerPositions[2].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[2].GetComponent<BattleSpawnPoint>().unit != null)
         {
-			PositonToMoveTo = BattleSystem.Instance.cameraPos3Units;
+            PositonToMoveTo = BattleSystem.Instance.cameraPos3Units;
             print("Camera is sized for 3 units");
 
         }
@@ -69,7 +70,7 @@ public class LabCamera : MonoBehaviour
         else
         {
             print("Camera is sized for 1 unit");
-            PositonToMoveTo = BattleSystem.Instance.cameraPos1Units;
+			PositonToMoveTo = BattleSystem.Instance.cameraPos1Units;
             uicam.transform.position = new Vector3(uicam.transform.position.x, uicam.transform.position.y, uicam.transform.position.z);
 
 
@@ -101,8 +102,8 @@ public class LabCamera : MonoBehaviour
 			}
 			else
 			{
-				smoothingTime += Time.deltaTime;
-				camTransform.transform.position = Vector3.Lerp(camTransform.transform.position, PositonToMoveTo, smoothingTime / MovingTimeDivider);
+				smoothingTime += Time.deltaTime / MovingTimeDivider;
+				camTransform.transform.position = Vector3.Lerp(camTransform.transform.position, PositonToMoveTo, smoothingTime);
 			}
 		}
 		else if (state == CameraState.SWAY && BattleSystem.Instance.state != BattleStates.BATTLE)

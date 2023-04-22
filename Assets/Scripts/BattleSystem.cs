@@ -179,11 +179,11 @@ public class BattleSystem : MonoBehaviour
     }
 
     IEnumerator Transition()
-    {       
+    {
         StartCoroutine(Tools.FadeObject(Director.Instance.blackScreen, 0.001f, false));
         yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
         LabCamera.Instance.ReadjustCam();
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(3f);
         Director.Instance.BL.Move(true);
         Director.Instance.timeline.Move(true);
         BattleLog.SetRandomAmbientTextActive();
@@ -505,8 +505,6 @@ public class BattleSystem : MonoBehaviour
         //BattleSystem.SetUIOff();
         foreach (var x in Tools.GetAllUnits())
         {
-            if (x.state != PlayerState.READY)
-                x.state = PlayerState.IDLE;
             BattleSystem.SetUIOff(x);
         }
         foreach (var action in unit.actionList)
@@ -599,7 +597,14 @@ public class BattleSystem : MonoBehaviour
                 {
                     Destroy(action.unit.GetComponentInChildren<LineRenderer>().gameObject);
                 }
-                action.unit.state = PlayerState.IDLE;
+                if(action.unit.IsPlayerControlled)
+                {
+                    action.unit.state = PlayerState.WAITING;
+                }
+              else
+                {
+                    action.unit.state = PlayerState.IDLE;
+                }
                 action.OnActivated();
                 yield return new WaitUntil(() => action.Done);
                 yield return new WaitForSeconds(1f);
@@ -613,8 +618,6 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         state = BattleStates.DECISION_PHASE;
         //ActionsToPerform.Clear();
-        if (enemyUnits.Count != 0 && playerUnits.Count != 0)
-            Director.Instance.BL.Move(true);
         ActionsToPerform = new List<Action>();
         BattleLog.ClearAmbientText();
         BattleLog.DisableCharacterStats();
@@ -641,8 +644,15 @@ public class BattleSystem : MonoBehaviour
                     StartCoroutine(x.behavior.DoBehavior(x));
             }
             x.DoBattlePhaseEnd();
-            if (x.state != PlayerState.READY)
-                x.state = PlayerState.IDLE;
+        }
+        if (enemyUnits.Count != 0 && playerUnits.Count != 0)
+        {
+            foreach (var x in playerUnits)
+            {
+                if (x.state == PlayerState.IDLE)
+                    Director.Instance.BL.Move(true);
+            }
+
         }
         Tools.UnpauseAllStaminaTimers();
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;

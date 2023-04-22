@@ -7,7 +7,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 
-public enum PlayerState { IDLE, DECIDING, READY }
+public enum PlayerState { IDLE, DECIDING, READY, WAITING }
 public enum Stat { ATK, DEF, SPD, HP }
 public class Unit : MonoBehaviour
 {
@@ -118,10 +118,23 @@ public class Unit : MonoBehaviour
             anim.SetBool("READY", false);
         }
        */
+      
 
         if (BattleSystem.Instance != null)
         {
-
+            if (IsPlayerControlled && stamina.slider.value == stamina.slider.maxValue && state == PlayerState.WAITING)
+            {
+                state = PlayerState.IDLE;
+                BattleLog.Instance.Move(true);
+                StartCoroutine(StartDelayedDecision());
+            }
+            if (state == PlayerState.IDLE && IsPlayerControlled)
+            {
+                foreach (var unit in Tools.GetAllUnits())
+                {
+                    unit.stamina.Paused = true;
+                }
+            }
             if (hit.collider == this.GetComponent<BoxCollider>() && !isDarkened && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
             {
                 sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
@@ -140,8 +153,7 @@ public class Unit : MonoBehaviour
                     BattleLog.DisplayCharacterStats(this);
                     LabCamera.Instance.MoveToUnit(this);
                 }
-            }
-
+            }     
             if (state == PlayerState.IDLE && BattleSystem.Instance.state == BattleStates.DECISION_PHASE || state == PlayerState.READY && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
             {
                 if (Input.GetMouseButtonUp(0))
@@ -233,12 +245,19 @@ public class Unit : MonoBehaviour
         print("Unit is deciding an action");
     }
 
+    public IEnumerator StartDelayedDecision()
+    {
+        yield return new WaitForSeconds(0.1f);
+        BattleSystem.SetUIOn(this);
+        print("Unit is deciding an action");
+    }
     
 
     public void ExitDecision()
     {  
-        
-        state = PlayerState.IDLE;
+        if(state != PlayerState.WAITING)
+            state = PlayerState.IDLE;
+
         BattleSystem.SetUIOff(this);
         foreach (TimeLineChild child in Director.Instance.timeline.children)
         {
