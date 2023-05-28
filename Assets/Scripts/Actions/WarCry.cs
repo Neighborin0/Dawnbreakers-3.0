@@ -16,18 +16,19 @@ public class WarCry : Action
     {
         ActionName = "War Cry";
         accuracy = 1;
-        cost = 40f;
+        cost = 30f;
         actionType = ActionType.STATUS;
         PriorityMove = false;
         targetType = TargetType.SELF;
-        duration = 10f;
-        description = $"Applies <color=#FF2E00>Vigor</color> to all allies for {duration} seconds. <color=#FF2E00>Vigor</color> increases <color=#FF0000>ATK</color> by 3.";
+        duration = 7f;
+        damageText = damage.ToString();
+        description = $"Applies <color=#FF2E00>Vigor</color><sprite name=\"VIGOR\"> to all allies for {duration} seconds. <color=#FF2E00>Vigor</color><sprite name=\"VIGOR\"> increases <color=#FF0000>ATK</color><sprite name=\"ATK RED2\"> by 3.";
     }
 
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
-        LabCamera.Instance.MoveToUnit(unit, 7.8f, -2, 10);
+        LabCamera.Instance.MoveToUnit(unit, 0, -6, 32, false);
         yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", Color.red, new Vector3(0, 0, -2f), 0.2f));
         yield return new WaitForSeconds(0.05f);
@@ -37,10 +38,10 @@ public class WarCry : Action
         {
             var Light = x.spotLight;
             Light.color = Color.red;
-            BattleLog.Instance.StartCoroutine(Tools.ChangeLightIntensityTimed(Light, 150, 15, 0.04f, 0.08f));
+            unit.ChangeUnitsLight(Light, 150, 15, 0.04f, 0.08f);
             BattleSystem.Instance.SetStatChanges(Stat.ATK, 3f, false, x);
             var battleSystem = BattleSystem.Instance;
-            battleSystem.StartCoroutine(battleSystem.SetTempEffect(x, "ATK", this));
+            battleSystem.StartCoroutine(battleSystem.SetTempEffect(x, "ATK", this, true, 0));
         }
         yield return new WaitForSeconds(0.2f);
         Director.Instance.StartCoroutine(LabCamera.Instance.DoSlowHorizontalSweep());
@@ -51,7 +52,7 @@ public class WarCry : Action
         yield break;
     }
 
-   public override void OnEnded(Unit unit)
+   public override void OnEnded(Unit unit, float storedValue, bool DoFancyStatChnages)
     {
         BattleSystem.Instance.SetStatChanges(Stat.ATK, -3f, false, unit);
     }

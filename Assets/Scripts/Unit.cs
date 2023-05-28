@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
+using static System.Collections.Specialized.BitVector32;
+using static UnityEngine.UI.CanvasScaler;
+using UnityEngine.EventSystems;
 
 public enum PlayerState { IDLE, DECIDING, READY, WAITING }
 public enum Stat { ATK, DEF, SPD, HP }
@@ -30,7 +33,9 @@ public class Unit : MonoBehaviour
     public List<Sprite> MiniMapIcons;
     public Vector3 offset;
     public TimeLineChild timelinechild;
-    bool StopMovingToUnit = false;
+    private bool StopMovingToUnit = false;
+    public float StartingStamina;
+    IEnumerator generalCoroutine;
 
     //text stuff
     public List<string> introText;
@@ -58,6 +63,7 @@ public class Unit : MonoBehaviour
 
     //actions
     public List<Action> actionList;
+    public GameObject ActionLayout;
 
     //summon stuff 
     public string[] summonables;
@@ -74,8 +80,8 @@ public class Unit : MonoBehaviour
         Debug.Log(defenseStat);
         Debug.Log(speedStat);
         state = PlayerState.IDLE;
-        var particleSys = this.GetComponent<ParticleSystem>();
-        particleSys.Stop();
+        //var particleSys = this.GetComponent<ParticleSystem>();
+        //particleSys.Stop();
     }
 
 
@@ -92,40 +98,34 @@ public class Unit : MonoBehaviour
                 sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
 
             }
-            else
+            else if(state == PlayerState.DECIDING) 
             {
 
                 sprite.material.SetFloat("_OutlineThickness", 1f);
-                sprite.material.SetColor("_OutlineColor", Color.black);
+                sprite.material.SetColor("_OutlineColor", Color.yellow);
                 sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
 
             }
-        
+            else
+            {
+                sprite.material.SetFloat("_OutlineThickness", 1f);
+                sprite.material.SetColor("_OutlineColor", Color.black);
+                sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
+            }
+
         }
         else
         {
             sprite.material.SetFloat("_OutlineThickness", 1f);
             sprite.material.SetColor("_OutlineColor", Color.black);
             sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
-
         }
-       /* if (state == PlayerState.READY && anim != null && IsPlayerControlled)
-        {
-            anim.SetBool("READY", true);
-        }
-        else if (anim != null && IsPlayerControlled)
-        {
-            anim.SetBool("READY", false);
-        }
-       */
-      
 
         if (BattleSystem.Instance != null)
         {
             if (IsPlayerControlled && stamina.slider.value == stamina.slider.maxValue && state == PlayerState.WAITING)
             {
                 state = PlayerState.IDLE;
-                BattleLog.Instance.Move(true);
                 StartCoroutine(StartDelayedDecision());
             }
             if (state == PlayerState.IDLE && IsPlayerControlled)
@@ -135,12 +135,27 @@ public class Unit : MonoBehaviour
                     unit.stamina.Paused = true;
                 }
             }
-            if (hit.collider == this.GetComponent<BoxCollider>() && !isDarkened && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
+            if (hit.collider == this.GetComponent<BoxCollider>() && !isDarkened && !OverUI())
             {
-                sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
-                BattleLog.DisplayCharacterStats(this);
+                if (BattleSystem.Instance.state != BattleStates.BATTLE && BattleSystem.Instance.state != BattleStates.START && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD)
+                {
+                    sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
+                    BattleLog.DisplayCharacterStats(this);
+                    this.timelinechild.Shift(this);
+                }
+                else
+                {
+                    if(timelinechild != null)
+                    timelinechild.Return();
+                }
 
             }
+            else if(!IsHighlighted)
+            {
+                if (timelinechild != null)
+                    timelinechild.Return();
+            }
+
             if (isDarkened && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
             {
                 sprite.material.SetColor("_CharacterEmission", new Color(-0.1f, -0.1f, -0.1f));
@@ -148,13 +163,13 @@ public class Unit : MonoBehaviour
 
             if (Input.GetMouseButtonUp(0))
             {
-                if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
+                if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !OverUI())
                 {
                     BattleLog.DisplayCharacterStats(this);
                     LabCamera.Instance.MoveToUnit(this);
                 }
             }     
-            if (state == PlayerState.IDLE && BattleSystem.Instance.state == BattleStates.DECISION_PHASE || state == PlayerState.READY && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
+            if (state == PlayerState.IDLE && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI()|| state == PlayerState.READY && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI())
             {
                 if (Input.GetMouseButtonUp(0))
                 {
@@ -242,14 +257,16 @@ public class Unit : MonoBehaviour
     public void StartDecision()
     {
         BattleSystem.SetUIOn(this);
+        BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
         print("Unit is deciding an action");
     }
 
     public IEnumerator StartDelayedDecision()
     {
         yield return new WaitForSeconds(0.1f);
-        BattleSystem.SetUIOn(this);
-        print("Unit is deciding an action");
+        yield return new WaitUntil(() => BattleSystem.Instance.ActionsToPerform.Count == 0 && BattleSystem.Instance.state == BattleStates.IDLE || BattleSystem.Instance.ActionsToPerform.Count == 0 && BattleSystem.Instance.state == BattleStates.DECISION_PHASE);
+        BattleLog.Instance.Move(true);
+        StartDecision();
     }
     
 
@@ -277,6 +294,35 @@ public class Unit : MonoBehaviour
         Execute = true;
         yield return new WaitForSeconds(0.00001f);
         Execute = false;
+    }
+
+    public void ChangeUnitsLight(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0, float stagnantDelay = 0)
+    {
+        if(generalCoroutine != null)
+        {
+            StopCoroutine(generalCoroutine);
+        }
+        generalCoroutine = ChangeUnitsLightCoroutine(light, desiredIntensity, amountToRaiseBy, delay, stagnantDelay);
+        StartCoroutine(generalCoroutine);
+    }
+    private IEnumerator ChangeUnitsLightCoroutine(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0, float stagnantDelay = 0)
+    {
+        while (light.intensity < desiredIntensity)
+        {
+            light.intensity += amountToRaiseBy;
+            yield return new WaitForSeconds(delay);
+        }
+        yield return new WaitForSeconds(stagnantDelay);
+        while (light.intensity > 0)
+        {
+            light.intensity -= amountToRaiseBy;
+            yield return new WaitForSeconds(delay);
+        }
+
+    }
+    private bool OverUI()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
     }
 
     public void DoBattlePhaseEnd()

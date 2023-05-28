@@ -11,6 +11,7 @@ using UnityEngine.Rendering.Universal;
 using static UnityEngine.ParticleSystem;
 using static UnityEngine.Rendering.DebugUI;
 using Unity.VisualScripting;
+using System.Text.RegularExpressions;
 
 public enum BattleStates { START, DECISION_PHASE, BATTLE, WON, DEAD, IDLE, TALKING, WAITING }
 public class BattleSystem : MonoBehaviour
@@ -41,6 +42,7 @@ public class BattleSystem : MonoBehaviour
     public IntentContainer intent;
     public Canvas canvas;
     public LineRenderer targetLine;
+    public GameObject dot;
     public bool HasStarted = false;
 
     public List<Action> QueuedActions;
@@ -57,8 +59,6 @@ public class BattleSystem : MonoBehaviour
     public Volume effectsSetting;
     public Light mainLight;
     public float mainLightValue;
-    [SerializeField]
-    private List<Sprite> statSprites;
 
     public Vector3 cameraPos1Units;
     public Vector3 cameraPos2Units;
@@ -125,6 +125,7 @@ public class BattleSystem : MonoBehaviour
                 }
             }
         }
+      
     }
 
     public BattleStates state;
@@ -139,51 +140,60 @@ public class BattleSystem : MonoBehaviour
 
     void StartBattle()
     {
-        statStorers = new List<StatStorer>();
-        Director.Instance.timeline.gameObject.SetActive(true);
-        for (int i = 0; i <= playerUnits.Count - 1; i++)
+        try
         {
-            playerUnits[i].gameObject.SetActive(true);
-            playerUnits[i].transform.localScale = new Vector3(9f, 9f, 9f);
-            playerUnits[i].transform.position = playerPositions[i].position;
-            playerUnits[i].transform.SetParent(playerPositions[i].transform);
-            var BSP = playerPositions[i].GetComponent<BattleSpawnPoint>();
-            BSP.unit = playerUnits[i];
-            BSP.Occupied = true;
-            SetupHUD(playerUnits[i], playerPositions[i]);
-            numOfUnits.Add(playerUnits[i]);
-            var ss = new StatStorer
+            statStorers = new List<StatStorer>();
+            Director.Instance.timeline.gameObject.SetActive(true);
+            for (int i = 0; i <= playerUnits.Count - 1; i++)
             {
-                unitName = playerUnits[i].unitName,
-                HP = playerUnits[i].maxHP,
-                ATK = playerUnits[i].attackStat,
-                DEF = playerUnits[i].defenseStat,
-                SPD = playerUnits[i].speedStat,
-            };
-            statStorers.Add(ss);
+                playerUnits[i].gameObject.SetActive(true);
+                playerUnits[i].transform.localScale = new Vector3(9f, 9f, 9f);
+                playerUnits[i].transform.position = playerPositions[i].position;
+                playerUnits[i].transform.SetParent(playerPositions[i].transform);
+                var BSP = playerPositions[i].GetComponent<BattleSpawnPoint>();
+                BSP.unit = playerUnits[i];
+                BSP.Occupied = true;
+                SetupHUD(playerUnits[i], playerPositions[i]);
+                numOfUnits.Add(playerUnits[i]);
+                var ss = new StatStorer
+                {
+                    unitName = playerUnits[i].unitName,
+                    HP = playerUnits[i].maxHP,
+                    ATK = playerUnits[i].attackStat,
+                    DEF = playerUnits[i].defenseStat,
+                    SPD = playerUnits[i].speedStat,
+                };
+                statStorers.Add(ss);
+            }
+            for (int i = 0; i <= enemiesToLoad.Count - 1; i++)
+            {
+                var enemy = Instantiate(enemiesToLoad[i], enemyPositions[i]);
+                enemy.transform.localScale = new Vector3(9f, 9f, 9f);
+                enemiesToLoad[i].gameObject.SetActive(true);
+                SetupHUD(enemiesToLoad[i], enemyPositions[i]);
+                var BSP = enemyPositions[i].GetComponent<BattleSpawnPoint>();
+                BSP.unit = enemiesToLoad[i];
+                BSP.Occupied = true;
+                enemyUnits.Add(enemy);
+                numOfUnits.Add(enemy);
+            }
+            StartCoroutine(Transition());
+            print(state);
         }
-        for (int i = 0; i <= enemiesToLoad.Count - 1; i++)
+        catch(Exception ex)
         {
-            var enemy = Instantiate(enemiesToLoad[i], enemyPositions[i]);
-            enemy.transform.localScale = new Vector3(9f, 9f, 9f);
-            enemiesToLoad[i].gameObject.SetActive(true);
-            SetupHUD(enemiesToLoad[i], enemyPositions[i]);
-            var BSP = enemyPositions[i].GetComponent<BattleSpawnPoint>();
-            BSP.unit = enemiesToLoad[i];
-            BSP.Occupied = true;
-            enemyUnits.Add(enemy);
-            numOfUnits.Add(enemy);
+           Debug.LogException(ex);
+           Debug.LogWarning("So this is were the error happening");
         }
-        StartCoroutine(Transition());
-        print(state);
     }
 
     IEnumerator Transition()
     {
         StartCoroutine(Tools.FadeObject(Director.Instance.blackScreen, 0.001f, false));
         yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+        Director.Instance.blackScreen.gameObject.SetActive(true);
         LabCamera.Instance.ReadjustCam();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
         Director.Instance.BL.Move(true);
         Director.Instance.timeline.Move(true);
         BattleLog.SetRandomAmbientTextActive();
@@ -201,6 +211,7 @@ public class BattleSystem : MonoBehaviour
             unit.DoBattleStarted();
         }
         yield return new WaitForSeconds(0.5f);
+        Director.Instance.blackScreen.gameObject.SetActive(false);
         playerUnits[0].StartDecision();
         LabCamera.Instance.MovingTimeDivider = 1;
     }
@@ -228,8 +239,12 @@ public class BattleSystem : MonoBehaviour
         }
         Director.Instance.timeline.gameObject.SetActive(false);
         Director.Instance.party.Clear();
-        foreach (var unit in playerUnits)
+        for (int i = 0; i < playerPositions.Count; i++)
         {
+            playerPositions[i].DetachChildren();
+        }
+        foreach (var unit in playerUnits)
+        {      
             if (!unit.IsSummon)
             {
                 unit.DoBattleEnded();
@@ -248,13 +263,14 @@ public class BattleSystem : MonoBehaviour
                 }
                 Tools.TurnOffCriticalUI(unit);
                 Director.Instance.party.Add(unit);
-                DontDestroyOnLoad(unit);
-                //unit.gameObject.SetActive(false);
+                DontDestroyOnLoad(unit.gameObject);
             }
         }
         if (LevelUpScreen)
         {
             Director.Instance.DisplayCharacterTab();
+            LabCamera.Instance.state = LabCamera.CameraState.IDLE;
+            LabCamera.Instance.MoveToUnit(playerUnits[0]);
         }
         else
         {
@@ -272,13 +288,14 @@ public class BattleSystem : MonoBehaviour
     public void DisplayEnemyIntent(Action action, Unit unit)
     {
         unit.intentUI.textMesh.text = action.ActionName;
-        unit.intentUI.damageNums.text = (action.damage + unit.attackStat - action.targets.defenseStat).ToString();
+        unit.intentUI.damageNums.text = " <sprite name=\"ATK\">" + (action.damage + unit.attackStat - action.targets.defenseStat).ToString();
         unit.intentUI.action = action;
         unit.intentUI.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
         if (action.targets != unit)
         {
+            Vector3 SphereScale = new Vector3(0.1f, 0.1f, 0.1f);
             var lineInstance = Instantiate(targetLine, unit.transform);
-            lineInstance.SetPosition(0, new Vector3(unit.transform.position.x, unit.transform.position.y, unit.transform.position.z - 0.1f));
+            lineInstance.SetPosition(0, new Vector3(unit.transform.position.x, unit.transform.position.y, unit.transform.position.z - 1f));
             lineInstance.SetPosition(1, unit.transform.position);
             lineCoroutine = Tools.SmoothMoveLine(lineInstance, action.targets.transform.position, 0.01f);
             StartCoroutine(lineCoroutine);
@@ -288,9 +305,13 @@ public class BattleSystem : MonoBehaviour
                 {
                     var li = Instantiate(targetLine);
                     li.SetPosition(0, unit.transform.position);
-                    li.SetPosition(1, new Vector3(x.transform.position.x, x.transform.position.y, unit.transform.position.z));
+                    li.SetPosition(1, new Vector3(x.transform.position.x, x.transform.position.y, unit.transform.position.z)); 
                 }
             }
+        }
+        else if(action.actionType == Action.ActionType.STATUS && action.targets == unit)
+        {
+            var dotInstance = Instantiate(dot, new Vector3(unit.transform.position.x, unit.transform.position.y, unit.transform.position.z - 1f), Quaternion.identity);
         }
         if (unit.intentUI.action.actionType == Action.ActionType.STATUS)
         {
@@ -307,34 +328,28 @@ public class BattleSystem : MonoBehaviour
         if (BattleSystem.Instance != null)
         {
             var battleSystem = BattleSystem.Instance;
-            var popup = Instantiate(battleSystem.statPopUp, new Vector3(target.GetComponent<SpriteRenderer>().bounds.center.x - 1.5f, target.GetComponent<SpriteRenderer>().bounds.max.y + 4, target.transform.position.z), Quaternion.identity);
-            battleSystem.StartCoroutine(battleSystem.ChangeStat(statToRaise, AmountToRaise, multiplicative, target, popup));
-            if (AmountToRaise < 1)
-            {
-                battleSystem.StartCoroutine(Tools.SmoothMove(popup, 0.01f, 60, 0, -0.005f));
-            }
-            else
-            {
-                battleSystem.StartCoroutine(Tools.SmoothMove(popup, 0.01f, 60, 0, 0.005f));
-            }
+            var popup = Instantiate(battleSystem.statPopUp, new Vector3(target.GetComponent<SpriteRenderer>().bounds.center.x, target.GetComponent<SpriteRenderer>().bounds.center.y + 2, target.transform.position.z), Quaternion.identity);
+            battleSystem.StartCoroutine(battleSystem.ChangeStat(statToRaise, AmountToRaise, multiplicative, target, popup.GetComponent<LabPopup>()));
+            BattleLog.Instance.StartCoroutine(popup.GetComponent<LabPopup>().Pop());
         }
     }
 
 
     public void DoTextPopup(Unit target, string text, Color color)
     {
-        var popup = Instantiate(statPopUp, new Vector3(target.GetComponent<SpriteRenderer>().bounds.center.x - 1.5f, target.GetComponent<SpriteRenderer>().bounds.max.y + 4, target.transform.position.z), Quaternion.identity);
+        var popup = Instantiate(statPopUp, new Vector3(target.GetComponent<SpriteRenderer>().bounds.center.x, target.GetComponent<SpriteRenderer>().bounds.max.y, target.transform.position.z), Quaternion.identity);
         var popupText = popup.GetComponentInChildren<TextMeshProUGUI>();
         popupText.outlineWidth = 0.1f;
         popupText.outlineColor = Color.black;
         popupText.color = color;
         popupText.text = text;
-        var img = popup.GetComponentInChildren<Image>();
-        img.gameObject.SetActive(false);
-        StartCoroutine(Tools.SmoothMove(popup, 0.01f, 60, 0, 0.005f, 0, true));
+        popupText.fontSize = 1.5f;
+        var labPopUp = popup.GetComponent<LabPopup>();
+        StartCoroutine(labPopUp.Rise());
+        StartCoroutine(labPopUp.DestroyPopUp(0.3f));
     }
 
-    public IEnumerator SetTempEffect(Unit unit, string Icon, Action action)
+    public IEnumerator SetTempEffect(Unit unit, string Icon, Action action, bool DoFancyStatChanges, float storedValue = 0)
     {
         var icon = Instantiate(Director.Instance.iconDatabase.Where(obj => obj.name == Icon).SingleOrDefault(), unit.namePlate.IconGrid.transform);
         if (action != null)
@@ -346,6 +361,8 @@ public class BattleSystem : MonoBehaviour
             i.action = newAction;
             manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable.sizeDelta = new Vector2(70.24f, 21.96f);
             i.owner = unit;
+            i.storedValue = storedValue;
+            i.DoFancyStatChanges = DoFancyStatChanges;
             print(newAction.duration);
             var timer = newAction.duration;
             i.timerText.text = newAction.duration.ToString();
@@ -357,7 +374,7 @@ public class BattleSystem : MonoBehaviour
                 i.timerText.text = timer.ToString();
                 yield return new WaitForSeconds(1f);
             }
-            Destroy(icon);
+            i.DestoryEffectIcon();
         }
 
         yield break;
@@ -365,17 +382,12 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-    public IEnumerator ChangeStat(Stat statToRaise, float AmountToRaise, bool multiplicative, Unit target, GameObject popup)
+    public IEnumerator ChangeStat(Stat statToRaise, float AmountToRaise, bool multiplicative, Unit target, LabPopup popup)
     {
-        Vector3 origShapePos = Vector3.zero;
         var number = popup.GetComponentInChildren<TextMeshProUGUI>();
         number.outlineColor = Color.black;
         number.outlineWidth = 0.2f;
         number.color = Color.white;
-        var img = popup.GetComponentInChildren<Image>();
-        var particleSystem = target.GetComponent<ParticleSystem>();
-        particleSystem.GetComponent<ParticleSystemRenderer>().material = Instantiate(particleSystem.GetComponent<ParticleSystemRenderer>().material);
-        var particleMaterial = particleSystem.GetComponent<ParticleSystemRenderer>().material;
         switch (statToRaise)
         {
 
@@ -392,9 +404,9 @@ public class BattleSystem : MonoBehaviour
                     else
                         AmountToRaise = target.attackStat * AmountToRaise;
                 }
-                number.SetText(AmountToRaise.ToString());
-                img.sprite = statSprites[0];
-                particleMaterial.SetColor("_EmissionColor", Color.red * 10);
+                number.SetText(AmountToRaise.ToString() + " <sprite name=\"ATK RED\">");
+                number.outlineColor = Color.red;
+                DoStatVFX(AmountToRaise, Color.red, target);
                 break;
             case Stat.DEF:
                 if (!multiplicative)
@@ -409,9 +421,9 @@ public class BattleSystem : MonoBehaviour
                     else
                         AmountToRaise = -target.defenseStat;
                 }
-                number.SetText(AmountToRaise.ToString());
-                img.sprite = statSprites[1];
-                particleMaterial.SetColor("_EmissionColor", Color.blue * 10);
+                number.SetText(AmountToRaise.ToString() + " <sprite name=\"DEF BLUE\">");
+                number.outlineColor = Color.blue;
+                DoStatVFX(AmountToRaise, Color.blue, target);
                 break;
             case Stat.SPD:
                 if (!multiplicative)
@@ -426,9 +438,9 @@ public class BattleSystem : MonoBehaviour
                     else
                         AmountToRaise = target.speedStat * AmountToRaise;
                 }
-                number.SetText(AmountToRaise.ToString());
-                particleMaterial.SetColor("_EmissionColor", Color.yellow * 10);
-                img.sprite = statSprites[2];
+                number.SetText(AmountToRaise.ToString() + " <sprite name=\"SPD YLW\">");
+                number.outlineColor = Color.yellow;
+                DoStatVFX(AmountToRaise, Color.yellow, target);
                 break;
             case Stat.HP:
                 if (!multiplicative)
@@ -449,46 +461,45 @@ public class BattleSystem : MonoBehaviour
                         AmountToRaise = target.currentHP * AmountToRaise;
                 }
                 number.SetText(AmountToRaise.ToString());
-                number.color = Color.green;
-                img.gameObject.SetActive(false);
-                particleMaterial.SetColor("_EmissionColor", Color.green * 10);
+                number.outlineColor = Color.green;
+                DoStatVFX(AmountToRaise, Color.green, target);
                 break;
 
         }
-        if (AmountToRaise < 0)
+        if (target.spotLight.intensity == 0)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
-            particleSystem.gravityModifier = 5f;
-            var sh = particleSystem.shape;
-            origShapePos = sh.position;
-            sh.position = new Vector3(sh.position.x, 1.4f, sh.position.z);
-#pragma warning restore CS0618 // Type or member is obsolete
+            var Light = target.spotLight;
+            Light.color = number.outlineColor;
+            target.ChangeUnitsLight(Light, 150, 15, 0.04f, 0.1f);
         }
-        particleSystem.Play();
         print("stats should be popping up");
         yield return new WaitForSeconds(1f);
-        Destroy(popup);
-        particleSystem.Stop();
-        yield return new WaitForSeconds(0.5f);
-        if (AmountToRaise < 0)
-        {
-            particleSystem.gravityModifier = -5f;
-            var sh = particleSystem.shape;
-            sh.position = origShapePos;
-        }
+        StartCoroutine(popup.DestroyPopUp());  
         yield break;
 
     }
 
+    public void DoStatVFX(float AmountToRaise, Color color, Unit target)
+    {
+        if (AmountToRaise > 0)
+        {
+            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatUpVFX", color, new Vector3(0, 0, 0), 1f, 0, false, true));
+        }
+        else
+        { 
+            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatDownVFX", color, new Vector3(0, 15, 0), 1f, 0, false, true));
+        }
+    }
+
+  
     public static void SetUIOff(Unit unit)
     {
         int i = 0;
-        if (unit.skillUIs != null && unit.state != PlayerState.DECIDING)
+        if (unit.skillUIs != null && unit.IsPlayerControlled && unit.state != PlayerState.WAITING)
         {
+             unit.state = PlayerState.IDLE;
             foreach (var skill in unit.skillUIs)
             {
-
-
                 unit.skillUIs[i].SetActive(false);
                 var actionContainer = unit.skillUIs[i].GetComponent<ActionContainer>();
                 actionContainer.targetting = false;
@@ -502,9 +513,9 @@ public class BattleSystem : MonoBehaviour
     public static void SetUIOn(Unit unit)
     {
         int i = 0;
-        //BattleSystem.SetUIOff();
         foreach (var x in Tools.GetAllUnits())
         {
+            if(x != unit)
             BattleSystem.SetUIOff(x);
         }
         foreach (var action in unit.actionList)
@@ -514,11 +525,12 @@ public class BattleSystem : MonoBehaviour
             unit.skillUIs[i].SetActive(true);
             var assignedAction = unit.skillUIs[i].GetComponent<ActionContainer>();
             assignedAction.targetting = false;
+            if(!assignedAction.Disabled)
             assignedAction.button.interactable = true;
             assignedAction.button.enabled = true;
             assignedAction.action = action;
-            assignedAction.damageNums.text = (action.damage + unit.attackStat).ToString();
-            assignedAction.durationNums.text = (action.duration).ToString();
+            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (action.damage + unit.attackStat).ToString();
+            assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (action.duration).ToString();
             assignedAction.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = action.ActionName;
@@ -536,6 +548,8 @@ public class BattleSystem : MonoBehaviour
                 assignedAction.durationParent.SetActive(false);
             i++;
         }
+       
+            
     }
 
     public void AddAction(Action action)
@@ -563,13 +577,20 @@ public class BattleSystem : MonoBehaviour
     {
         LabCamera.Instance.ResetPosition();
         Tools.PauseAllStaminaTimers();
-        foreach (var line in GameObject.FindObjectsOfType<LineRenderer>())
+        Director.Instance.blackScreen.gameObject.SetActive(true);
+        Director.Instance.timelinespeedDelay = 0.1f;
+        foreach (TimeLineChild child in Director.Instance.timeline.children)
         {
-            if (line != null)
+            child.Return();
+        }
+        foreach (var line in GameObject.FindObjectsOfType<TargetLine>())
+        {
+            if (line != null && lineCoroutine != null)
             {
                 StopCoroutine(lineCoroutine);
-                line.enabled = false;
             }
+            line.enabled = false;
+            line.gameObject.SetActive(false);
         }
         Director.Instance.BL.Move(false);
         foreach (var x in Tools.GetAllUnits())
@@ -593,21 +614,21 @@ public class BattleSystem : MonoBehaviour
         {
             if (action.unit != null && action.targets != null)
             {
-                if (action.unit.GetComponentInChildren<LineRenderer>() != null)
+                if (action.unit.GetComponentInChildren<TargetLine>() != null)
                 {
-                    Destroy(action.unit.GetComponentInChildren<LineRenderer>().gameObject);
+                    Destroy(action.unit.GetComponentInChildren<TargetLine>().gameObject);
                 }
-                if(action.unit.IsPlayerControlled)
+                if (action.unit.IsPlayerControlled)
                 {
                     action.unit.state = PlayerState.WAITING;
                 }
-              else
+                else
                 {
                     action.unit.state = PlayerState.IDLE;
                 }
                 action.OnActivated();
                 yield return new WaitUntil(() => action.Done);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.7f);
             }
         }
         yield return new WaitForSeconds(1f);
@@ -616,8 +637,6 @@ public class BattleSystem : MonoBehaviour
             x.DoActionEnded();
         }
         yield return new WaitForSeconds(0.5f);
-        state = BattleStates.DECISION_PHASE;
-        //ActionsToPerform.Clear();
         ActionsToPerform = new List<Action>();
         BattleLog.ClearAmbientText();
         BattleLog.DisableCharacterStats();
@@ -628,6 +647,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (line != null)
                 line.enabled = true;
+                line.gameObject.SetActive(true);
         }
         if (!unit.IsPlayerControlled)
         {
@@ -650,15 +670,28 @@ public class BattleSystem : MonoBehaviour
             foreach (var x in playerUnits)
             {
                 if (x.state == PlayerState.IDLE)
-                    Director.Instance.BL.Move(true);
+                {
+                    state = BattleStates.DECISION_PHASE;
+                    x.StartDecision();
+                    break;
+                }
+
             }
+            Director.Instance.BL.Move(true);
 
         }
-        Tools.UnpauseAllStaminaTimers();
+        if (state != BattleStates.DECISION_PHASE)
+        {
+            state = BattleStates.IDLE;
+            Tools.UnpauseAllStaminaTimers();
+        }
+        Director.Instance.timelinespeedDelay = Director.Instance.UserTimelineSpeedDelay;
+        //Director.Instance.blackScreen.gameObject.SetActive(false);
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         unit.DoBattlePhaseClose();
         yield break;
     }
+
 
     public void SetupHUD(Unit unit, Transform position)
     {
@@ -677,25 +710,21 @@ public class BattleSystem : MonoBehaviour
                 {
                     battlebar.transform.SetParent(Director.Instance.PlayerBattleBarGrid.transform);
                     battlebar.transform.localScale = new Vector3(0, 0, 0);
-                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
+                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 85);
+                    TL.playerPoint.SetActive(true);
                 }
 
                 else
                 {
-                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -50);
-                    battlebar.transform.SetParent(Director.Instance.EnemyBattleBarGrid.transform);
-                    battlebar.nameText.transform.localScale = new Vector3(-1, 1, 1);
-                    battlebar.stamina.transform.localScale = new Vector3(-1, 1, 1);
-                    battlebar.healthbar.transform.localScale = new Vector3(-1, 1, 1);
+                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -60);
                     battlebar.transform.localScale = new Vector3(0, 0, 0);
                     TL.num.text = Tools.CheckNames(unit);
+                    TL.EnemyPoint.SetActive(true);
                 }
                 battlebar.unit = x;
                 battlebar.portrait.sprite = x.charPortraits.Find(obj => obj.name == "neutral");
                 battlebar.nameText.text = Tools.CheckNames(x);
                 x.transform.rotation = LabCamera.Instance.camTransform.rotation;
-                //battlebar.healthbar.unit = x;
-                //x.health = battlebar.healthbar; 
                 var stamina = battlebar.stamina;
                 stamina.unit = x;
                 x.stamina = stamina;
@@ -709,7 +738,6 @@ public class BattleSystem : MonoBehaviour
                 x.namePlate = NP;
                 NP.unit = x;
                 NP.nameText.text = "";
-                NP.nameText.outlineColor = Color.black;
                 NP.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + unit.offset.x, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;
 
 
@@ -719,10 +747,11 @@ public class BattleSystem : MonoBehaviour
             {
                 var intentContainer = Instantiate(intent, canvasParent.transform);
                 intentContainer.transform.localScale = new Vector3(0.025f, 0.03f, -25f);
-                intentContainer.transform.SetPositionAndRotation(new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x, x.GetComponent<SpriteRenderer>().bounds.max.y + 3f, x.transform.position.z) / canvas.scaleFactor, LabCamera.Instance.transform.rotation);
+                intentContainer.transform.SetPositionAndRotation(new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x, x.GetComponent<SpriteRenderer>().bounds.max.y + 1f, x.transform.position.z) / canvas.scaleFactor, LabCamera.Instance.transform.rotation);
                 x.intentUI = intentContainer;
                 intentContainer.unit = x;
                 x.namePlate.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x - 1.8f, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;
+                x.namePlate.IconGrid.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x, x.namePlate.IconGrid.transform.position.y, x.transform.position.z) / canvas.scaleFactor;
                 x.GetComponent<SpriteRenderer>().flipX = true;
             }
         }
@@ -733,21 +762,19 @@ public class BattleSystem : MonoBehaviour
             float scaleY = 1f;
             unit.stamina.slider.value = unit.stamina.slider.maxValue;
             var layout = Instantiate(ActionLayout, canvasParent.transform);
-
-
+            unit.ActionLayout = layout.gameObject;
             if (unit.GetComponentInParent<BattleSpawnPoint>() == playerPositions[0].GetComponent<BattleSpawnPoint>())
             {
-                layout.transform.position = new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x + 8f, unit.transform.position.y + 2.5f, -25f) / canvas.scaleFactor;
+                layout.transform.position = new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x + 10 + unit.offset.x, unit.transform.position.y + 2.5f, -25f) / canvas.scaleFactor;
             }
             else if (unit.GetComponentInParent<BattleSpawnPoint>() == playerPositions[1].GetComponent<BattleSpawnPoint>())
             {
-                layout.transform.position = new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x + 9.4f, unit.transform.position.y + 4.3f, -25f) / canvas.scaleFactor;
+                layout.transform.position = new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x + 15 + unit.offset.x, unit.transform.position.y + 4.3f, -25f) / canvas.scaleFactor;
             }
             else
             {
-                layout.transform.position = new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x + 7.3f, unit.transform.position.y, -25f) / canvas.scaleFactor;
+                layout.transform.position = new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x + 15 + unit.offset.x, unit.transform.position.y, -25f) / canvas.scaleFactor;
             }
-
             foreach (var x in unit.actionList)
             {
                 var container = Instantiate(genericActionContainer, layout.transform) as ActionContainer;
@@ -759,7 +786,7 @@ public class BattleSystem : MonoBehaviour
             }
 
         }
-     
+
     }
 
 

@@ -23,11 +23,11 @@ public class TutorialEnemy : Unit
     }
     void Start()
     {
-        behavior =  this.gameObject.AddComponent<TutorialEnemyBehavior>();
+        behavior = this.gameObject.AddComponent<TutorialEnemyBehavior>();
         this.stamina.Paused = true;
         this.OnDamaged += Damaged;
         this.BattleStarted += CreateTutorialIcon;
-        StartCoroutine(BattleSystem.Instance.SetTempEffect(this, "revitalize", null));
+        StartCoroutine(BattleSystem.Instance.SetTempEffect(this, "revitalize", null, false));
         this.GetComponent<TutorialEnemyBehavior>().TutorialIcon2 = TutorialIcon2;
     }
 
@@ -46,7 +46,7 @@ public class TutorialEnemy : Unit
     {
         obj.ActionEnded += SetupRevitalize;
         obj.OnDamaged -= Damaged;
-        
+
     }
 
     private void SetupRevitalize(Unit obj)
@@ -70,31 +70,36 @@ public class TutorialEnemy : Unit
         private int turn;
         [SerializeField]
         public GameObject TutorialIcon2;
+        bool DisabledAction = false;
         public override IEnumerator DoBehavior(Unit baseUnit)
         {
-          
+
             yield return new WaitUntil(() => baseUnit.stamina != null);
             var battlesystem = BattleSystem.Instance;
             var num = UnityEngine.Random.Range(0, battlesystem.numOfUnits.Count);
             if (battlesystem.numOfUnits[num].IsPlayerControlled)
             {
-              
+
                 Tools.DetermineActionData(baseUnit, turn, num);
                 battlesystem.DisplayEnemyIntent(baseUnit.actionList[turn], baseUnit);
-                baseUnit.state = PlayerState.READY;   
-                if(turn == 1)
+                battlesystem.numOfUnits[num].skillUIs[0].GetComponent<ActionContainer>().Disabled = false;
+                baseUnit.state = PlayerState.READY;
+                if (turn == 1)
                 {
+                    Debug.LogWarning(DisabledAction);
                     if (!battlesystem.numOfUnits[num].actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault()))
                     {
                         battlesystem.numOfUnits[num].actionList.Add(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault());
                         battlesystem.SetupHUD(battlesystem.numOfUnits[num], null);
+                        battlesystem.numOfUnits[num].stamina.slider.value = 50f;
+                        battlesystem.numOfUnits[num].skillUIs[0].GetComponent<ActionContainer>().Disabled = true;
                         if (Director.Instance.DevMode != true)
                         {
                             var tutorialIcon = Instantiate(TutorialIcon2, Director.Instance.canvas.transform);
                             tutorialIcon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-5000, 0, 0f);
                             StartCoroutine(Tools.SmoothMoveUI(tutorialIcon.GetComponent<RectTransform>(), 0, 0, 0.01f));
                             tutorialIcon.transform.localScale = new Vector3(1f, 1f, 1);
-                        }
+                        }   
                     }
                 }
                 yield return new WaitUntil(() => baseUnit.stamina.slider.value == baseUnit.stamina.slider.maxValue);
@@ -102,12 +107,12 @@ public class TutorialEnemy : Unit
                 baseUnit.stamina.DoCost(baseUnit.actionList[turn].cost);
                 battlesystem.AddAction(baseUnit.actionList[turn]);
                 if (turn != 1)
-                { 
-                    turn += 1; 
+                {
+                    turn += 1;
                 }
-                else 
-                { 
-                    turn = 0; 
+                else
+                {
+                    turn = 0;
                 }
             }
             else

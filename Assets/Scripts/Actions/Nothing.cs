@@ -10,6 +10,7 @@ public class Nothing : Action
         ActionName = "...";
         cost = 0f;
         actionType = ActionType.STATUS;
+        damageText = damage.ToString();
         targetType = TargetType.SELF;
         description = "Intent is unknown...";
     }

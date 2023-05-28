@@ -17,7 +17,7 @@ public class Dusty : Unit
     void Awake()
     {
         unitName = "Dusty";
-        maxHP = 38;
+        maxHP = 40;
         attackStat = 5;
         defenseStat = 8;
         speedStat = 7;

@@ -8,8 +8,9 @@ using UnityEngine.EventSystems;
 
 public class HighlightedObject : MonoBehaviour
 {
-    public bool IsHighlighted = true;
+    public bool IsHighlighted = false;
     public float StartingThickness;
+    public bool BattleHighlight = false;
     private void Start()
     {
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
@@ -19,17 +20,30 @@ public class HighlightedObject : MonoBehaviour
 
     public void ToggleHighlight()
     {
-        if (IsHighlighted && GetComponent<Button>().interactable)
+        if (!IsHighlighted)
         {
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-            IsHighlighted = false;
+            if (BattleHighlight)
+            {
+                if (BattleSystem.Instance.state != BattleStates.BATTLE)
+                {
+                    gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
+                    gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+                    IsHighlighted = true;
+                }
+            }
+            else
+            {
+                gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
+                gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+                IsHighlighted = true;
+            }
+
         }
         else
         {
             gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", StartingThickness);
             gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
-            IsHighlighted = true;
+            IsHighlighted = false;
         }
     }
 }

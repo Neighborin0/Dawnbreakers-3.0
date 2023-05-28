@@ -15,7 +15,6 @@ public class TargetLine : MonoBehaviour
      void Awake()
     {
         lineRenderer= GetComponent<LineRenderer>();
-
     }
 
     private void Update()

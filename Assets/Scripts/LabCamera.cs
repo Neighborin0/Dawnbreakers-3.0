@@ -54,26 +54,33 @@ public class LabCamera : MonoBehaviour
 	{
         smoothingTime = 0f;
         state = CameraState.MOVING;
-        if (BattleSystem.Instance.playerPositions[2].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[2].GetComponent<BattleSpawnPoint>().unit != null)
-        {
-            PositonToMoveTo = BattleSystem.Instance.cameraPos3Units;
-            print("Camera is sized for 3 units");
+		if (BattleSystem.Instance != null)
+		{
+			if (BattleSystem.Instance.playerPositions[2].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[2].GetComponent<BattleSpawnPoint>().unit != null)
+			{
+				PositonToMoveTo = BattleSystem.Instance.cameraPos3Units;
+				print("Camera is sized for 3 units");
 
-        }
-        else if (BattleSystem.Instance.playerPositions[1].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[1].GetComponent<BattleSpawnPoint>().unit != null)
-        {
-            PositonToMoveTo = BattleSystem.Instance.cameraPos2Units;
-            uicam.transform.position = new Vector3(uicam.transform.position.x, uicam.transform.position.y, uicam.transform.position.z);
-            print("Camera is sized for 2 units");
+			}
+			else if (BattleSystem.Instance.playerPositions[1].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[1].GetComponent<BattleSpawnPoint>().unit != null)
+			{
+				PositonToMoveTo = BattleSystem.Instance.cameraPos2Units;
+				uicam.transform.position = new Vector3(uicam.transform.position.x, uicam.transform.position.y, uicam.transform.position.z);
+				print("Camera is sized for 2 units");
 
-        }
-        else
-        {
-            print("Camera is sized for 1 unit");
-			PositonToMoveTo = BattleSystem.Instance.cameraPos1Units;
-            uicam.transform.position = new Vector3(uicam.transform.position.x, uicam.transform.position.y, uicam.transform.position.z);
+			}
+			else
+			{
+				print("Camera is sized for 1 unit");
+				PositonToMoveTo = BattleSystem.Instance.cameraPos1Units;
+				uicam.transform.position = new Vector3(uicam.transform.position.x, uicam.transform.position.y, uicam.transform.position.z);
 
 
+			}
+		}
+		else if(RestSite.Instance != null)
+		{
+            PositonToMoveTo = RestSite.Instance.camPos;
         }
         originalPos = PositonToMoveTo;
 		
@@ -106,8 +113,8 @@ public class LabCamera : MonoBehaviour
 				camTransform.transform.position = Vector3.Lerp(camTransform.transform.position, PositonToMoveTo, smoothingTime);
 			}
 		}
-		else if (state == CameraState.SWAY && BattleSystem.Instance.state != BattleStates.BATTLE)
-		{
+		else if (state == CameraState.SWAY)
+        {
             smoothingTime += Time.deltaTime;
 			if (!DoneMovingUp)
 			{
@@ -126,10 +133,7 @@ public class LabCamera : MonoBehaviour
 					DoneMovingUp = false;
 					smoothingTime = 0f;
 				}
-			}
-			
-			
-			
+			}	
 		}
 		if (state == CameraState.SHAKE)
 		{
@@ -155,16 +159,24 @@ public class LabCamera : MonoBehaviour
     }
 
 	
-	public void MoveToUnit(Unit unit, float xOffset = 0, float yOffset = 0, float zOffset = 0)
+	public void MoveToUnit(Unit unit, float xOffset = 0, float yOffset = 0, float zOffset = 0, bool useDefaultOffset = true)
     {
         state = CameraState.MOVING;
+		MovingTimeDivider = 1f;
 		smoothingTime = 0f;
-		PositonToMoveTo = unit.transform.position / 5f;
+		if(useDefaultOffset)
+		{
+            PositonToMoveTo = unit.transform.position / 5f;
+        }
+		else
+		{
+            PositonToMoveTo = unit.transform.position;
+        }
 		if(xOffset != 0)
 		{
 			if (unit.IsPlayerControlled)
 				xOffset *= -1;
-            PositonToMoveTo.x = camTransform.position.x + xOffset;
+            PositonToMoveTo.x = unit.transform.position.x + xOffset;
         }
         PositonToMoveTo.y = camTransform.position.y + yOffset;
         PositonToMoveTo.z = camTransform.position.z + zOffset;

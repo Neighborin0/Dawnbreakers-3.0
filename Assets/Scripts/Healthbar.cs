@@ -12,9 +12,10 @@ public class Healthbar : MonoBehaviour
     public Slider slider;
     public Unit unit;
     public TextMeshProUGUI text;
-    public GameObject damagePopUp;
+    public LabPopup damagePopUp;
     //public TextMeshProUGUI namePlate;
     public Slider backSlider;
+  
     //public Image DEF_icon;
     //public TextMeshProUGUI defText;
     //public StaminaBar stamina;
@@ -64,7 +65,7 @@ public class Healthbar : MonoBehaviour
             var truedamage = damage - unit.defenseStat;
             if (truedamage < 1)
             {
-                truedamage = 1;
+                truedamage = 0;
             }
             print(truedamage);
             backSlider.value = slider.value;
@@ -115,18 +116,15 @@ public class Healthbar : MonoBehaviour
         if (unit != null)
         {
             unit.DoOnDamaged();
-            if (unit.anim != null)
-                unit.anim.Play("Hurt");
-          
+           
             if (unit.currentHP < 1)
             {
-                var popup = Instantiate(damagePopUp, new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x - 1.5f, unit.GetComponent<SpriteRenderer>().bounds.max.y + 4, unit.transform.position.z), Quaternion.identity);
-                var img = popup.GetComponentInChildren<Image>();
-                img.gameObject.SetActive(false);
+                var popup = Instantiate(damagePopUp, new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x, unit.GetComponent<SpriteRenderer>().bounds.center.y + 2, unit.transform.position.z), Quaternion.identity);
                 var number = popup.GetComponentInChildren<TextMeshProUGUI>();
                 try
                 {
                     number.SetText(damage.ToString());
+                    number.color = Color.red;
                     number.outlineColor = Color.black;
                     number.outlineWidth = 0.2f;
 
@@ -135,12 +133,9 @@ public class Healthbar : MonoBehaviour
                 {
                     print("text isn't being found?");
                 }
-
-                StartCoroutine(Tools.SmoothMove(popup, 0.001f, 20, 0, 0.005f));
-                yield return new WaitForSeconds(0.1f);
-                StartCoroutine(Tools.SmoothMove(popup, 0.001f, 40, 0, -0.005f));
-
+                StartCoroutine(popup.Pop());
                 var sprite = unit.GetComponent<SpriteRenderer>();
+                yield return new WaitForSeconds(0.5f);
                 sprite.forceRenderingOff = true;
                 yield return new WaitForSeconds(0.1f);
                 sprite.forceRenderingOff = false;
@@ -155,20 +150,20 @@ public class Healthbar : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
                 sprite.forceRenderingOff = true;
                 yield return new WaitForSeconds(0.1f);
+                Director.Instance.StartCoroutine(popup.DestroyPopUp());
                 Die();
-                Destroy(popup);
+              
             }
             else
             {
 
                 unit.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", new Color(1f, 1f, 1f));     
-                var popup = Instantiate(damagePopUp, new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x - 1.5f, unit.GetComponent<SpriteRenderer>().bounds.max.y + 4, unit.transform.position.z), Quaternion.identity);
-                var img = popup.GetComponentInChildren<Image>();
-                img.gameObject.SetActive(false);
+                var popup = Instantiate(damagePopUp, new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x, unit.GetComponent<SpriteRenderer>().bounds.center.y + 2, unit.transform.position.z), Quaternion.identity);
                 var number = popup.GetComponentInChildren<TextMeshProUGUI>();
                 try
                 {
                     number.SetText(damage.ToString());
+                    number.color = Color.red;
                     number.outlineColor = Color.black;
                     number.outlineWidth = 0.2f;
 
@@ -177,12 +172,11 @@ public class Healthbar : MonoBehaviour
                 {
                     print("text isn't being found?");
                 }
-                StartCoroutine(Tools.SmoothMove(popup, 0.001f, 20, 0, 0.005f));
+                StartCoroutine(popup.Pop());
                 yield return new WaitForSeconds(0.1f);
-                StartCoroutine(Tools.SmoothMove(popup, 0.001f, 40, 0, -0.005f));
                 unit.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f));
-                yield return new WaitForSeconds(1.4f);
-                Destroy(popup);
+                yield return new WaitForSeconds(1f);
+                Director.Instance.StartCoroutine(popup.DestroyPopUp());
             }
         }
     }

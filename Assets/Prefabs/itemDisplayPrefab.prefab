@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa55cf92bac510e4a862ca8b88080f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsHighlighted: 1
+  IsHighlighted: 0
   StartingThickness: 1
 --- !u!114 &263915718202882743
 MonoBehaviour:

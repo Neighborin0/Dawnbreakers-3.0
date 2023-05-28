@@ -9,6 +9,7 @@ public class RestNode : MapNode
     public void Transition()
     {
         DisableNode();
+        Director.Instance.CharacterSlotEnable();
         StartCoroutine(Director.Instance.DoLoad("Rest"));
     }
 

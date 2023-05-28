@@ -19,8 +19,8 @@ public class StaminaBar : MonoBehaviour
         backSlider.maxValue = 100;
         if (!unit.IsPlayerControlled)
         {
-            slider.value = 50;
-            backSlider.value = 50;
+            slider.value = unit.StartingStamina;
+            backSlider.value = slider.value;
         }
     }
 

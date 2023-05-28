@@ -34,7 +34,8 @@ public class NamePlate : MonoBehaviour
         if (DEF_icon != null)
           {
                defText.text = $"{unit.defenseStat}";
-          }
+            defText.color = new Color(1, 0.8705882f, 0.7058824f);
+        }
             
     }
 

@@ -14,6 +14,7 @@ public class Summon : Action
         cost = 100f;
         targetType = TargetType.SELF;
         actionType = ActionType.STATUS;
+        damageText = damage.ToString();
         description = $"Summons a fearsome foe...";
     }
 

@@ -40,7 +40,7 @@ public class ConvserationHandler : MonoBehaviour
     {
          new LabLine { expression = "neutral", text = "You insist on following me?", unit = "Aurelia", textSpeed = 0.03f, },
          new LabLine { expression = "neutral", text = "Listen. You're the only other person I've seen in this place. I cannot bear the thought of navigating this maze alone any longer. Especially without my men.", unit = "Dusty", textSpeed = 0.03f, },
-         new LabLine { expression = "neutral", text = "Please, you seem to know this place better than I and I need your help. If you need aid in battle I'll gladly offer my services.", unit = "Dusty", textSpeed = 0.03f, },
+         new LabLine { expression = "neutral", text = "Please, you seem to know this place better than I do. I need your help. If you need aid in battle I'll gladly offer my services.", unit = "Dusty", textSpeed = 0.03f, },
          new LabLine { expression = "neutral", text = "...", unit = "Aurelia", textSpeed = 0.03f, },
          new LabLine { expression = "neutral", text = "If you're going to follow me then stay close.", unit = "Aurelia", textSpeed = 0.03f, },
          new LabLine { expression = "neutral", text = "There are dangers lurking ahead.", unit = "Aurelia", textSpeed = 0.03f, },

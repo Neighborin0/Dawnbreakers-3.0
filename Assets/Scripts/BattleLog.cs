@@ -30,7 +30,7 @@ public class BattleLog : MonoBehaviour
     public GridLayoutGroup inventoryDisplay;
     public Button itemImage;
     public TextMeshProUGUI itemText;
-    IEnumerator generalCoruntine;
+    IEnumerator generalCoroutine;
     void Awake()
     {
         if (Instance != null)
@@ -110,7 +110,7 @@ public class BattleLog : MonoBehaviour
         battlelog.characterName.gameObject.SetActive(true);
         battlelog.inventoryDisplay.gameObject.SetActive(true);
         battlelog.itemText.gameObject.SetActive(true);
-        battlelog.STATtext.text = $"ATK: {unit.attackStat} \nDEF: {unit.defenseStat}\nSPD: {unit.speedStat}";
+        battlelog.STATtext.text = $"<sprite name=\"ATK\">ATK: {unit.attackStat}\n<sprite name=\"DEF\">DEF: {unit.defenseStat}\n<sprite name=\"SPD\">SPD: {unit.speedStat}";
         battlelog.characterName.text = (unit.unitName);
        
         foreach(var item in unit.inventory)
@@ -142,28 +142,28 @@ public class BattleLog : MonoBehaviour
 
             if (moveUp)
             {
-            if (generalCoruntine != null)
-                StopCoroutine(generalCoruntine);
+            if (generalCoroutine != null)
+                StopCoroutine(generalCoroutine);
 
-                 generalCoruntine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 960, -950, 0.01f);
-                 StartCoroutine(generalCoruntine);
+                 generalCoroutine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 960, -950, 0.01f);
+                 StartCoroutine(generalCoroutine);
             }
             else
             {
-                if (generalCoruntine != null)
-                    StopCoroutine(generalCoruntine);
+                if (generalCoroutine != null)
+                    StopCoroutine(generalCoroutine);
 
-                generalCoruntine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 960, -1215, 0.01f);
-                StartCoroutine(generalCoruntine);
+                generalCoroutine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 960, -1215, 0.01f);
+                StartCoroutine(generalCoroutine);
              }
         
     }
-    public static void DisplayEnemyIntentInfo(string target, string description)
+    public static void DisplayEnemyIntentInfo(string description)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
         BattleLog.ClearAllBattleLogText();
         battlelog.enemyIntent.gameObject.SetActive(true);
-        battlelog.enemyIntent.text = ($"Target: {target}\n{description}");
+        battlelog.enemyIntent.text = ($"{description}");
     }
    
 

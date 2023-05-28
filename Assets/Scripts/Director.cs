@@ -44,7 +44,10 @@ public class Director : MonoBehaviour
     public Button backButton;
     public TimeLine timeline;
     public float timelinespeedDelay;
+    public float UserTimelineSpeedDelay = 2f;
     public float staminaSPDDivider;
+    public GameObject LevelUpText;
+    public GameObject ConfirmButton;
 
     LabCamera.CameraState previousCameraState;
     public static Director Instance { get; private set;  }
@@ -61,7 +64,7 @@ public class Director : MonoBehaviour
             
 #else
              Debug.unityLogger.logEnabled = false;
-             DevMode = false;
+             DevMode = true;
 #endif
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -154,7 +157,7 @@ public class Director : MonoBehaviour
                     {
                         newcharacterSlot.portrait.sprite = x.charPortraits.Find(obj => obj.name == "neutral");
                     }
-                    newcharacterSlot.stats.text = $":{x.attackStat}\n:{x.defenseStat}\n:{x.speedStat}";
+                    newcharacterSlot.stats.text = $"<sprite name=\"ATK\">:{x.attackStat}  <sprite name=\"DEF\">:{x.defenseStat}  <sprite name=\"SPD\">:{x.speedStat}";
                     i++;
                 }
             }
@@ -169,9 +172,8 @@ public class Director : MonoBehaviour
             if (generalCoruntine != null)
                 StopCoroutine(generalCoruntine);
 
-            generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), -1096f, characterSlotpos.GetComponent<RectTransform>().anchoredPosition.y, 0.01f);
+            generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), -1500f, characterSlotpos.GetComponent<RectTransform>().anchoredPosition.y, 0.01f);
             StartCoroutine(generalCoruntine);
-            //StartCoroutine(Tools.SmoothMoveUI(CloseIndicator.GetComponent<RectTransform>(), -1096f, CloseIndicator.GetComponent<RectTransform>().anchoredPosition.y, 0.01f));
             CharacterSlotsDisplayed = false;
         }
         else
@@ -181,9 +183,8 @@ public class Director : MonoBehaviour
                 if (generalCoruntine != null)
                     StopCoroutine(generalCoruntine);
 
-                generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), -1096f, characterSlotpos.GetComponent<RectTransform>().anchoredPosition.y, 0.01f);
+                generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), -1500f, characterSlotpos.GetComponent<RectTransform>().anchoredPosition.y, 0.01f);
                 StartCoroutine(generalCoruntine);
-                //StartCoroutine(Tools.SmoothMoveUI(CloseIndicator.GetComponent<RectTransform>(), -1096f, CloseIndicator.GetComponent<RectTransform>().anchoredPosition.y, 0.01f));
                 CharacterSlotsDisplayed = false;
             }
             else
@@ -193,7 +194,6 @@ public class Director : MonoBehaviour
 
                 generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), -825f, characterSlotpos.GetComponent<RectTransform>().anchoredPosition.y, 0.01f);
                 StartCoroutine(generalCoruntine);
-                //StartCoroutine(Tools.SmoothMoveUI(CloseIndicator.GetComponent<RectTransform>(), -825f, CloseIndicator.GetComponent<RectTransform>().anchoredPosition.y, 0.01f));
                 CharacterSlotsDisplayed = true;
             }
         }
@@ -220,9 +220,9 @@ public class Director : MonoBehaviour
 
     public void DisplayCharacterTab(bool LevelUp = true, bool Interactable = false)
     {
-        //ToggleEveryButton();
         CharacterSlotEnable();
-        Tools.ToggleUiBlocker(false); 
+        Tools.ToggleUiBlocker(false);
+        Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(true);
         if (Director.Instance.TabGrid.transform.childCount > 0)
         {
             foreach (Transform child in Director.Instance.TabGrid.transform)
@@ -245,18 +245,21 @@ public class Director : MonoBehaviour
                     CT.gameObject.transform.SetParent(TabGrid.transform, false);
                     if (LevelUp)
                     {
+                        Tools.ToggleUiBlocker(true);
                         CT.detailedDisplay.SetActive(false);
                         CT.levelupDisplay.SetActive(true);
-                        foreach (var x in characterTab.buttons)
+                        foreach (var x in characterTab.LevelUpButtons)
                         {
                             x.interactable = true;
                         }
                         CT.unit = unit;
-                        CT.statDisplay.text = $"HP: {unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
+                        CT.statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
                         CT.actionDisplay.gameObject.SetActive(true);
                         SetUpActionList(unit, CT);
                         CT.actionDisplay.gameObject.SetActive(false);
-                        //StartCoroutine(CT.LevelUpText());
+                        LevelUpText.GetComponent<MoveableObject>().Move(false);
+                        ConfirmButton.GetComponent<MoveableObject>().Move(false);
+                        ConfirmButton.GetComponent<Button>().interactable = false;
                     }
                     else
                     {
@@ -293,6 +296,16 @@ public class Director : MonoBehaviour
 
     }
 
+    /*public void MoveCharacterTabGrid(bool MoveUp)
+    {
+        if(MoveUp)
+        StartCoroutine(Tools.SmoothMoveUI(TabGrid.GetComponent<RectTransform>(), TabGrid.GetComponent<RectTransform>().anchoredPosition.x, 61, 0.01f));
+        else
+        {
+            StartCoroutine(Tools.SmoothMoveUI(TabGrid.GetComponent<RectTransform>(), TabGrid.GetComponent<RectTransform>().anchoredPosition.x, -1020, 0.01f));
+        }
+    }
+    */
     private void SetUpActionList(Unit unit, CharacterTab CT)
     {
         foreach (var action in unit.actionList)
@@ -305,15 +318,17 @@ public class Director : MonoBehaviour
             assignedAction.button.interactable = true;
             assignedAction.button.enabled = true;
             assignedAction.action = action;
-            assignedAction.damageNums.text = (action.damage + unit.attackStat).ToString();
-            assignedAction.durationNums.text = (action.duration).ToString();
+            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (action.damage + unit.attackStat).ToString();
+            assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (action.duration).ToString();
             assignedAction.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = action.ActionName;
             if(assignedAction.action.New)
             {
-                var actionImage = assignedAction.GetComponent<Image>();
-                actionImage.color= Color.red;
+                assignedAction.GetComponent<Image>().material = Instantiate<Material>(assignedAction.GetComponent<Image>().material);
+                assignedAction.GetComponent<Image>().material.SetFloat("OutlineThickness", 2);
+                assignedAction.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+                assignedAction.transform.SetAsFirstSibling();
             }
             if (assignedAction.action.actionType == Action.ActionType.STATUS)
             {
@@ -384,11 +399,11 @@ public class Director : MonoBehaviour
         }
     public IEnumerator DoLoad(string SceneToLoad)
     {
-        StartCoroutine(Tools.FadeObject(blackScreen, 0.001f, true));
+        blackScreen.gameObject.SetActive(true);
+        Director.Instance.StartCoroutine(Tools.FadeObject(blackScreen, 0.001f, true));
         yield return new WaitUntil(() => blackScreen.color == new Color(0, 0, 0, 1));
         yield return new WaitForSeconds(1f);
         print("TRANSITIONED");
         SceneManager.LoadScene(SceneToLoad);
-
     }
 }

@@ -123,6 +123,7 @@ MonoBehaviour:
   MiniMapIcons: []
   offset: {x: 0, y: 0, z: 0}
   timelinechild: {fileID: 0}
+  StartingStamina: 0
   introText: []
   inventory: []
   state: 0
@@ -134,8 +135,9 @@ MonoBehaviour:
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
-  - {fileID: 11400000, guid: dccf47c3891ca1d469677d6cb3db9d9f, type: 2}
+  - {fileID: 11400000, guid: 2591929b617328944b8d631f46e412a6, type: 2}
   - {fileID: 11400000, guid: a4d8a7ac53a1c3e488204ae9b11b8fd3, type: 2}
+  ActionLayout: {fileID: 0}
   summonables: []
   IsSummon: 0
 --- !u!199 &-5983281507674587463
@@ -159,7 +161,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 97c68dd794bf94a448c5a988e6f237f9, type: 2}
+  - {fileID: 2100000, guid: f059fc821224e4b40a44f6bc2e950682, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -200,7 +202,7 @@ ParticleSystemRenderer:
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
   m_VertexStreams: 00010304
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -456,9 +458,9 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     startSize:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0.3
-      minScalar: 1
+      minMaxState: 3
+      scalar: 0.8
+      minScalar: 0.1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -509,7 +511,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -562,7 +564,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -1039,7 +1041,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 25
+      scalar: 60
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1553,7 +1555,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 1
+    enabled: 0
     mode: 1
     timeMode: 1
     fps: 30

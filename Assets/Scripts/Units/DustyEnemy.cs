@@ -14,12 +14,13 @@ public class DustyEnemy : Unit
         unitName = "Dusty";
         maxHP = 40;
         attackStat = 5;
-        defenseStat = 9;
-        speedStat = 10;
+        defenseStat = 8;
+        speedStat = 6;
         actionCostMultiplier = 1f;
         currentHP = maxHP;
         IsPlayerControlled = false;
         behavior =  this.gameObject.AddComponent<DustyBehavior>();
+        StartingStamina = 75;
 
         if(!Director.Instance.DevMode)
         BattleStarted += DoCharacterText;

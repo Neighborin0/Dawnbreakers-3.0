@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using static UnityEngine.UI.CanvasScaler;
@@ -27,7 +28,7 @@ public class Tools : MonoBehaviour
     }
     public static Vector3 GetMouseWorldPos()
     {
-       var mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1000);
+        var mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1000);
         return LabCamera.Instance.GetComponent<Camera>().ScreenToWorldPoint(mousePos);
     }
 
@@ -42,16 +43,16 @@ public class Tools : MonoBehaviour
         Item item = Director.Instance.itemDatabase.Where(obj => obj.itemName == itemName).SingleOrDefault();
         unit.inventory.Add(item);
         item.OnPickup(unit);
-       
+
     }
 
     public static int GetNumberOfPlayerUnits()
     {
         Unit[] units = UnityEngine.Object.FindObjectsOfType<Unit>();
         int i = 0;
-        foreach(var x in units)
+        foreach (var x in units)
         {
-            if(x.IsPlayerControlled)
+            if (x.IsPlayerControlled)
             {
                 i++;
             }
@@ -80,10 +81,6 @@ public class Tools : MonoBehaviour
         {
             SB.Paused = true;
         }
-        foreach (var EI in FindObjectsOfType<EffectIcon>())
-        {
-            EI.isPaused = true;
-        }
     }
 
     public static void UnpauseAllStaminaTimers()
@@ -93,17 +90,14 @@ public class Tools : MonoBehaviour
         {
             SB.Paused = false;
         }
-        foreach (var EI in FindObjectsOfType<EffectIcon>())
-        {
-            EI.isPaused = false;
-        }
     }
 
     public static void EndAllTempEffectTimers()
     {
         foreach (var act in FindObjectsOfType<EffectIcon>())
         {
-            Destroy(act);
+            act.DoFancyStatChanges = false;
+            act.DestoryEffectIcon();
         }
     }
     public static void FadeUI(Image image, bool fadeOut)
@@ -127,7 +121,7 @@ public class Tools : MonoBehaviour
         {
             if (BattleSystem.Instance.enemyUnits[i].unitName == unit.unitName)
             {
-                nameToReturn =  $"{(i + 2)}";
+                nameToReturn = $"{(i + 2)}";
             }
         }
         return nameToReturn;
@@ -153,17 +147,17 @@ public class Tools : MonoBehaviour
             if (child.unit == unit)
             {
                 Director.Instance.timeline.children.Remove(child);
-                Destroy(child.gameObject);               
+                Destroy(child.gameObject);
                 break;
             }
         }
-        if(unit.GetComponentInChildren<TargetLine>() != null)
+        if (unit.GetComponentInChildren<TargetLine>() != null)
         {
             var line = unit.GetComponentInChildren<TargetLine>();
             Destroy(line.gameObject);
         }
         Destroy(unit.health.gameObject);
-       
+
     }
 
     public static List<Unit> DetermineAllies(Unit baseUnit)
@@ -230,7 +224,7 @@ public class Tools : MonoBehaviour
         yield break;
     }
 
- 
+
 
     public static void ClearAllCharacterSlots()
     {
@@ -258,7 +252,7 @@ public class Tools : MonoBehaviour
 
     public static void ToggleUiBlocker(bool disable)
     {
-        if(disable)
+        if (disable)
         {
             Director.Instance.blackScreen.gameObject.SetActive(false);
             Director.Instance.blackScreen.color = new Color(0, 0, 0, 0);
@@ -270,16 +264,16 @@ public class Tools : MonoBehaviour
             Director.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
             Director.Instance.blackScreen.raycastTarget = true;
         }
-     
+
     }
 
-   
 
-     public static IEnumerator SmoothMoveObject(Transform obj, float transformPointX, float transformPointY, float delay, bool destroy = false, float transformPointZ = 0, float fallbackTicks = 10000)
+
+    public static IEnumerator SmoothMoveObject(Transform obj, float transformPointX, float transformPointY, float delay, bool destroy = false, float transformPointZ = 0, float fallbackTicks = 10000)
     {
         float SmoothTime = 0f;
         int i = 0;
-        if(transformPointZ == 0)
+        if (transformPointZ == 0)
         {
             transformPointZ = obj.position.z;
         }
@@ -290,7 +284,7 @@ public class Tools : MonoBehaviour
             i++;
             yield return new WaitForSeconds(delay);
         }
-        if(destroy)
+        if (destroy)
         {
             DestroyImmediate(obj.gameObject);
         }
@@ -312,10 +306,28 @@ public class Tools : MonoBehaviour
                 yield break;
         }
         yield break;
-       
+
     }
 
-    public static IEnumerator SmoothScale(RectTransform obj, Vector3 scaleToGoTo, float delay) 
+    public static IEnumerator SmoothScale(RectTransform obj, Vector3 scaleToGoTo, float delay)
+    {
+        float SmoothTime = 0f;
+        while (obj.localScale != scaleToGoTo)
+        {
+            if (obj != null)
+            {
+                obj.localScale = Vector3.Lerp(obj.localScale, scaleToGoTo, SmoothTime);
+                SmoothTime += Time.deltaTime;
+                yield return new WaitForSeconds(delay);
+            }
+            else
+                yield break;
+        }
+        yield break;
+
+    }
+
+    public static IEnumerator SmoothScaleObj(Transform obj, Vector3 scaleToGoTo, float delay)
     {
         float SmoothTime = 0f;
         while (obj.localScale != scaleToGoTo)
@@ -340,7 +352,7 @@ public class Tools : MonoBehaviour
         {
             if (line != null)
             {
-                line.SetPosition(1 , Vector3.Lerp(line.GetPosition(1), posToGoTo, SmoothTime));
+                line.SetPosition(1, Vector3.Lerp(line.GetPosition(1), posToGoTo, SmoothTime));
                 SmoothTime += Time.deltaTime;
                 yield return new WaitForSeconds(delay);
             }
@@ -356,26 +368,55 @@ public class Tools : MonoBehaviour
     {
         return new Vector3(obj.transform.position.x, obj.transform.position.y, obj.transform.position.z);
     }
-    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Vector3 offset, float duration = 1, float stopDuration = 0)
+    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Vector3 offset, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, bool haveExtraDelay = false)
     {
         var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).SingleOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, Quaternion.identity);
-        VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
-        var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
-        vfxMaterial.SetColor("_EmissionColor", vfxColor * 10);
-        var anim = VFX.GetComponent<Animator>();
-        anim.Play(VFXName);
-        Director.Instance.StartCoroutine(Tools.ApplyAndReduceChromaticAbberation());
-       yield return new WaitUntil(() => anim.GetBool("Done") == true);
-        if(stopDuration > 0)
-        Director.Instance.StartCoroutine(Tools.StopTime(stopDuration));
+        if (VFX.GetComponent<SpriteRenderer>() != null)
+        {
+            VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
+            var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
+            vfxMaterial.SetColor("_EmissionColor", vfxColor * 10);
+        }
+        if (VFX.GetComponent<Animator>() != null)
+        {
+            var anim = VFX.GetComponent<Animator>();
+            anim.Play(VFXName);
+        }
+        if (VFX.GetComponent<ParticleSystem>() != null)
+        {
+            var particleSystem = VFX.GetComponent<ParticleSystem>();
+            particleSystem.GetComponent<ParticleSystemRenderer>().material = Instantiate(particleSystem.GetComponent<ParticleSystemRenderer>().material);
+            var particleMaterial = particleSystem.GetComponent<ParticleSystemRenderer>().material;
+            particleMaterial.SetColor("_Color", vfxColor * 10);
+            particleMaterial.SetColor("_EmissionColor", vfxColor * 10);
+        }
+        if (ApplyChromaticAbberation)
+            Director.Instance.StartCoroutine(Tools.ApplyAndReduceChromaticAbberation());
+        if (VFX.GetComponent<Animator>() != null)
+        {
+            yield return new WaitUntil(() => VFX.GetComponent<Animator>().GetBool("Done") == true);
+            if (stopDuration > 0)
+                Director.Instance.StartCoroutine(Tools.StopTime(stopDuration));
+        }
         yield return new WaitForSeconds(duration);
+        if (VFX.GetComponent<ParticleSystem>() != null)
+        {
+            var particleSystem = VFX.GetComponent<ParticleSystem>();
+            particleSystem.Stop();
+        }
+        if(haveExtraDelay)
+        {
+            yield return new WaitForSeconds(2f);
+        }
         Destroy(VFX);
 
     }
 
     public static void AddNewActionToUnit(Unit unit, string actionName)
     {
-        unit.actionList.Add(Director.Instance.actionDatabase.Where(obj => obj.name == actionName).SingleOrDefault());
+        var oldAction = Director.Instance.actionDatabase.Where(obj => obj.ActionName == actionName).SingleOrDefault();
+        var newAction = Instantiate(oldAction);
+        unit.actionList[unit.actionList.Count - 1] = newAction;
         unit.actionList[unit.actionList.Count - 1].New = true;
     }
 
@@ -384,18 +425,18 @@ public class Tools : MonoBehaviour
         if (BattleSystem.Instance.effectsSetting.sharedProfile.TryGet<ChromaticAberration>(out var CA))
         {
             CA.intensity.value = 1f;
-           while(CA.intensity.value != 0)
+            while (CA.intensity.value != 0)
             {
                 CA.intensity.value -= 0.04f;
                 yield return new WaitForSeconds(0.0001f);
             }
-            
+
         }
     }
 
     public static IEnumerator StopTime(float duration)
     {
-        var previousTime = Time.timeScale; 
+        var previousTime = Time.timeScale;
         Time.timeScale = 0f;
         Director.print(Time.timeScale);
         yield return new WaitForSecondsRealtime(duration);
@@ -428,7 +469,7 @@ public class Tools : MonoBehaviour
 
         }
     }
-    public static IEnumerator ChangeLightIntensity(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0)
+    public IEnumerator ChangeLightIntensity(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0)
     {
         if (desiredIntensity != 0)
         {
@@ -451,7 +492,7 @@ public class Tools : MonoBehaviour
 
     public static IEnumerator ChangeLightIntensityTimed(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0, float stagnantDelay = 0)
     {
-       
+
         while (light.intensity < desiredIntensity)
         {
             light.intensity += amountToRaiseBy;
@@ -474,33 +515,38 @@ public class Tools : MonoBehaviour
         yield break;
     }
 
-    public static IEnumerator FadeObject(Image gameObject, float delay, bool FadeIn)
+    public static IEnumerator FadeObject(Image gameObject, float delay, bool FadeIn, bool SetInactiveAtEnd = true)
     {
-        if(!gameObject.gameObject.activeSelf)
+        if (!gameObject.gameObject.activeSelf)
         {
             gameObject.gameObject.SetActive(true);
         }
-        for (int i = 0; i < 101; i++)
-        {
             if (gameObject != null && !FadeIn)
             {
-                gameObject.color = new Color(0, 0, 0, 1 - i / 100f);
-                yield return new WaitForSeconds(delay);
-                if (gameObject.color == new Color(0, 0, 0, 0))
+                while(gameObject.color.a > 0)
+                {
+                    gameObject.color = new Color(0, 0, 0, gameObject.color.a - 0.01f);
+                    yield return new WaitForSeconds(delay);
+                }
+                if (SetInactiveAtEnd)
                 {
                     gameObject.gameObject.SetActive(false);
                 }
             }
-            else if(gameObject != null)
+            else if (gameObject != null)
             {
-                gameObject.color = new Color(0, 0, 0, i / 100f);
-                print(i / 100f);
-                yield return new WaitForSeconds(delay);
+                while(gameObject.color.a < 1)
+                {
+                    gameObject.color = new Color(0, 0, 0, gameObject.color.a + 0.01f);
+                    yield return new WaitForSeconds(delay);
+                }         
             }
-        }
+        
     }
 
-    public static void ModifyAction(Unit  unit, string actionToChange, int slotToChange , float newCost = 0f)
+
+
+    public static void ModifyAction(Unit unit, string actionToChange, int slotToChange, float newCost = 0f)
     {
         var oldAction = unit.actionList.Where(obj => obj.ActionName == actionToChange).SingleOrDefault();
         var newAction = Instantiate(oldAction);

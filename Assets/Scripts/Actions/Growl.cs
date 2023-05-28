@@ -11,13 +11,18 @@ public class Growl : Action
         damage = 2;
         accuracy = 1;
         cost = 30f;
+        damageText = damage.ToString();
         targetType = TargetType.ANY;
         actionType = ActionType.STATUS;
-        description = "Decreases <color=#0000FF>DEF</color> by 2.";
+        description = "Decreases <color=#0000FF>DEF</color>  <sprite name=\"DEF BLUE\">by 2.";
     }
     public override IEnumerator ExecuteAction()
     {
+        LabCamera.Instance.MoveToUnit(targets, 0, -6, 32, false);
+        yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.SetStatChanges(Stat.DEF, -2, false, targets);
+        yield return new WaitForSeconds(0.5f);
+        LabCamera.Instance.ResetPosition();
         this.Done = true;
         yield break;
     }

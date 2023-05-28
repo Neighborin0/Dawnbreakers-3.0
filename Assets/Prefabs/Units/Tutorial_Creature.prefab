@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 8049719226946396760}
   - component: {fileID: 1897520698661094999}
   - component: {fileID: 7042497956259797220}
+  - component: {fileID: 6701849632069982651}
   m_Layer: 0
   m_Name: Tutorial_Creature
   m_TagString: Enemy
@@ -124,7 +125,7 @@ MonoBehaviour:
   MiniMapIcons: []
   offset: {x: 0, y: 0, z: 0}
   timelinechild: {fileID: 0}
-  statsDisplayed: 0
+  StartingStamina: 0
   introText: []
   inventory: []
   state: 0
@@ -137,6 +138,7 @@ MonoBehaviour:
   actionList:
   - {fileID: 11400000, guid: a367c5a61075e5d439a7f2eea9211cd5, type: 2}
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
+  ActionLayout: {fileID: 0}
   summonables: []
   IsSummon: 0
   TutorialIcon1: {fileID: 338629660966762150, guid: 5118e747ef6dafa48982a502d1d4a55e,
@@ -413,9 +415,9 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     startSize:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0.3
-      minScalar: 1
+      minMaxState: 3
+      scalar: 0.8
+      minScalar: 0.1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -466,7 +468,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -519,7 +521,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -996,7 +998,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 25
+      scalar: 60
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1510,7 +1512,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 1
+    enabled: 0
     mode: 1
     timeMode: 1
     fps: 30
@@ -4908,7 +4910,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 97c68dd794bf94a448c5a988e6f237f9, type: 2}
+  - {fileID: 2100000, guid: f059fc821224e4b40a44f6bc2e950682, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4949,7 +4951,7 @@ ParticleSystemRenderer:
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
   m_VertexStreams: 00010304
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -5059,6 +5061,51 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &6701849632069982651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5069578037121862950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6913396421142473309}
+          m_TargetAssemblyTypeName: Unit, Assembly-CSharp
+          m_MethodName: OnHover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6913396421142473309}
+          m_TargetAssemblyTypeName: Unit, Assembly-CSharp
+          m_MethodName: HoverExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &7455860217542930484
 GameObject:
   m_ObjectHideFlags: 0

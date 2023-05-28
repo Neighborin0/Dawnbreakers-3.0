@@ -12,32 +12,40 @@ using Unity.VisualScripting.FullSerializer;
 [CreateAssetMenu(fileName = "Defend", menuName = "Assets/Actions/Defend")]
 public class Defend : Action
 {
-    private int storedDEF;
     private void OnEnable()
     {
         ActionName = "Defend";
         accuracy = 1;
         cost = 25f;
+        damageText = damage.ToString();
         actionType = ActionType.STATUS;
         PriorityMove = true;
         targetType = TargetType.ALLIES;
         duration = 5f;
-        description = $"Applies <color=#00F0FF>Fortify</color> for {duration} seconds.\n<color=#00F0FF>Fortify</color> doubles the user's <color=#0000FF>DEF</color>.";
+        description = $"Applies <color=#00F0FF>Fortify</color><sprite name=\"FORTIFY\"> for {duration} seconds.\n<color=#00F0FF>Fortify</color> adds the user's <color=#0000FF>DEF</color><sprite name=\"DEF BLUE2\"> to the target.";
     }
 
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Defend_001", Color.blue, new Vector3(0, 5, -2f), 0.2f));
-        LabCamera.Instance.MoveToUnit(targets, 7.8f, -2, 10);
-        yield return new WaitForSeconds(0.1f);
-        Director.Instance.StartCoroutine(LabCamera.Instance.DoSlowHorizontalSweep());
-        yield return new WaitForSeconds(1f);
+        LabCamera.Instance.MoveToUnit(targets, -1, -6, 32);
+        yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;
+        //BattleLog.Instance.StartCoroutine(Tools.ChangeLightIntensityTimed(Light, 150, 15, 0.04f, 0.06f));
+        foreach(Transform icon in targets.namePlate.IconGrid.transform)
+        {
+            var EI = icon.gameObject.GetComponent<EffectIcon>();
+            if(EI.iconName == "Fortify")
+            {
+                EI.DoFancyStatChanges = false;
+                EI.DestoryEffectIcon();
+                break;
+            }
+        }
+        Director.Instance.StartCoroutine(BattleSystem.Instance.SetTempEffect(targets, "DEF", this, true, unit.defenseStat));
         BattleSystem.Instance.SetStatChanges(Stat.DEF, unit.defenseStat, false, targets);
-        BattleLog.Instance.StartCoroutine(Tools.ChangeLightIntensityTimed(Light, 150, 15, 0.04f, 0.06f));
-        Director.Instance.StartCoroutine(BattleSystem.Instance.SetTempEffect(targets, "DEF", this));
         yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
@@ -45,10 +53,14 @@ public class Defend : Action
         yield break;
     }
 
-   public override void OnEnded(Unit otherUnit)
+   public override void OnEnded(Unit otherUnit, float storedValue, bool DoFancyStatChanges)
     {
-        otherUnit = unit;
-        BattleSystem.Instance.SetStatChanges(Stat.DEF, -otherUnit.defenseStat / 2, false, targets);
-        Debug.LogError("On Ended");
+        if (DoFancyStatChanges)
+        {
+            BattleSystem.Instance.SetStatChanges(Stat.DEF, -storedValue, false, targets);
+        }
+           
+        else
+            targets.defenseStat -= (int)storedValue;
     }
 }

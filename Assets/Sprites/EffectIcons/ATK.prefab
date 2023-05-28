@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7742311054285998417}
   - component: {fileID: 2364737074327187471}
   - component: {fileID: 2593380671147905800}
+  - component: {fileID: 8596398589058066822}
   m_Layer: 5
   m_Name: ATK
   m_TagString: Untagged
@@ -68,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: affdf49f9f89ede49b9cfddc79eaf583, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4bb4ed0115fe81a49919c95f8d5cd23f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -96,8 +97,11 @@ MonoBehaviour:
   action: {fileID: 0}
   isPaused: 1
   ForceEnd: 0
-  description: Boost ATK by 3.
-  iconName: Vigor
+  DoFancyStatChanges: 0
+  description: Boosts <color=#FF0000>ATK</color><sprite name="ATK RED2"> by 3.
+  iconName: <color=#FF2E00>Vigor</color><sprite name="VIGOR">
+  storedValue: 0
+  TimedEffect: 1
 --- !u!114 &2593380671147905800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +131,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 8596398589058066822}
+          m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
+          m_MethodName: ToggleHighlight
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -143,6 +159,33 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 8596398589058066822}
+          m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
+          m_MethodName: ToggleHighlight
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &8596398589058066822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5459808448902100061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa55cf92bac510e4a862ca8b88080f34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsHighlighted: 0
+  StartingThickness: 1
+  BattleHighlight: 1
 --- !u!1 &8030429467529856473
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,15 +253,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
+  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 1, g: 0.87058824, b: 0.7058824, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

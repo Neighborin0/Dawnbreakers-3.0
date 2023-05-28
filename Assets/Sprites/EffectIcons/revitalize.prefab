@@ -67,15 +67,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
+  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 1, g: 0.87058824, b: 0.7058824, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -147,6 +148,7 @@ GameObject:
   - component: {fileID: 8466209792876554515}
   - component: {fileID: 4529787547679510605}
   - component: {fileID: 1095531887439886962}
+  - component: {fileID: 9187573185300547448}
   m_Layer: 5
   m_Name: revitalize
   m_TagString: Untagged
@@ -230,8 +232,11 @@ MonoBehaviour:
   action: {fileID: 0}
   isPaused: 1
   ForceEnd: 0
-  description: When hit, fully restores Stamina.
-  iconName: Revitalize
+  DoFancyStatChanges: 0
+  description: When hit, fully restores  <color=#FFEA29>Stamina</color>.
+  iconName: <color=#FFEA29>Revitalize</color>
+  storedValue: 0
+  TimedEffect: 0
 --- !u!114 &1095531887439886962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,6 +266,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 9187573185300547448}
+          m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
+          m_MethodName: ToggleHighlight
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -277,3 +294,30 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 9187573185300547448}
+          m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
+          m_MethodName: ToggleHighlight
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &9187573185300547448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6181490423906128927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa55cf92bac510e4a862ca8b88080f34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsHighlighted: 0
+  StartingThickness: 1
+  BattleHighlight: 1

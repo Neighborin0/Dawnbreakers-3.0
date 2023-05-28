@@ -10,14 +10,19 @@ public class Calm : Action
         ActionName = "Fortify";
         damage = 3;
         accuracy = 1;
+        damageText = damage.ToString();
         cost = 50f;
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
-        description = "Increases  <color=#0000FF>DEF</color> by 2.";
+        description = "Increases <color=#0000FF>DEF</color><sprite name=\"DEF BLUE\"> by 2.";
     }
     public override IEnumerator ExecuteAction()
     {
+        LabCamera.Instance.MoveToUnit(targets, 0, -6, 32, false);
+        yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.SetStatChanges(Stat.DEF, 2, false, targets);
+        yield return new WaitForSeconds(0.5f);
+        LabCamera.Instance.ResetPosition();
         this.Done = true;
         yield break;
     }

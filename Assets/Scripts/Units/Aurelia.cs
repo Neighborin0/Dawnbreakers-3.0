@@ -11,19 +11,17 @@ using UnityEngine.SceneManagement;
 
 public class Aurelia : Unit
 {
-    private string[] TutorialSummons = new string[] { "Husk" };
     void Awake()
     {
         unitName = "Aurelia";
-        maxHP = 30;
+        maxHP = 32;
         attackStat = 7;
         //attackStat = 1;
-        defenseStat = 5;
+        defenseStat = 6;
         speedStat = 10;
         //speedStat = 100;
         currentHP = maxHP;
         IsPlayerControlled = true;
-        summonables = TutorialSummons;
         Tools.AddItemToInventory(this, "Tattered Cape");
         //Tools.AddItemToInventory(this, "Worn Gauntlet");
     }

@@ -24,7 +24,7 @@ public class TutorialMatriarch : Unit
 
     public class MatriarchBehaviorLV0 : EnemyBehavior
     {
-        private int turn;
+        private int turn = 0;
         private BattleSystem battlesystem;
         private Unit BaseUnit;
 

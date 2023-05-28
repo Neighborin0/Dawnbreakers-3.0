@@ -11,8 +11,9 @@ public class Slam : Action
         damage = 10;
         cost = 100f;
         targetType = TargetType.ALL_ENEMIES;
+        damageText = damage.ToString();
         actionType = ActionType.ATTACK;
-        description = $"Deals 10 base damage to ALL enemies.";
+        description = $"Deals <color=#FF0000>{damageText}</color> damage to ALL enemies.";
     }
 
     public override IEnumerator ExecuteAction()

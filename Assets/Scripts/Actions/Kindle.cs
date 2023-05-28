@@ -16,6 +16,7 @@ public class Kindle : Action
         ActionName = "Kindle";
         cost = 100f;
         actionType = ActionType.STATUS;
+        damageText = damage.ToString();
         PriorityMove = false;
         targetType = TargetType.SELF;
         description = $"Heals allies by 10 <color=#00FF00>HP</color>. Increases allies <color=#FF0000>ATK</color> by 2.";

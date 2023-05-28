@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Rendering;
 
 public abstract class Action : ScriptableObject
 {
@@ -15,8 +16,10 @@ public abstract class Action : ScriptableObject
     public bool PriorityMove;
     public float cost;
     public float duration;
+    public string damageText;
     public bool Done = false;
     public bool New = false;
+  
     public enum TargetType { ANY, SELF, ALL_ENEMIES, ALLIES };
     public enum ActionType { ATTACK, STATUS };
 
@@ -30,6 +33,7 @@ public abstract class Action : ScriptableObject
     void Start()
     {
         text.text = ActionName;
+        damageText = damage.ToString();
         //Init();
     }
 
@@ -37,7 +41,7 @@ public abstract class Action : ScriptableObject
     //sorry to whoever reads this have an amoungus ඞ
     public void OnActivated(){ Director.Instance.StartCoroutine(ExecuteAction()); }
     public virtual IEnumerator ExecuteAction() { yield break; }
-    public virtual void OnEnded(Unit unit = null) { }
+    public virtual void OnEnded(Unit unit = null, float storedValue = 0, bool DoFancyStatChanges = false) { }
 
   
 }

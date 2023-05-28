@@ -19,12 +19,14 @@ public class ActionContainer : MonoBehaviour
     public GameObject damageParent;
     public GameObject costParent;
     public GameObject durationParent;
-
+    private float newTimeLineSpeedDelay = 0.1f;
+    public bool Disabled = false;
 
     void Awake()
     {
         if (BattleSystem.Instance != null)
         {
+            if(!this.Disabled)
             button.interactable = true;
             Unit[] units = Tools.GetAllUnits();
             foreach (var unit in units)
@@ -44,7 +46,9 @@ public class ActionContainer : MonoBehaviour
 
             if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null && hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ANY && action.actionType == Action.ActionType.ATTACK && hit.collider.gameObject.GetComponent<Unit>().IsHighlighted)
             {
-                damageNums.text = (action.damage + baseUnit.attackStat - hit.collider.gameObject.GetComponent<Unit>().defenseStat).ToString();
+                var unit = hit.collider.gameObject.GetComponent<Unit>();
+                unit.timelinechild.Shift(unit);
+                damageNums.text = action.damage + baseUnit.attackStat - hit.collider.gameObject.GetComponent<Unit>().defenseStat > 0 ? "<sprite name=\"ATK\">" +(action.damage + baseUnit.attackStat - hit.collider.gameObject.GetComponent<Unit>().defenseStat).ToString() : "<sprite name=\"ATK\">"+"0";
                 if (action.damage + baseUnit.attackStat - hit.collider.gameObject.GetComponent<Unit>().defenseStat > action.damage + baseUnit.attackStat)
                 {
                     damageNums.color = Color.green;
@@ -56,8 +60,8 @@ public class ActionContainer : MonoBehaviour
             }
             else if (action.targetType == Action.TargetType.ANY && action.actionType == Action.ActionType.ATTACK)
             {
-                damageNums.text = (action.damage + baseUnit.attackStat).ToString();
-                damageNums.color = Color.white;
+                damageNums.text = "<sprite name=\"ATK\">" + (action.damage + baseUnit.attackStat).ToString();
+                damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
             }
 
             switch (action.targetType)
@@ -77,7 +81,7 @@ public class ActionContainer : MonoBehaviour
                     if (Input.GetMouseButtonUp(0))
                     {
 
-                        if (hit.collider != null && hit.collider.gameObject != null && hit.collider != baseUnit.gameObject.GetComponent<BoxCollider>() && hit.collider.gameObject.GetComponent<Unit>() != null)
+                        if (hit.collider != null && hit.collider.gameObject != null && hit.collider != baseUnit.gameObject.GetComponent<BoxCollider>() && hit.collider.gameObject.GetComponent<Unit>() != null && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
                         {
                             baseUnit.state = PlayerState.READY;
                             var unit = hit.collider.GetComponent<Unit>();
@@ -91,6 +95,8 @@ public class ActionContainer : MonoBehaviour
 
 
                             baseUnit.Queue(action);
+                            baseUnit.timelinechild.CanMove = true;
+                            Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             this.targetting = false;
                             LabCamera.Instance.ResetPosition();
                             BattleSystem.Instance.ResetBattleLog();
@@ -121,6 +127,8 @@ public class ActionContainer : MonoBehaviour
                             action.speed = action.unit.speedStat;
                             baseUnit.Queue(action);
                             SetActive();
+                            baseUnit.timelinechild.CanMove = true;
+                            Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             foreach (var unit in Tools.GetAllUnits())
                             {
                                 unit.IsHighlighted = false;
@@ -139,8 +147,7 @@ public class ActionContainer : MonoBehaviour
                         }
                         else
                         {
-                            unit.IsHighlighted = true;
-                            unit.state = PlayerState.DECIDING;
+                            unit.IsHighlighted = true;    
                         }
 
                     }
@@ -149,7 +156,8 @@ public class ActionContainer : MonoBehaviour
                         if (hit.collider != null && hit.collider.gameObject != null && hit.collider.gameObject.GetComponent<BoxCollider>() && hit.collider.gameObject.GetComponent<Unit>() != null && hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
                         {
                             baseUnit.state = PlayerState.READY;
-                            Debug.LogError("IS ALLY SELECTION EVEN WORKING?");
+                            BattleSystem.Instance.ResetBattleLog();
+                            this.targetting = false;
                             var unit = hit.collider.GetComponent<Unit>();
                             foreach (var z in Tools.GetAllUnits())
                             {
@@ -159,9 +167,9 @@ public class ActionContainer : MonoBehaviour
                             action.targets = unit;
                             action.unit = baseUnit;
                             baseUnit.Queue(action);
-                            this.targetting = false;
                             LabCamera.Instance.ResetPosition();
-                            BattleSystem.Instance.ResetBattleLog();
+                            baseUnit.timelinechild.CanMove = true;
+                            Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             SetActive();
                         }
                     }
@@ -171,39 +179,39 @@ public class ActionContainer : MonoBehaviour
         else
         {
             if (damageNums != null)
-                damageNums.color = Color.white;
+                damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
         }
 
     }
 
     public void SetDescription()
     {
-        if (button.interactable)
-        {
-            AudioManager.Instance.Play("ButtonHover");
-            BattleLog.SetBattleText("");
-            BattleLog.SetBattleText(action.description);
-            BattleLog.Instance.Move(true);
-        }
+
+        AudioManager.Instance.Play("ButtonHover");
+        BattleLog.SetBattleText("");
+        BattleLog.SetBattleText(action.description);
+        BattleLog.Instance.Move(true);
+
     }
 
     public void RemoveDescription()
     {
-        if (button.interactable)
+        if(BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
+        {
             BattleSystem.Instance.ResetBattleLog();
+        }
+       
     }
     public void SetActive()
     {
-        damageNums.color = Color.white;
+        damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
         if (BattleSystem.Instance != null)
         {
             if (targetting == true)
             {
                 targetting = false;
                 BattleLog.SetBattleText("");
-                //button.interactable = true;
                 print("not targetting");
-                ActionContainer[] actionContainers = UnityEngine.Object.FindObjectsOfType<ActionContainer>();
                 foreach (TimeLineChild child in Director.Instance.timeline.children)
                 {
                     if (child.CanClear)
@@ -222,7 +230,8 @@ public class ActionContainer : MonoBehaviour
                     if (x != this)
                     {
                         var button = x.GetComponent<Button>();
-                        button.interactable = true;
+                        if (!x.Disabled)
+                            button.interactable = true;
                         x.targetting = false;
                         foreach (var z in Tools.GetAllUnits())
                         {
@@ -250,7 +259,8 @@ public class ActionContainer : MonoBehaviour
                 Director.Instance.timeline.children.Add(TL);
                 TL.CanMove = false;
                 TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
-                TL.rectTransform.anchoredPosition = new Vector3((TL.unit.stamina.slider.maxValue - action.cost) * -15.74f, TL.rectTransform.anchoredPosition.y);
+                TL.rectTransform.anchoredPosition = new Vector3((TL.unit.stamina.slider.maxValue - action.cost) * -11.89f, 85);
+                TL.stamina.text = (TL.unit.stamina.slider.maxValue - action.cost).ToString();
                 TL.CanClear = true;
                 TL.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
                 TL.portrait.color = new Color(1, 1, 1, 0.5f);

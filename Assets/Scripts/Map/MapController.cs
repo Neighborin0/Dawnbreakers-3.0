@@ -58,9 +58,9 @@ public class MapController : MonoBehaviour
         {
             if (Loaded)
             {
-                foreach (var unit in GameObject.FindObjectsOfType<MiniMapIcon>())
+                foreach (var minimapIcon in GameObject.FindObjectsOfType<MiniMapIcon>())
                 {
-                    Destroy(unit.gameObject);
+                    Destroy(minimapIcon.gameObject);
                 }
                     foreach (Transform child in transform)
                 {

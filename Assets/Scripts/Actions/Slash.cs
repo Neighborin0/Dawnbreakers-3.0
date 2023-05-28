@@ -13,18 +13,20 @@ public class Slash : Action
         cost = 50f;
         targetType = TargetType.ANY;
         actionType = ActionType.ATTACK;
-        description = $"Deals 5 base damage.";
+        damageText = damage.ToString();
+        description = $"Deals <color=#FF0000>{damageText}</color> damage.";
     }
 
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(targets, 7.8f, 0, 0);
-        unit.PlayAction("Attack", unit);
-        yield return new WaitUntil(() => unit.Execute);
-        LabCamera.Instance.Shake(0.2f, 0.7f);
+        LabCamera.Instance.MoveToUnit(targets, 0, -6, 32, false);
+        yield return new WaitForSeconds(0.3f);
         AudioManager.Instance.Play("slash_001");
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Vector3(0, 0, -2f), 1f));
+        yield return new WaitForSeconds(0.01f);
         targets.health.TakeDamage(damage + unit.attackStat);
+        LabCamera.Instance.Shake(0.25f, 1f);
+        yield return new WaitForSeconds(0.5f);
         Done = true;
         LabCamera.Instance.ResetPosition();
     }

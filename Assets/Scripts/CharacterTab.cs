@@ -13,9 +13,12 @@ public class CharacterTab : MonoBehaviour, IDropHandler
 {
     //level up
     public GameObject levelupDisplay;
-    public List<Button> buttons;
+    public List<Button> LevelUpButtons;
+    public List<Button> LevelDownbuttons;
     public Unit unit;
     public Image portrait;
+    public int skillPoints = 1;
+    public TextMeshProUGUI skillPointText;
 
     //detailed display
     public GameObject detailedDisplay;
@@ -37,6 +40,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     public Vector3 oldScaleSize;
     public Vector3 newScaleSize = new Vector3(1000, 1000, 1000);
     private IEnumerator scaler;
+    public CharacterTabPopup popup;
 
     public event Action<CharacterTab> OnInteracted;
 
@@ -68,6 +72,8 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             }
             levelupDisplay.SetActive(true);
         }
+        Director.Instance.blackScreen.gameObject.SetActive(true);
+        Tools.ToggleUiBlocker(false);
     }
 
   
@@ -78,24 +84,8 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         {
             Director.Instance.DisableCharacterTab();
         }
-
     }
 
-
-
-    public IEnumerator LevelUpText()
-    {
-        statDisplay.text = $"HP: {unit.maxHP} +2\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
-        yield return new WaitForSeconds(0.5f);
-        statDisplay.text = $"HP: {unit.maxHP} +2\nATK:{unit.attackStat} +1\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
-        yield return new WaitForSeconds(0.5f);
-        statDisplay.text = $"HP: {unit.maxHP} +2\nATK:{unit.attackStat} +1\nDEF:{unit.defenseStat} +1\nSPD:{unit.speedStat}";
-        yield return new WaitForSeconds(0.5f);
-        statDisplay.text = $"HP: {unit.maxHP} +2\nATK:{unit.attackStat} +1\nDEF:{unit.defenseStat} +1\nSPD:{unit.speedStat} +1";
-        yield return new WaitForSeconds(1.5f);
-        statDisplay.text = $"HP: {unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
-        yield break;
-    }
     public void DoOnInteracted()
     {
         OnInteracted?.Invoke(this);
@@ -104,7 +94,6 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     {
         var dragObj = item.gameObject.GetComponent<DraggableObject>();
         dragObj.originalParent = this.inventoryDisplay.transform;
-        //var ID = this.inventoryDisplay.GetComponent<InventoryDisplay>();
         item.item.RemoveFromInventory(item.unit);
         item.item.OnRemoved(item.unit);
         item.item.OnPickup(this.unit);
@@ -112,7 +101,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         item.unit = this.unit;
         foreach (var CT in Director.Instance.TabGrid.transform.GetComponentsInChildren<CharacterTab>())
         {
-            CT.DEFText.text = $"DEF: {CT.unit.defenseStat}";
+            CT.DEFText.text = $"DEF:{CT.unit.defenseStat}";
             CT.ATKtext.text = $"ATK: {CT.unit.attackStat}";
             CT.HPtext.text = $"HP: {CT.unit.maxHP}";
             CT.SPDText.text = $"SPD: {CT.unit.speedStat}";
@@ -154,36 +143,93 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     }
     public void IncreaseStat()
     {
-        Director.LabyrinthLVL += 1;
         Director.Instance.characterTab.transform.transform.SetAsFirstSibling();
-        if (EventSystem.current.currentSelectedGameObject == buttons[0].gameObject)
+        skillPoints -= 1;
+        if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[0].gameObject)
         {
-            unit.maxHP += 3;
-            unit.currentHP += 3;
-            statDisplay.text = $"HP: {unit.maxHP} +3\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
+            unit.maxHP += 2;
+            unit.currentHP += 2;
+            statDisplay.text = $"HP:{unit.maxHP} +2\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
+            LevelDownbuttons[0].gameObject.SetActive(true);
         }
-        else if (EventSystem.current.currentSelectedGameObject == buttons[1].gameObject)
+        else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[1].gameObject)
         {
             unit.attackStat += 1;
-            statDisplay.text = $"HP: {unit.maxHP}\nATK:{unit.attackStat} +1\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
+            statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat} +1\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
+            LevelDownbuttons[1].gameObject.SetActive(true);
         }
-        else if (EventSystem.current.currentSelectedGameObject == buttons[2].gameObject)
+        else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[2].gameObject)
         {
             unit.defenseStat += 1;
-            statDisplay.text = $"HP: {unit.maxHP}\nATK:{unit.attackStat} +1\nDEF:{unit.defenseStat} +1\nSPD:{unit.speedStat}";
+            statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat} +1\nSPD:{unit.speedStat}";
+            LevelDownbuttons[2].gameObject.SetActive(true);
         }
-        else if (EventSystem.current.currentSelectedGameObject == buttons[3].gameObject)
+        else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[3].gameObject)
         {
             unit.speedStat += 1;
-            statDisplay.text = $"HP: {unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat} +1";
+            statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat} +1";
+            LevelDownbuttons[3].gameObject.SetActive(true);
         }
-        foreach(var x in buttons)
+        foreach(var x in LevelUpButtons)
         {
-            x.interactable = false;
+            x.gameObject.SetActive(false);
         }
+        skillPointText.text = $"Stat Points:{skillPoints}";
+        CheckNumberOfSkillPointsInAllTabs();
+    }
 
-        StartCoroutine(DelayedDestroy());
-       
+    private void CheckNumberOfSkillPointsInAllTabs()
+    {
+       bool allSame = Director.Instance.TabGrid.GetComponentsInChildren<CharacterTab>().All(item => item.skillPoints == 0);
+        if(allSame)
+        {
+            Director.Instance.ConfirmButton.GetComponent<Button>().interactable = true;
+            Director.Instance.ConfirmButton.GetComponent<Image>().material = Instantiate<Material>(Director.Instance.ConfirmButton.GetComponent<Image>().material);
+            Director.Instance.ConfirmButton.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
+            Director.Instance.ConfirmButton.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+
+        }
+        else
+        {
+            Director.Instance.ConfirmButton.GetComponent<Button>().interactable = false;
+            Director.Instance.ConfirmButton.GetComponent<Image>().material = Instantiate<Material>(Director.Instance.ConfirmButton.GetComponent<Image>().material);
+            Director.Instance.ConfirmButton.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
+            Director.Instance.ConfirmButton.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+        }
+    }
+
+    public void DecreaseStat()
+    {
+        Director.Instance.characterTab.transform.transform.SetAsFirstSibling();
+        skillPoints += 1;
+        if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[0].gameObject)
+        {
+            unit.maxHP -= 2;
+            unit.currentHP -= 2;
+        }
+        else if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[1].gameObject)
+        {
+            unit.attackStat -= 1;
+        }
+        else if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[2].gameObject)
+        {
+            unit.defenseStat -= 1;
+        }
+        else if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[3].gameObject)
+        {
+            unit.speedStat -= 1;
+        }
+        statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
+        skillPointText.text = $"Stat Points:{skillPoints}";
+        foreach (var x in LevelUpButtons)
+        {
+            x.gameObject.SetActive(true);
+        }
+        foreach (var x in LevelDownbuttons)
+        {
+            x.gameObject.SetActive(false);
+        }
+        CheckNumberOfSkillPointsInAllTabs();
     }
      public void SwitchDetailedStates()
     {
@@ -223,26 +269,6 @@ public class CharacterTab : MonoBehaviour, IDropHandler
                 }
             }
         }
-    }
-
-    private IEnumerator DelayedDestroy()
-    {
-        yield return new WaitForSeconds(0.3f);
-        gameObject.SetActive(false);
-        if (Director.Instance.TabGrid.transform.childCount <= 1)
-        {
-            BattleLog.Instance.Move(false);
-            Director.Instance.StartCoroutine(Director.Instance.DoLoad("MAP2"));
-            yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
-            foreach (var unit in Tools.GetAllUnits())
-            {
-                unit.StaminaHighlightIsDisabled = true;
-                unit.gameObject.SetActive(false);
-            }
-            print("SHOULD BE TRANSITIONING");
-        }
-        Destroy(this.gameObject);
-        yield break;
     }
 
     public void OnDrop(PointerEventData eventData)

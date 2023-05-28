@@ -13,6 +13,7 @@ public class Husk : Unit
         attackStat = UnityEngine.Random.Range(7, 12);
         defenseStat = 0;
         speedStat = UnityEngine.Random.Range(7, 9);
+        //speedStat = 7;
         currentHP = maxHP;
         IsPlayerControlled = false;
 
@@ -26,6 +27,7 @@ public class Husk : Unit
             behavior = this.gameObject.AddComponent<RandomEnemyBehavior>();
             print("using regular behavior");
         }
+        StartingStamina = UnityEngine.Random.Range(45, 50);
     }
 
 public class TutorialHuskMatriarchBehavior : EnemyBehavior
