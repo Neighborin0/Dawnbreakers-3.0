@@ -26,6 +26,8 @@ public class Tools : MonoBehaviour
         unit.inventory.Add(item);
         item.OnPickup(unit);
     }
+
+
     public static Vector3 GetMouseWorldPos()
     {
         var mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1000);
@@ -90,6 +92,32 @@ public class Tools : MonoBehaviour
         {
             SB.Paused = false;
         }
+    }
+
+    public static bool CheckIfAnyUnitIsDeciding()
+    {
+        bool result = false;
+        foreach(var unit in Tools.GetAllUnits())
+        {
+            if (unit.state == PlayerState.DECIDING)
+                result = true;
+        }
+        print(result);
+        return result;
+            
+    }
+
+    public static bool CheckIfAnyUnitIsTargetting()
+    {
+        bool result = false;
+        foreach (var AC in GameObject.FindObjectsOfType<ActionContainer>())
+        {
+            if (AC.targetting)
+                result = true;
+        }
+        print(result);
+        return result;
+
     }
 
     public static void EndAllTempEffectTimers()

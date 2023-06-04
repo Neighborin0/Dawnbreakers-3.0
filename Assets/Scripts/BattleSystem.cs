@@ -112,7 +112,7 @@ public class BattleSystem : MonoBehaviour
         }
         if (state == BattleStates.DECISION_PHASE && Input.GetMouseButtonUp(1))
         {
-            ResetBattleLog();
+            BattleLog.Instance.ResetBattleLog();
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -216,19 +216,7 @@ public class BattleSystem : MonoBehaviour
         LabCamera.Instance.MovingTimeDivider = 1;
     }
 
-    public void ResetBattleLog()
-    {
-        BattleLog.DisableCharacterStats();
-        BattleLog.SetRandomAmbientTextActive();
-        BattleLog.ClearBattleText();
-        foreach (var z in Tools.GetAllUnits())
-        {
-            z.IsHighlighted = false;
-            z.isDarkened = false;
-
-        }
-
-    }
+   
     public IEnumerator TransitionToMap(bool LevelUpScreen = true)
     {
         yield return new WaitForSeconds(1f);
@@ -495,9 +483,11 @@ public class BattleSystem : MonoBehaviour
     public static void SetUIOff(Unit unit)
     {
         int i = 0;
-        if (unit.skillUIs != null && unit.IsPlayerControlled && unit.state != PlayerState.WAITING)
+        if (unit.skillUIs != null && unit.IsPlayerControlled)
         {
+            if(unit.state != PlayerState.WAITING)
              unit.state = PlayerState.IDLE;
+
             foreach (var skill in unit.skillUIs)
             {
                 unit.skillUIs[i].SetActive(false);
@@ -506,6 +496,7 @@ public class BattleSystem : MonoBehaviour
                 i++;
             }
         }
+
     }
 
 
@@ -515,41 +506,47 @@ public class BattleSystem : MonoBehaviour
         int i = 0;
         foreach (var x in Tools.GetAllUnits())
         {
-            if(x != unit)
             BattleSystem.SetUIOff(x);
         }
-        foreach (var action in unit.actionList)
+        if(unit.stamina.slider.value == unit.stamina.slider.maxValue)
         {
-            unit.state = PlayerState.DECIDING;
-            LabCamera.Instance.MoveToUnit(unit);
-            unit.skillUIs[i].SetActive(true);
-            var assignedAction = unit.skillUIs[i].GetComponent<ActionContainer>();
-            assignedAction.targetting = false;
-            if(!assignedAction.Disabled)
-            assignedAction.button.interactable = true;
-            assignedAction.button.enabled = true;
-            assignedAction.action = action;
-            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (action.damage + unit.attackStat).ToString();
-            assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (action.duration).ToString();
-            assignedAction.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
-            assignedAction.costNums.color = Color.yellow;
-            assignedAction.textMesh.text = action.ActionName;
-            if (assignedAction.action.actionType == Action.ActionType.STATUS)
+            foreach (var action in unit.actionList)
             {
-                assignedAction.damageParent.SetActive(false);
+                unit.state = PlayerState.DECIDING;
+                LabCamera.Instance.MoveToUnit(unit);
+                BattleLog.DisplayCharacterStats(unit, true);
+                BattleLog.Instance.inventoryDisplay.gameObject.SetActive(false);
+                unit.skillUIs[i].SetActive(true);
+                var assignedAction = unit.skillUIs[i].GetComponent<ActionContainer>();
+                assignedAction.targetting = false;
+                if (!assignedAction.Disabled)
+                    assignedAction.button.interactable = true;
+                assignedAction.button.enabled = true;
+                assignedAction.action = action;
+                assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (action.damage + unit.attackStat).ToString();
+                assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (action.duration).ToString();
+                assignedAction.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
+                assignedAction.costNums.color = Color.yellow;
+                assignedAction.textMesh.text = action.ActionName;
+                if (assignedAction.action.actionType == Action.ActionType.STATUS)
+                {
+                    assignedAction.damageParent.SetActive(false);
+                }
+                else
+                    assignedAction.damageParent.SetActive(true);
+                if (assignedAction.action.duration > 0)
+                {
+                    assignedAction.durationParent.SetActive(true);
+                }
+                else
+                    assignedAction.durationParent.SetActive(false);
+                i++;
             }
-            else
-                assignedAction.damageParent.SetActive(true);
-            if (assignedAction.action.duration > 0)
-            {
-                assignedAction.durationParent.SetActive(true);
-            }
-            else
-                assignedAction.durationParent.SetActive(false);
-            i++;
         }
-       
-            
+        else
+        {
+
+        }
     }
 
     public void AddAction(Action action)
@@ -758,33 +755,8 @@ public class BattleSystem : MonoBehaviour
         int i = 0;
         if (unit.IsPlayerControlled && !unit.IsSummon)
         {
-            float scaleX = 1f;
-            float scaleY = 1f;
             unit.stamina.slider.value = unit.stamina.slider.maxValue;
-            var layout = Instantiate(ActionLayout, canvasParent.transform);
-            unit.ActionLayout = layout.gameObject;
-            if (unit.GetComponentInParent<BattleSpawnPoint>() == playerPositions[0].GetComponent<BattleSpawnPoint>())
-            {
-                layout.transform.position = new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x + 10 + unit.offset.x, unit.transform.position.y + 2.5f, -25f) / canvas.scaleFactor;
-            }
-            else if (unit.GetComponentInParent<BattleSpawnPoint>() == playerPositions[1].GetComponent<BattleSpawnPoint>())
-            {
-                layout.transform.position = new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x + 15 + unit.offset.x, unit.transform.position.y + 4.3f, -25f) / canvas.scaleFactor;
-            }
-            else
-            {
-                layout.transform.position = new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x + 15 + unit.offset.x, unit.transform.position.y, -25f) / canvas.scaleFactor;
-            }
-            foreach (var x in unit.actionList)
-            {
-                var container = Instantiate(genericActionContainer, layout.transform) as ActionContainer;
-                container.action = unit.actionList[i];
-                unit.skillUIs[i] = container.gameObject;
-                container.baseUnit = unit;
-                container.transform.localScale = new Vector3(scaleX, scaleY, -25f);
-                i++;
-            }
-
+            BattleLog.Instance.CreateActionLayout(unit);
         }
 
     }

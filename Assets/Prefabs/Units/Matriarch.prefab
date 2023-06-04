@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3166249864376459301}
   - component: {fileID: 6095543224727668019}
   - component: {fileID: 5486534703496205728}
-  - component: {fileID: 31369620643548734}
   - component: {fileID: 4520066770254520702}
+  - component: {fileID: 4727402307728638198}
   m_Layer: 0
   m_Name: Matriarch
   m_TagString: Enemy
@@ -157,19 +157,6 @@ MonoBehaviour:
   ActionLayout: {fileID: 0}
   summonables: []
   IsSummon: 0
---- !u!65 &31369620643548734
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3166249864376459302}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.090473, y: 1.4327644, z: 0.2}
-  m_Center: {x: 0.0095716, y: 0.008514643, z: 0}
 --- !u!54 &4520066770254520702
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -186,6 +173,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!65 &4727402307728638198
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3166249864376459302}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.16, y: 1.6713089, z: 0.2}
+  m_Center: {x: 0, y: 0.019345475, z: 0}
 --- !u!1 &8848137394426579597
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,6 +17,7 @@ public class BattleLog : MonoBehaviour
     int index;
     //character stat text
     public TextMeshProUGUI STATtext;
+    public TextMeshProUGUI enemySTATtext;
     public TextMeshProUGUI characterName;
     public TextMeshProUGUI enemyIntent;
 
@@ -24,9 +25,16 @@ public class BattleLog : MonoBehaviour
     //character dialog
     public Image charPortrait;
     public Image Portraitparent;
+
+    public Image enemycharPortrait;
+    public Image enemyPortraitparent;
+
+
     public TextMeshProUGUI characterdialog;
     public Image indicator;
 
+    public GridLayoutGroup ActionLayout;
+    public ActionContainer genericActionContainer;
     public GridLayoutGroup inventoryDisplay;
     public Button itemImage;
     public TextMeshProUGUI itemText;
@@ -50,7 +58,20 @@ public class BattleLog : MonoBehaviour
 
         };
 
-    
+
+    public void CreateActionLayout(Unit unit)
+    {
+        var layout = Instantiate(ActionLayout, transform);
+        unit.ActionLayout = layout.gameObject;
+        for (int i = 0; i < unit.actionList.Count; i++)
+        {
+            var container = Instantiate(genericActionContainer, layout.transform) as ActionContainer;
+            container.action = unit.actionList[i];
+            unit.skillUIs[i] = container.gameObject;
+            container.baseUnit = unit;
+        }
+    }
+
     public static void ClearAmbientText()
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
@@ -64,7 +85,7 @@ public class BattleLog : MonoBehaviour
         BattleLog.ClearAllBattleLogText();
         battlelog.Portraitparent.gameObject.SetActive(true);
         battlelog.characterdialog.gameObject.SetActive(true);
-        battlelog.StartCoroutine(battlelog.TypeMultiText(dialog , battlelog.characterdialog, disableAfter, PausesBattle));
+        battlelog.StartCoroutine(battlelog.TypeMultiText(dialog, battlelog.characterdialog, disableAfter, PausesBattle));
     }
 
     public static void DisableCharacterDialog()
@@ -93,42 +114,71 @@ public class BattleLog : MonoBehaviour
         StartCoroutine(TypeText(text, 0.03f, ambientText, false));
     }
 
-    public static void DisplayCharacterStats(Unit unit)
+    public void DisplayPlayerStats(Unit unit, bool TurnOffItemDisplay = false)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        
-
-        BattleLog.ClearAllBattleLogText();
-        BattleLog.ClearBattleText();
-        if (unit.charPortraits != null)
+        foreach (Transform item in battlelog.inventoryDisplay.transform)
         {
-            battlelog.charPortrait.sprite = unit.charPortraits.Find(obj => obj.name == "neutral");
-            battlelog.Portraitparent.gameObject.SetActive(true);
+            Destroy(item.gameObject);
         }
-
         battlelog.STATtext.gameObject.SetActive(true);
+        battlelog.STATtext.text = $"<sprite name=\"ATK\">ATK: {unit.attackStat}\n<sprite name=\"DEF\">DEF: {unit.defenseStat}\n<sprite name=\"SPD\">SPD: {unit.speedStat}";
+        battlelog.charPortrait.sprite = unit.charPortraits.Find(obj => obj.name == "neutral");
+        battlelog.Portraitparent.gameObject.SetActive(true);
         battlelog.characterName.gameObject.SetActive(true);
         battlelog.inventoryDisplay.gameObject.SetActive(true);
         battlelog.itemText.gameObject.SetActive(true);
-        battlelog.STATtext.text = $"<sprite name=\"ATK\">ATK: {unit.attackStat}\n<sprite name=\"DEF\">DEF: {unit.defenseStat}\n<sprite name=\"SPD\">SPD: {unit.speedStat}";
         battlelog.characterName.text = (unit.unitName);
-       
-        foreach(var item in unit.inventory)
+
+        if(TurnOffItemDisplay)
+        {
+            battlelog.inventoryDisplay.gameObject.SetActive(false);
+        }
+        foreach (var item in unit.inventory)
         {
             var x = Instantiate(battlelog.itemImage);
             x.image.sprite = item.sprite;
             x.GetComponent<ItemText>().item = item;
             x.transform.SetParent(battlelog.inventoryDisplay.transform);
         }
-        
     }
+    public static void DisplayCharacterStats(Unit unit, bool TurnOffItemDisplay = false)
+    {
+        var battlelog = BattleLog.Instance;
+        if (unit.IsPlayerControlled)
+        {
+            battlelog.DisplayPlayerStats(unit, TurnOffItemDisplay);
+        }
+        else
+        {
+            battlelog.DisplayEnemyCharacterStats(unit);
+        }
+
+    }
+
+    public void DisplayEnemyCharacterStats(Unit unit)
+    {
+        var battlelog = GameObject.FindObjectOfType<BattleLog>();
+        battlelog.enemySTATtext.gameObject.SetActive(true);
+        battlelog.enemySTATtext.text = $"<sprite name=\"ATK\">ATK: {unit.attackStat}\n<sprite name=\"DEF\">DEF: {unit.defenseStat}\n<sprite name=\"SPD\">SPD: {unit.speedStat}";
+        battlelog.enemycharPortrait.sprite = unit.charPortraits.Find(obj => obj.name == "neutral");
+        battlelog.enemyPortraitparent.gameObject.SetActive(true);
+        battlelog.characterName.gameObject.SetActive(true);
+        battlelog.itemText.gameObject.SetActive(true);
+        battlelog.characterName.text = (unit.unitName);
+        battlelog.ambientText.gameObject.SetActive(false);
+    }
+
 
     public static void DisableCharacterStats()
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
         battlelog.STATtext.gameObject.SetActive(false);
+        battlelog.enemySTATtext.gameObject.SetActive(false);
         battlelog.Portraitparent.gameObject.SetActive(false);
         battlelog.characterName.gameObject.SetActive(false);
+        battlelog.enemyPortraitparent.gameObject.SetActive(false);
+
         battlelog.itemText.gameObject.SetActive(false);
         battlelog.itemText.text = "";
         foreach (var item in battlelog.inventoryDisplay.GetComponentsInChildren<Button>())
@@ -140,46 +190,44 @@ public class BattleLog : MonoBehaviour
     public void Move(bool moveUp)
     {
 
-            if (moveUp)
-            {
+        if (moveUp)
+        {
             if (generalCoroutine != null)
                 StopCoroutine(generalCoroutine);
 
-                 generalCoroutine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 960, -950, 0.01f);
-                 StartCoroutine(generalCoroutine);
-            }
-            else
-            {
-                if (generalCoroutine != null)
-                    StopCoroutine(generalCoroutine);
+            generalCoroutine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 960, -950, 0.01f);
+            StartCoroutine(generalCoroutine);
+        }
+        else
+        {
+            if (generalCoroutine != null)
+                StopCoroutine(generalCoroutine);
 
-                generalCoroutine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 960, -1215, 0.01f);
-                StartCoroutine(generalCoroutine);
-             }
-        
+            generalCoroutine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 960, -1215, 0.01f);
+            StartCoroutine(generalCoroutine);
+        }
+
     }
     public static void DisplayEnemyIntentInfo(string description)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        BattleLog.ClearAllBattleLogText();
         battlelog.enemyIntent.gameObject.SetActive(true);
         battlelog.enemyIntent.text = ($"{description}");
     }
-   
+
 
     public static void SetBattleText(string text)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
         battlelog.DoBattleText(text);
-    } 
+    }
 
     public void DoBattleText(string text)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        BattleLog.ClearAllBattleLogText();
+        //BattleLog.ClearAllBattleLogText();
         battlelog.ambientText.gameObject.SetActive(false);
         battleText.gameObject.SetActive(true);
-        BattleLog.DisableCharacterStats();
         battleText.text = text;
     }
 
@@ -187,6 +235,19 @@ public class BattleLog : MonoBehaviour
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
         battlelog.battleText.gameObject.SetActive(false);
+    }
+
+    public void ResetBattleLog()
+    {
+        BattleLog.DisableCharacterStats();
+        BattleLog.SetRandomAmbientTextActive();
+        BattleLog.ClearBattleText();
+        foreach (var z in Tools.GetAllUnits())
+        {
+            z.IsHighlighted = false;
+            z.isDarkened = false;
+
+        }
     }
 
     public static void ClearAllBattleLogText()
@@ -309,12 +370,12 @@ public class BattleLog : MonoBehaviour
             x.text += letter;
             yield return new WaitForSeconds(textSpeed);
         }
-        if(disableAfter)
+        if (disableAfter)
         {
             x.text = "";
         }
 
     }
 
- 
+
 }

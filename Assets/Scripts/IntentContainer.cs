@@ -54,7 +54,6 @@ public class IntentContainer : MonoBehaviour
     public void RemoveDescription()
     {
         action.targets.IsHighlighted = false;
-        BattleSystem.Instance.ResetBattleLog();
     }
 
 

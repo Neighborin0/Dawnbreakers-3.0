@@ -43,7 +43,7 @@ public class EffectIcon : MonoBehaviour
 
     public void RemoveDescription()
     {
-        BattleSystem.Instance.ResetBattleLog();
+        BattleLog.Instance.ResetBattleLog();
     }
 
     public void DestoryEffectIcon()

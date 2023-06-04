@@ -106,6 +106,14 @@ public class Unit : MonoBehaviour
                 sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
 
             }
+            else if (state == PlayerState.WAITING)
+            {
+
+                sprite.material.SetFloat("_OutlineThickness", 1f);
+                sprite.material.SetColor("_OutlineColor", Color.black);
+                sprite.material.SetColor("_CharacterEmission", new Color(-0.1f, -0.1f, -0.1f, 1f));
+
+            }
             else
             {
                 sprite.material.SetFloat("_OutlineThickness", 1f);
@@ -137,10 +145,16 @@ public class Unit : MonoBehaviour
             }
             if (hit.collider == this.GetComponent<BoxCollider>() && !isDarkened && !OverUI())
             {
+                if(BattleSystem.Instance.state == BattleStates.DECISION_PHASE && Tools.CheckIfAnyUnitIsDeciding())
+                {
+                    if(!this.IsPlayerControlled)
+                    {
+                        BattleLog.DisplayCharacterStats(this, true);
+                    }
+                }
                 if (BattleSystem.Instance.state != BattleStates.BATTLE && BattleSystem.Instance.state != BattleStates.START && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD)
                 {
                     sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
-                    BattleLog.DisplayCharacterStats(this);
                     this.timelinechild.Shift(this);
                 }
                 else
@@ -150,7 +164,7 @@ public class Unit : MonoBehaviour
                 }
 
             }
-            else if(!IsHighlighted)
+            else if(IsHighlighted)
             {
                 if (timelinechild != null)
                     timelinechild.Return();
@@ -165,8 +179,20 @@ public class Unit : MonoBehaviour
             {
                 if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !OverUI())
                 {
-                    BattleLog.DisplayCharacterStats(this);
-                    LabCamera.Instance.MoveToUnit(this);
+                    if (!Tools.CheckIfAnyUnitIsTargetting())
+                    {
+                        BattleLog.Instance.itemText.text = "";
+                        BattleLog.DisplayCharacterStats(this, true);
+                        LabCamera.Instance.MoveToUnit(this);
+                        if (this.IsPlayerControlled)
+                        {
+                            foreach (var x in Tools.GetAllUnits())
+                            {
+                                BattleSystem.SetUIOff(x);
+                            }
+                        }
+                    }
+                      
                 }
             }     
             if (state == PlayerState.IDLE && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI()|| state == PlayerState.READY && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI())
@@ -176,8 +202,7 @@ public class Unit : MonoBehaviour
                     if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && this.IsPlayerControlled)
                     {
                         StopMovingToUnit = false;
-                        BattleSystem.Instance.ResetBattleLog();
-                        BattleLog.DisplayCharacterStats(this);
+                        BattleLog.DisplayCharacterStats(this, true);
                         StartDecision();
 
                     }

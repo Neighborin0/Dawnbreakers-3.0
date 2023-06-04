@@ -99,7 +99,7 @@ public class ActionContainer : MonoBehaviour
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             this.targetting = false;
                             LabCamera.Instance.ResetPosition();
-                            BattleSystem.Instance.ResetBattleLog();
+                            BattleLog.Instance.ResetBattleLog();
                             SetActive();
 
                         }
@@ -156,7 +156,7 @@ public class ActionContainer : MonoBehaviour
                         if (hit.collider != null && hit.collider.gameObject != null && hit.collider.gameObject.GetComponent<BoxCollider>() && hit.collider.gameObject.GetComponent<Unit>() != null && hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
                         {
                             baseUnit.state = PlayerState.READY;
-                            BattleSystem.Instance.ResetBattleLog();
+                            BattleLog.Instance.ResetBattleLog();
                             this.targetting = false;
                             var unit = hit.collider.GetComponent<Unit>();
                             foreach (var z in Tools.GetAllUnits())
@@ -188,7 +188,7 @@ public class ActionContainer : MonoBehaviour
     {
 
         AudioManager.Instance.Play("ButtonHover");
-        BattleLog.SetBattleText("");
+        //BattleLog.SetBattleText("");
         BattleLog.SetBattleText(action.description);
         BattleLog.Instance.Move(true);
 
@@ -198,7 +198,7 @@ public class ActionContainer : MonoBehaviour
     {
         if(BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
         {
-            BattleSystem.Instance.ResetBattleLog();
+            //BattleLog.Instance.ba();
         }
        
     }
