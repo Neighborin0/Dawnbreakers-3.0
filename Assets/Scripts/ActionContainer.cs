@@ -189,7 +189,10 @@ public class ActionContainer : MonoBehaviour
 
         AudioManager.Instance.Play("ButtonHover");
         //BattleLog.SetBattleText("");
-        BattleLog.SetBattleText(action.description);
+        var newAction = Instantiate(action);
+        newAction.unit = baseUnit;
+        newAction.damage += newAction.unit.attackStat;
+        BattleLog.SetBattleText(newAction.description);
         BattleLog.Instance.Move(true);
 
     }
@@ -198,7 +201,7 @@ public class ActionContainer : MonoBehaviour
     {
         if(BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
         {
-            //BattleLog.Instance.ba();
+            BattleLog.Instance.itemText.gameObject.SetActive(false);
         }
        
     }

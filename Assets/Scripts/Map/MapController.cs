@@ -49,7 +49,7 @@ public class MapController : MonoBehaviour
         GenerateNodesFromFlow(MapFlow.TestFlow);
         SpawnMiniMe();
         SceneManager.sceneLoaded += SaveSceneData;
-        //SpawnDecorations();
+        SpawnDecorations();
     }
 
     private void SaveSceneData(Scene scene, LoadSceneMode mode)
@@ -122,8 +122,8 @@ public class MapController : MonoBehaviour
     {
         for (int i = 0; i < UnityEngine.Random.Range(20, 30); i++)
         {
-            var decor = Instantiate(mapObjects[UnityEngine.Random.Range(0, mapObjects.Count)], new Vector3(UnityEngine.Random.Range(-450f, 450), UnityEngine.Random.Range(-510, 510), 0), Quaternion.Euler(0, 0, 0), mapCanvas.transform);
-            decor.transform.localScale = new Vector3(200, 300, 1);
+            var decor = Instantiate(mapObjects[UnityEngine.Random.Range(0, mapObjects.Count)], new Vector3(UnityEngine.Random.Range(-160f, 1920), UnityEngine.Random.Range(-510, 510), 0), Quaternion.Euler(0, 0, 0), mapCanvas.transform);
+            decor.transform.localScale = new Vector3(200, 300, 200);
             decor.transform.localPosition = new Vector3(decor.transform.position.x, decor.transform.position.y, 0);
         }
     }
@@ -143,13 +143,17 @@ public class MapController : MonoBehaviour
             }
             MM.mapIcon.material.SetFloat("OutlineThickness", 1f);
             MM.mapIcon.material.SetColor("OutlineColor", Color.black);
+            //LabCamera.Instance.MoveAndFollowGameObject(MM.gameObject, new Vector3(0, 0, -120));
             i++;
         }
+      
     }
     IEnumerator lineCoroutine;
     public void GenerateNodesFromFlow(List<LabNode> mapFlow)
     {
         int i = 0;
+
+        var mapGrid = new MapGrid(20, 1, 170, this.transform);
         foreach (var node in mapFlow)
         {
             foreach (var prefab in nodePrefabs)
@@ -158,7 +162,7 @@ public class MapController : MonoBehaviour
                 {
                     var newNode = Instantiate(prefab, new Vector3(0, 0, -1), Quaternion.identity, mapCanvas.transform);
                     var rectTransform = newNode.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = new Vector3(-650 + i * 170, -97, 0);
+                    rectTransform.anchoredPosition = mapGrid.GetWorldPos(i + 1, 0);
                     rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, rectTransform.localPosition.y, -1);
                     newNode.transform.rotation = new Quaternion(0, 0, 0, 0);
                     if (!StartingPositionHasBeenSet)

@@ -20,6 +20,7 @@ public class EffectIcon : MonoBehaviour
     public float storedValue;
     public bool TimedEffect = true;
     private IEnumerator scaler;
+    public GameObject currentEffectPopup;
 
     public void Start()
     {
@@ -37,13 +38,23 @@ public class EffectIcon : MonoBehaviour
     }
     public void DisplayDescription()
     {
-        BattleLog.SetBattleText("");
-        BattleLog.SetBattleText($"{iconName}\n{description}");
+        if(currentEffectPopup == null)
+        {
+            var EP = Instantiate(Director.Instance.EffectPopUp, BattleSystem.Instance.canvasParent.transform);
+            currentEffectPopup = EP;
+        }
+        else
+        {
+            currentEffectPopup.SetActive(true);
+        }
+        currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+        var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
+        EPtext.text = $"{description}";
     }
 
     public void RemoveDescription()
     {
-        BattleLog.Instance.ResetBattleLog();
+       currentEffectPopup.SetActive(false);
     }
 
     public void DestoryEffectIcon()

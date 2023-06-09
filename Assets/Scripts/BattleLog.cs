@@ -208,11 +208,12 @@ public class BattleLog : MonoBehaviour
         }
 
     }
-    public static void DisplayEnemyIntentInfo(string description)
+    public static void DisplayEnemyIntentInfo(string description, Unit unit)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
         battlelog.enemyIntent.gameObject.SetActive(true);
         battlelog.enemyIntent.text = ($"{description}");
+        battlelog.DisplayEnemyCharacterStats(unit);
     }
 
 

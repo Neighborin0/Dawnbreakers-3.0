@@ -41,7 +41,7 @@ public class BattleSystem : MonoBehaviour
     public NamePlate namePlate;
     public IntentContainer intent;
     public Canvas canvas;
-    public LineRenderer targetLine;
+    //public LineRenderer targetLine;
     public GameObject dot;
     public bool HasStarted = false;
 
@@ -279,7 +279,7 @@ public class BattleSystem : MonoBehaviour
         unit.intentUI.damageNums.text = " <sprite name=\"ATK\">" + (action.damage + unit.attackStat - action.targets.defenseStat).ToString();
         unit.intentUI.action = action;
         unit.intentUI.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
-        if (action.targets != unit)
+        /*if (action.targets != unit)
         {
             Vector3 SphereScale = new Vector3(0.1f, 0.1f, 0.1f);
             var lineInstance = Instantiate(targetLine, unit.transform);
@@ -301,6 +301,7 @@ public class BattleSystem : MonoBehaviour
         {
             var dotInstance = Instantiate(dot, new Vector3(unit.transform.position.x, unit.transform.position.y, unit.transform.position.z - 1f), Quaternion.identity);
         }
+        */
         if (unit.intentUI.action.actionType == Action.ActionType.STATUS)
         {
             unit.intentUI.damageParent.SetActive(false);
@@ -580,7 +581,7 @@ public class BattleSystem : MonoBehaviour
         {
             child.Return();
         }
-        foreach (var line in GameObject.FindObjectsOfType<TargetLine>())
+        /*foreach (var line in GameObject.FindObjectsOfType<TargetLine>())
         {
             if (line != null && lineCoroutine != null)
             {
@@ -588,7 +589,7 @@ public class BattleSystem : MonoBehaviour
             }
             line.enabled = false;
             line.gameObject.SetActive(false);
-        }
+        }*/
         Director.Instance.BL.Move(false);
         foreach (var x in Tools.GetAllUnits())
         {
@@ -611,10 +612,10 @@ public class BattleSystem : MonoBehaviour
         {
             if (action.unit != null && action.targets != null)
             {
-                if (action.unit.GetComponentInChildren<TargetLine>() != null)
+                /*if (action.unit.GetComponentInChildren<TargetLine>() != null)
                 {
                     Destroy(action.unit.GetComponentInChildren<TargetLine>().gameObject);
-                }
+                }*/
                 if (action.unit.IsPlayerControlled)
                 {
                     action.unit.state = PlayerState.WAITING;

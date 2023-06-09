@@ -1185,8 +1185,6 @@ MonoBehaviour:
     type: 3}
   intent: {fileID: 3723422302123183770, guid: 5b4d85f18533821469643e3d027b001d, type: 3}
   canvas: {fileID: 892046269}
-  targetLine: {fileID: 5359916101114160240, guid: 0e7ed4bfc809394458acfaeb373efd62,
-    type: 3}
   dot: {fileID: 4637191601113978858, guid: 01683083e2db73f45bbb412ba04863f4, type: 3}
   HasStarted: 0
   QueuedActions: []
@@ -1203,9 +1201,9 @@ MonoBehaviour:
   effectsSetting: {fileID: 926879531}
   mainLight: {fileID: 1713430616}
   mainLightValue: 0.2
-  cameraPos1Units: {x: 0, y: 17, z: -93}
-  cameraPos2Units: {x: 0, y: 17, z: -93}
-  cameraPos3Units: {x: 0, y: 17, z: -93}
+  cameraPos1Units: {x: 0, y: 16.5, z: -93}
+  cameraPos2Units: {x: 0, y: 16.5, z: -93}
+  cameraPos3Units: {x: 0, y: 16.5, z: -93}
   state: 0
 --- !u!4 &96890658
 Transform:

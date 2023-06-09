@@ -22,7 +22,11 @@ public class IntentContainer : MonoBehaviour
         {
             LabCamera.Instance.MoveToUnit(unit);
             action.targets.IsHighlighted = true;
-            BattleLog.DisplayEnemyIntentInfo(action.description);
+            var newAction = Instantiate(action);
+            newAction.unit = unit;
+            newAction.damage += newAction.unit.attackStat;
+            BattleLog.SetBattleText(newAction.description);
+            BattleLog.DisplayEnemyIntentInfo(newAction.description, unit);
         }
     }
 
@@ -33,7 +37,10 @@ public class IntentContainer : MonoBehaviour
             //LabCamera.Instance.MoveToUnit(unit);
             AudioManager.Instance.Play("ButtonHover");
             action.targets.IsHighlighted = true;
-            BattleLog.DisplayEnemyIntentInfo(action.description);
+            var newAction = Instantiate(action);
+            newAction.damage += newAction.unit.attackStat;
+            BattleLog.SetBattleText(newAction.description);
+            BattleLog.DisplayEnemyIntentInfo(newAction.description, unit);
         }
     }
 
@@ -54,6 +61,7 @@ public class IntentContainer : MonoBehaviour
     public void RemoveDescription()
     {
         action.targets.IsHighlighted = false;
+        BattleLog.Instance.itemText.gameObject.SetActive(false);
     }
 
 

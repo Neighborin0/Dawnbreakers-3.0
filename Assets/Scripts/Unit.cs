@@ -164,7 +164,7 @@ public class Unit : MonoBehaviour
                 }
 
             }
-            else if(IsHighlighted)
+            else
             {
                 if (timelinechild != null)
                     timelinechild.Return();

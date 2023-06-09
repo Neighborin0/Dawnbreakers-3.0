@@ -159,10 +159,9 @@ public class LabCamera : MonoBehaviour
     }
 
 	
-	public void MoveToUnit(Unit unit, float xOffset = 0, float yOffset = 0, float zOffset = 0, bool useDefaultOffset = true)
+	public void MoveToUnit(Unit unit, float xOffset = 0, float yOffset = 0, float zOffset = 0, bool useDefaultOffset = true, float MovingTimeDivider = 1f)
     {
         state = CameraState.MOVING;
-		MovingTimeDivider = 1f;
 		smoothingTime = 0f;
 		if(useDefaultOffset)
 		{
@@ -182,9 +181,11 @@ public class LabCamera : MonoBehaviour
         PositonToMoveTo.z = camTransform.position.z + zOffset;
     }
 
-    public void MoveAndFollowGameObject(GameObject gameObject)
+    public void MoveAndFollowGameObject(GameObject gameObject, Vector3 followDisplacement)
     {
 		this.followTarget = gameObject;
+		this.followDisplacement = followDisplacement;
+		state = CameraState.FOLLOW;
     }
 
     public void MoveToGameObject(GameObject gameObject)

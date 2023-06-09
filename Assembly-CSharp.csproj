@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\MiniMapIcon.cs" />
     <Compile Include="Assets\Scripts\NamePlate.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\TatteredCape.cs" />
+    <Compile Include="Assets\Scripts\Map\GridTester.cs" />
     <Compile Include="Assets\Scripts\TimeLineChild.cs" />
     <Compile Include="Assets\Scripts\BattleLog.cs" />
     <Compile Include="Assets\Scripts\Actions\Grow.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Assets\Scripts\Actions\Bash.cs" />
     <Compile Include="Assets\Scripts\Actions\Hasten.cs" />
     <Compile Include="Assets\Scripts\CharacterSlot.cs" />
+    <Compile Include="Assets\Scripts\Map\MapGrid.cs" />
     <Compile Include="Assets\Scripts\Units\Dusty.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
     <Compile Include="Assets\Scripts\Units\Rat.cs" />

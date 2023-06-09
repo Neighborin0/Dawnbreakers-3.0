@@ -47,6 +47,7 @@ public class Director : MonoBehaviour
     public float UserTimelineSpeedDelay = 2f;
     public float staminaSPDDivider;
     public GameObject LevelUpText;
+    public GameObject EffectPopUp;
     public GameObject ConfirmButton;
 
     LabCamera.CameraState previousCameraState;
