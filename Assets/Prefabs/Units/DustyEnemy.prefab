@@ -124,6 +124,7 @@ MonoBehaviour:
   Execute: 0
   MiniMapIcons: []
   offset: {x: 0, y: 0, z: 0}
+  enemyintentOffset: {x: 0, y: 1, z: 0}
   timelinechild: {fileID: 0}
   StartingStamina: 0
   introText: []
@@ -265,29 +266,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3767246738405216190}
-          m_TargetAssemblyTypeName: Unit, Assembly-CSharp
-          m_MethodName: OnHover
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 3767246738405216190}
           m_TargetAssemblyTypeName: Unit, Assembly-CSharp
-          m_MethodName: HoverExit
+          m_MethodName: ReturnTimelineChild
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

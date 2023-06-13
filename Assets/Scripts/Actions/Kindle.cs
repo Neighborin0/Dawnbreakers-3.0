@@ -19,7 +19,7 @@ public class Kindle : Action
         damageText = damage.ToString();
         PriorityMove = false;
         targetType = TargetType.SELF;
-        description = $"Heals allies by 10 <color=#00FF00>HP</color>. Increases allies <color=#FF0000>ATK</color> by 2.";
+        description = $"Heals allies by 10 <sprite name=\"HP\"> Increases allies <sprite name=\"ATK RED2\"> by 2.";
     }
 
     public override IEnumerator ExecuteAction()

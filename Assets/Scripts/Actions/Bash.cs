@@ -8,20 +8,20 @@ public class Bash : Action
     private void OnEnable()
     {
         ActionName = "Bash";
-        damage = 20;
+        damage = 50;
         damageText = damage.ToString();
         accuracy = 1;
         cost = 50f;
         targetType = TargetType.ANY;
         actionType = ActionType.ATTACK;
-        description = $"Deals  <color=#FF0000>{damageText}</color> damage.";
+        description = $"Deals <color=#FF0000>{damageText}</color> DMG.";
     }
 
     public override IEnumerator ExecuteAction()
     {
         unit.PlayAction("Attack", unit);
         yield return new WaitUntil(() => unit.Execute);
-        LabCamera.Instance.MoveToUnit(targets, 0, -6, 32, false);
+        LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
         yield return new WaitForSeconds(0.3f);     
         AudioManager.Instance.Play("slash_001");
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash" ,Color.yellow, new Vector3(0, 0, -2f)));

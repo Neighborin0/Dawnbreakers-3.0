@@ -226,25 +226,33 @@ public class Tools : MonoBehaviour
         }
         return enemies;
     }
-    public static void DetermineActionData(Unit baseUnit, int HowIsThisDetermined, int TargetNum)
+    public static void DetermineActionData(Unit baseUnit, int HowIsThisDetermined, int TargetNum, bool overrideTarget = false, Unit newTarget = null)
     {
         var battlesystem = BattleSystem.Instance;
         baseUnit.actionList[HowIsThisDetermined].unit = baseUnit;
-        switch (baseUnit.actionList[HowIsThisDetermined].targetType)
+        if(!overrideTarget)
         {
-            case Action.TargetType.ANY:
-                baseUnit.actionList[HowIsThisDetermined].targets = battlesystem.numOfUnits[TargetNum];
-                break;
-            case Action.TargetType.SELF:
-                baseUnit.actionList[HowIsThisDetermined].targets = baseUnit;
-                break;
-            case Action.TargetType.ALL_ENEMIES:
-                baseUnit.actionList[HowIsThisDetermined].targets = baseUnit;
-                break;
-            case Action.TargetType.ALLIES:
-                baseUnit.actionList[HowIsThisDetermined].targets = baseUnit;
-                break;
+            switch (baseUnit.actionList[HowIsThisDetermined].targetType)
+            {
+                case Action.TargetType.ANY:
+                    baseUnit.actionList[HowIsThisDetermined].targets = battlesystem.numOfUnits[TargetNum];
+                    break;
+                case Action.TargetType.SELF:
+                    baseUnit.actionList[HowIsThisDetermined].targets = baseUnit;
+                    break;
+                case Action.TargetType.ALL_ENEMIES:
+                    baseUnit.actionList[HowIsThisDetermined].targets = baseUnit;
+                    break;
+                case Action.TargetType.ALLIES:
+                    baseUnit.actionList[HowIsThisDetermined].targets = baseUnit;
+                    break;
+            }
         }
+        else
+        {
+            baseUnit.actionList[HowIsThisDetermined].targets = newTarget;
+        }
+     
     }
     public static IEnumerator RepeatBehavior(Unit unit)
     {

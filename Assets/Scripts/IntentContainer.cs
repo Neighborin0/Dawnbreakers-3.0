@@ -20,8 +20,11 @@ public class IntentContainer : MonoBehaviour
     {
         if (BattleSystem.Instance.state != BattleStates.BATTLE)
         {
-            LabCamera.Instance.MoveToUnit(unit);
             action.targets.IsHighlighted = true;
+            action.targets.timelinechild.Shift(action.targets);
+            this.unit.timelinechild.HighlightedIsBeingOverwritten = true;
+            this.unit.timelinechild.HighlightedIsBeingOverwritten = true;
+            this.unit.timelinechild.Shift(this.unit);
             var newAction = Instantiate(action);
             newAction.unit = unit;
             newAction.damage += newAction.unit.attackStat;
@@ -34,9 +37,12 @@ public class IntentContainer : MonoBehaviour
     {
         if (BattleSystem.Instance.state != BattleStates.BATTLE)
         {
-            //LabCamera.Instance.MoveToUnit(unit);
             AudioManager.Instance.Play("ButtonHover");
             action.targets.IsHighlighted = true;
+            action.targets.timelinechild.HighlightedIsBeingOverwritten = true;
+            action.targets.timelinechild.Shift(action.targets);
+            this.unit.timelinechild.Shift(this.unit);
+            this.unit.timelinechild.HighlightedIsBeingOverwritten = true;
             var newAction = Instantiate(action);
             newAction.damage += newAction.unit.attackStat;
             BattleLog.SetBattleText(newAction.description);
@@ -61,6 +67,10 @@ public class IntentContainer : MonoBehaviour
     public void RemoveDescription()
     {
         action.targets.IsHighlighted = false;
+        action.targets.timelinechild.Return();
+        this.unit.timelinechild.Return();
+        action.targets.timelinechild.HighlightedIsBeingOverwritten = false;
+        this.unit.timelinechild.HighlightedIsBeingOverwritten = false;
         BattleLog.Instance.itemText.gameObject.SetActive(false);
     }
 

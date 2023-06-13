@@ -22,14 +22,14 @@ public class Defend : Action
         PriorityMove = true;
         targetType = TargetType.ALLIES;
         duration = 5f;
-        description = $"Applies <color=#00F0FF>Fortify</color><sprite name=\"FORTIFY\"> for {duration} seconds.\n<color=#00F0FF>Fortify</color> adds the user's <color=#0000FF>DEF</color><sprite name=\"DEF BLUE2\"> to the target.";
+        description = $"Applies +50 <sprite name=\"FORTIFY\"> for {duration} seconds.";
     }
 
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Defend_001", Color.blue, new Vector3(0, 5, -2f), 0.2f));
-        LabCamera.Instance.MoveToUnit(targets, -1, -6, 32);
+        LabCamera.Instance.MoveToUnit(targets, 0, -6, 32, false, 0.5f);
         yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;

@@ -14,11 +14,11 @@ public class Hasten : Action
         cost = 50f;
         targetType = TargetType.SELF;
         actionType = ActionType.STATUS;
-        description = "Increases <color=#FFEA29>SPD</color><sprite name=\"SPD YLW\"> by 5.";
+        description = "Increases <sprite name=\"SPD YLW\"> by 5.";
     }
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(targets, 0, -6, 32, false);
+        LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.SetStatChanges(Stat.SPD, 5, false, targets);
         yield return new WaitForSeconds(0.5f);

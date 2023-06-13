@@ -10,7 +10,7 @@ public class HighlightedObject : MonoBehaviour
 {
     public bool IsHighlighted = false;
     public float StartingThickness;
-    public bool BattleHighlight = false;
+    public bool DoesntHighlightInBattle = false;
     private void Start()
     {
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
@@ -22,7 +22,7 @@ public class HighlightedObject : MonoBehaviour
     {
         if (!IsHighlighted)
         {
-            if (BattleHighlight)
+            if (DoesntHighlightInBattle)
             {
                 if (BattleSystem.Instance.state != BattleStates.BATTLE)
                 {

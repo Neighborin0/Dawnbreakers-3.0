@@ -12,12 +12,12 @@ public class Awaken : Action
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
-        description = "Massively raises both <color=#0000FF>DEF</color> <sprite name=\"DEF BLUE\"> and <color=#FFEA29>SPD</color>  <sprite name=\"SPD YLW\">.";
+        description = "Massively raises both <sprite name=\"DEF BLUE\"> and <sprite name=\"SPD YLW\">.";
     }
 
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(targets, 0, -6, 32, false);
+        LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
         var Light = targets.spotLight;

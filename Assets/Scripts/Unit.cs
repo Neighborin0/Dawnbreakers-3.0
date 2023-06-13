@@ -32,6 +32,7 @@ public class Unit : MonoBehaviour
     public bool Execute = false;
     public List<Sprite> MiniMapIcons;
     public Vector3 offset;
+    public Vector3 enemyintentOffset;
     public TimeLineChild timelinechild;
     private bool StopMovingToUnit = false;
     public float StartingStamina;
@@ -80,8 +81,6 @@ public class Unit : MonoBehaviour
         Debug.Log(defenseStat);
         Debug.Log(speedStat);
         state = PlayerState.IDLE;
-        //var particleSys = this.GetComponent<ParticleSystem>();
-        //particleSys.Stop();
     }
 
 
@@ -98,7 +97,7 @@ public class Unit : MonoBehaviour
                 sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
 
             }
-            else if(state == PlayerState.DECIDING) 
+            else if (state == PlayerState.DECIDING)
             {
 
                 sprite.material.SetFloat("_OutlineThickness", 1f);
@@ -131,23 +130,26 @@ public class Unit : MonoBehaviour
 
         if (BattleSystem.Instance != null)
         {
-            if (IsPlayerControlled && stamina.slider.value == stamina.slider.maxValue && state == PlayerState.WAITING)
+            if (stamina != null)
             {
-                state = PlayerState.IDLE;
-                StartCoroutine(StartDelayedDecision());
-            }
-            if (state == PlayerState.IDLE && IsPlayerControlled)
-            {
-                foreach (var unit in Tools.GetAllUnits())
+                if (IsPlayerControlled && stamina.slider.value == stamina.slider.maxValue && state == PlayerState.WAITING)
                 {
-                    unit.stamina.Paused = true;
+                    state = PlayerState.IDLE;
+                    StartCoroutine(StartDelayedDecision());
+                }
+                if (state == PlayerState.IDLE && IsPlayerControlled)
+                {
+                    foreach (var unit in Tools.GetAllUnits())
+                    {
+                        unit.stamina.Paused = true;
+                    }
                 }
             }
             if (hit.collider == this.GetComponent<BoxCollider>() && !isDarkened && !OverUI())
             {
-                if(BattleSystem.Instance.state == BattleStates.DECISION_PHASE && Tools.CheckIfAnyUnitIsDeciding())
+                if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && Tools.CheckIfAnyUnitIsDeciding())
                 {
-                    if(!this.IsPlayerControlled)
+                    if (!this.IsPlayerControlled)
                     {
                         BattleLog.DisplayCharacterStats(this, true);
                     }
@@ -157,17 +159,13 @@ public class Unit : MonoBehaviour
                     sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
                     this.timelinechild.Shift(this);
                 }
-                else
-                {
-                    if(timelinechild != null)
-                    timelinechild.Return();
-                }
 
             }
-            else
+            else if (timelinechild != null && !timelinechild.HighlightedIsBeingOverwritten)
             {
-                if (timelinechild != null)
-                    timelinechild.Return();
+
+                timelinechild.Return();
+
             }
 
             if (isDarkened && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
@@ -183,7 +181,7 @@ public class Unit : MonoBehaviour
                     {
                         BattleLog.Instance.itemText.text = "";
                         BattleLog.DisplayCharacterStats(this, true);
-                        LabCamera.Instance.MoveToUnit(this);
+                        //LabCamera.Instance.MoveToUnit(this);
                         if (this.IsPlayerControlled)
                         {
                             foreach (var x in Tools.GetAllUnits())
@@ -192,10 +190,10 @@ public class Unit : MonoBehaviour
                             }
                         }
                     }
-                      
+
                 }
-            }     
-            if (state == PlayerState.IDLE && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI()|| state == PlayerState.READY && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI())
+            }
+            if (state == PlayerState.IDLE && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI() || state == PlayerState.READY && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI())
             {
                 if (Input.GetMouseButtonUp(0))
                 {
@@ -241,7 +239,7 @@ public class Unit : MonoBehaviour
                 StartCoroutine(ExecuteAnimator());
             }
         }
-      else
+        else
         {
             print("Doing alternate execution");
             StartCoroutine(ExecuteAnimator());
@@ -255,7 +253,7 @@ public class Unit : MonoBehaviour
 
 
     public void Queue(Action action)
-    {     
+    {
         var newAction = UnityEngine.Object.Instantiate(action);
         this.StopCoroutine(QueueAction(newAction));
         BattleSystem.SetUIOff(action.unit);
@@ -272,16 +270,17 @@ public class Unit : MonoBehaviour
                 yield break;
             }
 
-            action.unit.stamina.DoCost(action.cost);    
+            action.unit.stamina.DoCost(action.cost);
             battlesystem.AddAction(action);
             BattleSystem.SetUIOff(action.unit);
         }
         yield break;
     }
-    
+
     public void StartDecision()
     {
         BattleSystem.SetUIOn(this);
+        LabCamera.Instance.MoveToUnit(this);
         BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
         print("Unit is deciding an action");
     }
@@ -293,11 +292,11 @@ public class Unit : MonoBehaviour
         BattleLog.Instance.Move(true);
         StartDecision();
     }
-    
+
 
     public void ExitDecision()
-    {  
-        if(state != PlayerState.WAITING)
+    {
+        if (state != PlayerState.WAITING)
             state = PlayerState.IDLE;
 
         BattleSystem.SetUIOff(this);
@@ -323,7 +322,7 @@ public class Unit : MonoBehaviour
 
     public void ChangeUnitsLight(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0, float stagnantDelay = 0)
     {
-        if(generalCoroutine != null)
+        if (generalCoroutine != null)
         {
             StopCoroutine(generalCoroutine);
         }
@@ -342,6 +341,16 @@ public class Unit : MonoBehaviour
         {
             light.intensity -= amountToRaiseBy;
             yield return new WaitForSeconds(delay);
+        }
+
+    }
+
+    public void ReturnTimelineChild()
+    {
+        if (BattleSystem.Instance != null && timelinechild != null)
+        {
+            timelinechild.Return();
+            print("TIMELINE CHILDREN SHOULD BE RETURNING");
         }
 
     }

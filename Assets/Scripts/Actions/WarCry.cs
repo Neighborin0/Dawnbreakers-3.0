@@ -22,13 +22,13 @@ public class WarCry : Action
         targetType = TargetType.SELF;
         duration = 7f;
         damageText = damage.ToString();
-        description = $"Applies <color=#FF2E00>Vigor</color><sprite name=\"VIGOR\"> to all allies for {duration} seconds. <color=#FF2E00>Vigor</color><sprite name=\"VIGOR\"> increases <color=#FF0000>ATK</color><sprite name=\"ATK RED2\"> by 3.";
+        description = $"Applies +3 <sprite name=\"VIGOR\"> to all allies for {duration} seconds.";
     }
 
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
-        LabCamera.Instance.MoveToUnit(unit, 0, -6, 32, false);
+        LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", Color.red, new Vector3(0, 0, -2f), 0.2f));
         yield return new WaitForSeconds(0.05f);

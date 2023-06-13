@@ -97,7 +97,6 @@ MonoBehaviour:
   CanMove: 1
   rectTransform: {fileID: 0}
   CanClear: 0
-  num: {fileID: 533200523665666731}
   PositionToMoveTo: {x: 0, y: 0}
   stamina: {fileID: 2367804285270959445}
   TimelineChildChild: {fileID: 6007211996699473503}

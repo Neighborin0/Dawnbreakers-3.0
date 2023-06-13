@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5486534703496205728}
   - component: {fileID: 4520066770254520702}
   - component: {fileID: 4727402307728638198}
+  - component: {fileID: 8994934366204515038}
   m_Layer: 0
   m_Name: Matriarch
   m_TagString: Enemy
@@ -133,11 +134,12 @@ MonoBehaviour:
   StaminaHighlightIsDisabled: 0
   behavior: {fileID: 0}
   charPortraits:
-  - {fileID: 21300000, guid: f9ba9f8f1c30c4a4aa76318536d19c7d, type: 3}
+  - {fileID: 21300000, guid: 0764ef8394073de488f5de17cb6afbe1, type: 3}
   anim: {fileID: 0}
   Execute: 0
   MiniMapIcons: []
   offset: {x: 0, y: 0, z: 0}
+  enemyintentOffset: {x: 0, y: -5, z: 0}
   timelinechild: {fileID: 0}
   StartingStamina: 0
   introText: []
@@ -150,10 +152,10 @@ MonoBehaviour:
   spotLight: {fileID: 6006733522569477460}
   actionCostMultiplier: 1
   actionList:
+  - {fileID: 11400000, guid: 2286e3232ce0a514389455649b743e8e, type: 2}
   - {fileID: 11400000, guid: d44c465bd4aed4148bcbbedd2960260f, type: 2}
-  - {fileID: 11400000, guid: 1cb29368371cc8d439e6e132b82f3e65, type: 2}
   - {fileID: 11400000, guid: 10f4714b8376b234c9d3857803d3c02a, type: 2}
-  - {fileID: 11400000, guid: d44c465bd4aed4148bcbbedd2960260f, type: 2}
+  - {fileID: 11400000, guid: 10f4714b8376b234c9d3857803d3c02a, type: 2}
   ActionLayout: {fileID: 0}
   summonables: []
   IsSummon: 0
@@ -186,6 +188,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.16, y: 1.6713089, z: 0.2}
   m_Center: {x: 0, y: 0.019345475, z: 0}
+--- !u!114 &8994934366204515038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3166249864376459302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5486534703496205728}
+          m_TargetAssemblyTypeName: Unit, Assembly-CSharp
+          m_MethodName: ReturnTimelineChild
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &8848137394426579597
 GameObject:
   m_ObjectHideFlags: 0

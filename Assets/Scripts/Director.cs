@@ -44,7 +44,7 @@ public class Director : MonoBehaviour
     public Button backButton;
     public TimeLine timeline;
     public float timelinespeedDelay;
-    public float UserTimelineSpeedDelay = 2f;
+    public float UserTimelineSpeedDelay = 0.5f;
     public float staminaSPDDivider;
     public GameObject LevelUpText;
     public GameObject EffectPopUp;

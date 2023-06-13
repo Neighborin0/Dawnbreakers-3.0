@@ -13,14 +13,14 @@ public class Slam : Action
         targetType = TargetType.ALL_ENEMIES;
         damageText = damage.ToString();
         actionType = ActionType.ATTACK;
-        description = $"Deals <color=#FF0000>{damageText}</color> damage to ALL enemies.";
+        description = $"Deals <color=#FF0000>{damageText}</color> DMG to ALL enemies.";
     }
 
     public override IEnumerator ExecuteAction()
     {
         unit.PlayAction("Attack", unit);
         yield return new WaitUntil(() => unit.Execute);
-        LabCamera.Instance.Shake(0.2f, 0.7f);
+        LabCamera.Instance.Shake(0.3f, 1.5f);
         foreach (var x in Tools.DetermineEnemies(unit))
         {
             AudioManager.Instance.Play("slash_001");

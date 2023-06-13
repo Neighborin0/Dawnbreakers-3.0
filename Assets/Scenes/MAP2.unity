@@ -10327,15 +10327,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   party:
-  - {fileID: 1711346159348267518, guid: f830cff71f0f12444ba1edc5593d0fdd, type: 3}
-  - {fileID: 8438103007488650918, guid: 7961aa52f479600439fca57c241b5cb9, type: 3}
+  - {fileID: 7201352204941650085, guid: f830cff71f0f12444ba1edc5593d0fdd, type: 3}
   - {fileID: 8438103007488650918, guid: 7961aa52f479600439fca57c241b5cb9, type: 3}
   characterdatabase:
   - {fileID: 8438103007488650918, guid: 7961aa52f479600439fca57c241b5cb9, type: 3}
   Unitdatabase:
   - {fileID: 8438103007488650918, guid: 7961aa52f479600439fca57c241b5cb9, type: 3}
   - {fileID: 3767246738405216190, guid: 3b4fa2cc43a00ff4491a3066626481f2, type: 3}
-  - {fileID: 1711346159348267518, guid: f830cff71f0f12444ba1edc5593d0fdd, type: 3}
+  - {fileID: 7201352204941650085, guid: f830cff71f0f12444ba1edc5593d0fdd, type: 3}
   - {fileID: 6913396421142473309, guid: 9ed38c4d5f137e147b1f512af619e776, type: 3}
   - {fileID: 7335167786458664575, guid: 382cf475236fa0b478b9f17721d46e75, type: 3}
   - {fileID: 6415417447957950127, guid: 468d179426f593e438f9dfdd6f3b9c93, type: 3}
@@ -10397,7 +10396,7 @@ MonoBehaviour:
   backButton: {fileID: 1279980817}
   timeline: {fileID: 10687130}
   timelinespeedDelay: 5
-  UserTimelineSpeedDelay: 2
+  UserTimelineSpeedDelay: 0.5
   staminaSPDDivider: 1
   LevelUpText: {fileID: 600817479}
   EffectPopUp: {fileID: 2722881081763327465, guid: eb8d0c7c2fb7e724ca7adc6491082caa,

@@ -11,16 +11,18 @@ public class TimeLineChild : MonoBehaviour
     public bool CanMove = true;
     public RectTransform rectTransform;
     public bool CanClear = false;
-    public TextMeshProUGUI num;
+    //public TextMeshProUGUI num;
     public Vector2 PositionToMoveTo;
     public TextMeshProUGUI stamina;
     public GameObject TimelineChildChild;
     public GameObject playerPoint;
     public GameObject EnemyPoint;
     public bool UnitIsHighlighted;
+    public bool HighlightedIsBeingOverwritten = false;
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+
     }
 
     private void Start()
@@ -113,21 +115,13 @@ public class TimeLineChild : MonoBehaviour
             unit.IsHighlighted = true;
             UnitIsHighlighted = true;
             transform.SetAsLastSibling();
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-
-            TimelineChildChild.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
-            TimelineChildChild.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+            Shift(unit);
         }
         else
         {
             unit.IsHighlighted = false;
             UnitIsHighlighted = false;
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
-
-            TimelineChildChild.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
-            TimelineChildChild.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
+            Return();
         }
     }
   

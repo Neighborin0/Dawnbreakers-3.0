@@ -19,6 +19,8 @@ public class Aurelia : Unit
         //attackStat = 1;
         defenseStat = 6;
         speedStat = 10;
+        //StartingStamina = UnityEngine.Random.Range(85, 95);
+        StartingStamina = 95;
         //speedStat = 100;
         currentHP = maxHP;
         IsPlayerControlled = true;

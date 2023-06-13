@@ -13,7 +13,7 @@ public class StaminaBar : MonoBehaviour
     public Slider backSlider;
     public Unit unit;
     public bool Paused = false;
-     void Start()
+    void Start()
     {
         slider.maxValue = 100;
         backSlider.maxValue = 100;
@@ -26,15 +26,15 @@ public class StaminaBar : MonoBehaviour
 
     void Update()
     {
-       if(slider.value < slider.maxValue && !Paused)
+        if (slider.value < slider.maxValue && !Paused)
         {
             slider.value += (float)(unit.speedStat * Time.deltaTime) / Director.Instance.staminaSPDDivider;
         }
-    
- 
+
+
     }
 
-  
+
     public void DoCost(float cost)
     {
         backSlider.value = backSlider.maxValue;
@@ -44,14 +44,14 @@ public class StaminaBar : MonoBehaviour
     {
         slider.value -= cost * unit.actionCostMultiplier < 100 ? cost * unit.actionCostMultiplier : 100;
         yield return new WaitForSeconds(0.5f);
-        while(backSlider.value > slider.value)
+        while (backSlider.value > slider.value)
         {
             backSlider.value -= 2f;
             yield return new WaitForSeconds(0.01f);
         }
         yield break;
     }
-   
 
-  
+
+
 }

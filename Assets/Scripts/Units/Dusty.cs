@@ -21,6 +21,7 @@ public class Dusty : Unit
         attackStat = 5;
         defenseStat = 8;
         speedStat = 7;
+        StartingStamina = UnityEngine.Random.Range(80, 90);
         currentHP = maxHP;
         IsPlayerControlled = true;
     }

@@ -153,7 +153,7 @@ public class BattleSystem : MonoBehaviour
                 var BSP = playerPositions[i].GetComponent<BattleSpawnPoint>();
                 BSP.unit = playerUnits[i];
                 BSP.Occupied = true;
-                SetupHUD(playerUnits[i], playerPositions[i]);
+                //SetupHUD(playerUnits[i], playerPositions[i]);
                 numOfUnits.Add(playerUnits[i]);
                 var ss = new StatStorer
                 {
@@ -170,7 +170,7 @@ public class BattleSystem : MonoBehaviour
                 var enemy = Instantiate(enemiesToLoad[i], enemyPositions[i]);
                 enemy.transform.localScale = new Vector3(9f, 9f, 9f);
                 enemiesToLoad[i].gameObject.SetActive(true);
-                SetupHUD(enemiesToLoad[i], enemyPositions[i]);
+                //SetupHUD(enemiesToLoad[i], enemyPositions[i]);
                 var BSP = enemyPositions[i].GetComponent<BattleSpawnPoint>();
                 BSP.unit = enemiesToLoad[i];
                 BSP.Occupied = true;
@@ -189,9 +189,15 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator Transition()
     {
+        yield return new WaitForSeconds(1f);
+        foreach (var unit in Tools.GetAllUnits())
+        {
+            SetupHUD(unit, unit.transform);
+        }
         StartCoroutine(Tools.FadeObject(Director.Instance.blackScreen, 0.001f, false));
         yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
-        Director.Instance.blackScreen.gameObject.SetActive(true);
+   
+            Director.Instance.blackScreen.gameObject.SetActive(true);
         LabCamera.Instance.ReadjustCam();
         yield return new WaitForSeconds(1.5f);
         Director.Instance.BL.Move(true);
@@ -279,29 +285,6 @@ public class BattleSystem : MonoBehaviour
         unit.intentUI.damageNums.text = " <sprite name=\"ATK\">" + (action.damage + unit.attackStat - action.targets.defenseStat).ToString();
         unit.intentUI.action = action;
         unit.intentUI.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
-        /*if (action.targets != unit)
-        {
-            Vector3 SphereScale = new Vector3(0.1f, 0.1f, 0.1f);
-            var lineInstance = Instantiate(targetLine, unit.transform);
-            lineInstance.SetPosition(0, new Vector3(unit.transform.position.x, unit.transform.position.y, unit.transform.position.z - 1f));
-            lineInstance.SetPosition(1, unit.transform.position);
-            lineCoroutine = Tools.SmoothMoveLine(lineInstance, action.targets.transform.position, 0.01f);
-            StartCoroutine(lineCoroutine);
-            if (action.targetType == Action.TargetType.ALL_ENEMIES)
-            {
-                foreach (var x in Tools.DetermineEnemies(unit))
-                {
-                    var li = Instantiate(targetLine);
-                    li.SetPosition(0, unit.transform.position);
-                    li.SetPosition(1, new Vector3(x.transform.position.x, x.transform.position.y, unit.transform.position.z)); 
-                }
-            }
-        }
-        else if(action.actionType == Action.ActionType.STATUS && action.targets == unit)
-        {
-            var dotInstance = Instantiate(dot, new Vector3(unit.transform.position.x, unit.transform.position.y, unit.transform.position.z - 1f), Quaternion.identity);
-        }
-        */
         if (unit.intentUI.action.actionType == Action.ActionType.STATUS)
         {
             unit.intentUI.damageParent.SetActive(false);
@@ -573,6 +556,9 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PerformAction(Action newaction, Unit unit)
     {
+        BattleLog.ClearAmbientText();
+        BattleLog.DisableCharacterStats();
+        BattleLog.ClearBattleText();
         LabCamera.Instance.ResetPosition();
         Tools.PauseAllStaminaTimers();
         Director.Instance.blackScreen.gameObject.SetActive(true);
@@ -629,16 +615,13 @@ public class BattleSystem : MonoBehaviour
                 yield return new WaitForSeconds(0.7f);
             }
         }
-        yield return new WaitForSeconds(1f);
+       // yield return new WaitForSeconds(1f);
         foreach (var x in Tools.GetAllUnits())
         {
             x.DoActionEnded();
         }
         yield return new WaitForSeconds(0.5f);
         ActionsToPerform = new List<Action>();
-        BattleLog.ClearAmbientText();
-        BattleLog.DisableCharacterStats();
-        BattleLog.ClearBattleText();
         BattleLog.SetRandomAmbientTextActive();
         BL.CreateRandomAmbientText();
         foreach (var line in GameObject.FindObjectsOfType<LineRenderer>())
@@ -716,7 +699,6 @@ public class BattleSystem : MonoBehaviour
                 {
                     TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -60);
                     battlebar.transform.localScale = new Vector3(0, 0, 0);
-                    TL.num.text = Tools.CheckNames(unit);
                     TL.EnemyPoint.SetActive(true);
                 }
                 battlebar.unit = x;
@@ -739,13 +721,12 @@ public class BattleSystem : MonoBehaviour
                 NP.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + unit.offset.x, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;
 
 
-
             }
             if (!x.IsPlayerControlled && x.intentUI == null)
             {
                 var intentContainer = Instantiate(intent, canvasParent.transform);
                 intentContainer.transform.localScale = new Vector3(0.025f, 0.03f, -25f);
-                intentContainer.transform.SetPositionAndRotation(new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x, x.GetComponent<SpriteRenderer>().bounds.max.y + 1f, x.transform.position.z) / canvas.scaleFactor, LabCamera.Instance.transform.rotation);
+                intentContainer.transform.SetPositionAndRotation(new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + x.enemyintentOffset.x, x.GetComponent<SpriteRenderer>().bounds.max.y + x.enemyintentOffset.y, x.transform.position.z + x.enemyintentOffset.z) / canvas.scaleFactor, LabCamera.Instance.transform.rotation);
                 x.intentUI = intentContainer;
                 intentContainer.unit = x;
                 x.namePlate.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x - 1.8f, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;

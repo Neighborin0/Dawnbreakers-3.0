@@ -163,6 +163,7 @@ public class LabCamera : MonoBehaviour
     {
         state = CameraState.MOVING;
 		smoothingTime = 0f;
+		this.MovingTimeDivider = MovingTimeDivider;
 		if(useDefaultOffset)
 		{
             PositonToMoveTo = unit.transform.position / 5f;

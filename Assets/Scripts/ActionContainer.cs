@@ -85,6 +85,7 @@ public class ActionContainer : MonoBehaviour
                         {
                             baseUnit.state = PlayerState.READY;
                             var unit = hit.collider.GetComponent<Unit>();
+                            RemoveDescription();
                             foreach (var z in Tools.GetAllUnits())
                             {
                                 z.IsHighlighted = false;
@@ -129,6 +130,7 @@ public class ActionContainer : MonoBehaviour
                             SetActive();
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
+                            RemoveDescription();
                             foreach (var unit in Tools.GetAllUnits())
                             {
                                 unit.IsHighlighted = false;
@@ -168,6 +170,7 @@ public class ActionContainer : MonoBehaviour
                             action.unit = baseUnit;
                             baseUnit.Queue(action);
                             LabCamera.Instance.ResetPosition();
+                            RemoveDescription();
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             SetActive();
@@ -255,7 +258,7 @@ public class ActionContainer : MonoBehaviour
                     }
                 }
 
-
+                RemoveDescription();
                 var TL = Instantiate(Director.Instance.timeline.borderChildprefab, Director.Instance.timeline.startpoint);
                 TL.unit = baseUnit;
                 TL.portrait.sprite = baseUnit.charPortraits[0];

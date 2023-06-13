@@ -103,10 +103,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5301254559230736005}
   - component: {fileID: 5301254559230736006}
-  - component: {fileID: 1711346159348267518}
   - component: {fileID: 2642224846084036885}
   - component: {fileID: -3680819333926995194}
   - component: {fileID: 5675642170381267632}
+  - component: {fileID: 7201352204941650085}
   m_Layer: 0
   m_Name: Aurelia
   m_TagString: Untagged
@@ -181,61 +181,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!114 &1711346159348267518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5301254559230736007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daed55c9820c6014f92e0fc28b90b0dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unitName: Aurelia
-  currentHP: 0
-  IsPlayerControlled: 1
-  skillUIs:
-  - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
-  - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
-  - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
-  - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
-  intentUI: {fileID: 0}
-  health: {fileID: 0}
-  stamina: {fileID: 0}
-  namePlate: {fileID: 0}
-  IsHighlighted: 0
-  isDarkened: 0
-  IsDead: 0
-  StaminaHighlightIsDisabled: 0
-  behavior: {fileID: 0}
-  charPortraits:
-  - {fileID: 21300000, guid: 3e449902b5ccbab42907ae257ab9d358, type: 3}
-  anim: {fileID: 2642224846084036885}
-  Execute: 0
-  MiniMapIcons:
-  - {fileID: 21300000, guid: 99ca25e0c43390b4aa017d062af2fbed, type: 3}
-  - {fileID: 21300000, guid: d1a4026457431634e94612e79ca206af, type: 3}
-  offset: {x: -1.01, y: 0, z: 0}
-  timelinechild: {fileID: 0}
-  StartingStamina: 0
-  introText: []
-  inventory: []
-  state: 0
-  maxHP: 45
-  attackStat: 999
-  defenseStat: 15
-  speedStat: 15
-  spotLight: {fileID: 8380202918096390495}
-  actionCostMultiplier: 1
-  actionList:
-  - {fileID: 11400000, guid: a8ebee44482aa0841914562f52c95421, type: 2}
-  - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
-  - {fileID: 11400000, guid: 8626ced7933e1d04eb4f6721e66a6f6f, type: 2}
-  ActionLayout: {fileID: 0}
-  summonables: []
-  IsSummon: 0
 --- !u!95 &2642224846084036885
 Animator:
   serializedVersion: 3
@@ -284,3 +229,58 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.65000004, y: 0.5204436, z: 0.2}
   m_Center: {x: 0.032500006, y: 0.004778278, z: 0}
+--- !u!114 &7201352204941650085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5301254559230736007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daed55c9820c6014f92e0fc28b90b0dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitName: Aurelia
+  currentHP: 0
+  IsPlayerControlled: 0
+  skillUIs:
+  - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
+  - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
+  - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
+  - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
+  intentUI: {fileID: 0}
+  health: {fileID: 0}
+  stamina: {fileID: 0}
+  namePlate: {fileID: 0}
+  IsHighlighted: 0
+  isDarkened: 0
+  IsDead: 0
+  StaminaHighlightIsDisabled: 0
+  behavior: {fileID: 0}
+  charPortraits:
+  - {fileID: 21300000, guid: 3e449902b5ccbab42907ae257ab9d358, type: 3}
+  anim: {fileID: 2642224846084036885}
+  Execute: 0
+  MiniMapIcons:
+  - {fileID: 21300000, guid: 99ca25e0c43390b4aa017d062af2fbed, type: 3}
+  - {fileID: 21300000, guid: d1a4026457431634e94612e79ca206af, type: 3}
+  offset: {x: -1.01, y: 0, z: 0}
+  enemyintentOffset: {x: 0, y: 0, z: 0}
+  timelinechild: {fileID: 0}
+  StartingStamina: 0
+  introText: []
+  inventory: []
+  state: 0
+  maxHP: 0
+  attackStat: 0
+  defenseStat: 0
+  speedStat: 0
+  spotLight: {fileID: 8380202918096390495}
+  actionCostMultiplier: 1
+  actionList:
+  - {fileID: 11400000, guid: a8ebee44482aa0841914562f52c95421, type: 2}
+  - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
+  ActionLayout: {fileID: 0}
+  summonables: []
+  IsSummon: 0
