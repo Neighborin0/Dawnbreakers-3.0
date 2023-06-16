@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 [CreateAssetMenu(fileName = "Slash", menuName = "Assets/Actions/Slash")]
 public class Slash : Action
@@ -14,9 +15,25 @@ public class Slash : Action
         targetType = TargetType.ANY;
         actionType = ActionType.ATTACK;
         damageText = damage.ToString();
-        description = $"Deals <color=#FF0000>{damageText}</color> DMG.";
     }
 
+    public override string GetDescription()   
+    {
+        if (unit.IsPlayerControlled)
+        {
+            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.";
+        }
+        else
+        {
+            if (damage + unit.attackStat - targets.defenseStat > 0)
+            {
+                description = $"Deals <color=#FF0000>{damage + unit.attackStat - targets.defenseStat}</color> DMG.";
+            }
+            else
+                description = $"Deals <color=#FF0000>0</color> DMG.";
+        }
+        return description;
+    }
     public override IEnumerator ExecuteAction()
     {
         LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);

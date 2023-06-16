@@ -12,9 +12,13 @@ public class Nothing : Action
         actionType = ActionType.STATUS;
         damageText = damage.ToString();
         targetType = TargetType.SELF;
-        description = "Intent is unknown...";
+    }
+
+    public override string GetDescription()
+    {
+        description = $"Intent is unknown...";
+        return description;
     }
 
 
-    
 }

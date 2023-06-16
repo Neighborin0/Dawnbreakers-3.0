@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\DraggableObject.cs" />
     <Compile Include="Assets\Scripts\Main Menu\OptionsManager.cs" />
     <Compile Include="Assets\Scripts\Map\RestSite.cs" />
+    <Compile Include="Assets\Scripts\Icons\DefendEF.cs" />
     <Compile Include="Assets\Scripts\Units\DustyEnemy.cs" />
     <Compile Include="Assets\Scripts\Actions\Sweep.cs" />
     <Compile Include="Assets\Scripts\CharacterTabPopup.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Assets\Scripts\FloatingObject.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
     <Compile Include="Assets\Scripts\Actions\Bash.cs" />
+    <Compile Include="Assets\Scripts\Icons\Vigor.cs" />
     <Compile Include="Assets\Scripts\Actions\Hasten.cs" />
     <Compile Include="Assets\Scripts\CharacterSlot.cs" />
     <Compile Include="Assets\Scripts\Map\MapGrid.cs" />

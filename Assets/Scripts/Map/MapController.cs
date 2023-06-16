@@ -62,12 +62,12 @@ public class MapController : MonoBehaviour
                 {
                     Destroy(minimapIcon.gameObject);
                 }
-                    foreach (Transform child in transform)
+                foreach (Transform child in transform)
                 {
                     child.gameObject.SetActive(false);
                 }
                 Loaded = false;
-               
+
             }
             else
             {
@@ -115,7 +115,7 @@ public class MapController : MonoBehaviour
             yield return new WaitUntil(() => unit.GetComponent<Rigidbody2D>().velocity == Vector2.zero);
             unit.state = MiniMapIcon.MapIconState.IDLE;
             unit.GetComponent<Rigidbody2D>().simulated = false;
-        }  
+        }
     }
 
     public void SpawnDecorations()
@@ -146,7 +146,7 @@ public class MapController : MonoBehaviour
             //LabCamera.Instance.MoveAndFollowGameObject(MM.gameObject, new Vector3(0, 0, -120));
             i++;
         }
-      
+
     }
     IEnumerator lineCoroutine;
     public void GenerateNodesFromFlow(List<LabNode> mapFlow)
@@ -183,9 +183,9 @@ public class MapController : MonoBehaviour
                         }
                     }
                     currentNodes.Add(newNode);
-                    if(!newNode.IsStartingNode && !Director.Instance.DevMode)
+                    if (!newNode.IsStartingNode && !Director.Instance.DevMode)
                     {
-                        newNode.gameObject.SetActive(false); 
+                        newNode.gameObject.SetActive(false);
                     }
                     break;
                 }
@@ -196,7 +196,7 @@ public class MapController : MonoBehaviour
 
     private void DrawLine(Vector3 pointToDrawTo)
     {
-        float compressor = 0;
+        float compressor = 2;
         var lineInstance = Instantiate(linePrefab, mapCanvas.transform);
         lineInstance.SetPosition(0, new Vector3(storedTransform.x + compressor, storedTransform.y, storedTransform.z));
         lineInstance.SetPosition(1, storedTransform);
@@ -220,12 +220,12 @@ public class MapController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         foreach (Transform child in transform)
         {
-            if(child.GetComponent<MiniMapIcon>() != null)
+            if (child.GetComponent<MiniMapIcon>() != null)
             {
                 child.GetComponent<MiniMapIcon>().state = MiniMapIcon.MapIconState.IDLE;
             }
         }
-        foreach(var unit in Director.Instance.party)
+        foreach (var unit in Director.Instance.party)
         {
             unit.DoEnteredMap();
         }

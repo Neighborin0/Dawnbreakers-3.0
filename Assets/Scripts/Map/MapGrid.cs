@@ -9,9 +9,9 @@ public class MapGrid
 {
     private int width;
     private int height;
-    private float cellSize;
+    public float cellSize;
     private int[,] gridArray;
-    private Transform parent;
+    public Transform parent;
    // private GameObject objectToGenerate;
     public MapGrid(int width, int height, float cellSize, Transform parent)
     {
@@ -26,15 +26,13 @@ public class MapGrid
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
-               /* var obj = objectToGenerate;
-                obj.transform.position = GetWorldPos(x, y) + new Vector3(cellSize, cellSize) * .5f;
-                obj.transform.localScale = Vector3.one;
-                obj.transform.parent = parent;
-               */
+                Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x, y + 1), Color.black, 1000f);
+                Debug.DrawLine(GetWorldPos(x, y), GetWorldPos(x + 1, y), Color.black, 1000f);
             }
+               
         }
-
-        //this.objectToGenerate = objectToGenerate;
+        Debug.DrawLine(GetWorldPos(0, height), GetWorldPos(width, height), Color.black, 1000f);
+        Debug.DrawLine(GetWorldPos(width, 0), GetWorldPos(width, height), Color.black, 1000f);
     }
 
     public Vector3 GetWorldPos(int x, int y)

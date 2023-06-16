@@ -65,7 +65,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             DisplaySwitcher.image.sprite = actionIcon;
             foreach (var action in unit.actionList)
             {
-                if(action.New)
+                if(action.New == true)
                 {
                     notification.gameObject.SetActive(true);
                 }

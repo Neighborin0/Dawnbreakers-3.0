@@ -114,12 +114,14 @@ public class TimeLineChild : MonoBehaviour
         {
             unit.IsHighlighted = true;
             UnitIsHighlighted = true;
+            HighlightedIsBeingOverwritten = true;
             transform.SetAsLastSibling();
             Shift(unit);
         }
         else
         {
             unit.IsHighlighted = false;
+            HighlightedIsBeingOverwritten = false;
             UnitIsHighlighted = false;
             Return();
         }

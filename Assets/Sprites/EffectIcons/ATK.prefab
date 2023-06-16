@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8896265675756178513}
   - component: {fileID: 8255909295792655320}
   - component: {fileID: 7742311054285998417}
-  - component: {fileID: 2364737074327187471}
   - component: {fileID: 2593380671147905800}
+  - component: {fileID: 2944601209896990489}
   - component: {fileID: 8596398589058066822}
   m_Layer: 5
   m_Name: ATK
@@ -79,29 +79,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2364737074327187471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5459808448902100061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 814f25c41300bf341ba0b4b21a26bb25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  icon: {fileID: 7742311054285998417}
-  owner: {fileID: 0}
-  timerText: {fileID: 5881326393283092459}
-  action: {fileID: 0}
-  isPaused: 1
-  ForceEnd: 0
-  DoFancyStatChanges: 0
-  description: Boosts <color=#FF0000>ATK</color><sprite name="ATK RED2"> by 3.
-  iconName: <color=#FF2E00>Vigor</color><sprite name="VIGOR">
-  storedValue: 0
-  TimedEffect: 1
 --- !u!114 &2593380671147905800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +96,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2364737074327187471}
+        - m_Target: {fileID: 2944601209896990489}
           m_TargetAssemblyTypeName: EffectIcon, Assembly-CSharp
           m_MethodName: DisplayDescription
           m_Mode: 1
@@ -147,7 +124,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2364737074327187471}
+        - m_Target: {fileID: 2944601209896990489}
           m_TargetAssemblyTypeName: EffectIcon, Assembly-CSharp
           m_MethodName: RemoveDescription
           m_Mode: 1
@@ -171,6 +148,30 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &2944601209896990489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5459808448902100061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44aa349c2eab05b4bb40d8ab56f4e2e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 7742311054285998417}
+  owner: {fileID: 0}
+  timerText: {fileID: 5881326393283092459}
+  action: {fileID: 0}
+  isPaused: 1
+  ForceEnd: 0
+  DoFancyStatChanges: 0
+  description: 1
+  iconName: 
+  storedValue: 0
+  TimedEffect: 1
+  currentEffectPopup: {fileID: 0}
 --- !u!114 &8596398589058066822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsHighlighted: 0
   StartingThickness: 1
-  BattleHighlight: 1
+  DoesntHighlightInBattle: 1
 --- !u!1 &8030429467529856473
 GameObject:
   m_ObjectHideFlags: 0

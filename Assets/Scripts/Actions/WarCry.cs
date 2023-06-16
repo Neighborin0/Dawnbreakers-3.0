@@ -21,10 +21,15 @@ public class WarCry : Action
         PriorityMove = false;
         targetType = TargetType.SELF;
         duration = 7f;
+        statAmount = 3;
         damageText = damage.ToString();
-        description = $"Applies +3 <sprite name=\"VIGOR\"> to all allies for {duration} seconds.";
     }
 
+    public override string GetDescription()
+    {
+        description = $"Applies +{statAmount} <sprite name=\"VIGOR\"> to all allies for {duration} seconds.";
+        return description;
+    }
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
@@ -39,9 +44,9 @@ public class WarCry : Action
             var Light = x.spotLight;
             Light.color = Color.red;
             unit.ChangeUnitsLight(Light, 150, 15, 0.04f, 0.08f);
-            BattleSystem.Instance.SetStatChanges(Stat.ATK, 3f, false, x);
+            BattleSystem.Instance.SetStatChanges(Stat.ATK, statAmount, false, x);
             var battleSystem = BattleSystem.Instance;
-            battleSystem.StartCoroutine(battleSystem.SetTempEffect(x, "ATK", this, true, 0));
+            battleSystem.StartCoroutine(battleSystem.SetTempEffect(x, "ATK", this, true, statAmount));
         }
         yield return new WaitForSeconds(0.2f);
         Director.Instance.StartCoroutine(LabCamera.Instance.DoSlowHorizontalSweep());

@@ -14,13 +14,19 @@ public class Growl : Action
         damageText = damage.ToString();
         targetType = TargetType.ANY;
         actionType = ActionType.STATUS;
-        description = "Decreases <sprite name=\"DEF BLUE\">by 2.";
+        statAmount = 2;
+    }
+
+    public override string GetDescription()
+    {
+        description = $"Decreases <sprite name=\"DEF BLUE2\"> by {statAmount}.";
+        return description;
     }
     public override IEnumerator ExecuteAction()
     {
         LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.DEF, -2, false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.DEF, -statAmount, false, targets);
         yield return new WaitForSeconds(0.5f);
         LabCamera.Instance.ResetPosition();
         this.Done = true;

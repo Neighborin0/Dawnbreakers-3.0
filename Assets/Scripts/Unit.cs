@@ -36,6 +36,7 @@ public class Unit : MonoBehaviour
     public TimeLineChild timelinechild;
     private bool StopMovingToUnit = false;
     public float StartingStamina;
+    public bool StatsAreDisplayed = false;
     IEnumerator generalCoroutine;
 
     //text stuff
@@ -154,6 +155,10 @@ public class Unit : MonoBehaviour
                         BattleLog.DisplayCharacterStats(this, true);
                     }
                 }
+                 if(BattleSystem.Instance.state == BattleStates.IDLE)
+                {
+                    BattleLog.DisplayCharacterStats(this, true);
+                }
                 if (BattleSystem.Instance.state != BattleStates.BATTLE && BattleSystem.Instance.state != BattleStates.START && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD)
                 {
                     sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
@@ -175,7 +180,7 @@ public class Unit : MonoBehaviour
 
             if (Input.GetMouseButtonUp(0))
             {
-                if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !OverUI())
+                if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !OverUI() && state != PlayerState.DECIDING)
                 {
                     if (!Tools.CheckIfAnyUnitIsTargetting())
                     {

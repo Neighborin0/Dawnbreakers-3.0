@@ -38,18 +38,21 @@ public class EffectIcon : MonoBehaviour
     }
     public void DisplayDescription()
     {
-        if(currentEffectPopup == null)
+        if (BattleSystem.Instance.state != BattleStates.BATTLE)
         {
-            var EP = Instantiate(Director.Instance.EffectPopUp, BattleSystem.Instance.canvasParent.transform);
-            currentEffectPopup = EP;
+            if (currentEffectPopup == null)
+            {
+                var EP = Instantiate(Director.Instance.EffectPopUp, BattleSystem.Instance.canvasParent.transform);
+                currentEffectPopup = EP;
+            }
+            else
+            {
+                currentEffectPopup.SetActive(true);
+            }
+            currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+            var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
+            EPtext.text = this.GetDescription();
         }
-        else
-        {
-            currentEffectPopup.SetActive(true);
-        }
-        currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
-        var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
-        EPtext.text = $"{description}";
     }
 
     public void RemoveDescription()
@@ -64,15 +67,7 @@ public class EffectIcon : MonoBehaviour
         Destroy(this.gameObject);
 
     }
-
-   /* public IEnumerator FadeOut()
-    {
-        StartCoroutine(Tools.FadeObject(this.GetComponent<Image>(), 100f, false, false));
-        yield return new WaitUntil(() => this.GetComponent<Image>().color == new Color(0, 0, 0, 1));
-        Destroy(this.gameObject);
-
-    }
-   */
+    public virtual string GetDescription() { return ""; }
     public void Update()
     {
         if(TimedEffect)

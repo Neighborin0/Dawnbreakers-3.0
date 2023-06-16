@@ -6,6 +6,7 @@ using TMPro;
 using System;
 using System.Linq;
 using UnityEngine.ProBuilder.Shapes;
+using UnityEditor;
 
 
 public class BattleLog : MonoBehaviour
@@ -117,17 +118,28 @@ public class BattleLog : MonoBehaviour
     public void DisplayPlayerStats(Unit unit, bool TurnOffItemDisplay = false)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
+        battlelog.ambientText.gameObject.SetActive(false);
         foreach (Transform item in battlelog.inventoryDisplay.transform)
         {
             Destroy(item.gameObject);
         }
         battlelog.STATtext.gameObject.SetActive(true);
         battlelog.STATtext.text = $"<sprite name=\"ATK\">ATK: {unit.attackStat}\n<sprite name=\"DEF\">DEF: {unit.defenseStat}\n<sprite name=\"SPD\">SPD: {unit.speedStat}";
+        Tools.SetTextColorAlphaToZero(battlelog.STATtext);
+        StartCoroutine(Tools.FadeText(battlelog.STATtext, 0.005f, true, false));
         battlelog.charPortrait.sprite = unit.charPortraits.Find(obj => obj.name == "neutral");
+        Tools.SetImageColorAlphaToZero(battlelog.charPortrait);
+        StartCoroutine(Tools.FadeObject(battlelog.charPortrait, 0.005f, true, false));
         battlelog.Portraitparent.gameObject.SetActive(true);
+        Tools.SetImageColorAlphaToZero(battlelog.Portraitparent);
+        StartCoroutine(Tools.FadeObject(battlelog.Portraitparent, 0.005f, true, false));
         battlelog.characterName.gameObject.SetActive(true);
+        Tools.SetTextColorAlphaToZero(battlelog.characterName);
+        StartCoroutine(Tools.FadeText(battlelog.itemText, 0.005f, true, false));
         battlelog.inventoryDisplay.gameObject.SetActive(true);
         battlelog.itemText.gameObject.SetActive(true);
+        Tools.SetTextColorAlphaToZero(battlelog.itemText);
+        StartCoroutine(Tools.FadeText(battlelog.itemText, 0.005f, true, false));
         battlelog.characterName.text = (unit.unitName);
 
         if(TurnOffItemDisplay)
@@ -136,22 +148,37 @@ public class BattleLog : MonoBehaviour
         }
         foreach (var item in unit.inventory)
         {
-            var x = Instantiate(battlelog.itemImage);
+            var x = Instantiate(battlelog.itemImage);  
             x.image.sprite = item.sprite;
             x.GetComponent<ItemText>().item = item;
             x.transform.SetParent(battlelog.inventoryDisplay.transform);
+            //Tools.SetImageColorAlphaToZero(x.image);
+            //StartCoroutine(Tools.FadeObject(x.image, 0.01f, true, false));
         }
+
     }
     public static void DisplayCharacterStats(Unit unit, bool TurnOffItemDisplay = false)
     {
         var battlelog = BattleLog.Instance;
+        battlelog.itemText.text = "";
         if (unit.IsPlayerControlled)
         {
             battlelog.DisplayPlayerStats(unit, TurnOffItemDisplay);
         }
         else
         {
-            battlelog.DisplayEnemyCharacterStats(unit);
+            foreach(var x in Tools.GetAllUnits())
+            {
+                if(x != unit)
+                {
+                    x.StatsAreDisplayed = false;
+                }
+            }
+            if(!unit.StatsAreDisplayed)
+            {
+                unit.StatsAreDisplayed = true;
+                battlelog.DisplayEnemyCharacterStats(unit);
+            }
         }
 
     }
@@ -167,6 +194,13 @@ public class BattleLog : MonoBehaviour
         battlelog.itemText.gameObject.SetActive(true);
         battlelog.characterName.text = (unit.unitName);
         battlelog.ambientText.gameObject.SetActive(false);
+        Tools.SetTextColorAlphaToZero(battlelog.enemySTATtext);
+        StartCoroutine(Tools.FadeText(battlelog.enemySTATtext, 0.005f, true, false));
+        Tools.SetImageColorAlphaToZero(battlelog.enemycharPortrait);
+        StartCoroutine(Tools.FadeObject(battlelog.enemycharPortrait, 0.005f, true, false));
+        Tools.SetImageColorAlphaToZero(battlelog.enemyPortraitparent);
+        StartCoroutine(Tools.FadeObject(battlelog.enemyPortraitparent, 0.005f, true, false));
+      
     }
 
 
@@ -181,6 +215,10 @@ public class BattleLog : MonoBehaviour
 
         battlelog.itemText.gameObject.SetActive(false);
         battlelog.itemText.text = "";
+        foreach(var x in BattleSystem.Instance.enemyUnits)
+        {
+            x.StatsAreDisplayed = false;
+        }
         foreach (var item in battlelog.inventoryDisplay.GetComponentsInChildren<Button>())
         {
             Destroy(item.gameObject);
@@ -228,6 +266,8 @@ public class BattleLog : MonoBehaviour
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
         //BattleLog.ClearAllBattleLogText();
         battlelog.ambientText.gameObject.SetActive(false);
+        Tools.SetTextColorAlphaToZero(battlelog.ambientText);
+        StartCoroutine(Tools.FadeText(battlelog.ambientText, 0.005f, true, false));
         battleText.gameObject.SetActive(true);
         battleText.text = text;
     }

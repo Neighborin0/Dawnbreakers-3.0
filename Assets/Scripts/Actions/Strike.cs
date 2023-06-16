@@ -14,9 +14,26 @@ public class Strike : Action
         cost = 50f;
         actionType = ActionType.ATTACK;
         targetType = TargetType.ANY;
-        description = $"Deals <color=#FF0000>{damageText}</color> DMG.";
 
 
+    }
+
+    public override string GetDescription()
+    {
+        if (unit.IsPlayerControlled)
+        {
+            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.";
+        }
+        else
+        {
+            if (damage + unit.attackStat - targets.defenseStat > 0)
+            {
+                description = $"Deals <color=#FF0000>{damage + unit.attackStat - targets.defenseStat}</color> DMG.";
+            }
+            else
+                description = $"Deals <color=#FF0000>0</color> DMG.";
+        }
+        return description;
     }
     public override IEnumerator ExecuteAction()
     {

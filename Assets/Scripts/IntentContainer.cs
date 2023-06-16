@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.ProBuilder.Shapes;
+using Unity.VisualScripting;
 
 public class IntentContainer : MonoBehaviour
 {
@@ -22,14 +23,11 @@ public class IntentContainer : MonoBehaviour
         {
             action.targets.IsHighlighted = true;
             action.targets.timelinechild.Shift(action.targets);
+            action.unit.timelinechild.HighlightedIsBeingOverwritten = true;
             this.unit.timelinechild.HighlightedIsBeingOverwritten = true;
-            this.unit.timelinechild.HighlightedIsBeingOverwritten = true;
-            this.unit.timelinechild.Shift(this.unit);
-            var newAction = Instantiate(action);
-            newAction.unit = unit;
-            newAction.damage += newAction.unit.attackStat;
-            BattleLog.SetBattleText(newAction.description);
-            BattleLog.DisplayEnemyIntentInfo(newAction.description, unit);
+            this.unit.timelinechild.Shift(this.unit);   
+            BattleLog.SetBattleText(action.GetDescription());
+            BattleLog.DisplayEnemyIntentInfo(action.GetDescription(), unit);
         }
     }
 
@@ -44,9 +42,9 @@ public class IntentContainer : MonoBehaviour
             this.unit.timelinechild.Shift(this.unit);
             this.unit.timelinechild.HighlightedIsBeingOverwritten = true;
             var newAction = Instantiate(action);
-            newAction.damage += newAction.unit.attackStat;
-            BattleLog.SetBattleText(newAction.description);
-            BattleLog.DisplayEnemyIntentInfo(newAction.description, unit);
+            newAction.unit = unit;
+            BattleLog.SetBattleText(newAction.GetDescription());
+            BattleLog.DisplayEnemyIntentInfo(newAction.GetDescription(), unit);
         }
     }
 
@@ -72,6 +70,50 @@ public class IntentContainer : MonoBehaviour
         action.targets.timelinechild.HighlightedIsBeingOverwritten = false;
         this.unit.timelinechild.HighlightedIsBeingOverwritten = false;
         BattleLog.Instance.itemText.gameObject.SetActive(false);
+    }
+
+    public void Fade(bool FadeIn)
+    {
+        if(FadeIn)
+        {
+            Tools.SetImageColorAlphaToZero(unit.intentUI.GetComponent<Image>());
+            Tools.SetTextColorAlphaToZero(unit.intentUI.textMesh);
+            Tools.SetTextColorAlphaToZero(unit.intentUI.damageNums);
+            Tools.SetTextColorAlphaToZero(unit.intentUI.costNums);
+            StartCoroutine(Tools.FadeObject(unit.intentUI.GetComponent<Image>(), 0.005f, true, false));
+            StartCoroutine(Tools.FadeText(unit.intentUI.textMesh, 0.005f, true, false));
+            StartCoroutine(Tools.FadeText(unit.intentUI.damageNums, 0.005f, true, false));
+            StartCoroutine(Tools.FadeText(unit.intentUI.costNums, 0.005f, true, false));
+        }
+        else
+        {
+            StartCoroutine(Tools.FadeObject(unit.intentUI.GetComponent<Image>(), 0.005f, false, false));
+            StartCoroutine(Tools.FadeText(unit.intentUI.textMesh, 0.005f, false, false));
+            StartCoroutine(Tools.FadeText(unit.intentUI.damageNums, 0.005f, false, false));
+            StartCoroutine(Tools.FadeText(unit.intentUI.costNums, 0.005f, false, false));
+        }
+       
+    }
+    public void CheckTarget(Action action, Unit unit)
+    {
+        if(action.targets == null)
+        {
+            switch (action.targetType)
+            {
+                case Action.TargetType.ANY:
+                    action.targets = BattleSystem.Instance.numOfUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.numOfUnits.Count)];
+                    break;
+                case Action.TargetType.SELF:
+                    action.targets = unit;
+                    break;
+                case Action.TargetType.ALL_ENEMIES:
+                    action.targets = unit;
+                    break;
+                case Action.TargetType.ALLIES:
+                    action.targets = unit;
+                    break;
+            }
+        }
     }
 
 

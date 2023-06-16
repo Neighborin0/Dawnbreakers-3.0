@@ -24,10 +24,8 @@ public class TutorialEnemy : Unit
     void Start()
     {
         behavior = this.gameObject.AddComponent<TutorialEnemyBehavior>();
-        this.stamina.Paused = true;
         this.OnDamaged += Damaged;
         this.BattleStarted += CreateTutorialIcon;
-        StartCoroutine(BattleSystem.Instance.SetTempEffect(this, "revitalize", null, false));
         this.GetComponent<TutorialEnemyBehavior>().TutorialIcon2 = TutorialIcon2;
     }
 
@@ -39,6 +37,7 @@ public class TutorialEnemy : Unit
             tutorialIcon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-5000, 0, 0f);
             StartCoroutine(Tools.SmoothMoveUI(tutorialIcon.GetComponent<RectTransform>(), 0, 0, 0.01f));
         }
+        StartCoroutine(BattleSystem.Instance.SetTempEffect(this, "revitalize", null, false));
         this.BattleStarted -= CreateTutorialIcon;
     }
 

@@ -12,16 +12,22 @@ public class Enrage : Action
         accuracy = 1;
         damageText = damage.ToString();
         cost = 25f;
+        statAmount = 2;
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
-        description = "Raises <sprite name=\"ATK RED2\"> by 2.";
+    }
+
+    public override string GetDescription()
+    {
+        description = $"Raises <sprite name=\"ATK RED2\"> by {statAmount}.";
+        return description;
     }
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
         LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.ATK, 2, false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.ATK, statAmount, false, targets);
         yield return new WaitForSeconds(0.5f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();

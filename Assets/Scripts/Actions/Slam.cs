@@ -13,9 +13,25 @@ public class Slam : Action
         targetType = TargetType.ALL_ENEMIES;
         damageText = damage.ToString();
         actionType = ActionType.ATTACK;
-        description = $"Deals <color=#FF0000>{damageText}</color> DMG to ALL enemies.";
     }
 
+    public override string GetDescription()
+    {
+        if (unit.IsPlayerControlled)
+        {
+            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG to ALL enemies..";
+        }
+        else
+        {
+            if (damage + unit.attackStat - targets.defenseStat > 0)
+            {
+                description = $"Deals <color=#FF0000>{damage + unit.attackStat - targets.defenseStat}</color> DMG to ALL enemies.";
+            }
+            else
+                description = $"Deals <color=#FF0000>0</color> DMG to ALL enemies.";
+        }
+        return description;
+    }
     public override IEnumerator ExecuteAction()
     {
         unit.PlayAction("Attack", unit);

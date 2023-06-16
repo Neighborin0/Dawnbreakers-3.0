@@ -19,6 +19,7 @@ public abstract class Action : ScriptableObject
     public string damageText;
     public bool Done = false;
     public bool New = false;
+    public int statAmount;
   
     public enum TargetType { ANY, SELF, ALL_ENEMIES, ALLIES };
     public enum ActionType { ATTACK, STATUS };
@@ -41,6 +42,8 @@ public abstract class Action : ScriptableObject
     //sorry to whoever reads this have an amoungus ඞ
     public void OnActivated(){ Director.Instance.StartCoroutine(ExecuteAction()); }
     public virtual IEnumerator ExecuteAction() { yield break; }
+
+    public virtual string GetDescription() { return ""; }
     public virtual void OnEnded(Unit unit = null, float storedValue = 0, bool DoFancyStatChanges = false) { }
 
   

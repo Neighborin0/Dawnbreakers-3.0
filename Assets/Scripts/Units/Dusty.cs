@@ -18,7 +18,8 @@ public class Dusty : Unit
     {
         unitName = "Dusty";
         maxHP = 40;
-        attackStat = 5;
+        // attackStat = 5;
+        attackStat = 999;
         defenseStat = 8;
         speedStat = 7;
         StartingStamina = UnityEngine.Random.Range(80, 90);

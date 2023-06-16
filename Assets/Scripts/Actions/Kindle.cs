@@ -19,11 +19,16 @@ public class Kindle : Action
         damageText = damage.ToString();
         PriorityMove = false;
         targetType = TargetType.SELF;
-        description = $"Heals allies by 10 <sprite name=\"HP\"> Increases allies <sprite name=\"ATK RED2\"> by 2.";
     }
 
+    public override string GetDescription()
+    {
+        description = $"Heals allies by 10 <sprite name=\"HP\"> Increases allies <sprite name=\"ATK RED2\"> by 2.";
+        return description;
+    }
     public override IEnumerator ExecuteAction()
     {
+        LabCamera.Instance.MoveToUnit(unit, 5);
         foreach (var x in Tools.DetermineAllies(unit))
         {
             Director.Instance.StartCoroutine(ActuallyDoFastStatChangesUnlikePokemon(x));
@@ -35,7 +40,7 @@ public class Kindle : Action
 
     private IEnumerator ActuallyDoFastStatChangesUnlikePokemon(Unit x)
     {
-        BattleSystem.Instance.SetStatChanges(Stat.ATK, 3f, false, x);
+        BattleSystem.Instance.SetStatChanges(Stat.ATK, 2f, false, x);
         yield return new WaitForSeconds(1f);
         BattleSystem.Instance.SetStatChanges(Stat.HP, 10f, false, x);
     }

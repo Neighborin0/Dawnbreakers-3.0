@@ -22,9 +22,13 @@ public class Defend : Action
         PriorityMove = true;
         targetType = TargetType.ALLIES;
         duration = 5f;
-        description = $"Applies +50 <sprite name=\"FORTIFY\"> for {duration} seconds.";
     }
 
+    public override string GetDescription()
+    {
+        description = $"Applies +{unit.defenseStat} <sprite name=\"FORTIFY\"> for {duration} seconds.";
+        return description;
+    }
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
@@ -46,7 +50,7 @@ public class Defend : Action
         }
         Director.Instance.StartCoroutine(BattleSystem.Instance.SetTempEffect(targets, "DEF", this, true, unit.defenseStat));
         BattleSystem.Instance.SetStatChanges(Stat.DEF, unit.defenseStat, false, targets);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.3f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
         this.Done = true;

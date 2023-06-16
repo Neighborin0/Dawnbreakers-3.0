@@ -12,6 +12,7 @@ using static UnityEngine.ParticleSystem;
 using static UnityEngine.Rendering.DebugUI;
 using Unity.VisualScripting;
 using System.Text.RegularExpressions;
+using static UnityEngine.UI.CanvasScaler;
 
 public enum BattleStates { START, DECISION_PHASE, BATTLE, WON, DEAD, IDLE, TALKING, WAITING }
 public class BattleSystem : MonoBehaviour
@@ -114,6 +115,7 @@ public class BattleSystem : MonoBehaviour
         {
             BattleLog.Instance.ResetBattleLog();
         }
+        
         if (Input.GetKeyDown(KeyCode.D))
         {
             foreach (var unit in Tools.GetAllUnits())
@@ -144,6 +146,7 @@ public class BattleSystem : MonoBehaviour
         {
             statStorers = new List<StatStorer>();
             Director.Instance.timeline.gameObject.SetActive(true);
+            Director.Instance.timeline.Move(false);
             for (int i = 0; i <= playerUnits.Count - 1; i++)
             {
                 playerUnits[i].gameObject.SetActive(true);
@@ -228,7 +231,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
         foreach (Transform child in Director.Instance.timeline.transform)
         {
-
+            if(child.GetComponent<TimeLineChild>() != null)
             Destroy(child.gameObject);
         }
         Director.Instance.timeline.gameObject.SetActive(false);
@@ -294,6 +297,15 @@ public class BattleSystem : MonoBehaviour
             unit.intentUI.damageParent.SetActive(true);
         }
         unit.intentUI.gameObject.SetActive(true);
+        Tools.SetImageColorAlphaToZero(unit.intentUI.GetComponent<Image>());
+        Tools.SetTextColorAlphaToZero(unit.intentUI.textMesh);
+        Tools.SetTextColorAlphaToZero(unit.intentUI.damageNums);
+        Tools.SetTextColorAlphaToZero(unit.intentUI.costNums);
+        StartCoroutine(Tools.FadeObject(unit.intentUI.GetComponent<Image>(), 0.005f, true, false));
+        StartCoroutine(Tools.FadeText(unit.intentUI.textMesh, 0.005f, true, false));
+        StartCoroutine(Tools.FadeText(unit.intentUI.damageNums, 0.005f, true, false));
+        StartCoroutine(Tools.FadeText(unit.intentUI.costNums, 0.005f, true, false));
+
     }
     public void SetStatChanges(Stat statToRaise, float AmountToRaise, bool multiplicative, Unit target)
     {
@@ -446,7 +458,7 @@ public class BattleSystem : MonoBehaviour
         }
         print("stats should be popping up");
         yield return new WaitForSeconds(1f);
-        StartCoroutine(popup.DestroyPopUp());  
+        StartCoroutine(popup.DestroyPopUp());
         yield break;
 
     }
@@ -455,7 +467,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (AmountToRaise > 0)
         {
-            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatUpVFX", color, new Vector3(0, 0, 0), 1f, 0, false, true));
+            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatUpVFX", color, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), 1f, 0, false, true));
         }
         else
         { 
@@ -567,22 +579,13 @@ public class BattleSystem : MonoBehaviour
         {
             child.Return();
         }
-        /*foreach (var line in GameObject.FindObjectsOfType<TargetLine>())
-        {
-            if (line != null && lineCoroutine != null)
-            {
-                StopCoroutine(lineCoroutine);
-            }
-            line.enabled = false;
-            line.gameObject.SetActive(false);
-        }*/
         Director.Instance.BL.Move(false);
         foreach (var x in Tools.GetAllUnits())
         {
             x.ExitDecision();
             if (x.intentUI != null)
             {
-                x.intentUI.gameObject.SetActive(false);
+                StartCoroutine(FadeOutEnemyIntents(x));
             }
             if (x.skillUIs != null)
             {
@@ -598,10 +601,6 @@ public class BattleSystem : MonoBehaviour
         {
             if (action.unit != null && action.targets != null)
             {
-                /*if (action.unit.GetComponentInChildren<TargetLine>() != null)
-                {
-                    Destroy(action.unit.GetComponentInChildren<TargetLine>().gameObject);
-                }*/
                 if (action.unit.IsPlayerControlled)
                 {
                     action.unit.state = PlayerState.WAITING;
@@ -643,6 +642,13 @@ public class BattleSystem : MonoBehaviour
                 x.intentUI.gameObject.SetActive(true);
                 if (x.intentUI.action == null)
                     StartCoroutine(x.behavior.DoBehavior(x));
+                //x.intentUI.CheckTarget(intent.action, x);
+                Tools.SetImageColorAlphaToZero(x.intentUI.GetComponent<Image>());
+                x.intentUI.GetComponent<UnityEngine.UI.Button>().interactable = true;
+                StartCoroutine(Tools.FadeObject(x.intentUI.GetComponent<Image>(), 0.005f, true, false));
+                StartCoroutine(Tools.FadeText(x.intentUI.textMesh, 0.005f, true, false));
+                StartCoroutine(Tools.FadeText(x.intentUI.damageNums, 0.005f, true, false));
+                StartCoroutine(Tools.FadeText(x.intentUI.costNums, 0.005f, true, false));
             }
             x.DoBattlePhaseEnd();
         }
@@ -660,19 +666,28 @@ public class BattleSystem : MonoBehaviour
             }
             Director.Instance.BL.Move(true);
 
-        }
-        if (state != BattleStates.DECISION_PHASE)
+        }     
+        Director.Instance.timelinespeedDelay = Director.Instance.UserTimelineSpeedDelay;
+        LabCamera.Instance.state = LabCamera.CameraState.SWAY;
+        unit.DoBattlePhaseClose();
+        if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD)
         {
             state = BattleStates.IDLE;
             Tools.UnpauseAllStaminaTimers();
         }
-        Director.Instance.timelinespeedDelay = Director.Instance.UserTimelineSpeedDelay;
-        //Director.Instance.blackScreen.gameObject.SetActive(false);
-        LabCamera.Instance.state = LabCamera.CameraState.SWAY;
-        unit.DoBattlePhaseClose();
         yield break;
     }
 
+    private IEnumerator FadeOutEnemyIntents(Unit unit)
+    {
+        unit.intentUI.GetComponent<UnityEngine.UI.Button>().interactable = false;
+        StartCoroutine(Tools.FadeObject(unit.intentUI.GetComponent<Image>(), 0.005f, false, false));
+        StartCoroutine(Tools.FadeText(unit.intentUI.textMesh, 0.005f, false, false));
+        StartCoroutine(Tools.FadeText(unit.intentUI.damageNums, 0.005f, false, false));
+        StartCoroutine(Tools.FadeText(unit.intentUI.costNums, 0.005f, false, false));
+        yield return new WaitForSeconds(1f);
+        unit.intentUI.gameObject.SetActive(false);
+    }
 
     public void SetupHUD(Unit unit, Transform position)
     {

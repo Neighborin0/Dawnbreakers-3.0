@@ -15,9 +15,13 @@ public class Summon : Action
         targetType = TargetType.SELF;
         actionType = ActionType.STATUS;
         damageText = damage.ToString();
-        description = $"Summons a fearsome foe...";
     }
 
+    public override string GetDescription()
+    {
+        description = $"Summons a fearsome foe...";
+        return description;
+    }
     public override IEnumerator ExecuteAction()
     {
         if (Tools.DetermineAllies(unit).Count < 3)

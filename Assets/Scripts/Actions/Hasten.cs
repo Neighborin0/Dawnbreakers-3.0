@@ -13,14 +13,20 @@ public class Hasten : Action
         damageText = damage.ToString();
         cost = 50f;
         targetType = TargetType.SELF;
+        statAmount = 5;
         actionType = ActionType.STATUS;
-        description = "Increases <sprite name=\"SPD YLW\"> by 5.";
+    }
+
+    public override string GetDescription()
+    {
+        description = $"Increases <sprite name=\"SPD YLW\"> by {statAmount}.";
+        return description;
     }
     public override IEnumerator ExecuteAction()
     {
         LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.SPD, 5, false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.SPD, statAmount, false, targets);
         yield return new WaitForSeconds(0.5f);
         LabCamera.Instance.ResetPosition();
         this.Done = true;

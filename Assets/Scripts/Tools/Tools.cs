@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -102,7 +103,6 @@ public class Tools : MonoBehaviour
             if (unit.state == PlayerState.DECIDING)
                 result = true;
         }
-        print(result);
         return result;
             
     }
@@ -115,7 +115,6 @@ public class Tools : MonoBehaviour
             if (AC.targetting)
                 result = true;
         }
-        print(result);
         return result;
 
     }
@@ -128,6 +127,22 @@ public class Tools : MonoBehaviour
             act.DestoryEffectIcon();
         }
     }
+
+    public static void SetImageColorAlphaToZero(Image image)
+    {
+        var tempColor = image.color;
+        tempColor.a = 0;
+        image.color = tempColor;
+    }
+
+    public static void SetTextColorAlphaToZero(TextMeshProUGUI text)
+    {
+        var tempColor = text.color;
+        tempColor.a = 0;
+        text.color = tempColor;
+    }
+
+ 
     public static void FadeUI(Image image, bool fadeOut)
     {
         for (int i = 0; i < 100; i++)
@@ -141,6 +156,60 @@ public class Tools : MonoBehaviour
                 image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a + i);
             }
         }
+    }
+
+    public static IEnumerator FadeText(TextMeshProUGUI gameObject, float delay, bool FadeIn, bool SetInactiveAtEnd = true)
+    {
+        if (!gameObject.gameObject.activeSelf)
+        {
+            gameObject.gameObject.SetActive(true);
+        }
+        if (gameObject != null && !FadeIn)
+        {
+            while (gameObject.color.a > 0)
+            {
+                gameObject.color = new Color(gameObject.color.r, gameObject.color.g, gameObject.color.b, gameObject.color.a - 0.01f);
+                yield return new WaitForSeconds(delay);
+            }
+            if (SetInactiveAtEnd)
+            {
+                gameObject.gameObject.SetActive(false);
+            }
+        }
+        else if (gameObject != null)
+        {
+            while (gameObject.color.a < 1)
+            {
+                gameObject.color = new Color(gameObject.color.r, gameObject.color.g, gameObject.color.b, gameObject.color.a + 0.01f);
+                yield return new WaitForSeconds(delay);
+            }
+        }
+
+    }
+
+    public static IEnumerator FadeObject(Image gameObject, float delay, bool FadeIn, bool SetInactiveAtEnd = true)
+    {
+        if (gameObject != null && !FadeIn)
+        {
+            while (gameObject.color.a > 0)
+            {
+                gameObject.color = new Color(gameObject.color.r, gameObject.color.g, gameObject.color.b, gameObject.color.a - 0.01f);
+                yield return new WaitForSeconds(delay);
+            }
+            if (SetInactiveAtEnd)
+            {
+                gameObject.gameObject.SetActive(false);
+            }
+        }
+        else if (gameObject != null)
+        {
+            while (gameObject.color.a < 1)
+            {
+                gameObject.color = new Color(gameObject.color.r, gameObject.color.g, gameObject.color.b, gameObject.color.a + 0.01f);
+                yield return new WaitForSeconds(delay);
+            }
+        }
+
     }
     public static string CheckNames(Unit unit)
     {
@@ -551,34 +620,7 @@ public class Tools : MonoBehaviour
         yield break;
     }
 
-    public static IEnumerator FadeObject(Image gameObject, float delay, bool FadeIn, bool SetInactiveAtEnd = true)
-    {
-        if (!gameObject.gameObject.activeSelf)
-        {
-            gameObject.gameObject.SetActive(true);
-        }
-            if (gameObject != null && !FadeIn)
-            {
-                while(gameObject.color.a > 0)
-                {
-                    gameObject.color = new Color(0, 0, 0, gameObject.color.a - 0.01f);
-                    yield return new WaitForSeconds(delay);
-                }
-                if (SetInactiveAtEnd)
-                {
-                    gameObject.gameObject.SetActive(false);
-                }
-            }
-            else if (gameObject != null)
-            {
-                while(gameObject.color.a < 1)
-                {
-                    gameObject.color = new Color(0, 0, 0, gameObject.color.a + 0.01f);
-                    yield return new WaitForSeconds(delay);
-                }         
-            }
-        
-    }
+   
 
 
 
