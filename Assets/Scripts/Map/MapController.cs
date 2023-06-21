@@ -24,7 +24,13 @@ public class MapController : MonoBehaviour
     private Vector3 storedTransform = Vector3.zero;
     [SerializeField]
     private float delay;
+    public Vector3 MaxMapBounds;
+    public Vector3 MinMapBounds;
+    public float ZoomAmount;
     public List<MapNode> currentNodes;
+
+    public float MaxZoom;
+    public float MinZoom;
 
     public int completedNodeCount;
 
@@ -46,6 +52,7 @@ public class MapController : MonoBehaviour
 
     void Start()
     {
+        mapCanvas.transform.localScale /= 2;
         GenerateNodesFromFlow(MapFlow.TestFlow);
         SpawnMiniMe();
         SceneManager.sceneLoaded += SaveSceneData;
@@ -120,10 +127,10 @@ public class MapController : MonoBehaviour
 
     public void SpawnDecorations()
     {
-        for (int i = 0; i < UnityEngine.Random.Range(20, 30); i++)
+        for (int i = 0; i < UnityEngine.Random.Range(30, 40); i++)
         {
-            var decor = Instantiate(mapObjects[UnityEngine.Random.Range(0, mapObjects.Count)], new Vector3(UnityEngine.Random.Range(-160f, 1920), UnityEngine.Random.Range(-510, 510), 0), Quaternion.Euler(0, 0, 0), mapCanvas.transform);
-            decor.transform.localScale = new Vector3(200, 300, 200);
+            var decor = Instantiate(mapObjects[UnityEngine.Random.Range(0, mapObjects.Count)], new Vector3(UnityEngine.Random.Range(-160f, 4000), UnityEngine.Random.Range(-1080, 1080), 0), Quaternion.Euler(0, 0, 0), mapCanvas.transform);
+            decor.transform.localScale = new Vector3(UnityEngine.Random.Range(180, 240), UnityEngine.Random.Range(280, 320), UnityEngine.Random.Range(180, 240));
             decor.transform.localPosition = new Vector3(decor.transform.position.x, decor.transform.position.y, 0);
         }
     }
@@ -132,7 +139,7 @@ public class MapController : MonoBehaviour
         int i = 0;
         foreach (var unit in Director.Instance.party)
         {
-            var MM = Instantiate(miniMePrefab, StartingPosition + new Vector3(i * 2, 2, -1 + i), Quaternion.identity, mapCanvas.transform);
+            var MM = Instantiate(miniMePrefab, StartingPosition + new Vector3(i * -2, 1, -1 + i), Quaternion.identity, mapCanvas.transform);
             var rigidbody = MM.GetComponent<Rigidbody2D>();
             rigidbody.simulated = false;
             MM.unit = unit;
@@ -143,7 +150,9 @@ public class MapController : MonoBehaviour
             }
             MM.mapIcon.material.SetFloat("OutlineThickness", 1f);
             MM.mapIcon.material.SetColor("OutlineColor", Color.black);
-            //LabCamera.Instance.MoveAndFollowGameObject(MM.gameObject, new Vector3(0, 0, -120));
+            if(i == 0)
+             LabCamera.Instance.MoveAndFollowGameObject(MM.gameObject, new Vector3(0, MinZoom, -MinZoom * 3.4f));
+
             i++;
         }
 
@@ -153,7 +162,7 @@ public class MapController : MonoBehaviour
     {
         int i = 0;
 
-        var mapGrid = new MapGrid(20, 1, 170, this.transform);
+        var mapGrid = new MapGrid(20, 1, 377, this.transform);
         foreach (var node in mapFlow)
         {
             foreach (var prefab in nodePrefabs)
@@ -162,7 +171,7 @@ public class MapController : MonoBehaviour
                 {
                     var newNode = Instantiate(prefab, new Vector3(0, 0, -1), Quaternion.identity, mapCanvas.transform);
                     var rectTransform = newNode.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = mapGrid.GetWorldPos(i + 1, 0);
+                    rectTransform.anchoredPosition = mapGrid.GetWorldPos(i + 2.8f, 0);
                     rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, rectTransform.localPosition.y, -1);
                     newNode.transform.rotation = new Quaternion(0, 0, 0, 0);
                     if (!StartingPositionHasBeenSet)
@@ -182,6 +191,14 @@ public class MapController : MonoBehaviour
                             combatNode.enemies.Add(Director.Instance.Unitdatabase.Where(obj => obj.name == enemy).FirstOrDefault());
                         }
                     }
+                    if(node.RoomType == MapFlow.RoomType.BOSS)
+                    {
+                        var bossNode = newNode.GetComponent<BossNode>();
+                        foreach (var enemy in node.enemies)
+                        {
+                            bossNode.enemies.Add(Director.Instance.Unitdatabase.Where(obj => obj.name == enemy).FirstOrDefault());
+                        }
+                    }
                     currentNodes.Add(newNode);
                     if (!newNode.IsStartingNode && !Director.Instance.DevMode)
                     {
@@ -194,16 +211,25 @@ public class MapController : MonoBehaviour
         }
     }
 
-    private void DrawLine(Vector3 pointToDrawTo)
+    private IEnumerator DrawLine(Vector3 pointToDrawTo, GameObject node)
     {
+        var MM = LabCamera.Instance.followTarget;
+        node.transform.localScale = new Vector3(0, 0, 0);
+        LabCamera.Instance.state = LabCamera.CameraState.IDLE;
+        LabCamera.Instance.MoveToGameObject(node);
         float compressor = 2;
         var lineInstance = Instantiate(linePrefab, mapCanvas.transform);
         lineInstance.SetPosition(0, new Vector3(storedTransform.x + compressor, storedTransform.y, storedTransform.z));
         lineInstance.SetPosition(1, storedTransform);
         lineCoroutine = Tools.SmoothMoveLine(lineInstance, new Vector3(pointToDrawTo.x - compressor, pointToDrawTo.y, pointToDrawTo.z), 0.01f);
         StartCoroutine(lineCoroutine);
-
         storedTransform = pointToDrawTo;
+        yield return new WaitForSeconds(0.4f);
+        currentNodes[completedNodeCount].IsEnabled = true;
+        currentNodes[completedNodeCount].gameObject.SetActive(true);
+        StartCoroutine(Tools.SmoothScale(node.GetComponent<RectTransform>(), node.GetComponent<MapNode>().oldScaleSize, 0.01f));
+        yield return new WaitForSeconds(1.2f);
+        LabCamera.Instance.MoveAndFollowGameObject(MM, new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f));
     }
     public IEnumerator LoadSlots()
     {
@@ -212,28 +238,28 @@ public class MapController : MonoBehaviour
         Director.Instance.CreateCharacterSlots(Director.Instance.party);
     }
 
-    public IEnumerator DoReEnteredMap()
+    public IEnumerator DoReEnteredMap(bool setup = true)
     {
-        StartCoroutine(Tools.FadeObject(Director.Instance.blackScreen, 0.001f, false));
-        yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
-        SpawnMiniMe();
-        yield return new WaitForSeconds(1f);
-        foreach (Transform child in transform)
+        if (setup)
         {
-            if (child.GetComponent<MiniMapIcon>() != null)
+            StartCoroutine(Tools.FadeObject(Director.Instance.blackScreen, 0.001f, false));
+            LabCamera.Instance.followDisplacement = new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f);
+            yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+            SpawnMiniMe();
+            yield return new WaitForSeconds(1f);
+            foreach (Transform child in transform)
             {
-                child.GetComponent<MiniMapIcon>().state = MiniMapIcon.MapIconState.IDLE;
+                if (child.GetComponent<MiniMapIcon>() != null)
+                {
+                    child.GetComponent<MiniMapIcon>().state = MiniMapIcon.MapIconState.IDLE;
+                }
+            }
+            foreach (var unit in Director.Instance.party)
+            {
+                unit.DoEnteredMap();
             }
         }
-        foreach (var unit in Director.Instance.party)
-        {
-            unit.DoEnteredMap();
-        }
-        /// float force = 800f;
-        // StartCoroutine(DoPlayerJump(force));
         completedNodeCount++;
-        currentNodes[completedNodeCount].IsEnabled = true;
-        currentNodes[completedNodeCount].gameObject.SetActive(true);
-        DrawLine(currentNodes[completedNodeCount].transform.position);
+        StartCoroutine(DrawLine(currentNodes[completedNodeCount].transform.position, currentNodes[completedNodeCount].gameObject));
     }
 }

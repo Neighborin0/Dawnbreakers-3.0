@@ -72,41 +72,15 @@ public class RestSite : MonoBehaviour
         Director.Instance.CharacterSlotEnable();
 
     }
-
-
-    public IEnumerator FadeToBlack(float delay)
-    {
-        var screenImage = Director.Instance.blackScreen;
-        for (int i = 0; i < 101; i++)
-        {
-            if (screenImage != null)
-            {
-                screenImage.color = new Color(0, 0, 0, i / 100f);
-                print(i / 100f);
-                yield return new WaitForSeconds(delay);
-            }
-        }
-        yield return new WaitForSeconds(1f);
-        for (int i = 0; i <= Director.Instance.party.Count - 1; i++)
-        {
-            Director.Instance.party[i].GetComponent<SpriteRenderer>().flipX = false;
-            Director.Instance.party[i].gameObject.SetActive(false);
-
-        }
-        StartCoroutine(Director.Instance.DoLoad("MAP2"));
-    }
-
-    public void Leave()
-    {
-        StartCoroutine(FadeToBlack(0.001f));
-    }
     public void Train()
     {
         for (int i = 0; i <= Director.Instance.party.Count - 1; i++)
         {
             Director.Instance.LevelUp(Director.Instance.party[i], false);
+            DontDestroyOnLoad(Director.Instance.party[i].gameObject);
+
         }
-        StartCoroutine(FadeToBlack(0.001f));
+        StartCoroutine(TransitionToMap());
     }
     public void Rest()
     {
@@ -114,7 +88,22 @@ public class RestSite : MonoBehaviour
         {
             Director.Instance.party[i].currentHP = Director.Instance.party[i].maxHP;
         }
-        StartCoroutine(FadeToBlack(0.01f));
+        StartCoroutine(TransitionToMap());
+    }
+
+    public IEnumerator TransitionToMap()
+    {
+        for (int i = 0; i <= Director.Instance.party.Count - 1; i++)
+        {
+            DontDestroyOnLoad(Director.Instance.party[i].gameObject);
+        }
+        StartCoroutine(Director.Instance.DoLoad("MAP2"));
+        yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+        foreach (var unit in Tools.GetAllUnits())
+        {
+            unit.StaminaHighlightIsDisabled = true;
+            unit.gameObject.SetActive(false);
+        }
     }
 
 }

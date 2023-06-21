@@ -9,9 +9,8 @@ public class ChestNode : MapNode
     public ItemDisplay itemDisplayPrefab;
     public List<ItemDisplay> itemDisplays;
     public List<Item> alreadySelected;
-    public void Transition()
+    public override void OnInteracted()
     {
-        DisableNode();
         Tools.ToggleUiBlocker(false);
         Director.Instance.CharacterSlotEnable(true);
         for (int i = 0; i <= 2; i++)
@@ -22,7 +21,6 @@ public class ChestNode : MapNode
         GetRandomItem();
       
     }
-
     public void GetRandomItem()
     {
         for (int i = 0; i <= 2; i++)

@@ -35,7 +35,7 @@ public class MapGrid
         Debug.DrawLine(GetWorldPos(width, 0), GetWorldPos(width, height), Color.black, 1000f);
     }
 
-    public Vector3 GetWorldPos(int x, int y)
+    public Vector3 GetWorldPos(float x, float y)
     {
         return new Vector3(x,y) * cellSize;
     }

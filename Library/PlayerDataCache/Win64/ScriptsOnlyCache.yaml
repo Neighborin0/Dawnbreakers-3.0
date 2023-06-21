@@ -61,6 +61,7 @@ ScriptsOnlyBuild:
     - RestSite
     - SettingsBackButton
     - SettingsButton
+    - Slam
     - Slash
     - Slow
     - StaminaBar
@@ -164,10 +165,6 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
-    UnityEditor.UI.dll:
-    - UnityEditor.EventSystems.EventTriggerEditor
-    - UnityEditor.UI.ButtonEditor
-    - UnityEditor.UI.ImageEditor
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.EventTrigger
@@ -1433,7 +1430,7 @@ ScriptsOnlyBuild:
     className: CharacterTabPopup
   - hash:
       serializedVersion: 2
-      Hash: 51fc6aa57216fc912f978fe914420b4b
+      Hash: 5288e5dd87bc90384847c6515afbc5b4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CharacterNode
@@ -1625,7 +1622,7 @@ ScriptsOnlyBuild:
     className: HorizontalLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: 91e866be307ba52e4c86dcb072f61df6
+      Hash: c8303efaa526370e7fdbb4635f2003bf
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MapController
@@ -2099,7 +2096,7 @@ ScriptsOnlyBuild:
     className: Variables
   - hash:
       serializedVersion: 2
-      Hash: 51fc6aa57216fc912f978fe914420b4b
+      Hash: 5288e5dd87bc90384847c6515afbc5b4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MapNode
@@ -2447,7 +2444,7 @@ ScriptsOnlyBuild:
     className: ToggleGroup
   - hash:
       serializedVersion: 2
-      Hash: 24ba538b367adcfadce19bd46bbf8f47
+      Hash: 502148c5bd172eb4f3db74bb4ed89b82
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CombatNode
@@ -2777,7 +2774,7 @@ ScriptsOnlyBuild:
     className: SetSpawnTime
   - hash:
       serializedVersion: 2
-      Hash: 51fc6aa57216fc912f978fe914420b4b
+      Hash: 5288e5dd87bc90384847c6515afbc5b4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: RestNode
@@ -3077,7 +3074,7 @@ ScriptsOnlyBuild:
     className: TextContainer
   - hash:
       serializedVersion: 2
-      Hash: af855731f928cf9035386cccbe5b62e7
+      Hash: b62d45c9ae3726348595ce84ee6b59b4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ChestNode

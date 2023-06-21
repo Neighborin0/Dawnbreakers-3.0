@@ -103,10 +103,11 @@ public class ItemDisplay : MonoBehaviour
             CS.stats.text = $":{CS.unit.attackStat}\n:{CS.unit.defenseStat}\n:{CS.unit.speedStat}";
             CS.healthNumbers.text = $"{CS.unit.currentHP} / {CS.unit.maxHP}";
         }
-        Tools.ToggleUiBlocker(true);
         Director.Instance.backButton.gameObject.SetActive(false);
         Move(false);
         Director.Instance.DisableCharacterTab();
+        Tools.ToggleUiBlocker(true);
+        MapController.Instance.StartCoroutine(MapController.Instance.DoReEnteredMap(false));
         foreach (var ID in Director.Instance.ItemTabGrid.transform.GetComponentsInChildren<ItemDisplay>())
         {
             Destroy(ID.gameObject);

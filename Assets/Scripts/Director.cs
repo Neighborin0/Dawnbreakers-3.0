@@ -65,7 +65,7 @@ public class Director : MonoBehaviour
             
 #else
              Debug.unityLogger.logEnabled = false;
-             DevMode = true;
+             DevMode = false;
 #endif
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -173,7 +173,7 @@ public class Director : MonoBehaviour
             if (generalCoruntine != null)
                 StopCoroutine(generalCoruntine);
 
-            generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), -1500f, characterSlotpos.GetComponent<RectTransform>().anchoredPosition.y, 0.01f);
+            generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), characterSlotpos.GetComponent<RectTransform>().anchoredPosition.x, 166, 0.01f);
             StartCoroutine(generalCoruntine);
             CharacterSlotsDisplayed = false;
         }
@@ -184,7 +184,7 @@ public class Director : MonoBehaviour
                 if (generalCoruntine != null)
                     StopCoroutine(generalCoruntine);
 
-                generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), -1500f, characterSlotpos.GetComponent<RectTransform>().anchoredPosition.y, 0.01f);
+                generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), characterSlotpos.GetComponent<RectTransform>().anchoredPosition.x, 166, 0.01f);
                 StartCoroutine(generalCoruntine);
                 CharacterSlotsDisplayed = false;
             }
@@ -193,7 +193,7 @@ public class Director : MonoBehaviour
                 if (generalCoruntine != null)
                     StopCoroutine(generalCoruntine);
 
-                generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), -825f, characterSlotpos.GetComponent<RectTransform>().anchoredPosition.y, 0.01f);
+                generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), characterSlotpos.GetComponent<RectTransform>().anchoredPosition.x, 48, 0.01f);
                 StartCoroutine(generalCoruntine);
                 CharacterSlotsDisplayed = true;
             }

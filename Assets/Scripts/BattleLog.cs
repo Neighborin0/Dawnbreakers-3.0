@@ -215,10 +215,13 @@ public class BattleLog : MonoBehaviour
 
         battlelog.itemText.gameObject.SetActive(false);
         battlelog.itemText.text = "";
-        foreach(var x in BattleSystem.Instance.enemyUnits)
+        if(BattleSystem.Instance != null)
         {
-            x.StatsAreDisplayed = false;
-        }
+            foreach (var x in BattleSystem.Instance.enemyUnits)
+            {
+                x.StatsAreDisplayed = false;
+            }
+        }  
         foreach (var item in battlelog.inventoryDisplay.GetComponentsInChildren<Button>())
         {
             Destroy(item.gameObject);

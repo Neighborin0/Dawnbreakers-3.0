@@ -67,7 +67,7 @@ public class EffectIcon : MonoBehaviour
         Destroy(this.gameObject);
 
     }
-    public virtual string GetDescription() { return ""; }
+    public virtual string GetDescription() { return description; }
     public void Update()
     {
         if(TimedEffect)

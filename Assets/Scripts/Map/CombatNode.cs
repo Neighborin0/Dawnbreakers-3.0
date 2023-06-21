@@ -9,9 +9,8 @@ public class CombatNode : MapNode
 {
     public List<Unit> enemies;
     public List<Unit> playerUnits;
-    public void StartBattle()
+    public override void OnInteracted()
     {
-        DisableNode();
         Tools.ClearAllCharacterSlots();
         foreach (var unit in Director.Instance.party)
         {
@@ -19,10 +18,8 @@ public class CombatNode : MapNode
            
             print(unit.unitName);
         }
-        //SceneManager.LoadSceneAsync("Battle", LoadSceneMode.Additive);
         StartCoroutine(Director.Instance.DoLoad("Battle"));
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        
+        SceneManager.sceneLoaded += OnSceneLoaded;  
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

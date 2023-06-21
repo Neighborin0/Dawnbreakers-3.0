@@ -281,8 +281,6 @@ MonoBehaviour:
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: a8ebee44482aa0841914562f52c95421, type: 2}
-  - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
-  - {fileID: 11400000, guid: 1cb29368371cc8d439e6e132b82f3e65, type: 2}
   ActionLayout: {fileID: 0}
   summonables: []
   IsSummon: 0

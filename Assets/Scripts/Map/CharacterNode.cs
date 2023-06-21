@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class CharacterNode : MapNode
 {
-    public void Transition()
+    public override void OnInteracted()
     {
         SceneManager.LoadScene(2);
     }

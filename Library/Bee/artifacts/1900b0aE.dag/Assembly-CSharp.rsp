@@ -416,6 +416,7 @@
 "Assets/Scripts/Main Menu/SettingsBackButton.cs"
 "Assets/Scripts/Main Menu/SettingsButton.cs"
 "Assets/Scripts/Main Menu/StartButton.cs"
+"Assets/Scripts/Map/BossNode.cs"
 "Assets/Scripts/Map/CharacterNode.cs"
 "Assets/Scripts/Map/ChestNode.cs"
 "Assets/Scripts/Map/ChestNodeObject.cs"

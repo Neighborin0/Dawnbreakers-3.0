@@ -30,7 +30,7 @@ public class LabCamera : MonoBehaviour
 
 	public CameraState state;
 
-	public enum CameraState { IDLE, SWAY, MOVING, SHAKE, SWEEP, FOLLOW}
+	public enum CameraState { IDLE, SWAY, MOVING, SHAKE, SWEEP, MAP}
 
 
 	void Awake()
@@ -45,6 +45,7 @@ public class LabCamera : MonoBehaviour
 				camTransform = GetComponent<Camera>().transform;
 				Instance = this;
 			    state = CameraState.IDLE;
+			    
 			}
 
 	}
@@ -150,10 +151,45 @@ public class LabCamera : MonoBehaviour
 				state = CameraState.IDLE;
 			}
 		}
-        if (state == CameraState.FOLLOW)
+        if (state == CameraState.MAP)
         {
             float step = 10 * Time.deltaTime;
-            transform.position = Vector3.LerpUnclamped(transform.position, new Vector3(followTarget.transform.position.x, followTarget.transform.position.y + followDisplacement.y, followTarget.transform.position.z + followDisplacement.z), step);
+			var boundPos = new Vector3(
+					Mathf.Clamp(followTarget.transform.position.x + followDisplacement.x, MapController.Instance.MinMapBounds.x, MapController.Instance.MaxMapBounds.x),
+					Mathf.Clamp(followTarget.transform.position.y + followDisplacement.y, MapController.Instance.MinMapBounds.y, MapController.Instance.MaxMapBounds.y),
+					Mathf.Clamp(followTarget.transform.position.z + followDisplacement.z, MapController.Instance.MinMapBounds.z, MapController.Instance.MaxMapBounds.z));
+			//Zoom In
+            if (Input.GetAxis("Mouse ScrollWheel") > 0 && this.transform.position.y > MapController.Instance.MinMapBounds.y)
+			{
+				followDisplacement.z += MapController.Instance.ZoomAmount * 3.4f;
+                followDisplacement.y -= MapController.Instance.ZoomAmount;
+            }
+            //Zoom Out
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0 && this.transform.position.y < MapController.Instance.MaxMapBounds.y)
+            {
+                followDisplacement.z -= MapController.Instance.ZoomAmount * 3.4f;
+                followDisplacement.y += MapController.Instance.ZoomAmount;
+            }
+          
+            if (Input.GetMouseButton(1))
+			{
+				if(this.transform.position.y > MapController.Instance.MinMapBounds.y && this.transform.position.y < MapController.Instance.MaxMapBounds.y && this.transform.position.z > MapController.Instance.MinMapBounds.z && this.transform.position.z < MapController.Instance.MaxMapBounds.z)
+                    followDisplacement += new Vector3(0, -Input.GetAxis("Mouse Y"), -Input.GetAxis("Mouse Y"));
+                if(this.transform.position.x > MapController.Instance.MinMapBounds.x)
+				{
+                    followDisplacement += new Vector3(-Input.GetAxis("Mouse X"), 0, 0);
+                }
+				else if(this.transform.position.x < MapController.Instance.MaxMapBounds.x && Input.GetAxis("Mouse X") > 0)
+				{
+                    followDisplacement += new Vector3(-Input.GetAxis("Mouse X"), 0, 0);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+				followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
+            }
+
+            transform.position = Vector3.LerpUnclamped(transform.position, boundPos, step);
         }
 
     }
@@ -186,7 +222,7 @@ public class LabCamera : MonoBehaviour
     {
 		this.followTarget = gameObject;
 		this.followDisplacement = followDisplacement;
-		state = CameraState.FOLLOW;
+		state = CameraState.MAP;
     }
 
     public void MoveToGameObject(GameObject gameObject)

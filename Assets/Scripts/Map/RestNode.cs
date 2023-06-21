@@ -6,9 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class RestNode : MapNode
 {
-    public void Transition()
+    public override void OnInteracted()
     {
-        DisableNode();
         Director.Instance.CharacterSlotEnable();
         StartCoroutine(Director.Instance.DoLoad("Rest"));
     }
