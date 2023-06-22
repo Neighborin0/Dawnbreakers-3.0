@@ -9541,7 +9541,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -1215}
+  m_AnchoredPosition: {x: 960, y: -1419}
   m_SizeDelta: {x: 1920, y: 270}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &330815494716755244
@@ -10206,10 +10206,10 @@ Canvas:
   m_GameObject: {fileID: 330815495703860653}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -10234,7 +10234,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 2
+  m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -10494,10 +10494,8 @@ MonoBehaviour:
   battlebar: {fileID: 2165331153531024092, guid: 2d3b9fbacee275c429962fe7f36695c5,
     type: 3}
   canvas: {fileID: 330815495703860654}
-  fPSCounter: {fileID: 1802658001}
   CharacterSlotsDisplayed: 1
   DevMode: 1
-  blackScreen: {fileID: 2752208566296662257}
   backButton: {fileID: 1279980817}
   timeline: {fileID: 10687130}
   timelinespeedDelay: 5

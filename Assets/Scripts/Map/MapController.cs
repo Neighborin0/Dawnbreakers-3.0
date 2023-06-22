@@ -39,12 +39,13 @@ public class MapController : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else
         {
             Instance = this;
             StartCoroutine(LoadSlots());
+            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
             DontDestroyOnLoad(gameObject);
         }
 
@@ -93,7 +94,7 @@ public class MapController : MonoBehaviour
                     }
                 }
                 Loaded = true;
-                Director.Instance.blackScreen.gameObject.SetActive(true);
+                OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
                 StartCoroutine(LoadSlots());
                 StartCoroutine(DoReEnteredMap());
             }
@@ -242,9 +243,9 @@ public class MapController : MonoBehaviour
     {
         if (setup)
         {
-            StartCoroutine(Tools.FadeObject(Director.Instance.blackScreen, 0.001f, false));
+            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
             LabCamera.Instance.followDisplacement = new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f);
-            yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+            yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
             SpawnMiniMe();
             yield return new WaitForSeconds(1f);
             foreach (Transform child in transform)

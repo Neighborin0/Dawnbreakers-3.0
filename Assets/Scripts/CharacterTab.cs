@@ -72,7 +72,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             }
             levelupDisplay.SetActive(true);
         }
-        Director.Instance.blackScreen.gameObject.SetActive(true);
+        OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         Tools.ToggleUiBlocker(false);
     }
 

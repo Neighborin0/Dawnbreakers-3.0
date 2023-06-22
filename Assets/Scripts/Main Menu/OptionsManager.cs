@@ -16,18 +16,79 @@ public class OptionsManager : MonoBehaviour
     public TMPro.TMP_Dropdown vsynDropdown;
     public TMPro.TMP_Dropdown fullScreenDropdown;
     public TMPro.TMP_Dropdown QualityDropdown;
+    public FPSCounter fPSCounter;
+    public bool SettingsMenuDisabled;
+    public Image blackScreen;
+    public Button quitButton;
     void Awake()
     {
         if (Instance != null)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+#if UNITY_EDITOR
+            Debug.unityLogger.logEnabled = true;
+            
+#else
+            Debug.unityLogger.logEnabled = false;
+            OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
+            OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 1);
+            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
+#endif
         }
 
+    }
+
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && fPSCounter != null)
+        {
+            FPSCounterEnable();
+        }
+        if (Input.GetKeyDown(KeyCode.Tab) && SceneManager.GetActiveScene().name != "Main Menu")
+        {
+            if (BattleSystem.Instance != null && Director.Instance != null && BattleSystem.Instance.CheckPlayableState())
+            {
+                if (SettingsMenuDisabled)
+                {
+                    Director.Instance.previousCameraState = LabCamera.Instance.state;
+                    LabCamera.Instance.state = LabCamera.CameraState.IDLE;
+                    Tools.PauseAllStaminaTimers();
+                    //Time.timeScale = 0;
+                }
+                else
+                {
+                    //Time.timeScale = 1;
+                    LabCamera.Instance.state = Director.Instance.previousCameraState;
+                    if(!Tools.CheckIfAnyUnitIsDeciding())
+                    {
+                        Tools.UnpauseAllStaminaTimers();
+                    }
+                   
+                }
+            }
+          
+
+            Move(SettingsMenuDisabled);
+
+        }
+    }
+
+    public void FPSCounterEnable()
+    {
+        if (fPSCounter.gameObject.activeSelf)
+        {
+            fPSCounter.gameObject.SetActive(false);
+        }
+        else
+        {
+            fPSCounter.gameObject.SetActive(true);
+        }
     }
 
     void Start()
@@ -38,14 +99,16 @@ public class OptionsManager : MonoBehaviour
         int currentResIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
+            string option = resolutions[i].width + "x" + resolutions[i].height;
             resoultionparams.Add(option);
-            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
-            {
+            if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+            { 
                 currentResIndex = i;
             }
+
         }
-        resolutionsDropdown.AddOptions(resoultionparams);
+
+         resolutionsDropdown.AddOptions(resoultionparams);
         resolutionsDropdown.value = currentResIndex;
         resolutionsDropdown.RefreshShownValue();
         vsynDropdown.value = QualitySettings.vSyncCount;
@@ -95,6 +158,9 @@ public class OptionsManager : MonoBehaviour
 
             generalCoruntine = Tools.SmoothMoveUI(SettingsMenu.gameObject.GetComponent<RectTransform>(), 0, 0, 0.01f);
             StartCoroutine(generalCoruntine);
+            blackScreen.transform.SetAsFirstSibling();
+            Tools.ToggleUiBlocker(false);
+            SettingsMenuDisabled = false;
         }
         else
         {
@@ -103,7 +169,33 @@ public class OptionsManager : MonoBehaviour
 
             generalCoruntine = Tools.SmoothMoveUI(SettingsMenu.gameObject.GetComponent<RectTransform>(), 0, -1215, 0.01f);
             StartCoroutine(generalCoruntine);
+            Tools.ToggleUiBlocker(true);
+            SettingsMenuDisabled = true;
         }
 
+    }
+
+    public void Load(string SceneToLoad)
+    {
+        StartCoroutine(DoLoad(SceneToLoad));
+    }
+
+    public IEnumerator DoLoad(string SceneToLoad)
+    {
+        Move(false);
+        blackScreen.gameObject.SetActive(true);
+        StartCoroutine(Tools.FadeObject(blackScreen, 0.001f, true));
+        if (SceneToLoad != "Main Menu")
+        {
+            quitButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            quitButton.gameObject.SetActive(false);
+        }
+        yield return new WaitUntil(() => blackScreen.color == new Color(0, 0, 0, 1));
+        yield return new WaitForSeconds(1f);
+        print("TRANSITIONED");
+        SceneManager.LoadScene(SceneToLoad);   
     }
 }

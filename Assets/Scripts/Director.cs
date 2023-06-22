@@ -35,12 +35,12 @@ public class Director : MonoBehaviour
     public GridLayoutGroup EnemyBattleBarGrid;
     public BattleBar battlebar;
     public Canvas canvas;
-    public FPSCounter fPSCounter;
+    //public FPSCounter fPSCounter;
     public bool CharacterSlotsDisplayed;
     IEnumerator generalCoruntine;
     bool buttonsAreDisabled = false;
     public bool DevMode;
-    public Image blackScreen;
+    //public Image blackScreen;
     public Button backButton;
     public TimeLine timeline;
     public float timelinespeedDelay;
@@ -50,21 +50,19 @@ public class Director : MonoBehaviour
     public GameObject EffectPopUp;
     public GameObject ConfirmButton;
 
-    LabCamera.CameraState previousCameraState;
+    public LabCamera.CameraState previousCameraState;
     public static Director Instance { get; private set;  }
      void Awake()
     {
         if (Instance != null)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else
         {
 #if UNITY_EDITOR 
-            Debug.unityLogger.logEnabled = true;
             
 #else
-             Debug.unityLogger.logEnabled = false;
              DevMode = false;
 #endif
             Instance = this;
@@ -85,28 +83,6 @@ public class Director : MonoBehaviour
     void Update()
     {
         
-        //Quit 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
-        //Pause
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (Time.timeScale != 0)
-            {
-                Time.timeScale = 0;
-                previousCameraState = LabCamera.Instance.state;
-                LabCamera.Instance.state = LabCamera.CameraState.IDLE;
-                Tools.PauseAllStaminaTimers();
-            }
-            else
-            {
-                Time.timeScale = 1;
-                LabCamera.Instance.state = previousCameraState;
-                Tools.UnpauseAllStaminaTimers();
-            }
-        }
         //Speed Up
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -124,11 +100,7 @@ public class Director : MonoBehaviour
             CharacterSlotEnable();
             print("MOVING CHARACTER SLOTS");
         }
-        //Disables and Enables FPS Counter
-        if (Input.GetKeyDown(KeyCode.F) && fPSCounter != null)
-        {
-            FPSCounterEnable();
-        }  
+        
     }
 
     public void CreateCharacterSlots(List<Unit> units)
@@ -200,17 +172,7 @@ public class Director : MonoBehaviour
         }
     }
 
-    public void FPSCounterEnable()
-    {
-        if (fPSCounter.gameObject.activeSelf)
-        {
-          fPSCounter.gameObject.SetActive(false);
-        }
-        else
-        {
-            fPSCounter.gameObject.SetActive(true);
-        }
-    }
+ 
     public static void AddUnitToParty(string unitName)
     {
         var unitToAdd = Instantiate(Director.Instance.characterdatabase.Where(obj => obj.name == unitName).SingleOrDefault());
@@ -398,13 +360,5 @@ public class Director : MonoBehaviour
              unit.maxHP += 2;
              unit.currentHP += 2;
         }
-    public IEnumerator DoLoad(string SceneToLoad)
-    {
-        blackScreen.gameObject.SetActive(true);
-        Director.Instance.StartCoroutine(Tools.FadeObject(blackScreen, 0.001f, true));
-        yield return new WaitUntil(() => blackScreen.color == new Color(0, 0, 0, 1));
-        yield return new WaitForSeconds(1f);
-        print("TRANSITIONED");
-        SceneManager.LoadScene(SceneToLoad);
-    }
+   
 }

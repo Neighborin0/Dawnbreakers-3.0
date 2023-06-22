@@ -68,7 +68,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else
         {
@@ -197,10 +197,10 @@ public class BattleSystem : MonoBehaviour
         {
             SetupHUD(unit, unit.transform);
         }
-        StartCoroutine(Tools.FadeObject(Director.Instance.blackScreen, 0.001f, false));
-        yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
-   
-            Director.Instance.blackScreen.gameObject.SetActive(true);
+        StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
+        yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+
+        OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         LabCamera.Instance.ReadjustCam();
         yield return new WaitForSeconds(1.5f);
         Director.Instance.BL.Move(true);
@@ -220,7 +220,7 @@ public class BattleSystem : MonoBehaviour
             unit.DoBattleStarted();
         }
         yield return new WaitForSeconds(0.5f);
-        Director.Instance.blackScreen.gameObject.SetActive(false);
+        OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
         playerUnits[0].StartDecision();
         LabCamera.Instance.MovingTimeDivider = 1;
     }
@@ -271,14 +271,24 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            Director.Instance.StartCoroutine(Director.Instance.DoLoad("MAP2"));
-            yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+            OptionsManager.Instance.Load("MAP2");
+            yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
             foreach (var unit in Tools.GetAllUnits())
             {
                 unit.StaminaHighlightIsDisabled = true;
                 unit.gameObject.SetActive(false);
             }
         }
+    }
+
+    public bool CheckPlayableState()
+    {
+        bool check = false;
+        if (BattleSystem.Instance.state != BattleStates.BATTLE && BattleSystem.Instance.state != BattleStates.START && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD)
+            check = true;
+        else
+            check = false;
+        return check;
     }
 
     IEnumerator lineCoroutine;
@@ -573,7 +583,7 @@ public class BattleSystem : MonoBehaviour
         BattleLog.ClearBattleText();
         LabCamera.Instance.ResetPosition();
         Tools.PauseAllStaminaTimers();
-        Director.Instance.blackScreen.gameObject.SetActive(true);
+        OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         Director.Instance.timelinespeedDelay = 0.1f;
         foreach (TimeLineChild child in Director.Instance.timeline.children)
         {

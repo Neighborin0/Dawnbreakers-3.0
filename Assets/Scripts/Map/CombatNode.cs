@@ -18,7 +18,7 @@ public class CombatNode : MapNode
            
             print(unit.unitName);
         }
-        StartCoroutine(Director.Instance.DoLoad("Battle"));
+        OptionsManager.Instance.Load("Battle");
         SceneManager.sceneLoaded += OnSceneLoaded;  
     }
 

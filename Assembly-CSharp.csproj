@@ -126,6 +126,7 @@
     <Compile Include="Assets\Scripts\Actions\Slash.cs" />
     <Compile Include="Assets\Scripts\Map\RestNode.cs" />
     <Compile Include="Assets\Scripts\Map\MapFlow.cs" />
+    <Compile Include="Assets\Scripts\Main Menu\SaveAndQuitButton.cs" />
     <Compile Include="Assets\Scripts\IntentContainer.cs" />
     <Compile Include="Assets\Scripts\FloatingObject.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
@@ -147,12 +148,14 @@
     <Compile Include="Assets\Scripts\EffectIcon.cs" />
     <Compile Include="Assets\Scripts\Actions\Summon.cs" />
     <Compile Include="Assets\Scripts\Units\Aurelia.cs" />
+    <Compile Include="Assets\Scripts\Main Menu\MainMenuController.cs" />
     <Compile Include="Assets\Scripts\Map\ChestNodeObject.cs" />
     <Compile Include="Assets\Scripts\ConversationHandler.cs" />
     <Compile Include="Assets\Scripts\CharacterJoinSceneScript.cs" />
     <Compile Include="Assets\Scripts\Main Menu\SettingsBackButton.cs" />
     <Compile Include="Assets\Scripts\LabAnimator.cs" />
     <Compile Include="Assets\Scripts\Units\TutorialEnemy.cs" />
+    <Compile Include="Assets\Scripts\Main Menu\QuitButton.cs" />
     <Compile Include="Assets\Scripts\Actions\Strike.cs" />
     <Compile Include="Assets\Scripts\InventoryDisplay.cs" />
   </ItemGroup>

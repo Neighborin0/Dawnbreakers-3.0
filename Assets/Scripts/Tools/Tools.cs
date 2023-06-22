@@ -359,15 +359,15 @@ public class Tools : MonoBehaviour
     {
         if (disable)
         {
-            Director.Instance.blackScreen.gameObject.SetActive(false);
-            Director.Instance.blackScreen.color = new Color(0, 0, 0, 0);
-            Director.Instance.blackScreen.raycastTarget = false;
+            OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
+            OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 0);
+            OptionsManager.Instance.blackScreen.raycastTarget = false;
         }
         else
         {
-            Director.Instance.blackScreen.gameObject.SetActive(true);
-            Director.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
-            Director.Instance.blackScreen.raycastTarget = true;
+            OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
+            OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
+            OptionsManager.Instance.blackScreen.raycastTarget = true;
         }
 
     }

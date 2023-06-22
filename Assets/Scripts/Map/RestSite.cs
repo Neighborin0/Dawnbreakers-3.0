@@ -57,12 +57,12 @@ public class RestSite : MonoBehaviour
     IEnumerator Transition()
     {
         yield return new WaitForSeconds(1f);
-        StartCoroutine(Tools.FadeObject(Director.Instance.blackScreen, 0.001f, false));
-        yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
-        Director.Instance.blackScreen.gameObject.SetActive(true);
+        StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
+        yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+        OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         LabCamera.Instance.ReadjustCam();
         yield return new WaitForSeconds(2f);
-        Director.Instance.blackScreen.gameObject.SetActive(false);
+        OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
         LabCamera.Instance.MovingTimeDivider = 1;
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         foreach(var button in buttons)
@@ -97,8 +97,8 @@ public class RestSite : MonoBehaviour
         {
             DontDestroyOnLoad(Director.Instance.party[i].gameObject);
         }
-        StartCoroutine(Director.Instance.DoLoad("MAP2"));
-        yield return new WaitUntil(() => Director.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+        OptionsManager.Instance.Load("MAP2");
+        yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
         foreach (var unit in Tools.GetAllUnits())
         {
             unit.StaminaHighlightIsDisabled = true;

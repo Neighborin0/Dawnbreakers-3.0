@@ -159,7 +159,7 @@ public class Unit : MonoBehaviour
                 {
                     BattleLog.DisplayCharacterStats(this, true);
                 }
-                if (BattleSystem.Instance.state != BattleStates.BATTLE && BattleSystem.Instance.state != BattleStates.START && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD)
+                if (BattleSystem.Instance.CheckPlayableState())
                 {
                     sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
                     this.timelinechild.Shift(this);
