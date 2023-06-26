@@ -43,6 +43,36 @@ public class OptionsManager : MonoBehaviour
 
     }
 
+    void Start()
+    {
+        resolutions = Screen.resolutions;
+        resolutionsDropdown.ClearOptions();
+        List<string> resoultionparams = new List<string>();
+        int currentResIndex = 0;
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            string option = resolutions[i].width + "x" + resolutions[i].height;
+            resoultionparams.Add(option);
+            if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+            {
+                currentResIndex = i;
+            }
+
+        }
+
+        resolutionsDropdown.AddOptions(resoultionparams);
+        resolutionsDropdown.value = currentResIndex;
+        resolutionsDropdown.RefreshShownValue();
+        vsynDropdown.value = QualitySettings.vSyncCount;
+        if (Screen.fullScreen)
+        {
+            fullScreenDropdown.value = 0;
+        }
+        else
+            fullScreenDropdown.value = 1;
+        QualityDropdown.value = QualitySettings.GetQualityLevel();
+    }
+
 
     void Update()
     {
@@ -91,36 +121,7 @@ public class OptionsManager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        resolutions = Screen.resolutions;
-        resolutionsDropdown.ClearOptions();
-        List<string> resoultionparams = new List<string>();
-        int currentResIndex = 0;
-        for (int i = 0; i < resolutions.Length; i++)
-        {
-            string option = resolutions[i].width + "x" + resolutions[i].height;
-            resoultionparams.Add(option);
-            if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
-            { 
-                currentResIndex = i;
-            }
-
-        }
-
-         resolutionsDropdown.AddOptions(resoultionparams);
-        resolutionsDropdown.value = currentResIndex;
-        resolutionsDropdown.RefreshShownValue();
-        vsynDropdown.value = QualitySettings.vSyncCount;
-       if(Screen.fullScreen)
-        {
-            fullScreenDropdown.value = 0;
-        }
-       else
-            fullScreenDropdown.value = 1;
-        QualityDropdown.value = QualitySettings.GetQualityLevel();
-    }
-
+  
 
     public void SetResolution(int resolutionIndex)
     {

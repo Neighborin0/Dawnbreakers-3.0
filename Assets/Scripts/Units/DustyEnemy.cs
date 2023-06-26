@@ -23,13 +23,7 @@ public class DustyEnemy : Unit
         StartingStamina = 75;
 
         if(!Director.Instance.DevMode)
-        BattleStarted += DoCharacterText;
-    }
-
-    private void Start()
-    {
-        if (!Director.Instance.DevMode)
-            this.stamina.Paused = true;
+        BattlePostStarted += DoCharacterText;
     }
     private void DoCharacterText(Unit obj)
     {
@@ -39,7 +33,7 @@ public class DustyEnemy : Unit
         {
             unit.StaminaHighlightIsDisabled = true;
         }
-        BattleStarted -= DoCharacterText;
+        BattlePostStarted -= DoCharacterText;
     }
 
     public class DustyBehavior : EnemyBehavior
@@ -87,7 +81,7 @@ public class DustyEnemy : Unit
         {
             BattleLog.CharacterDialog(ConvserationHandler.DustyAureliaMeeting2, true, false);
             yield return new WaitUntil(() => !BattleSystem.Instance.BL.characterdialog.IsActive());
-            Director.Instance.BL.Move(false);
+            Director.Instance.BL.GetComponent<MoveableObject>().Move(false);
             if (!BattleSystem.Instance.playerUnits[0].actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Sweep").SingleOrDefault()))
             {
                 Tools.AddNewActionToUnit(BattleSystem.Instance.playerUnits[0], "Sweep");

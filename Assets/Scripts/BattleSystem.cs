@@ -45,6 +45,7 @@ public class BattleSystem : MonoBehaviour
     //public LineRenderer targetLine;
     public GameObject dot;
     public bool HasStarted = false;
+    public bool BattlePhasePause = false;
 
     public List<Action> QueuedActions;
     public List<Unit> speedlist;
@@ -146,7 +147,7 @@ public class BattleSystem : MonoBehaviour
         {
             statStorers = new List<StatStorer>();
             Director.Instance.timeline.gameObject.SetActive(true);
-            Director.Instance.timeline.Move(false);
+            Director.Instance.timeline.GetComponent<MoveableObject>().Move(false);
             for (int i = 0; i <= playerUnits.Count - 1; i++)
             {
                 playerUnits[i].gameObject.SetActive(true);
@@ -203,8 +204,8 @@ public class BattleSystem : MonoBehaviour
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         LabCamera.Instance.ReadjustCam();
         yield return new WaitForSeconds(1.5f);
-        Director.Instance.BL.Move(true);
-        Director.Instance.timeline.Move(true);
+        Director.Instance.BL.GetComponent<MoveableObject>().Move(true);
+        Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
         BattleLog.SetRandomAmbientTextActive();
         BL.CreateRandomAmbientText();
         BL.gameObject.SetActive(true);
@@ -223,6 +224,10 @@ public class BattleSystem : MonoBehaviour
         OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
         playerUnits[0].StartDecision();
         LabCamera.Instance.MovingTimeDivider = 1;
+        foreach (var unit in Tools.GetAllUnits())
+        {
+            unit.DoPostBattleStarted();
+        }
     }
 
    
@@ -266,8 +271,7 @@ public class BattleSystem : MonoBehaviour
         if (LevelUpScreen)
         {
             Director.Instance.DisplayCharacterTab();
-            LabCamera.Instance.state = LabCamera.CameraState.IDLE;
-            LabCamera.Instance.MoveToUnit(playerUnits[0]);
+            LabCamera.Instance.MoveToUnit(playerUnits[0], 0, -8, 40, false, 0.5f);
         }
         else
         {
@@ -340,7 +344,7 @@ public class BattleSystem : MonoBehaviour
         popupText.fontSize = 1.5f;
         var labPopUp = popup.GetComponent<LabPopup>();
         StartCoroutine(labPopUp.Rise());
-        StartCoroutine(labPopUp.DestroyPopUp(0.3f));
+        StartCoroutine(labPopUp.DestroyPopUp(0.6f));
     }
 
     public IEnumerator SetTempEffect(Unit unit, string Icon, Action action, bool DoFancyStatChanges, float storedValue = 0)
@@ -557,6 +561,9 @@ public class BattleSystem : MonoBehaviour
 
     public void AddAction(Action action)
     {
+        BattleLog.ClearAmbientText();
+        BattleLog.DisableCharacterStats();
+        BattleLog.ClearBattleText();
         if (action.unit != null)
         {
             var newAction = UnityEngine.Object.Instantiate(action);
@@ -578,9 +585,6 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PerformAction(Action newaction, Unit unit)
     {
-        BattleLog.ClearAmbientText();
-        BattleLog.DisableCharacterStats();
-        BattleLog.ClearBattleText();
         LabCamera.Instance.ResetPosition();
         Tools.PauseAllStaminaTimers();
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
@@ -589,7 +593,7 @@ public class BattleSystem : MonoBehaviour
         {
             child.Return();
         }
-        Director.Instance.BL.Move(false);
+        Director.Instance.BL.GetComponent<MoveableObject>().Move(false);
         foreach (var x in Tools.GetAllUnits())
         {
             x.ExitDecision();
@@ -674,12 +678,13 @@ public class BattleSystem : MonoBehaviour
                 }
 
             }
-            Director.Instance.BL.Move(true);
+            Director.Instance.BL.GetComponent<MoveableObject>().Move(true);
 
         }     
         Director.Instance.timelinespeedDelay = Director.Instance.UserTimelineSpeedDelay;
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         unit.DoBattlePhaseClose();
+        yield return new WaitUntil(() => !BattlePhasePause);
         if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD)
         {
             state = BattleStates.IDLE;
@@ -744,7 +749,7 @@ public class BattleSystem : MonoBehaviour
                 NP.unit = x;
                 NP.nameText.text = "";
                 NP.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + unit.offset.x, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;
-
+                x.GetComponent<SpriteRenderer>().flipX = false;
 
             }
             if (!x.IsPlayerControlled && x.intentUI == null)

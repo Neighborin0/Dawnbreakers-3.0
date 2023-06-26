@@ -108,6 +108,7 @@ public class TimeLineChild : MonoBehaviour
        
     }
 
+
     public void ToggleHightlightOnUnit()
     {
         if(!UnitIsHighlighted && BattleSystem.Instance.state != BattleStates.BATTLE && BattleSystem.Instance.state != BattleStates.START && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD)

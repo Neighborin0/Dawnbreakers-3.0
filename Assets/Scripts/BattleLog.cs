@@ -14,6 +14,7 @@ public class BattleLog : MonoBehaviour
     public static BattleLog Instance { get; private set; }
     public TextMeshProUGUI ambientText;
     public TextMeshProUGUI battleText;
+    private Unit displayingEnemyStatsFor;
 
     int index;
     //character stat text
@@ -40,6 +41,8 @@ public class BattleLog : MonoBehaviour
     public Button itemImage;
     public TextMeshProUGUI itemText;
     IEnumerator generalCoroutine;
+    public float overrideTextSpd = 0f;
+    public float textSpeed;
     void Awake()
     {
         if (Instance != null)
@@ -160,24 +163,18 @@ public class BattleLog : MonoBehaviour
     public static void DisplayCharacterStats(Unit unit, bool TurnOffItemDisplay = false)
     {
         var battlelog = BattleLog.Instance;
-        battlelog.itemText.text = "";
+        //battlelog.itemText.text = "";
         if (unit.IsPlayerControlled)
         {
             battlelog.DisplayPlayerStats(unit, TurnOffItemDisplay);
         }
         else
         {
-            foreach(var x in Tools.GetAllUnits())
+           
+            if(battlelog.displayingEnemyStatsFor != unit)
             {
-                if(x != unit)
-                {
-                    x.StatsAreDisplayed = false;
-                }
-            }
-            if(!unit.StatsAreDisplayed)
-            {
-                unit.StatsAreDisplayed = true;
                 battlelog.DisplayEnemyCharacterStats(unit);
+                battlelog.displayingEnemyStatsFor = unit;
             }
         }
 
@@ -200,7 +197,7 @@ public class BattleLog : MonoBehaviour
         StartCoroutine(Tools.FadeObject(battlelog.enemycharPortrait, 0.005f, true, false));
         Tools.SetImageColorAlphaToZero(battlelog.enemyPortraitparent);
         StartCoroutine(Tools.FadeObject(battlelog.enemyPortraitparent, 0.005f, true, false));
-      
+
     }
 
 
@@ -215,46 +212,18 @@ public class BattleLog : MonoBehaviour
 
         battlelog.itemText.gameObject.SetActive(false);
         battlelog.itemText.text = "";
-        if(BattleSystem.Instance != null)
-        {
-            foreach (var x in BattleSystem.Instance.enemyUnits)
-            {
-                x.StatsAreDisplayed = false;
-            }
-        }  
+        battlelog.displayingEnemyStatsFor = null;
         foreach (var item in battlelog.inventoryDisplay.GetComponentsInChildren<Button>())
         {
             Destroy(item.gameObject);
         }
-    }
-
-    public void Move(bool moveUp)
-    {
-
-        if (moveUp)
-        {
-            if (generalCoroutine != null)
-                StopCoroutine(generalCoroutine);
-
-            generalCoroutine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 960, -950, 0.01f);
-            StartCoroutine(generalCoroutine);
-        }
-        else
-        {
-            if (generalCoroutine != null)
-                StopCoroutine(generalCoroutine);
-
-            generalCoroutine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 960, -1215, 0.01f);
-            StartCoroutine(generalCoroutine);
-        }
-
     }
     public static void DisplayEnemyIntentInfo(string description, Unit unit)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
         battlelog.enemyIntent.gameObject.SetActive(true);
         battlelog.enemyIntent.text = ($"{description}");
-        battlelog.DisplayEnemyCharacterStats(unit);
+        BattleLog.DisplayCharacterStats(unit);
     }
 
 
@@ -309,10 +278,18 @@ public class BattleLog : MonoBehaviour
         unit.EnteredMap -= DoPostBattleDialouge;
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            textSpeed = overrideTextSpd;
+        }
+    }
+
     private IEnumerator TypeMultiText(List<LabLine> text, TMP_Text x, bool disableAfter, bool Pauses = false)
     {
         BattleStates previousState = BattleStates.IDLE;
-        Move(true);
+        GetComponent<MoveableObject>().Move(true);
         if (Pauses)
         {
             if (BattleSystem.Instance != null)
@@ -343,25 +320,11 @@ public class BattleLog : MonoBehaviour
         for (int i = 0; i < text.Count; i++)
         {
             charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression);
+            textSpeed = text[i].textSpeed;
             foreach (char letter in text[i].text.ToCharArray())
             {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    x.text = text[i].text;
-                    print("SKIPPED");
-                    break;
-                }
-                else
-                {
-                    x.text += letter;
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        x.text = text[i].text;
-                        print("SKIPPED");
-                        break;
-                    }
-                    yield return new WaitForSeconds(text[i].textSpeed);
-                }
+                 x.text += letter;
+                 yield return new WaitForSeconds(textSpeed);
             }
             indicator.gameObject.SetActive(true);
             yield return new WaitForSeconds(0.01f);
@@ -391,6 +354,12 @@ public class BattleLog : MonoBehaviour
                     LabCamera.Instance.state = LabCamera.CameraState.SWAY;
                     LabCamera.Instance.uicam.gameObject.SetActive(true);
                 }
+
+                if(BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
+                {
+                    Tools.PauseAllStaminaTimers();
+                    BattleSystem.Instance.playerUnits[0].StartDecision();
+                }
             }
             if (RestSite.Instance != null)
             {
@@ -398,12 +367,12 @@ public class BattleLog : MonoBehaviour
                 {
                     button.gameObject.SetActive(true);
                 }
-                Move(false);
+                GetComponent<MoveableObject>().Move(false);
             }
         }
         else
         {
-            Move(false);
+            GetComponent<MoveableObject>().Move(false);
         }
 
     }

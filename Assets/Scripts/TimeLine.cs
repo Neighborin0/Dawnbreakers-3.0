@@ -11,26 +11,5 @@ public class TimeLine : MonoBehaviour
     public float minPos;
     public float maxPos;
     public List<TimeLineChild> children;
-    IEnumerator generalCoruntine;
-    public void Move(bool moveDown)
-    {
 
-        if (moveDown)
-        {
-            if (generalCoruntine != null)
-                StopCoroutine(generalCoruntine);
-
-            generalCoruntine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 0, maxPos, 0.01f);
-            StartCoroutine(generalCoruntine);
-        }
-        else
-        {
-            if (generalCoruntine != null)
-                StopCoroutine(generalCoruntine);
-
-            generalCoruntine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), 0, minPos, 0.01f);
-            StartCoroutine(generalCoruntine);
-        }
-
-    }
 }

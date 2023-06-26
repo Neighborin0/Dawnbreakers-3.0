@@ -36,7 +36,6 @@ public class Unit : MonoBehaviour
     public TimeLineChild timelinechild;
     private bool StopMovingToUnit = false;
     public float StartingStamina;
-    public bool StatsAreDisplayed = false;
     IEnumerator generalCoroutine;
 
     //text stuff
@@ -48,6 +47,7 @@ public class Unit : MonoBehaviour
     public event Action<Unit> BattlePhaseClose;
     public event Action<Unit> OnDamaged;
     public event Action<Unit> BattleStarted;
+    public event Action<Unit> BattlePostStarted;
     public event Action<Unit> BattleEnded;
     public event Action<Unit> ActionEnded;
     public event Action<Unit> EnteredMap;
@@ -294,7 +294,7 @@ public class Unit : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         yield return new WaitUntil(() => BattleSystem.Instance.ActionsToPerform.Count == 0 && BattleSystem.Instance.state == BattleStates.IDLE || BattleSystem.Instance.ActionsToPerform.Count == 0 && BattleSystem.Instance.state == BattleStates.DECISION_PHASE);
-        BattleLog.Instance.Move(true);
+        BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         StartDecision();
     }
 
@@ -392,6 +392,11 @@ public class Unit : MonoBehaviour
     public void DoBattlePhaseClose()
     {
         BattlePhaseClose?.Invoke(this);
+    }
+
+    public void DoPostBattleStarted()
+    {
+        BattlePostStarted?.Invoke(this);
     }
 
     public void DoEnteredMap()

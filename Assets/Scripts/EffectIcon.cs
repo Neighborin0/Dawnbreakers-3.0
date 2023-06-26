@@ -21,6 +21,7 @@ public class EffectIcon : MonoBehaviour
     public bool TimedEffect = true;
     private IEnumerator scaler;
     public GameObject currentEffectPopup;
+    public float descriptionSize = 0.4f;
 
     public void Start()
     {
@@ -52,11 +53,13 @@ public class EffectIcon : MonoBehaviour
             currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             EPtext.text = this.GetDescription();
+            EPtext.fontSize = descriptionSize;
         }
     }
 
     public void RemoveDescription()
     {
+        if(currentEffectPopup != null)
        currentEffectPopup.SetActive(false);
     }
 

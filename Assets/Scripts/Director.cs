@@ -40,7 +40,7 @@ public class Director : MonoBehaviour
     IEnumerator generalCoruntine;
     bool buttonsAreDisabled = false;
     public bool DevMode;
-    //public Image blackScreen;
+    public Image blackScreen;
     public Button backButton;
     public TimeLine timeline;
     public float timelinespeedDelay;
@@ -142,31 +142,19 @@ public class Director : MonoBehaviour
     {
         if (forceDisable)
         {
-            if (generalCoruntine != null)
-                StopCoroutine(generalCoruntine);
-
-            generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), characterSlotpos.GetComponent<RectTransform>().anchoredPosition.x, 166, 0.01f);
-            StartCoroutine(generalCoruntine);
+            characterSlotpos.GetComponent<MoveableObject>().Move(true);
             CharacterSlotsDisplayed = false;
         }
         else
         {
             if (CharacterSlotsDisplayed)
             {
-                if (generalCoruntine != null)
-                    StopCoroutine(generalCoruntine);
-
-                generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), characterSlotpos.GetComponent<RectTransform>().anchoredPosition.x, 166, 0.01f);
-                StartCoroutine(generalCoruntine);
+                characterSlotpos.GetComponent<MoveableObject>().Move(true);
                 CharacterSlotsDisplayed = false;
             }
             else
             {
-                if (generalCoruntine != null)
-                    StopCoroutine(generalCoruntine);
-
-                generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), characterSlotpos.GetComponent<RectTransform>().anchoredPosition.x, 48, 0.01f);
-                StartCoroutine(generalCoruntine);
+                characterSlotpos.GetComponent<MoveableObject>().Move(false);
                 CharacterSlotsDisplayed = true;
             }
         }
@@ -184,7 +172,7 @@ public class Director : MonoBehaviour
     public void DisplayCharacterTab(bool LevelUp = true, bool Interactable = false)
     {
         CharacterSlotEnable();
-        Tools.ToggleUiBlocker(false);
+        Tools.ToggleUiBlocker(false, true);
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(true);
         if (Director.Instance.TabGrid.transform.childCount > 0)
         {
@@ -192,7 +180,7 @@ public class Director : MonoBehaviour
             {
                 child.gameObject.SetActive(true);
             }
-            BattleLog.Instance.Move(true);
+            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         }
         else
         {
@@ -208,7 +196,7 @@ public class Director : MonoBehaviour
                     CT.gameObject.transform.SetParent(TabGrid.transform, false);
                     if (LevelUp)
                     {
-                        Tools.ToggleUiBlocker(true);
+                        Tools.ToggleUiBlocker(true, true);
                         CT.detailedDisplay.SetActive(false);
                         CT.levelupDisplay.SetActive(true);
                         foreach (var x in characterTab.LevelUpButtons)
@@ -226,7 +214,7 @@ public class Director : MonoBehaviour
                     }
                     else
                     {
-                        BL.Move(true);
+                        BL.GetComponent<MoveableObject>().Move(true);
                         CT.levelupDisplay.SetActive(false);
                         CT.detailedDisplay.SetActive(true);
                         SetUpActionList(unit, CT);
@@ -278,6 +266,7 @@ public class Director : MonoBehaviour
             actionContainer.transform.localScale = new Vector3(1, 1, 1);
             var assignedAction = actionContainer.GetComponent<ActionContainer>();
             assignedAction.targetting = false;
+            assignedAction.baseUnit = unit;
             assignedAction.button.interactable = true;
             assignedAction.button.enabled = true;
             assignedAction.action = action;
@@ -335,11 +324,10 @@ public class Director : MonoBehaviour
         if (generalCoruntine != null)
             StopCoroutine(generalCoruntine);
 
-        generalCoruntine = Tools.SmoothMoveUI(characterSlotpos.GetComponent<RectTransform>(), -825f, characterSlotpos.GetComponent<RectTransform>().anchoredPosition.y, 0.01f);
-        StartCoroutine(generalCoruntine);
+        characterSlotpos.GetComponent<MoveableObject>().Move(false);
         CharacterSlotsDisplayed = true;
-        Tools.ToggleUiBlocker(true);
-        BL.Move(false);
+        Tools.ToggleUiBlocker(true, true);
+        BL.GetComponent<MoveableObject>().Move(false);
         BattleLog.ClearAllBattleLogText();
         foreach (Transform child in Director.Instance.TabGrid.transform)
         {

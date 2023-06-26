@@ -189,18 +189,30 @@ public class ActionContainer : MonoBehaviour
 
     public void SetDescription()
     {
-
+       
         AudioManager.Instance.Play("ButtonHover");
         //BattleLog.SetBattleText("");
         action.unit = baseUnit;
-        BattleLog.SetBattleText(action.GetDescription());
-        BattleLog.Instance.Move(true);
+        if (Director.Instance.timeline.gameObject.activeSelf)
+        {
+            BattleLog.SetBattleText(action.GetDescription());
+            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+        }
+        else
+        {
+            BattleLog.Instance.itemText.gameObject.SetActive(false);
+            BattleLog.Instance.ambientText.gameObject.SetActive(true);
+            BattleLog.Instance.ambientText.text = action.GetDescription();
+            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+        }
+
 
     }
 
+
     public void RemoveDescription()
     {
-        if(BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
+        if(BattleSystem.Instance != null)
         {
             BattleLog.Instance.itemText.gameObject.SetActive(false);
         }
@@ -208,75 +220,79 @@ public class ActionContainer : MonoBehaviour
     }
     public void SetActive()
     {
-        damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
-        if (BattleSystem.Instance != null)
+        if(Director.Instance.timeline.gameObject.activeSelf)
         {
-            if (targetting == true)
+            damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
+            if (BattleSystem.Instance != null)
             {
-                targetting = false;
-                BattleLog.SetBattleText("");
-                print("not targetting");
-                foreach (TimeLineChild child in Director.Instance.timeline.children)
+                if (targetting == true)
                 {
-                    if (child.CanClear)
+                    targetting = false;
+                    BattleLog.SetBattleText("");
+                    print("not targetting");
+                    foreach (TimeLineChild child in Director.Instance.timeline.children)
                     {
-                        Director.Instance.timeline.children.Remove(child);
-                        Destroy(child.gameObject);
-                        break;
+                        if (child.CanClear)
+                        {
+                            Director.Instance.timeline.children.Remove(child);
+                            Destroy(child.gameObject);
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    ActionContainer[] actionContainers = UnityEngine.Object.FindObjectsOfType<ActionContainer>();
+                    foreach (var x in actionContainers)
+                    {
+                        if (x != this)
+                        {
+                            var button = x.GetComponent<Button>();
+                            if (!x.Disabled)
+                                button.interactable = true;
+                            x.targetting = false;
+                            foreach (var z in Tools.GetAllUnits())
+                            {
+                                z.IsHighlighted = false;
+                                z.isDarkened = false;
+                            }
+
+                        }
+
+                    }
+                    foreach (TimeLineChild child in Director.Instance.timeline.children)
+                    {
+                        if (child.CanClear)
+                        {
+                            Director.Instance.timeline.children.Remove(child);
+                            Destroy(child.gameObject);
+                            break;
+                        }
+                    }
+
+                    RemoveDescription();
+                    var TL = Instantiate(Director.Instance.timeline.borderChildprefab, Director.Instance.timeline.startpoint);
+                    TL.unit = baseUnit;
+                    TL.portrait.sprite = baseUnit.charPortraits[0];
+                    Director.Instance.timeline.children.Add(TL);
+                    TL.CanMove = false;
+                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
+                    TL.rectTransform.anchoredPosition = new Vector3((TL.unit.stamina.slider.maxValue - action.cost) * -11.89f, 85);
+                    TL.stamina.text = (TL.unit.stamina.slider.maxValue - action.cost).ToString();
+                    TL.CanClear = true;
+                    TL.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+                    TL.portrait.color = new Color(1, 1, 1, 0.5f);
+                    targetting = true;
+                    print("targetting");
+                    SetDescription();
+                    button.interactable = false;
                 }
             }
             else
             {
-                ActionContainer[] actionContainers = UnityEngine.Object.FindObjectsOfType<ActionContainer>();
-                foreach (var x in actionContainers)
-                {
-                    if (x != this)
-                    {
-                        var button = x.GetComponent<Button>();
-                        if (!x.Disabled)
-                            button.interactable = true;
-                        x.targetting = false;
-                        foreach (var z in Tools.GetAllUnits())
-                        {
-                            z.IsHighlighted = false;
-                            z.isDarkened = false;
-                        }
-
-                    }
-
-                }
-                foreach (TimeLineChild child in Director.Instance.timeline.children)
-                {
-                    if (child.CanClear)
-                    {
-                        Director.Instance.timeline.children.Remove(child);
-                        Destroy(child.gameObject);
-                        break;
-                    }
-                }
-
-                RemoveDescription();
-                var TL = Instantiate(Director.Instance.timeline.borderChildprefab, Director.Instance.timeline.startpoint);
-                TL.unit = baseUnit;
-                TL.portrait.sprite = baseUnit.charPortraits[0];
-                Director.Instance.timeline.children.Add(TL);
-                TL.CanMove = false;
-                TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
-                TL.rectTransform.anchoredPosition = new Vector3((TL.unit.stamina.slider.maxValue - action.cost) * -11.89f, 85);
-                TL.stamina.text = (TL.unit.stamina.slider.maxValue - action.cost).ToString();
-                TL.CanClear = true;
-                TL.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
-                TL.portrait.color = new Color(1, 1, 1, 0.5f);
-                targetting = true;
-                print("targetting");
                 SetDescription();
-                button.interactable = false;
             }
-        }
-        else
-        {
-            SetDescription();
+
         }
 
     }

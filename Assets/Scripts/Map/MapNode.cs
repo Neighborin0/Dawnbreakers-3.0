@@ -19,6 +19,7 @@ public class MapNode : MonoBehaviour
     public bool IsStartingNode;
     public bool IsEnabled;
     public Light light;
+    public GameObject mapline;
 
 
     private void Start()
@@ -38,6 +39,7 @@ public class MapNode : MonoBehaviour
         var button = this.GetComponent<Button>();
         int i = 0;
         LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
+        yield return new WaitForSeconds(0.3f);
         foreach (var MM in MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>())
         {
             StartCoroutine(MM.Move(this.transform.position.x - i * 2, transform.position.y + 1f, transform.position.z));
@@ -51,9 +53,14 @@ public class MapNode : MonoBehaviour
         {
             StopCoroutine(scaler);
         }
+        if(mapline != null) 
+        {
+            mapline.GetComponent<LineRenderer>().material = Instantiate<Material>(mapline.GetComponent<LineRenderer>().material);
+            mapline.GetComponent<LineRenderer>().material.SetColor("_BaseColor", new Color(0, 0, 0, 0.5f));
+        }
         NodeIsCompleted = true;
         light.gameObject.SetActive(false);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitUntil(() => MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>()[0].transform.position == this.transform.position);
         this.OnInteracted();
     }
 

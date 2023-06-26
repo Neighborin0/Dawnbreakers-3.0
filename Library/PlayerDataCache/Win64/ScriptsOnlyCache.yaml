@@ -771,8 +771,6 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 6334}
     - Class: 114
-      Script: {instanceID: 6846}
-    - Class: 114
       Script: {instanceID: 6864}
     - Class: 114
       Script: {instanceID: 6882}
@@ -2666,7 +2664,7 @@ ScriptsOnlyBuild:
     className: VariablesSaver
   - hash:
       serializedVersion: 2
-      Hash: b6ca276966597755caf099e19a1f5843
+      Hash: 6d98ef57e3233452c3c31d401b6f9f87
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Director

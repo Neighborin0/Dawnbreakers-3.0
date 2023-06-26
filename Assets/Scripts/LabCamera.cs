@@ -102,8 +102,11 @@ public class LabCamera : MonoBehaviour
 			if (smoothingTime > 1)
 			{
 				if(BattleSystem.Instance != null)
-				state = CameraState.SWAY;
-				else
+					if(BattleSystem.Instance.state == BattleStates.BATTLE || BattleSystem.Instance.state == BattleStates.WON)
+						state = CameraState.IDLE;
+					else
+                        state = CameraState.SWAY;
+                else
                     state = CameraState.IDLE;
 
                 smoothingTime = 0f;
@@ -159,7 +162,7 @@ public class LabCamera : MonoBehaviour
 					Mathf.Clamp(followTarget.transform.position.y + followDisplacement.y, MapController.Instance.MinMapBounds.y, MapController.Instance.MaxMapBounds.y),
 					Mathf.Clamp(followTarget.transform.position.z + followDisplacement.z, MapController.Instance.MinMapBounds.z, MapController.Instance.MaxMapBounds.z));
 			//Zoom In
-            if (Input.GetAxis("Mouse ScrollWheel") > 0 && this.transform.position.y > MapController.Instance.MinMapBounds.y)
+            /*if (Input.GetAxis("Mouse ScrollWheel") > 0 && this.transform.position.y > MapController.Instance.MinMapBounds.y)
 			{
 				followDisplacement.z += MapController.Instance.ZoomAmount * 3.4f;
                 followDisplacement.y -= MapController.Instance.ZoomAmount;
@@ -170,20 +173,11 @@ public class LabCamera : MonoBehaviour
                 followDisplacement.z -= MapController.Instance.ZoomAmount * 3.4f;
                 followDisplacement.y += MapController.Instance.ZoomAmount;
             }
-          
+           */
             if (Input.GetMouseButton(1))
 			{
-				if(this.transform.position.y > MapController.Instance.MinMapBounds.y && this.transform.position.y < MapController.Instance.MaxMapBounds.y && this.transform.position.z > MapController.Instance.MinMapBounds.z && this.transform.position.z < MapController.Instance.MaxMapBounds.z)
-                    followDisplacement += new Vector3(0, -Input.GetAxis("Mouse Y"), -Input.GetAxis("Mouse Y"));
-                if(this.transform.position.x > MapController.Instance.MinMapBounds.x)
-				{
-                    followDisplacement += new Vector3(-Input.GetAxis("Mouse X"), 0, 0);
-                }
-				else if(this.transform.position.x < MapController.Instance.MaxMapBounds.x && Input.GetAxis("Mouse X") > 0)
-				{
-                    followDisplacement += new Vector3(-Input.GetAxis("Mouse X"), 0, 0);
-                }
-            }
+				followDisplacement += new Vector3(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"), -Input.GetAxis("Mouse Y"));	
+			}
             if (Input.GetKeyDown(KeyCode.R))
             {
 				followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);

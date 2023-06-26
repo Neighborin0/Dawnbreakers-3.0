@@ -22,6 +22,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
 
     //detailed display
     public GameObject detailedDisplay;
+    public GameObject statText;
     public TextMeshProUGUI HPtext;
     public TextMeshProUGUI ATKtext;
     public TextMeshProUGUI DEFText;
@@ -50,8 +51,10 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     void Start()
     {
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
+        DisplaySwitcher.GetComponent<Image>().material = Instantiate<Material>(DisplaySwitcher.GetComponent<Image>().material);
         oldScaleSize = transform.localScale;
         gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
+        DisplaySwitcher.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
         if (unit != null)
         {
             if (unit.charPortraits != null)
@@ -67,13 +70,15 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             {
                 if(action.New == true)
                 {
-                    notification.gameObject.SetActive(true);
+                    DisplaySwitcher.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
+                    DisplaySwitcher.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
                 }
             }
             levelupDisplay.SetActive(true);
         }
+        if (OptionsManager.Instance != null)
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
-        Tools.ToggleUiBlocker(false);
+        Tools.ToggleUiBlocker(false, true);
     }
 
   
@@ -149,25 +154,25 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         {
             unit.maxHP += 2;
             unit.currentHP += 2;
-            statDisplay.text = $"HP:{unit.maxHP} +2\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
+            statDisplay.text = $"HP:<color=#00FF00>{unit.maxHP}</color> +2\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
             LevelDownbuttons[0].gameObject.SetActive(true);
         }
         else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[1].gameObject)
         {
             unit.attackStat += 1;
-            statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat} +1\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
+            statDisplay.text = $"HP:{unit.maxHP}\nATK:<color=#00FF00>{unit.attackStat}</color> +1\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
             LevelDownbuttons[1].gameObject.SetActive(true);
         }
         else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[2].gameObject)
         {
             unit.defenseStat += 1;
-            statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat} +1\nSPD:{unit.speedStat}";
+            statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat}\nDEF:<color=#00FF00>{unit.defenseStat}</color> +1\nSPD:{unit.speedStat}";
             LevelDownbuttons[2].gameObject.SetActive(true);
         }
         else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[3].gameObject)
         {
             unit.speedStat += 1;
-            statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat} +1";
+            statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:<color=#00FF00>{unit.speedStat}</color> +1";
             LevelDownbuttons[3].gameObject.SetActive(true);
         }
         foreach(var x in LevelUpButtons)
@@ -241,6 +246,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
                 DisplaySwitcher.image.sprite = itemIcon;
                 inventoryDisplay.gameObject.SetActive(false);
                 actionDisplay.gameObject.SetActive(true);
+                statText.gameObject.SetActive(true);
             }
             else
             {
@@ -251,12 +257,16 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         }
         else
         {
-            notification.gameObject.SetActive(false);
+            if (DisplaySwitcher.GetComponent<Image>().material.GetFloat("OutlineThickness") != 0)
+            {
+                DisplaySwitcher.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
+            }
             if (levelupDisplay.activeInHierarchy)
             {
                 DisplaySwitcher.image.sprite = LevelUpIcon;
                 levelupDisplay.SetActive(false);
-                actionDisplay.gameObject.SetActive(true);        
+                actionDisplay.gameObject.SetActive(true);
+                statText.gameObject.SetActive(true);
             }
             else
             {

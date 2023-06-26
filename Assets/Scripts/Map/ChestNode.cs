@@ -11,7 +11,7 @@ public class ChestNode : MapNode
     public List<Item> alreadySelected;
     public override void OnInteracted()
     {
-        Tools.ToggleUiBlocker(false);
+        Tools.ToggleUiBlocker(false, true);
         Director.Instance.CharacterSlotEnable(true);
         for (int i = 0; i <= 2; i++)
         {

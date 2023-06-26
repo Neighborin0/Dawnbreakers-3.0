@@ -98,13 +98,13 @@ public class Tools : MonoBehaviour
     public static bool CheckIfAnyUnitIsDeciding()
     {
         bool result = false;
-        foreach(var unit in Tools.GetAllUnits())
+        foreach (var unit in Tools.GetAllUnits())
         {
             if (unit.state == PlayerState.DECIDING)
                 result = true;
         }
         return result;
-            
+
     }
 
     public static bool CheckIfAnyUnitIsTargetting()
@@ -142,7 +142,7 @@ public class Tools : MonoBehaviour
         text.color = tempColor;
     }
 
- 
+
     public static void FadeUI(Image image, bool fadeOut)
     {
         for (int i = 0; i < 100; i++)
@@ -299,7 +299,7 @@ public class Tools : MonoBehaviour
     {
         var battlesystem = BattleSystem.Instance;
         baseUnit.actionList[HowIsThisDetermined].unit = baseUnit;
-        if(!overrideTarget)
+        if (!overrideTarget)
         {
             switch (baseUnit.actionList[HowIsThisDetermined].targetType)
             {
@@ -321,7 +321,7 @@ public class Tools : MonoBehaviour
         {
             baseUnit.actionList[HowIsThisDetermined].targets = newTarget;
         }
-     
+
     }
     public static IEnumerator RepeatBehavior(Unit unit)
     {
@@ -355,20 +355,27 @@ public class Tools : MonoBehaviour
         }
     }
 
-    public static void ToggleUiBlocker(bool disable)
+    public static void ToggleUiBlocker(bool disable, bool DirectorBlocker = false)
     {
+        var img = OptionsManager.Instance.blackScreen;
+        if (DirectorBlocker)
+        {
+            img = Director.Instance.blackScreen;
+        }
+
         if (disable)
         {
-            OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
-            OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 0);
-            OptionsManager.Instance.blackScreen.raycastTarget = false;
+            img.gameObject.SetActive(false);
+            img.color = new Color(0, 0, 0, 0);
+            img.raycastTarget = false;
         }
         else
         {
-            OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
-            OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
-            OptionsManager.Instance.blackScreen.raycastTarget = true;
+            img.gameObject.SetActive(true);
+            img.color = new Color(0, 0, 0, 0.5f);
+            img.raycastTarget = true;
         }
+
 
     }
 
@@ -509,7 +516,7 @@ public class Tools : MonoBehaviour
             var particleSystem = VFX.GetComponent<ParticleSystem>();
             particleSystem.Stop();
         }
-        if(haveExtraDelay)
+        if (haveExtraDelay)
         {
             yield return new WaitForSeconds(2f);
         }
@@ -521,8 +528,8 @@ public class Tools : MonoBehaviour
     {
         var oldAction = Director.Instance.actionDatabase.Where(obj => obj.ActionName == actionName).SingleOrDefault();
         var newAction = Instantiate(oldAction);
-        unit.actionList[unit.actionList.Count - 1] = newAction;
-        unit.actionList[unit.actionList.Count - 1].New = true;
+        unit.actionList[unit.actionList.Count] = newAction;
+        unit.actionList[unit.actionList.Count].New = true;
     }
 
     public static IEnumerator ApplyAndReduceChromaticAbberation()
@@ -620,7 +627,7 @@ public class Tools : MonoBehaviour
         yield break;
     }
 
-   
+
 
 
 

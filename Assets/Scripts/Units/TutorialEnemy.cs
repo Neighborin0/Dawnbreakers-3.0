@@ -20,6 +20,7 @@ public class TutorialEnemy : Unit
         currentHP = maxHP;
         actionCostMultiplier = 1000f;
         IsPlayerControlled = false;
+        StartingStamina = 50f;
     }
     void Start()
     {
@@ -52,7 +53,7 @@ public class TutorialEnemy : Unit
     {
         foreach (var x in obj.namePlate.IconGrid.GetComponentsInChildren<Image>())
         {
-            Destroy(x);
+            Destroy(x.gameObject);
             BattleSystem.Instance.DoTextPopup(this, "Revitalize", Color.yellow);
         }
         obj.BattlePhaseEnd += RefillStamina;
@@ -60,7 +61,8 @@ public class TutorialEnemy : Unit
     }
     private void RefillStamina(Unit obj)
     {
-        this.stamina.slider.value = this.stamina.slider.maxValue;
+        this.stamina.slider.value = 100;
+        //BattleSystem.Instance.BattlePhasePause = true;
         this.BattlePhaseEnd -= RefillStamina;
     }
 

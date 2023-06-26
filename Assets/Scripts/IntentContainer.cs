@@ -25,29 +25,13 @@ public class IntentContainer : MonoBehaviour
             action.targets.timelinechild.Shift(action.targets);
             action.unit.timelinechild.HighlightedIsBeingOverwritten = true;
             this.unit.timelinechild.HighlightedIsBeingOverwritten = true;
-            this.unit.timelinechild.Shift(this.unit);   
-            BattleLog.SetBattleText(action.GetDescription());
-            BattleLog.DisplayEnemyIntentInfo(action.GetDescription(), unit);
-        }
-    }
-
-    public void DisplayIntentInfoWithoutCameraMoveYeaThisVariableNameIsKindaLongButWhatever()
-    {
-        if (BattleSystem.Instance.state != BattleStates.BATTLE)
-        {
-            AudioManager.Instance.Play("ButtonHover");
-            action.targets.IsHighlighted = true;
-            action.targets.timelinechild.HighlightedIsBeingOverwritten = true;
-            action.targets.timelinechild.Shift(action.targets);
             this.unit.timelinechild.Shift(this.unit);
-            this.unit.timelinechild.HighlightedIsBeingOverwritten = true;
             var newAction = Instantiate(action);
             newAction.unit = unit;
             BattleLog.SetBattleText(newAction.GetDescription());
             BattleLog.DisplayEnemyIntentInfo(newAction.GetDescription(), unit);
         }
     }
-
     void Update()
     {
         if (textMesh != null && damageNums.IsActive() && unit != null && action != null && action.targets != null)
@@ -72,28 +56,6 @@ public class IntentContainer : MonoBehaviour
         BattleLog.Instance.itemText.gameObject.SetActive(false);
     }
 
-    public void Fade(bool FadeIn)
-    {
-        if(FadeIn)
-        {
-            Tools.SetImageColorAlphaToZero(unit.intentUI.GetComponent<Image>());
-            Tools.SetTextColorAlphaToZero(unit.intentUI.textMesh);
-            Tools.SetTextColorAlphaToZero(unit.intentUI.damageNums);
-            Tools.SetTextColorAlphaToZero(unit.intentUI.costNums);
-            StartCoroutine(Tools.FadeObject(unit.intentUI.GetComponent<Image>(), 0.005f, true, false));
-            StartCoroutine(Tools.FadeText(unit.intentUI.textMesh, 0.005f, true, false));
-            StartCoroutine(Tools.FadeText(unit.intentUI.damageNums, 0.005f, true, false));
-            StartCoroutine(Tools.FadeText(unit.intentUI.costNums, 0.005f, true, false));
-        }
-        else
-        {
-            StartCoroutine(Tools.FadeObject(unit.intentUI.GetComponent<Image>(), 0.005f, false, false));
-            StartCoroutine(Tools.FadeText(unit.intentUI.textMesh, 0.005f, false, false));
-            StartCoroutine(Tools.FadeText(unit.intentUI.damageNums, 0.005f, false, false));
-            StartCoroutine(Tools.FadeText(unit.intentUI.costNums, 0.005f, false, false));
-        }
-       
-    }
     public void CheckTarget(Action action, Unit unit)
     {
         if(action.targets == null)

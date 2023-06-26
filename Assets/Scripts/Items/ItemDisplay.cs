@@ -106,7 +106,7 @@ public class ItemDisplay : MonoBehaviour
         Director.Instance.backButton.gameObject.SetActive(false);
         Move(false);
         Director.Instance.DisableCharacterTab();
-        Tools.ToggleUiBlocker(true);
+        Tools.ToggleUiBlocker(true, true);
         MapController.Instance.StartCoroutine(MapController.Instance.DoReEnteredMap(false));
         foreach (var ID in Director.Instance.ItemTabGrid.transform.GetComponentsInChildren<ItemDisplay>())
         {

@@ -30,6 +30,10 @@ public class HighlightedObject : MonoBehaviour
                     gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
                     IsHighlighted = true;
                 }
+                else
+                {
+                    IsHighlighted = false;
+                }
             }
             else
             {

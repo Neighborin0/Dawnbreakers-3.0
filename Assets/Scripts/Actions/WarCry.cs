@@ -20,7 +20,7 @@ public class WarCry : Action
         actionType = ActionType.STATUS;
         PriorityMove = false;
         targetType = TargetType.SELF;
-        duration = 7f;
+        duration = 5f;
         statAmount = 3;
         damageText = damage.ToString();
     }

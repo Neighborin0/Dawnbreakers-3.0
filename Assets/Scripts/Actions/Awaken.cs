@@ -15,6 +15,11 @@ public class Awaken : Action
         description = "Massively raises both <sprite name=\"DEF BLUE\"> and <sprite name=\"SPD YLW\">.";
     }
 
+    public override string GetDescription()
+    {
+        description = "Massively raises both <sprite name=\"DEF BLUE\"> and <sprite name=\"SPD YLW\">.";
+        return description;
+    }
     public override IEnumerator ExecuteAction()
     {
         LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);

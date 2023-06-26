@@ -15,7 +15,7 @@ public class ConfirmButton : MonoBehaviour
     private IEnumerator DelayedDestroy()
     {
         yield return new WaitForSeconds(0.3f);
-        BattleLog.Instance.Move(false);
+        BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
         Director.Instance.LevelUpText.GetComponent<MoveableObject>().Move(true);
         Director.Instance.ConfirmButton.GetComponent<MoveableObject>().Move(true);
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(false);  
@@ -23,6 +23,7 @@ public class ConfirmButton : MonoBehaviour
         OptionsManager.Instance.Load("MAP2");
         OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+        Director.Instance.blackScreen.gameObject.SetActive(false);
         foreach (var unit in Tools.GetAllUnits())
         {
             unit.StaminaHighlightIsDisabled = true;

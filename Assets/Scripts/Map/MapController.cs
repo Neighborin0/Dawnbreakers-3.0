@@ -45,6 +45,7 @@ public class MapController : MonoBehaviour
         {
             Instance = this;
             StartCoroutine(LoadSlots());
+            if(OptionsManager.Instance.blackScreen.color.a > 0)
             StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
             DontDestroyOnLoad(gameObject);
         }
@@ -75,6 +76,7 @@ public class MapController : MonoBehaviour
                     child.gameObject.SetActive(false);
                 }
                 Loaded = false;
+                this.GetComponent<ParticleSystem>().Stop();
 
             }
             else
@@ -97,6 +99,7 @@ public class MapController : MonoBehaviour
                 OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
                 StartCoroutine(LoadSlots());
                 StartCoroutine(DoReEnteredMap());
+                this.GetComponent<ParticleSystem>().Play();
             }
         }
     }
@@ -128,10 +131,18 @@ public class MapController : MonoBehaviour
 
     public void SpawnDecorations()
     {
-        for (int i = 0; i < UnityEngine.Random.Range(30, 40); i++)
+        for (int i = 0; i < UnityEngine.Random.Range(20, 35); i++)
         {
             var decor = Instantiate(mapObjects[UnityEngine.Random.Range(0, mapObjects.Count)], new Vector3(UnityEngine.Random.Range(-160f, 4000), UnityEngine.Random.Range(-1080, 1080), 0), Quaternion.Euler(0, 0, 0), mapCanvas.transform);
-            decor.transform.localScale = new Vector3(UnityEngine.Random.Range(180, 240), UnityEngine.Random.Range(280, 320), UnityEngine.Random.Range(180, 240));
+            if(decor.GetComponent<SpriteRenderer>() != null)
+            {
+                decor.transform.localScale = new Vector3(UnityEngine.Random.Range(180, 240), UnityEngine.Random.Range(280, 320), UnityEngine.Random.Range(180, 240));     
+            }
+            else
+            {
+                decor.transform.localScale = new Vector3(UnityEngine.Random.Range(20, 40), UnityEngine.Random.Range(20, 40), UnityEngine.Random.Range(20, 40));
+                decor.transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0f, 360f), 0, 0);
+            }
             decor.transform.localPosition = new Vector3(decor.transform.position.x, decor.transform.position.y, 0);
         }
     }
@@ -218,7 +229,7 @@ public class MapController : MonoBehaviour
         node.transform.localScale = new Vector3(0, 0, 0);
         LabCamera.Instance.state = LabCamera.CameraState.IDLE;
         LabCamera.Instance.MoveToGameObject(node);
-        float compressor = 2;
+        float compressor = 2.1f;
         var lineInstance = Instantiate(linePrefab, mapCanvas.transform);
         lineInstance.SetPosition(0, new Vector3(storedTransform.x + compressor, storedTransform.y, storedTransform.z));
         lineInstance.SetPosition(1, storedTransform);
@@ -231,6 +242,11 @@ public class MapController : MonoBehaviour
         StartCoroutine(Tools.SmoothScale(node.GetComponent<RectTransform>(), node.GetComponent<MapNode>().oldScaleSize, 0.01f));
         yield return new WaitForSeconds(1.2f);
         LabCamera.Instance.MoveAndFollowGameObject(MM, new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f));
+        yield return new WaitForSeconds(0.5f);
+        foreach (var unit in Director.Instance.party)
+        {
+            unit.DoEnteredMap();
+        }
     }
     public IEnumerator LoadSlots()
     {
@@ -254,10 +270,6 @@ public class MapController : MonoBehaviour
                 {
                     child.GetComponent<MiniMapIcon>().state = MiniMapIcon.MapIconState.IDLE;
                 }
-            }
-            foreach (var unit in Director.Instance.party)
-            {
-                unit.DoEnteredMap();
             }
         }
         completedNodeCount++;

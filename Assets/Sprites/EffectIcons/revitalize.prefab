@@ -96,7 +96,7 @@ MonoBehaviour:
   m_fontSize: 40
   m_fontSizeBase: 40
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -234,10 +234,11 @@ MonoBehaviour:
   ForceEnd: 0
   DoFancyStatChanges: 0
   description: Restores <color=#FFEA29>STM</color> when hit
-  iconName: <color=#FFEA29>Revitalize</color>
+  iconName: Revitalize
   storedValue: 0
   TimedEffect: 0
   currentEffectPopup: {fileID: 0}
+  descriptionSize: 0.3
 --- !u!114 &1095531887439886962
 MonoBehaviour:
   m_ObjectHideFlags: 0

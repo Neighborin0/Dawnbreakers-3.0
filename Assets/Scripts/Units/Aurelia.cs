@@ -16,7 +16,7 @@ public class Aurelia : Unit
         unitName = "Aurelia";
         maxHP = 32;
         attackStat = 7;
-        //attackStat = 999;
+        attackStat = 999;
         defenseStat = 6;
         speedStat = 10;
         //StartingStamina = UnityEngine.Random.Range(85, 95);
@@ -25,7 +25,6 @@ public class Aurelia : Unit
         currentHP = maxHP;
         IsPlayerControlled = true;
         //Tools.AddItemToInventory(this, "Tattered Cape");
-        //Tools.AddItemToInventory(this, "Worn Gauntlet");
     }
 
 }

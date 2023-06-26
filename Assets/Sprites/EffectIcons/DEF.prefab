@@ -234,10 +234,11 @@ MonoBehaviour:
   ForceEnd: 0
   DoFancyStatChanges: 0
   description: 
-  iconName: 
+  iconName: Fortify
   storedValue: 0
   TimedEffect: 1
   currentEffectPopup: {fileID: 0}
+  descriptionSize: 0.4
 --- !u!114 &1842711397144075814
 MonoBehaviour:
   m_ObjectHideFlags: 0

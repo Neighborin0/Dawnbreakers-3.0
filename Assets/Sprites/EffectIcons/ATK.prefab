@@ -168,10 +168,11 @@ MonoBehaviour:
   ForceEnd: 0
   DoFancyStatChanges: 0
   description: 1
-  iconName: 
+  iconName: Vigor
   storedValue: 0
   TimedEffect: 1
   currentEffectPopup: {fileID: 0}
+  descriptionSize: 0.4
 --- !u!114 &8596398589058066822
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ public class ItemDisplayBackButton : MonoBehaviour
         }
         Director.Instance.DisableCharacterTab();
         Director.Instance.CharacterSlotEnable(true);
-        Tools.ToggleUiBlocker(false);
+        Tools.ToggleUiBlocker(false, true);
         this.gameObject.SetActive(false);
     }
 }
