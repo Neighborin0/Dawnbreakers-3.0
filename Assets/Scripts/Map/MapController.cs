@@ -27,6 +27,7 @@ public class MapController : MonoBehaviour
     public Vector3 MaxMapBounds;
     public Vector3 MinMapBounds;
     public float ZoomAmount;
+    public float defaultZoom;
     public List<MapNode> currentNodes;
 
     public float MaxZoom;
@@ -227,6 +228,7 @@ public class MapController : MonoBehaviour
     {
         var MM = LabCamera.Instance.followTarget;
         node.transform.localScale = new Vector3(0, 0, 0);
+      
         LabCamera.Instance.state = LabCamera.CameraState.IDLE;
         LabCamera.Instance.MoveToGameObject(node);
         float compressor = 2.1f;
@@ -241,6 +243,7 @@ public class MapController : MonoBehaviour
         currentNodes[completedNodeCount].gameObject.SetActive(true);
         StartCoroutine(Tools.SmoothScale(node.GetComponent<RectTransform>(), node.GetComponent<MapNode>().oldScaleSize, 0.01f));
         yield return new WaitForSeconds(1.2f);
+        currentNodes[completedNodeCount].mapline = lineInstance.gameObject;
         LabCamera.Instance.MoveAndFollowGameObject(MM, new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f));
         yield return new WaitForSeconds(0.5f);
         foreach (var unit in Director.Instance.party)
@@ -261,6 +264,7 @@ public class MapController : MonoBehaviour
         {
             StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
             LabCamera.Instance.followDisplacement = new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f);
+            LabCamera.Instance.cam.fieldOfView = defaultZoom;
             yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
             SpawnMiniMe();
             yield return new WaitForSeconds(1f);

@@ -60,7 +60,8 @@ public class MapNode : MonoBehaviour
         }
         NodeIsCompleted = true;
         light.gameObject.SetActive(false);
-        yield return new WaitUntil(() => MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>()[0].transform.position == this.transform.position);
+        yield return new WaitUntil(() => MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
+        yield return new WaitForSeconds(0.8f);
         this.OnInteracted();
     }
 
