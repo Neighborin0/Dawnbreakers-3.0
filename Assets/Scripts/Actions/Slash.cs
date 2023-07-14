@@ -41,7 +41,7 @@ public class Slash : Action
         AudioManager.Instance.Play("slash_001");
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Vector3(0, 0, -2f), 1f));
         yield return new WaitForSeconds(0.01f);
-        targets.health.TakeDamage(damage + unit.attackStat);
+        targets.health.TakeDamage(damage + unit.attackStat, unit);
         LabCamera.Instance.Shake(0.3f, 1.5f);
         yield return new WaitForSeconds(0.5f);
         Done = true;

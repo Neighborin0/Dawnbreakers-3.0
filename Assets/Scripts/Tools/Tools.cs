@@ -24,6 +24,10 @@ public class Tools : MonoBehaviour
     public static void GiveItem(string itemName, Unit unit)
     {
         var item = Director.Instance.itemDatabase.Where(obj => obj.itemName == itemName).SingleOrDefault();
+        if(!RunTracker.Instance.itemsCollected.Contains(item))
+        {
+            RunTracker.Instance.itemsCollected.Add(item);
+        }
         unit.inventory.Add(item);
         item.OnPickup(unit);
     }
@@ -46,6 +50,10 @@ public class Tools : MonoBehaviour
         Item item = Director.Instance.itemDatabase.Where(obj => obj.itemName == itemName).SingleOrDefault();
         unit.inventory.Add(item);
         item.OnPickup(unit);
+        if (!RunTracker.Instance.itemsCollected.Contains(item))
+        {
+            RunTracker.Instance.itemsCollected.Add(item);
+        }
 
     }
 
@@ -355,10 +363,10 @@ public class Tools : MonoBehaviour
         }
     }
 
-    public static void ToggleUiBlocker(bool disable, bool DirectorBlocker = false)
+    public static void ToggleUiBlocker(bool disable, bool BlocksDirector = false)
     {
         var img = OptionsManager.Instance.blackScreen;
-        if (DirectorBlocker)
+        if (BlocksDirector)
         {
             img = Director.Instance.blackScreen;
         }
@@ -377,6 +385,14 @@ public class Tools : MonoBehaviour
         }
 
 
+    }
+
+    public static bool CheckUiBlockers()
+    {
+        bool exists = false;
+        if (OptionsManager.Instance.blackScreen.gameObject.activeSelf || Director.Instance.blackScreen.gameObject.activeSelf)
+            exists = true;
+        return exists;
     }
 
 

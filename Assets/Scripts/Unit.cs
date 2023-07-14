@@ -34,13 +34,14 @@ public class Unit : MonoBehaviour
     public Vector3 offset;
     public Vector3 enemyintentOffset;
     public TimeLineChild timelinechild;
-    private bool StopMovingToUnit = false;
+    public bool StopMovingToUnit = false;
     public float StartingStamina;
     IEnumerator generalCoroutine;
 
     //text stuff
     public List<string> introText;
     public List<Item> inventory;
+    public List<LabLine> deathQuotes;
 
     //action events
     public event Action<Unit> BattlePhaseEnd;
@@ -51,6 +52,7 @@ public class Unit : MonoBehaviour
     public event Action<Unit> BattleEnded;
     public event Action<Unit> ActionEnded;
     public event Action<Unit> EnteredMap;
+    public event Action<Unit> OnPreDeath;
 
     //player states
     public PlayerState state;
@@ -152,12 +154,12 @@ public class Unit : MonoBehaviour
                 {
                     if (!this.IsPlayerControlled)
                     {
-                        BattleLog.DisplayCharacterStats(this, true);
+                        BattleLog.Instance.DisplayCharacterStats(this, true);
                     }
                 }
                  if(BattleSystem.Instance.state == BattleStates.IDLE)
                 {
-                    BattleLog.DisplayCharacterStats(this, true);
+                    BattleLog.Instance.DisplayCharacterStats(this, true);
                 }
                 if (BattleSystem.Instance.CheckPlayableState())
                 {
@@ -185,7 +187,7 @@ public class Unit : MonoBehaviour
                     if (!Tools.CheckIfAnyUnitIsTargetting())
                     {
                         BattleLog.Instance.itemText.text = "";
-                        BattleLog.DisplayCharacterStats(this, true);
+                        BattleLog.Instance.DisplayCharacterStats(this, true);
                         //LabCamera.Instance.MoveToUnit(this);
                         if (this.IsPlayerControlled)
                         {
@@ -205,7 +207,7 @@ public class Unit : MonoBehaviour
                     if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && this.IsPlayerControlled)
                     {
                         StopMovingToUnit = false;
-                        BattleLog.DisplayCharacterStats(this, true);
+                        BattleLog.Instance.DisplayCharacterStats(this, true);
                         StartDecision();
 
                     }
@@ -315,7 +317,6 @@ public class Unit : MonoBehaviour
             }
         }
         this.IsHighlighted = false;
-        print("no thinky");
     }
 
     public IEnumerator ExecuteAnimator()
@@ -325,12 +326,23 @@ public class Unit : MonoBehaviour
         Execute = false;
     }
 
+    public void DoDeathQuote()
+    {
+        BattleLog.Instance.ClearAllBattleLogText();
+        if(BattleSystem.Instance.playerUnits.Count <= 1)
+        {
+            BattleLog.Instance.CharacterDialog(deathQuotes, true, true);
+        }
+        else
+        {
+            BattleLog.Instance.CharacterDialog(deathQuotes, true, false);
+        }
+        BattleSystem.Instance.BattlePhasePause = true;
+    }
+
+
     public void ChangeUnitsLight(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0, float stagnantDelay = 0)
     {
-        if (generalCoroutine != null)
-        {
-            StopCoroutine(generalCoroutine);
-        }
         generalCoroutine = ChangeUnitsLightCoroutine(light, desiredIntensity, amountToRaiseBy, delay, stagnantDelay);
         StartCoroutine(generalCoroutine);
     }
@@ -387,6 +399,11 @@ public class Unit : MonoBehaviour
     public void DoActionEnded()
     {
         ActionEnded?.Invoke(this);
+    }
+
+    public void DoOnPreDeath()
+    {
+        OnPreDeath?.Invoke(this);
     }
 
     public void DoBattlePhaseClose()

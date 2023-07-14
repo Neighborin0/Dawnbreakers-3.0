@@ -340,7 +340,7 @@ MonoBehaviour:
   NodeIsCompleted: 0
   IsStartingNode: 0
   IsEnabled: 0
-  light: {fileID: 0}
+  maplight: {fileID: 7994042942499161619}
   mapline: {fileID: 0}
   enemies: []
   playerUnits: []

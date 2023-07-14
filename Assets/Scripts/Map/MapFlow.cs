@@ -26,6 +26,6 @@ public class MapFlow : MonoBehaviour
          new LabNode{RoomType = RoomType.COMBAT, enemies = new string[]{ "Vermin", "Husk"} },
         new LabNode{RoomType = RoomType.CHEST },
          new LabNode{RoomType = RoomType.COMBAT, enemies = new string[]{ "Vermin", "Vermin", "Vermin" } },
-         new LabNode{RoomType = RoomType.BOSS, enemies = new string[]{ "Matriarch", "Husk", "Husk", } },
+         new LabNode{RoomType = RoomType.BOSS, enemies = new string[]{ "Matriarch"} },
     };
 }

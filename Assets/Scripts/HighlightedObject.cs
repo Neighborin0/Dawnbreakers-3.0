@@ -11,6 +11,7 @@ public class HighlightedObject : MonoBehaviour
     public bool IsHighlighted = false;
     public float StartingThickness;
     public bool DoesntHighlightInBattle = false;
+    public bool disabled = false;
     private void Start()
     {
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
@@ -18,36 +19,49 @@ public class HighlightedObject : MonoBehaviour
         gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
     }
 
+     void Update()
+    {
+        if(GetComponent<Button>() != null)
+        {
+            if (!GetComponent<Button>().interactable)
+            {
+                this.disabled = true;
+            }
+        }
+    }
     public void ToggleHighlight()
     {
-        if (!IsHighlighted)
+        if (!disabled)
         {
-            if (DoesntHighlightInBattle)
+            if (!IsHighlighted)
             {
-                if (BattleSystem.Instance.state != BattleStates.BATTLE)
+                if (DoesntHighlightInBattle)
+                {
+                    if (BattleSystem.Instance.state != BattleStates.BATTLE)
+                    {
+                        gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
+                        gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+                        IsHighlighted = true;
+                    }
+                    else
+                    {
+                        IsHighlighted = false;
+                    }
+                }
+                else
                 {
                     gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
                     gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
                     IsHighlighted = true;
                 }
-                else
-                {
-                    IsHighlighted = false;
-                }
+
             }
             else
             {
-                gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
-                gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-                IsHighlighted = true;
+                gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", StartingThickness);
+                gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
+                IsHighlighted = false;
             }
-
-        }
-        else
-        {
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", StartingThickness);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
-            IsHighlighted = false;
         }
     }
 }

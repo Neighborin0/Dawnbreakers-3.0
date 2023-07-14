@@ -11,7 +11,7 @@ public class Carrion : Item
     private void OnEnable()
     {
         itemName = "Carrion";
-        itemDescription = "Increases HP by 6.";
+        itemDescription = "Increases <sprite name=\"HP\"> by 6.";
     }
     public override void OnPickup(Unit unit)
     {

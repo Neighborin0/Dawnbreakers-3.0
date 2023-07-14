@@ -249,6 +249,7 @@ MonoBehaviour:
   damagePopUp: {fileID: 787648301671743073, guid: 82e1502a5b692f544ae1c1565ab0cf06,
     type: 3}
   backSlider: {fileID: 6384726089673102385}
+  DeathPaused: 0
 --- !u!1 &1456329369310914546
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,8 +656,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.0015699863, y: 0}
-  m_SizeDelta: {x: -0.03603, y: 0}
+  m_AnchoredPosition: {x: -0.008222461, y: 0}
+  m_SizeDelta: {x: -0.016445, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3535126901781833563
 CanvasRenderer:
@@ -730,8 +731,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.03649, y: 0}
-  m_SizeDelta: {x: -0.10587, y: 0}
+  m_AnchoredPosition: {x: 0.0015692711, y: 0}
+  m_SizeDelta: {x: -0.03603, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7900703371575382752
 CanvasRenderer:

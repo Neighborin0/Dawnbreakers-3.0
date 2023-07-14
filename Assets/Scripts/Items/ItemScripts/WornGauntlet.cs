@@ -10,8 +10,8 @@ public class WornGauntlet : Item
 {
     private void OnEnable()
     {
-        itemName = "Worn Gauntlet";
-        itemDescription = "Increases ATK by 3.";
+        itemName = "Gilded Gauntlet";
+        itemDescription = "Increases <sprite name=\"ATK RED2\"> by 3.";
     }
     public override void OnPickup(Unit unit)
     {

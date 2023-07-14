@@ -18,7 +18,7 @@ public class MapNode : MonoBehaviour
     public bool NodeIsCompleted = false;
     public bool IsStartingNode;
     public bool IsEnabled;
-    public Light light;
+    public Light maplight;
     public GameObject mapline;
 
 
@@ -26,7 +26,7 @@ public class MapNode : MonoBehaviour
     {
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
         gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
-        light = GetComponentInChildren<Light>();
+        maplight = GetComponentInChildren<Light>();
     }
 
     public void DisableNode()
@@ -59,7 +59,7 @@ public class MapNode : MonoBehaviour
             mapline.GetComponent<LineRenderer>().material.SetColor("_BaseColor", new Color(0, 0, 0, 0.5f));
         }
         NodeIsCompleted = true;
-        light.gameObject.SetActive(false);
+        maplight.gameObject.SetActive(false);
         yield return new WaitUntil(() => MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
         yield return new WaitForSeconds(0.8f);
         this.OnInteracted();

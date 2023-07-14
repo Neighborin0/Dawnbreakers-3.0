@@ -11,48 +11,6 @@ public class ItemDisplay : MonoBehaviour
     public TextMeshProUGUI itemDesc;
     public TextMeshProUGUI itemName;
     public Item item;
-    public bool IsHighlighted = true;
-    public Vector3 newScaleSize = new Vector3(1000, 1000, 1000);
-    private Vector3 oldScaleSize;
-    float oldYpos;
-    private IEnumerator scaler;
-    IEnumerator generalCoruntine;
-
-
-    private void Start()
-    {
-        GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
-        oldScaleSize = transform.localScale;
-        oldYpos = Director.Instance.ItemTabGrid.GetComponent<RectTransform>().anchoredPosition.y;
-        gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
-    }
-    public void ToggleHighlight()
-    {
-        if (IsHighlighted && GetComponent<Button>().interactable)
-        {
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 3f);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-            if (scaler != null)
-            {
-                StopCoroutine(scaler);
-            }
-            scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), newScaleSize, 0.01f);
-            StartCoroutine(scaler);
-            IsHighlighted = false;
-        }
-        else
-        {
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-            if (scaler != null)
-            {
-                StopCoroutine(scaler);
-            }
-            scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), oldScaleSize, 0.01f);
-            StartCoroutine(scaler);
-            IsHighlighted = true;
-        }
-    }
     public void TransitionIn()
     {
         displayImage.sprite = item.sprite;
@@ -61,59 +19,59 @@ public class ItemDisplay : MonoBehaviour
     }
     public void OnInteracted()
     {
+        StartCoroutine(Transition());
+    }
+
+    private IEnumerator Transition()
+    {
+        Director.Instance.chooseYourItemText.gameObject.SetActive(false);
         foreach (var ID in GameObject.FindObjectsOfType<ItemDisplay>())
         {
-            ID.Move(true);
+            ID.GetComponent<MoveableObject>().Move(false, true);
+            ID.GetComponent<Button>().interactable = false;
         }
+        yield return new WaitForSeconds(0.5f);
         Director.Instance.DisplayCharacterTab(false, true);
         foreach (var CT in GameObject.FindObjectsOfType<CharacterTab>())
         {
             CT.OnInteracted += GrantItem;
+            CT.GetComponent<HighlightedObject>().disabled = false;
+            if (!CT.inventoryDisplay.gameObject.activeSelf)
+                CT.SwitchDetailedStates();
         }
         Director.Instance.CharacterSlotEnable(true);
+        Director.Instance.backButton.GetComponent<MoveableObject>().Move(true);
         Director.Instance.backButton.gameObject.SetActive(true);
     }
 
-    public void Move(bool moveUp)
-    {
-        if (moveUp)
-        {
-            if (generalCoruntine != null)
-                StopCoroutine(generalCoruntine);
-
-            generalCoruntine = Tools.SmoothMoveUI(Director.Instance.ItemTabGrid.GetComponent<RectTransform>(), 0, 949, 0.01f);
-            StartCoroutine(generalCoruntine);
-        }
-        else
-        {
-            if (generalCoruntine != null)
-                StopCoroutine(generalCoruntine);
-
-            generalCoruntine = Tools.SmoothMoveUI(Director.Instance.ItemTabGrid.GetComponent<RectTransform>(), 0, oldYpos, 0.01f);
-            StartCoroutine(generalCoruntine);
-        }
-
-    }
 
     public void GrantItem(CharacterTab characterTab)
     {
         Tools.GiveItem(item.itemName, characterTab.unit);
         foreach (var CS in Director.Instance.characterSlotpos.transform.GetComponentsInChildren<CharacterSlot>())
         {
-            CS.stats.text = $":{CS.unit.attackStat}\n:{CS.unit.defenseStat}\n:{CS.unit.speedStat}";
-            CS.healthNumbers.text = $"{CS.unit.currentHP} / {CS.unit.maxHP}";
+            CS.ResetStats();
         }
         Director.Instance.backButton.gameObject.SetActive(false);
-        Move(false);
+        GetComponent<MoveableObject>().Move(false, true);
         Director.Instance.DisableCharacterTab();
+        Director.Instance.CharacterSlotEnable();
         Tools.ToggleUiBlocker(true, true);
+        Tools.ToggleUiBlocker(true, false);
+        MapController.Instance.ReEnteredMap += ReEntered;
         MapController.Instance.StartCoroutine(MapController.Instance.DoReEnteredMap(false));
-        foreach (var ID in Director.Instance.ItemTabGrid.transform.GetComponentsInChildren<ItemDisplay>())
+        foreach (var ID in GameObject.FindObjectsOfType<ItemDisplay>())
         {
             Destroy(ID.gameObject);
         }
 
     }
 
+    public void ReEntered(MapController mc)
+    {
+        Director.Instance.CharacterSlotEnable();
+        MapController.Instance.ReEnteredMap -= ReEntered;
+
+    }
 
 }

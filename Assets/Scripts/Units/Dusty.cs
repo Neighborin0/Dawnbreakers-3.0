@@ -18,16 +18,20 @@ public class Dusty : Unit
     {
         unitName = "Dusty";
         maxHP = 40;
-        // attackStat = 5;
-        attackStat = 999;
+        attackStat = 5;
+        //attackStat = 999;
         defenseStat = 8;
         speedStat = 7;
         StartingStamina = UnityEngine.Random.Range(80, 90);
         currentHP = maxHP;
         IsPlayerControlled = true;
+        deathQuotes = DustyDeath1;
     }
 
-  
+    public static List<LabLine> DustyDeath1 = new List<LabLine>
+    {
+        new LabLine { expression = "neutral", text = "Prostate Cancer got me", unit = "Dusty", textSpeed = 0.03f, }
+    };
 
 
 }

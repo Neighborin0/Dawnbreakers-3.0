@@ -75,5 +75,12 @@ public class ConvserationHandler : MonoBehaviour
 
 
     };
+
+    public static List<LabLine> PrologueEnding = new List<LabLine>
+    {
+          new LabLine { expression = "neutral", text = "<color=#00FFF5>You sucks, like god damn. </color>", unit = "Queen", textSpeed = 0.03f, },
+          new LabLine { expression = "neutral", text = "I know...", unit = "Aurelia", textSpeed = 0.03f, },
+
+    };
 }
 

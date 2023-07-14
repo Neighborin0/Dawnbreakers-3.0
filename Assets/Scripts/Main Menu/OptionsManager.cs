@@ -20,6 +20,9 @@ public class OptionsManager : MonoBehaviour
     public bool SettingsMenuDisabled;
     public Image blackScreen;
     public Button quitButton;
+    public Button Continue;
+    public Canvas canvas;
+    public int IntensityLevel = 0; 
     void Awake()
     {
         if (Instance != null)
@@ -38,6 +41,10 @@ public class OptionsManager : MonoBehaviour
             OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
             OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 1);
             StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
+            if(PlayerPrefs.GetString("Level") != null)
+            {
+                Continue.gameObject.SetActive(true);
+            }
 #endif
         }
 
@@ -162,6 +169,7 @@ public class OptionsManager : MonoBehaviour
             blackScreen.transform.SetAsFirstSibling();
             Tools.ToggleUiBlocker(false);
             SettingsMenuDisabled = false;
+            canvas.sortingOrder = 10;
         }
         else
         {
@@ -172,6 +180,7 @@ public class OptionsManager : MonoBehaviour
             StartCoroutine(generalCoruntine);
             Tools.ToggleUiBlocker(true);
             SettingsMenuDisabled = true;
+            canvas.sortingOrder = 1;
         }
 
     }
@@ -185,6 +194,7 @@ public class OptionsManager : MonoBehaviour
     {
         Move(false);
         blackScreen.gameObject.SetActive(true);
+        canvas.sortingOrder = 100;
         StartCoroutine(Tools.FadeObject(blackScreen, 0.001f, true));
         if (SceneToLoad != "Main Menu")
         {
@@ -197,6 +207,7 @@ public class OptionsManager : MonoBehaviour
         yield return new WaitUntil(() => blackScreen.color == new Color(0, 0, 0, 1));
         yield return new WaitForSeconds(1f);
         print("TRANSITIONED");
-        SceneManager.LoadScene(SceneToLoad);   
+        SceneManager.LoadScene(SceneToLoad);
+        canvas.sortingOrder = 1;
     }
 }

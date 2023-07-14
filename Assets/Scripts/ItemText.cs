@@ -33,13 +33,14 @@ public class ItemText : MonoBehaviour
             {
                 itemText.isSelected = false;
             }
-            BattleLog.Instance.battleText.gameObject.SetActive(true);
-            BattleLog.Instance.battleText.text = "";
-            BattleLog.Instance.battleText.text = $"{item.itemName}\n{item.itemDescription}";
+            BattleLog.Instance.ambientText.gameObject.SetActive(true);
+            BattleLog.Instance.ambientText.text = "";
+            BattleLog.Instance.ambientText.text = $"{item.itemName}\n{item.itemDescription}";
             if(!item.CanBeTransfered)
             {
-                BattleLog.Instance.battleText.text += "\nCan't be transferred.";
+                BattleLog.Instance.ambientText.text += "\n<color=#FF0000>Can't be transferred.</color>";
             }
+            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
             isSelected = true;
         }
     }

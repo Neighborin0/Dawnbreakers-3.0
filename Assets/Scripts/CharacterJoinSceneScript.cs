@@ -15,7 +15,7 @@ public class CharacterJoinSceneScript : MonoBehaviour
         chosenUnit = Director.Instance.characterdatabase[UnityEngine.Random.Range(0, Director.Instance.characterdatabase.Count)];
         chosenUnit.Intro();
         //print(unit.introText[0]);
-       StartCoroutine(Tools.SmoothMove(Director.Instance.BL.gameObject, 0f, 60, 0, 3.4f));
+       StartCoroutine(Tools.SmoothMove(BattleLog.Instance.gameObject, 0f, 60, 0, 3.4f));
         StartIntro(chosenUnit);
 
     }
@@ -28,7 +28,7 @@ public class CharacterJoinSceneScript : MonoBehaviour
     public void AddToParty()
     {
 
-        StartCoroutine(Tools.SmoothMove(Director.Instance.BL.gameObject, 0f, 60, 0, -3.4f));
+        StartCoroutine(Tools.SmoothMove(BattleLog.Instance.gameObject, 0f, 60, 0, -3.4f));
         Director.AddUnitToParty(chosenUnit.name);
         SceneManager.LoadScene("MAP2");
     }

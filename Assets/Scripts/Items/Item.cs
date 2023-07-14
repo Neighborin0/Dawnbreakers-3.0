@@ -14,6 +14,7 @@ public class Item : ScriptableObject
     public Sprite sprite;
 
     public bool CanBeTransfered = true;
+    public bool ExcludedFromLootPools;
 
 
     public event Action<Item> OnPickedUp;

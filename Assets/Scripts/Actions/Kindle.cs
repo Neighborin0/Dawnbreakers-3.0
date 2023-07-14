@@ -14,7 +14,7 @@ public class Kindle : Action
     private void OnEnable()
     {
         ActionName = "Kindle";
-        cost = 100f;
+        cost = 60f;
         actionType = ActionType.STATUS;
         damageText = damage.ToString();
         PriorityMove = false;
@@ -23,18 +23,19 @@ public class Kindle : Action
 
     public override string GetDescription()
     {
-        description = $"Heals allies by 10 <sprite name=\"HP\"> Increases allies <sprite name=\"ATK RED2\"> by 2.";
+        description = $"Heals allies by 5 <sprite name=\"HP\"> Increases allies <sprite name=\"ATK RED2\"> by 2.";
         return description;
     }
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(unit, 5);
+        LabCamera.Instance.MoveToUnit(unit, 5, -1, 5);
         foreach (var x in Tools.DetermineAllies(unit))
         {
             Director.Instance.StartCoroutine(ActuallyDoFastStatChangesUnlikePokemon(x));
         }   
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(1.5f);
         this.Done = true;
+        LabCamera.Instance.ResetPosition();
         yield break;
     }
 
@@ -42,6 +43,6 @@ public class Kindle : Action
     {
         BattleSystem.Instance.SetStatChanges(Stat.ATK, 2f, false, x);
         yield return new WaitForSeconds(1f);
-        BattleSystem.Instance.SetStatChanges(Stat.HP, 10f, false, x);
+        BattleSystem.Instance.SetStatChanges(Stat.HP, 5f, false, x);
     }
 }

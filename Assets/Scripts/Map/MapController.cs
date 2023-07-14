@@ -35,6 +35,8 @@ public class MapController : MonoBehaviour
 
     public int completedNodeCount;
 
+    public event Action<MapController> ReEnteredMap;
+
     public static MapController Instance { get; private set; }
     void Awake()
     {
@@ -278,5 +280,7 @@ public class MapController : MonoBehaviour
         }
         completedNodeCount++;
         StartCoroutine(DrawLine(currentNodes[completedNodeCount].transform.position, currentNodes[completedNodeCount].gameObject));
+        yield return new WaitForSeconds(1f);
+        ReEnteredMap?.Invoke(this);
     }
 }

@@ -11,7 +11,7 @@ public class CrackedShield : Item
     private void OnEnable()
     {
         itemName = "Cracked Shield";
-        itemDescription = "Increases DEF by 3.";
+        itemDescription = "Increases <sprite name=\"DEF BLUE\"> by 3.";
     }
     public override void OnPickup(Unit unit)
     {

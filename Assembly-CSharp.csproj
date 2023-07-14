@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Action.cs" />
     <Compile Include="Assets\Scripts\Items\ItemDisplay.cs" />
     <Compile Include="Assets\Scripts\DraggableObject.cs" />
+    <Compile Include="Assets\Scripts\Actions\Mend.cs" />
     <Compile Include="Assets\Scripts\Main Menu\OptionsManager.cs" />
     <Compile Include="Assets\Scripts\Map\RestSite.cs" />
     <Compile Include="Assets\Scripts\Icons\DefendEF.cs" />
@@ -77,9 +78,12 @@
     <Compile Include="Assets\Scripts\ActionContainer.cs" />
     <Compile Include="Assets\Scripts\LabPopup.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\ForgottenGreaves.cs" />
+    <Compile Include="Assets\Scripts\RunTracker.cs" />
     <Compile Include="Assets\Scripts\Map\MapController.cs" />
+    <Compile Include="Assets\Scripts\Actions\Incinerate.cs" />
     <Compile Include="Assets\Scripts\Actions\Slam.cs" />
     <Compile Include="Assets\Scripts\MiniMapIcon.cs" />
+    <Compile Include="Assets\Scripts\PortraitDisplayPrefab.cs" />
     <Compile Include="Assets\Scripts\NamePlate.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\TatteredCape.cs" />
     <Compile Include="Assets\Scripts\Map\GridTester.cs" />
@@ -96,6 +100,7 @@
     <Compile Include="Assets\Scripts\Items\ItemScripts\CrackedShield.cs" />
     <Compile Include="Assets\Scripts\CharacterTab.cs" />
     <Compile Include="Assets\Scripts\VFXEffect.cs" />
+    <Compile Include="Assets\Scripts\Actions\Beacon.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Main Menu\SettingsButton.cs" />
     <Compile Include="Assets\Scripts\Actions\Calm.cs" />
@@ -103,6 +108,7 @@
     <Compile Include="Assets\Scripts\Map\MapNode.cs" />
     <Compile Include="Assets\Scripts\Actions\Defend.cs" />
     <Compile Include="Assets\Scripts\Actions\Nothing.cs" />
+    <Compile Include="Assets\Scripts\PrologueEnding.cs" />
     <Compile Include="Assets\Scripts\Enemy Behaviors\RandomEnemyBehavior.cs" />
     <Compile Include="Assets\Scripts\DirectorInfo.cs" />
     <Compile Include="Assets\Scripts\Enemy Behaviors\EnemyBehavior.cs" />
@@ -123,7 +129,7 @@
     <Compile Include="Assets\Scripts\Actions\Slash.cs" />
     <Compile Include="Assets\Scripts\Map\RestNode.cs" />
     <Compile Include="Assets\Scripts\Map\MapFlow.cs" />
-    <Compile Include="Assets\Scripts\Main Menu\SaveAndQuitButton.cs" />
+    <Compile Include="Assets\Scripts\Save\SaveAndQuitButton.cs" />
     <Compile Include="Assets\Scripts\IntentContainer.cs" />
     <Compile Include="Assets\Scripts\FloatingObject.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
@@ -155,6 +161,10 @@
     <Compile Include="Assets\Scripts\Main Menu\QuitButton.cs" />
     <Compile Include="Assets\Scripts\Actions\Strike.cs" />
     <Compile Include="Assets\Scripts\InventoryDisplay.cs" />
+    <Compile Include="Assets\Scripts\Save\SaveTools.cs" />
+    <Compile Include="Assets\Scripts\Save\SaveData.cs" />
+    <Compile Include="Assets\Scripts\Save\LabProfile.cs" />
+    <Compile Include="Assets\Scripts\Main Menu\ContinueButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />

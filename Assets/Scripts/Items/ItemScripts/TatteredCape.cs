@@ -11,8 +11,9 @@ public class TatteredCape : Item
     private void OnEnable()
     {
         itemName = "Tattered Cape";
-        itemDescription = "Restores 4 HP after battle.";
+        itemDescription = "Restores 4 <sprite name=\"HP\"> after battle.";
         CanBeTransfered = false;
+        ExcludedFromLootPools = true;
     }
     public override void OnPickup(Unit unit)
     {

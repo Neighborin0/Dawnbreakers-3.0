@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
+
 public class ActionContainer : MonoBehaviour
 {
     public Action action;
@@ -195,14 +196,14 @@ public class ActionContainer : MonoBehaviour
         action.unit = baseUnit;
         if (Director.Instance.timeline.gameObject.activeSelf)
         {
-            BattleLog.SetBattleText(action.GetDescription());
+            BattleLog.Instance.DoBattleText(action.GetDescription());
             BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         }
         else
         {
             BattleLog.Instance.itemText.gameObject.SetActive(false);
             BattleLog.Instance.ambientText.gameObject.SetActive(true);
-            BattleLog.Instance.ambientText.text = action.GetDescription();
+            BattleLog.Instance.ambientText.text = $"{action.ActionName}\n{action.GetDescription()}";
             BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         }
 
@@ -228,7 +229,7 @@ public class ActionContainer : MonoBehaviour
                 if (targetting == true)
                 {
                     targetting = false;
-                    BattleLog.SetBattleText("");
+                    BattleLog.Instance.DoBattleText("");
                     print("not targetting");
                     foreach (TimeLineChild child in Director.Instance.timeline.children)
                     {

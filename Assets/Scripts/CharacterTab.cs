@@ -37,10 +37,6 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     public Image notification;
     public Sprite LevelUpIcon;
     public Sprite itemIcon;
-    public bool IsHighlighted = true;
-    public Vector3 oldScaleSize;
-    public Vector3 newScaleSize = new Vector3(1000, 1000, 1000);
-    private IEnumerator scaler;
     public CharacterTabPopup popup;
 
     public event Action<CharacterTab> OnInteracted;
@@ -52,8 +48,6 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     {
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
         DisplaySwitcher.GetComponent<Image>().material = Instantiate<Material>(DisplaySwitcher.GetComponent<Image>().material);
-        oldScaleSize = transform.localScale;
-        gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
         DisplaySwitcher.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
         if (unit != null)
         {
@@ -81,16 +75,6 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         Tools.ToggleUiBlocker(false, true);
     }
 
-  
-
-     void Update()
-    {
-        if(detailedDisplay != null && Input.GetKeyDown(KeyCode.E))
-        {
-            Director.Instance.DisableCharacterTab();
-        }
-    }
-
     public void DoOnInteracted()
     {
         OnInteracted?.Invoke(this);
@@ -110,42 +94,15 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             CT.ATKtext.text = $"ATK: {CT.unit.attackStat}";
             CT.HPtext.text = $"HP: {CT.unit.maxHP}";
             CT.SPDText.text = $"SPD: {CT.unit.speedStat}";
+            GetComponent<HighlightedObject>().disabled = false;
         }
         foreach (var CS in Director.Instance.characterSlotpos.transform.GetComponentsInChildren<CharacterSlot>())
         {
-            CS.stats.text = $":{CS.unit.attackStat}\n:{CS.unit.defenseStat}\n:{CS.unit.speedStat}";
-            CS.healthNumbers.text = $"{CS.unit.currentHP} / {CS.unit.maxHP}";
+            CS.ResetStats();
         }
 
     }
 
-    public void ToggleHighlight()
-    {
-        if (IsHighlighted && GetComponent<Button>().interactable)
-        {
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 3f);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-            if (scaler != null)
-            {
-                StopCoroutine(scaler);
-            }
-            scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), newScaleSize, 0.01f);
-            StartCoroutine(scaler);
-            IsHighlighted = false;
-        }
-        else if(GetComponent<Button>().interactable)
-        {
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-            if (scaler != null)
-            {
-                StopCoroutine(scaler);
-            }
-            scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), oldScaleSize, 0.01f);
-            StartCoroutine(scaler);
-            IsHighlighted = true;
-        }
-    }
     public void IncreaseStat()
     {
         Director.Instance.characterTab.transform.transform.SetAsFirstSibling();

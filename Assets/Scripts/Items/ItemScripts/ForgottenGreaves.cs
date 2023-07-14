@@ -11,7 +11,7 @@ public class ForgottenGreaves : Item
     private void OnEnable()
     {
         itemName = "Forgotten Greaves";
-        itemDescription = "Increases SPD by 3.";
+        itemDescription = "Increases <sprite name=\"SPD YLW\"> by 3.";
     }
     public override void OnPickup(Unit unit)
     {

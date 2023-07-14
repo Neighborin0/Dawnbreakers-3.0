@@ -13,32 +13,16 @@ public class Healthbar : MonoBehaviour
     public Unit unit;
     public TextMeshProUGUI text;
     public LabPopup damagePopUp;
-    //public TextMeshProUGUI namePlate;
     public Slider backSlider;
-  
-    //public Image DEF_icon;
-    //public TextMeshProUGUI defText;
-    //public StaminaBar stamina;
-    
+    public bool DeathPaused = false;
 
-     void Start()
+    void Start()
     {
         slider.maxValue = unit.maxHP;
         backSlider.maxValue = slider.maxValue;
         slider.value = unit.currentHP;
         slider.value = unit.currentHP;
         text.text = $"{unit.currentHP} / {unit.maxHP}";
-        //namePlate.text = unit.unitName;
-          if (!unit.IsPlayerControlled)
-            {
-                //DEF_icon.gameObject.SetActive(true);
-                //defText.text = $"{unit.defenseStat}";
-            }
-            else
-            {
-                //DEF_icon.gameObject.SetActive(false);
-            }
-        
     }
     void Update()
     {
@@ -46,20 +30,13 @@ public class Healthbar : MonoBehaviour
         {
             slider.value = unit.currentHP;
             text.text = $"{unit.currentHP} / {unit.maxHP}";
-            //namePlate.text = unit.unitName;
-
-            /*if (DEF_icon != null)
-            {
-                defText.text = $"{unit.defenseStat}";
-            }
-            */
-           
         }
     }
 
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Unit DamageSource)
     {
+        RunTracker.Instance.slayer = DamageSource;
         if (unit != null)
         {
             var truedamage = damage - unit.defenseStat;
@@ -86,8 +63,15 @@ public class Healthbar : MonoBehaviour
         BSP.Occupied = false;
         BSP.unit = null;
         if (unit.IsPlayerControlled)
-        {         
+        {
             battlesystem.playerUnits.Remove(unit);
+            LabCamera.Instance.ResetPosition(true);
+            BattleLog.Instance.ResetBattleLog();
+            if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
+            {
+                Tools.PauseAllStaminaTimers();
+                BattleSystem.Instance.playerUnits[0].StartDecision();
+            }
             print("Player should be dead");
         }
         else
@@ -97,8 +81,27 @@ public class Healthbar : MonoBehaviour
         }
         battlesystem.numOfUnits.Remove(unit);
         Tools.TurnOffCriticalUI(unit);
-        LabCamera.Instance.ReadjustCam();
+        Destroy(unit.ActionLayout);
         Destroy(unit.gameObject);
+        if (battlesystem.playerUnits.Count == 0)
+        {
+            //LabCamera.Instance.ReadjustCam();
+            if (OptionsManager.Instance.IntensityLevel == 0)
+            {
+                Tools.PauseAllStaminaTimers();
+                Destroy(MapController.Instance.gameObject);
+                Director.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Prologue Ending"));
+            }
+            else
+            {
+                RunTracker.Instance.DisplayStats();
+                Tools.ToggleUiBlocker(false, false);
+                Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
+                Tools.PauseAllStaminaTimers();
+            }
+        }
+        Destroy(this.gameObject);
+
     }
 
     private IEnumerator HandleSlider()
@@ -116,7 +119,7 @@ public class Healthbar : MonoBehaviour
         if (unit != null)
         {
             unit.DoOnDamaged();
-           
+
             if (unit.currentHP < 1)
             {
                 var popup = Instantiate(damagePopUp, new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x, unit.GetComponent<SpriteRenderer>().bounds.center.y + 2, unit.transform.position.z), Quaternion.identity);
@@ -134,6 +137,21 @@ public class Healthbar : MonoBehaviour
                     print("text isn't being found?");
                 }
                 StartCoroutine(popup.Pop());
+                if (unit.IsPlayerControlled)
+                {
+                    DeathPaused = true;
+                    LabCamera.Instance.state = LabCamera.CameraState.IDLE;
+                    yield return new WaitForSeconds(1f);
+                    unit.DoDeathQuote();
+                    LabCamera.Instance.MoveToUnit(unit, 0, -6, 32, false, 0.5f);
+                    yield return new WaitForSeconds(0.2f);
+                    Director.Instance.StartCoroutine(popup.DestroyPopUp());
+                }
+                unit.DoOnPreDeath();
+                yield return new WaitUntil(() => !DeathPaused);
+                if (unit.IsPlayerControlled)
+                    Tools.PauseAllStaminaTimers();
+                BattleLog.Instance.ResetBattleLog();
                 var sprite = unit.GetComponent<SpriteRenderer>();
                 yield return new WaitForSeconds(0.5f);
                 sprite.forceRenderingOff = true;
@@ -150,14 +168,15 @@ public class Healthbar : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
                 sprite.forceRenderingOff = true;
                 yield return new WaitForSeconds(0.1f);
-                Director.Instance.StartCoroutine(popup.DestroyPopUp());
+                if (popup != null)
+                    Director.Instance.StartCoroutine(popup.DestroyPopUp());
                 Die();
-              
+
             }
             else
             {
 
-                unit.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", new Color(1f, 1f, 1f));     
+                unit.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", new Color(1f, 1f, 1f));
                 var popup = Instantiate(damagePopUp, new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x, unit.GetComponent<SpriteRenderer>().bounds.center.y + 2, unit.transform.position.z), Quaternion.identity);
                 var number = popup.GetComponentInChildren<TextMeshProUGUI>();
                 try

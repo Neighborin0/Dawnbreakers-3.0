@@ -6,20 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class TutorialMatriarch : Unit
 {
-   private string[] TutorialSummons = new string[]{"Husk"};
+    private string[] TutorialSummons = new string[] { "Husk" };
 
     void Awake()
     {
         unitName = "Matriarch";
         maxHP = 168;
-        attackStat = 5;
+        attackStat = 12;
         defenseStat = 0;
-        speedStat = 14;
-        actionCostMultiplier = 100f;
+        speedStat = 10;
         currentHP = maxHP;
         IsPlayerControlled = false;
-        behavior =  this.gameObject.AddComponent<MatriarchBehaviorLV0>();
+        behavior = this.gameObject.AddComponent<MatriarchBehaviorLV0>();
         summonables = TutorialSummons;
+        StartingStamina = 60;
     }
 
     public class MatriarchBehaviorLV0 : EnemyBehavior
@@ -27,15 +27,17 @@ public class TutorialMatriarch : Unit
         private int turn = 0;
         private BattleSystem battlesystem;
         private Unit BaseUnit;
+        int move = 0;
 
         public override IEnumerator DoBehavior(Unit baseUnit)
         {
             battlesystem = BattleSystem.Instance;
             BaseUnit = baseUnit;
             var num = UnityEngine.Random.Range(0, battlesystem.numOfUnits.Count);
-            if (turn < 2)
+            //Spawns an enemy
+            if (battlesystem.numOfUnits[num].IsPlayerControlled)
             {
-                if (battlesystem.numOfUnits[num].IsPlayerControlled)
+                if (turn == 0)
                 {
                     Tools.DetermineActionData(baseUnit, turn, num);
                     battlesystem.DisplayEnemyIntent(baseUnit.actionList[turn], baseUnit);
@@ -45,43 +47,110 @@ public class TutorialMatriarch : Unit
                     baseUnit.stamina.DoCost(baseUnit.actionList[turn].cost);
                     battlesystem.AddAction(baseUnit.actionList[turn]);
                     turn++;
+
                 }
-                else
+                //Attacks or Buffs
+                else if (turn == 1)
                 {
-                    StartCoroutine(Tools.RepeatBehavior(baseUnit));
-                }
-            }
-            else if(turn >= 2)
-            {
-                if (battlesystem.numOfUnits[num].IsPlayerControlled)
-                {
-                    
-                    Tools.DetermineActionData(baseUnit, turn, num, true, BattleSystem.Instance.playerUnits[1]);
-                    battlesystem.DisplayEnemyIntent(baseUnit.actionList[turn], baseUnit);
-                    baseUnit.state = PlayerState.READY;
-                    yield return new WaitUntil(() => baseUnit.stamina.slider.value == baseUnit.stamina.slider.maxValue);
-                    Tools.DetermineActionData(baseUnit, turn, num, true, BattleSystem.Instance.playerUnits[1]);
-                    baseUnit.stamina.DoCost(baseUnit.actionList[turn].cost);
-                    battlesystem.AddAction(baseUnit.actionList[turn]);
-                    turn++;
-                    if(turn == 4)
+                    float prob = 0.7f;
+                    if (UnityEngine.Random.Range(0f, 1f) < prob)
                     {
-                        turn = 0;
+                        //Bash
+                        move = 1;
                     }
+                    else
+                    {
+                        //Kindle
+                        move = 2;
+                    }
+                    Tools.DetermineActionData(baseUnit, move, num);
+                    battlesystem.DisplayEnemyIntent(baseUnit.actionList[move], baseUnit);
+                    baseUnit.state = PlayerState.READY;
+                    yield return new WaitUntil(() => baseUnit.stamina.slider.value == baseUnit.stamina.slider.maxValue);
+                    Tools.DetermineActionData(baseUnit, move, num);
+                    baseUnit.stamina.DoCost(baseUnit.actionList[move].cost);
+                    battlesystem.AddAction(baseUnit.actionList[move]);
+                    turn++;
                 }
-                else
+                //Attacks or Buffs, if an enemy is dead, has a chance to spawn another enemy
+                else if (turn == 2)
                 {
-                    StartCoroutine(Tools.RepeatBehavior(baseUnit));
+                    if (BattleSystem.Instance.enemyUnits.Count <= 2)
+                    {
+                        float prob1 = 0.25f;
+                        float prob2 = 0.50f;
+                        if (UnityEngine.Random.Range(0f, 1f) < prob1)
+                        {
+                            //Summon
+                            move = 4;
+                            print(baseUnit.actionList[4]);
+                        }
+                        else
+                        {
+                            if (UnityEngine.Random.Range(0f, 1f) < prob2 && move != 2)
+                            {
+                                move = 2;
+                                print(baseUnit.actionList[2]);
+                            }
+                            else
+                            {
+                                //Bash
+                                move = 1;
+                                print(baseUnit.actionList[1]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        float prob = 0.7f;
+                        if (UnityEngine.Random.Range(0f, 1f) < prob && move != 2)
+                        {
+                            move = 1;
+                        }
+                        else
+                        {
+                            move = 2;
+                        }
+                    }
+                    Tools.DetermineActionData(baseUnit, move, num);
+                    battlesystem.DisplayEnemyIntent(baseUnit.actionList[move], baseUnit);
+                    baseUnit.state = PlayerState.READY;
+                    yield return new WaitUntil(() => baseUnit.stamina.slider.value == baseUnit.stamina.slider.maxValue);
+                    Tools.DetermineActionData(baseUnit, move, num);
+                    baseUnit.stamina.DoCost(baseUnit.actionList[move].cost);
+                    battlesystem.AddAction(baseUnit.actionList[move]);
+                    turn++;
                 }
-                
+                //Destroys Dusty
+                else if (turn == 3)
+                {
+                    Tools.DetermineActionData(baseUnit, turn, num, true, BattleSystem.Instance.playerUnits[1]);
+                    battlesystem.DisplayEnemyIntent(baseUnit.actionList[turn], baseUnit);
+                    baseUnit.state = PlayerState.READY;
+                    yield return new WaitUntil(() => baseUnit.stamina.slider.value == baseUnit.stamina.slider.maxValue);
+                    Tools.DetermineActionData(baseUnit, turn, num, true, BattleSystem.Instance.playerUnits[1]);
+                    baseUnit.stamina.DoCost(baseUnit.actionList[turn].cost);
+                    battlesystem.AddAction(baseUnit.actionList[turn]);
+                    turn++;
+                }
+                //Destroys Aurelia
+                else if (turn == 4)
+                {
+                    Tools.DetermineActionData(baseUnit, 3, num, true, BattleSystem.Instance.playerUnits[0]);
+                    battlesystem.DisplayEnemyIntent(baseUnit.actionList[3], baseUnit);
+                    baseUnit.state = PlayerState.READY;
+                    yield return new WaitUntil(() => baseUnit.stamina.slider.value == baseUnit.stamina.slider.maxValue);
+                    Tools.DetermineActionData(baseUnit, 3, num, true, BattleSystem.Instance.playerUnits[0]);
+                    baseUnit.stamina.DoCost(baseUnit.actionList[3].cost);
+                    battlesystem.AddAction(baseUnit.actionList[3]);
+                    turn = 1;
+                }
             }
-          
             else
-            { 
-                turn = 0;
+            {
                 StartCoroutine(Tools.RepeatBehavior(baseUnit));
             }
         }
     }
-
 }
+    

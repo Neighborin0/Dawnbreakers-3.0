@@ -22,7 +22,6 @@ public class Director : MonoBehaviour
     
 
 
-    public BattleLog BL;
     public CharacterTab characterTab;
     public DirectorInfo directorInfo;
     public static int LabyrinthLVL;
@@ -47,8 +46,10 @@ public class Director : MonoBehaviour
     public float UserTimelineSpeedDelay = 0.5f;
     public float staminaSPDDivider;
     public GameObject LevelUpText;
+    public TextMeshProUGUI chooseYourItemText;
     public GameObject EffectPopUp;
     public GameObject ConfirmButton;
+    public GameObject CharacterSlotButtonprefab;
 
     public LabCamera.CameraState previousCameraState;
     public static Director Instance { get; private set;  }
@@ -73,6 +74,7 @@ public class Director : MonoBehaviour
                 party.Remove(unit);
                 DontDestroyOnLoad(startingUnit);
                 party.Add(startingUnit);
+                RunTracker.Instance.partyMembersCollected.Add(startingUnit);
                 startingUnit.gameObject.SetActive(false);
             }   
         }
@@ -84,20 +86,26 @@ public class Director : MonoBehaviour
     {
         
         //Speed Up
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if(Director.Instance.DevMode)
         {
-            Time.timeScale += 1;
-            print(Time.timeScale);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Time.timeScale -= 1;
-            print(Time.timeScale);
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                Time.timeScale += 1;
+                print(Time.timeScale);
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                Time.timeScale -= 1;
+                print(Time.timeScale);
+            }
         }
         //Put Character Slots Away
-        if (Input.GetKeyDown(KeyCode.E) && characterSlotpos != null)
+        if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null)
         {
-            CharacterSlotEnable();
+            if(CharacterSlotsDisplayed)
+            DisplayCharacterTab(false);
+            else if(ItemTabGrid.transform.childCount == 0)
+                DisableCharacterTab();
             print("MOVING CHARACTER SLOTS");
         }
         
@@ -106,6 +114,7 @@ public class Director : MonoBehaviour
     public void CreateCharacterSlots(List<Unit> units)
     {
         int i = 0;
+        //Instantiate(CharacterSlotButtonprefab, canvas.transform);
         if (units != null)
         {
             foreach (var x in units)
@@ -124,13 +133,13 @@ public class Director : MonoBehaviour
                     {
                         healthbar.value = x.currentHP;
                     }
-                    newcharacterSlot.healthNumbers.text = $"{healthbar.value} / {x.maxHP}";
                     newcharacterSlot.transform.SetParent(characterSlotpos.transform, false);
                     if (x.charPortraits != null)
                     {
                         newcharacterSlot.portrait.sprite = x.charPortraits.Find(obj => obj.name == "neutral");
                     }
-                    newcharacterSlot.stats.text = $"<sprite name=\"ATK\">:{x.attackStat}  <sprite name=\"DEF\">:{x.defenseStat}  <sprite name=\"SPD\">:{x.speedStat}";
+                    newcharacterSlot.ResetStats();
+                    //CharacterSlotButtonprefab.GetComponent<RectTransform>().anchoredPosition = newcharacterSlot.GetComponent<RectTransform>().anchoredPosition + new Vector2(100, 0);
                     i++;
                 }
             }
@@ -167,11 +176,13 @@ public class Director : MonoBehaviour
         DontDestroyOnLoad(unitToAdd);
         unitToAdd.gameObject.SetActive(false);
         Director.Instance.party.Add(unitToAdd);
+        RunTracker.Instance.partyMembersCollected.Add(unitToAdd);
     }
 
     public void DisplayCharacterTab(bool LevelUp = true, bool Interactable = false)
     {
         CharacterSlotEnable();
+        BattleLog.Instance.ClearAllBattleLogText();
         Tools.ToggleUiBlocker(false, true);
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(true);
         if (Director.Instance.TabGrid.transform.childCount > 0)
@@ -180,7 +191,6 @@ public class Director : MonoBehaviour
             {
                 child.gameObject.SetActive(true);
             }
-            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         }
         else
         {
@@ -214,7 +224,6 @@ public class Director : MonoBehaviour
                     }
                     else
                     {
-                        BL.GetComponent<MoveableObject>().Move(true);
                         CT.levelupDisplay.SetActive(false);
                         CT.detailedDisplay.SetActive(true);
                         SetUpActionList(unit, CT);
@@ -229,7 +238,7 @@ public class Director : MonoBehaviour
                         
                         foreach (var item in unit.inventory)
                         {
-                            var x = Instantiate(Director.Instance.BL.itemImage);
+                            var x = Instantiate(BattleLog.Instance.itemImage);
                             x.image.sprite = item.sprite;
                             x.GetComponent<ItemText>().item = item;
                             x.GetComponent<ItemText>().unit = unit;
@@ -320,15 +329,22 @@ public class Director : MonoBehaviour
 
     public void DisableCharacterTab()
     {
-        //ToggleEveryButton();
+        Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(false);
         if (generalCoruntine != null)
             StopCoroutine(generalCoruntine);
 
+        generalCoruntine = DisablingCharacterTab();
+        StartCoroutine(generalCoruntine);
+    }
+
+    public IEnumerator DisablingCharacterTab()
+    {
         characterSlotpos.GetComponent<MoveableObject>().Move(false);
         CharacterSlotsDisplayed = true;
         Tools.ToggleUiBlocker(true, true);
-        BL.GetComponent<MoveableObject>().Move(false);
-        BattleLog.ClearAllBattleLogText();
+        BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
+        BattleLog.Instance.ClearAllBattleLogText();
+        yield return new WaitForSeconds(1f);
         foreach (Transform child in Director.Instance.TabGrid.transform)
         {
             Destroy(child.gameObject);

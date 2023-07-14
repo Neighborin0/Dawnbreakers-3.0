@@ -11,7 +11,7 @@ public class Summon : Action
     private void OnEnable()
     {
         ActionName = "Summon";
-        cost = 100f;
+        cost = 75f;
         targetType = TargetType.SELF;
         actionType = ActionType.STATUS;
         damageText = damage.ToString();

@@ -11,7 +11,7 @@ public class Bash : Action
     private void OnEnable()
     {
         ActionName = "Bash";
-        damage = 50;
+        damage = 5;
         damageText = damage.ToString();
         accuracy = 1;
         cost = 50f;
@@ -43,7 +43,7 @@ public class Bash : Action
         yield return new WaitForSeconds(0.3f);     
         AudioManager.Instance.Play("slash_001");
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash" ,Color.yellow, new Vector3(0, 0, -2f)));
-        targets.health.TakeDamage(damage + unit.attackStat);
+        targets.health.TakeDamage(damage + unit.attackStat, unit);
         LabCamera.Instance.Shake(0.2f, 0.7f);
         yield return new WaitForSeconds(0.5f);
         LabCamera.Instance.ResetPosition();

@@ -42,7 +42,7 @@ public class Sweep : Action
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Vector3(0, 0, -2f), 1f));
         AudioManager.Instance.Play("slash_001");
         LabCamera.Instance.Shake(0.3f, 1f);
-        targets.health.TakeDamage(damage + unit.attackStat);
+        targets.health.TakeDamage(damage + unit.attackStat, unit);
         yield return new WaitForSeconds(0.5f);
         LabCamera.Instance.ResetPosition();
         this.Done = true;

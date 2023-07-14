@@ -1187,6 +1187,7 @@ MonoBehaviour:
   canvas: {fileID: 892046269}
   dot: {fileID: 4637191601113978858, guid: 01683083e2db73f45bbb412ba04863f4, type: 3}
   HasStarted: 0
+  BattlePhasePause: 0
   QueuedActions: []
   speedlist: []
   ActionsToPerform: []
@@ -15269,6 +15270,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1756486628775432474, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
         type: 3}
+      propertyPath: m_OcclusionCulling
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756486628775432474, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
+        type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 288
       objectReference: {fileID: 0}
@@ -28148,6 +28154,11 @@ PrefabInstance:
         type: 3}
       propertyPath: orthographic size
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756486628775432474, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
+        type: 3}
+      propertyPath: m_OcclusionCulling
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1756486628775432474, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
         type: 3}

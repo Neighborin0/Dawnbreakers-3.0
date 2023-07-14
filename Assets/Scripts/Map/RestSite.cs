@@ -49,7 +49,7 @@ public class RestSite : MonoBehaviour
         }
         if (!Director.Instance.DevMode)
         {
-            BattleLog.CharacterDialog(ConvserationHandler.DustyAureliaRestMeeting, true, false);
+            BattleLog.Instance.CharacterDialog(ConvserationHandler.DustyAureliaRestMeeting, true, false);
         }
         StartCoroutine(Transition());
     }

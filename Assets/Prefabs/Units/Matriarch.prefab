@@ -141,8 +141,8 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: -5, z: 0}
   timelinechild: {fileID: 0}
+  StopMovingToUnit: 0
   StartingStamina: 0
-  StatsAreDisplayed: 0
   introText: []
   inventory: []
   state: 0
@@ -153,10 +153,11 @@ MonoBehaviour:
   spotLight: {fileID: 6006733522569477460}
   actionCostMultiplier: 1
   actionList:
+  - {fileID: 11400000, guid: 4d0d659b93e6dae44812aad6890a3116, type: 2}
+  - {fileID: 11400000, guid: 10f4714b8376b234c9d3857803d3c02a, type: 2}
   - {fileID: 11400000, guid: 2286e3232ce0a514389455649b743e8e, type: 2}
+  - {fileID: 11400000, guid: 6932bd23da6b1f3478b0f7a9b429a994, type: 2}
   - {fileID: 11400000, guid: d44c465bd4aed4148bcbbedd2960260f, type: 2}
-  - {fileID: 11400000, guid: 10f4714b8376b234c9d3857803d3c02a, type: 2}
-  - {fileID: 11400000, guid: 10f4714b8376b234c9d3857803d3c02a, type: 2}
   ActionLayout: {fileID: 0}
   summonables: []
   IsSummon: 0

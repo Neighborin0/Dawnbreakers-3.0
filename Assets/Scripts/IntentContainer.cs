@@ -28,8 +28,8 @@ public class IntentContainer : MonoBehaviour
             this.unit.timelinechild.Shift(this.unit);
             var newAction = Instantiate(action);
             newAction.unit = unit;
-            BattleLog.SetBattleText(newAction.GetDescription());
-            BattleLog.DisplayEnemyIntentInfo(newAction.GetDescription(), unit);
+            BattleLog.Instance.DoBattleText(newAction.GetDescription());
+            BattleLog.Instance.DisplayEnemyIntentInfo(newAction.GetDescription(), unit);
         }
     }
     void Update()

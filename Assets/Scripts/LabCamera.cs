@@ -28,6 +28,7 @@ public class LabCamera : MonoBehaviour
     public GameObject followTarget;
     public Vector3 followDisplacement;
     public float FOV = 23;
+    bool forceSway = false;
 
     public CameraState state;
 
@@ -76,8 +77,6 @@ public class LabCamera : MonoBehaviour
                 print("Camera is sized for 1 unit");
                 PositonToMoveTo = BattleSystem.Instance.cameraPos1Units;
                 uicam.transform.position = new Vector3(uicam.transform.position.x, uicam.transform.position.y, uicam.transform.position.z);
-
-
             }
         }
         else if (RestSite.Instance != null)
@@ -103,10 +102,21 @@ public class LabCamera : MonoBehaviour
             if (smoothingTime > 1)
             {
                 if (BattleSystem.Instance != null)
-                    if (BattleSystem.Instance.state == BattleStates.BATTLE || BattleSystem.Instance.state == BattleStates.WON)
-                        state = CameraState.IDLE;
+                {
+                    if (!forceSway)
+                    {
+                        if (BattleSystem.Instance.state == BattleStates.BATTLE || BattleSystem.Instance.state == BattleStates.WON || BattleSystem.Instance.state == BattleStates.TALKING)
+                            state = CameraState.IDLE;
+                        else
+                            state = CameraState.SWAY;
+                    }
                     else
+                    {
                         state = CameraState.SWAY;
+                        forceSway = false;
+                    }
+                        
+                }
                 else
                     state = CameraState.IDLE;
 
@@ -163,12 +173,12 @@ public class LabCamera : MonoBehaviour
                     Mathf.Clamp(followTarget.transform.position.y + followDisplacement.y, MapController.Instance.MinMapBounds.y, MapController.Instance.MaxMapBounds.y),
                     Mathf.Clamp(followTarget.transform.position.z + followDisplacement.z, MapController.Instance.MinMapBounds.z, MapController.Instance.MaxMapBounds.z));
             //Zoom In
-            if (Input.GetAxis("Mouse ScrollWheel") > 0 && FOV > MapController.Instance.MinZoom)
+            if (Input.GetAxis("Mouse ScrollWheel") > 0 && FOV > MapController.Instance.MinZoom && !Tools.CheckUiBlockers())
 			{
                 FOV -= MapController.Instance.ZoomAmount;
             }
             //Zoom Out
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0 && FOV < MapController.Instance.MaxZoom)
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0 && FOV < MapController.Instance.MaxZoom && !Tools.CheckUiBlockers())
             {
                 FOV += MapController.Instance.ZoomAmount;
             }
@@ -241,13 +251,17 @@ public class LabCamera : MonoBehaviour
         }
     }
 
-    public void ResetPosition()
+    public void ResetPosition(bool forceSWAY = false)
     {
         smoothingTime = 0f;
         state = CameraState.MOVING;
         PositonToMoveTo = originalPos;
         PositonToMoveTo.y = originalPos.y;
         PositonToMoveTo.z = originalPos.z;
+        if(forceSWAY)
+        {
+            forceSway = true;
+        }
     }
     public void Shake(float newShakeDuration, float newShakeAmount)
     {

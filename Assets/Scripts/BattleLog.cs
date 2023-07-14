@@ -13,7 +13,6 @@ public class BattleLog : MonoBehaviour
 {
     public static BattleLog Instance { get; private set; }
     public TextMeshProUGUI ambientText;
-    public TextMeshProUGUI battleText;
     private Unit displayingEnemyStatsFor;
 
     int index;
@@ -67,6 +66,7 @@ public class BattleLog : MonoBehaviour
     {
         var layout = Instantiate(ActionLayout, transform);
         unit.ActionLayout = layout.gameObject;
+        unit.ActionLayout.gameObject.SetActive(true);
         for (int i = 0; i < unit.actionList.Count; i++)
         {
             var container = Instantiate(genericActionContainer, layout.transform) as ActionContainer;
@@ -76,40 +76,32 @@ public class BattleLog : MonoBehaviour
         }
     }
 
-    public static void ClearAmbientText()
+    public void ClearAmbientText()
     {
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        battlelog.ambientText.text = "";
+        ambientText.text = "";
     }
 
-    public static void CharacterDialog(List<LabLine> dialog, bool PausesBattle = false, bool disableAfter = true)
+    public void CharacterDialog(List<LabLine> dialog, bool PausesBattle = false, bool disableAfter = true)
     {
-
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        BattleLog.ClearAllBattleLogText();
-        battlelog.Portraitparent.gameObject.SetActive(true);
-        battlelog.characterdialog.gameObject.SetActive(true);
-        battlelog.StartCoroutine(battlelog.TypeMultiText(dialog, battlelog.characterdialog, disableAfter, PausesBattle));
+        ClearAllBattleLogText();
+        Portraitparent.gameObject.SetActive(true);
+        characterdialog.gameObject.SetActive(true);
+        StartCoroutine(TypeMultiText(dialog, characterdialog, disableAfter, PausesBattle));
     }
 
-    public static void DisableCharacterDialog()
+    public void DisableCharacterDialog()
     {
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        battlelog.characterdialog.gameObject.SetActive(false);
+        characterdialog.gameObject.SetActive(false);
     }
 
-
-    public static void SetRandomAmbientTextActive()
+    public void SetRandomAmbientTextActive()
     {
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        BattleLog.ClearAllBattleLogText();
-        battlelog.ambientText.gameObject.SetActive(true);
+       ambientText.gameObject.SetActive(true);
     }
 
-    public static void SetRandomAmbientTextOff()
+    public void SetRandomAmbientTextOff()
     {
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        battlelog.ambientText.gameObject.SetActive(false);
+        ambientText.gameObject.SetActive(false);
     }
     public void CreateRandomAmbientText()
     {
@@ -155,26 +147,21 @@ public class BattleLog : MonoBehaviour
             x.image.sprite = item.sprite;
             x.GetComponent<ItemText>().item = item;
             x.transform.SetParent(battlelog.inventoryDisplay.transform);
-            //Tools.SetImageColorAlphaToZero(x.image);
-            //StartCoroutine(Tools.FadeObject(x.image, 0.01f, true, false));
         }
-
     }
-    public static void DisplayCharacterStats(Unit unit, bool TurnOffItemDisplay = false)
+    public void DisplayCharacterStats(Unit unit, bool TurnOffItemDisplay = false)
     {
-        var battlelog = BattleLog.Instance;
-        //battlelog.itemText.text = "";
         if (unit.IsPlayerControlled)
         {
-            battlelog.DisplayPlayerStats(unit, TurnOffItemDisplay);
+            DisplayPlayerStats(unit, TurnOffItemDisplay);
         }
         else
         {
            
-            if(battlelog.displayingEnemyStatsFor != unit)
+            if(displayingEnemyStatsFor != unit)
             {
-                battlelog.DisplayEnemyCharacterStats(unit);
-                battlelog.displayingEnemyStatsFor = unit;
+                DisplayEnemyCharacterStats(unit);
+                displayingEnemyStatsFor = unit;
             }
         }
 
@@ -201,60 +188,50 @@ public class BattleLog : MonoBehaviour
     }
 
 
-    public static void DisableCharacterStats()
+    public void DisableCharacterStats()
     {
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        battlelog.STATtext.gameObject.SetActive(false);
-        battlelog.enemySTATtext.gameObject.SetActive(false);
-        battlelog.Portraitparent.gameObject.SetActive(false);
-        battlelog.characterName.gameObject.SetActive(false);
-        battlelog.enemyPortraitparent.gameObject.SetActive(false);
+        STATtext.gameObject.SetActive(false);
+        enemySTATtext.gameObject.SetActive(false);
+        Portraitparent.gameObject.SetActive(false);
+        characterName.gameObject.SetActive(false);
+        enemyPortraitparent.gameObject.SetActive(false);
 
-        battlelog.itemText.gameObject.SetActive(false);
-        battlelog.itemText.text = "";
-        battlelog.displayingEnemyStatsFor = null;
-        foreach (var item in battlelog.inventoryDisplay.GetComponentsInChildren<Button>())
+        itemText.gameObject.SetActive(false);
+        itemText.text = "";
+        displayingEnemyStatsFor = null;
+        foreach (var item in inventoryDisplay.GetComponentsInChildren<Button>())
         {
             Destroy(item.gameObject);
         }
     }
-    public static void DisplayEnemyIntentInfo(string description, Unit unit)
+    public void DisplayEnemyIntentInfo(string description, Unit unit)
     {
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        battlelog.enemyIntent.gameObject.SetActive(true);
-        battlelog.enemyIntent.text = ($"{description}");
-        BattleLog.DisplayCharacterStats(unit);
-    }
-
-
-    public static void SetBattleText(string text)
-    {
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        battlelog.DoBattleText(text);
+        enemyIntent.gameObject.SetActive(true);
+        enemyIntent.text = ($"{description}");
+        DisplayCharacterStats(unit);
     }
 
     public void DoBattleText(string text)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        //BattleLog.ClearAllBattleLogText();
         battlelog.ambientText.gameObject.SetActive(false);
         Tools.SetTextColorAlphaToZero(battlelog.ambientText);
         StartCoroutine(Tools.FadeText(battlelog.ambientText, 0.005f, true, false));
-        battleText.gameObject.SetActive(true);
-        battleText.text = text;
+        itemText.gameObject.SetActive(true);
+        itemText.text = text;
     }
 
-    public static void ClearBattleText()
+    public void ClearBattleText()
     {
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        battlelog.battleText.gameObject.SetActive(false);
+        itemText.gameObject.SetActive(false);
     }
 
+    //Used for Clearing all text and creating new ambient text
     public void ResetBattleLog()
     {
-        BattleLog.DisableCharacterStats();
-        BattleLog.SetRandomAmbientTextActive();
-        BattleLog.ClearBattleText();
+        DisableCharacterStats();
+        SetRandomAmbientTextActive();
+        ClearBattleText();
         foreach (var z in Tools.GetAllUnits())
         {
             z.IsHighlighted = false;
@@ -263,18 +240,18 @@ public class BattleLog : MonoBehaviour
         }
     }
 
-    public static void ClearAllBattleLogText()
+    //Creates a clean slate for Battle Text
+    public void ClearAllBattleLogText()
     {
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        battlelog.battleText.gameObject.SetActive(false);
-        BattleLog.DisableCharacterStats();
-        battlelog.ambientText.gameObject.SetActive(false);
-        battlelog.enemyIntent.gameObject.SetActive(false);
+        itemText.gameObject.SetActive(false);
+        DisableCharacterStats();
+        ambientText.gameObject.SetActive(false);
+        enemyIntent.gameObject.SetActive(false);
     }
 
     public void DoPostBattleDialouge(Unit unit)
     {
-        BattleLog.CharacterDialog(ConvserationHandler.DustyAureliaPostMeeting, false, false);
+        CharacterDialog(ConvserationHandler.DustyAureliaPostMeeting, false, false);
         unit.EnteredMap -= DoPostBattleDialouge;
     }
 
@@ -301,12 +278,11 @@ public class BattleLog : MonoBehaviour
                     unit.StaminaHighlightIsDisabled = true;
                     unit.ExitDecision();
                 }
-                LabCamera.Instance.ResetPosition();
                 LabCamera.Instance.uicam.gameObject.SetActive(false);
                 Tools.PauseAllStaminaTimers();
                 print("BATTLE SHOULD BE PAUSED");
+                ClearAllBattleLogText();
                 BattleSystem.Instance.state = BattleStates.TALKING;
-                LabCamera.Instance.state = LabCamera.CameraState.IDLE;
             }
             else if (RestSite.Instance != null)
             {
@@ -328,38 +304,31 @@ public class BattleLog : MonoBehaviour
             }
             indicator.gameObject.SetActive(true);
             yield return new WaitForSeconds(0.01f);
+            indicator.gameObject.SetActive(true);
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
             characterdialog.text = "";
             indicator.gameObject.SetActive(false);
             yield return new WaitForSeconds(0.01f);
         }
-        if (disableAfter)
-        {
-            x.text = "";
-        }
         if (Pauses)
         {
             if (BattleSystem.Instance != null)
             {
-                Tools.UnpauseAllStaminaTimers();
-                BattleLog.SetRandomAmbientTextActive();
                 BattleSystem.Instance.state = previousState;
-                LabCamera.Instance.state = LabCamera.CameraState.SWAY;
-                BattleLog.DisableCharacterDialog();
+                DisableCharacterDialog();
+                ResetBattleLog();
+                BattleSystem.Instance.BattlePhasePause = false;
 
                 foreach (var unit in Tools.GetAllUnits())
                 {
-                    unit.state = PlayerState.IDLE;
+                    if(unit.IsPlayerControlled)
+                    unit.state = PlayerState.WAITING;
+                    else
+                        unit.state = PlayerState.IDLE;
                     unit.StaminaHighlightIsDisabled = false;
-                    LabCamera.Instance.state = LabCamera.CameraState.SWAY;
+                    unit.health.DeathPaused = false;
                     LabCamera.Instance.uicam.gameObject.SetActive(true);
-                }
-
-                if(BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
-                {
-                    Tools.PauseAllStaminaTimers();
-                    BattleSystem.Instance.playerUnits[0].StartDecision();
-                }
+                }         
             }
             if (RestSite.Instance != null)
             {
@@ -372,6 +341,13 @@ public class BattleLog : MonoBehaviour
         }
         else
         {
+            GetComponent<MoveableObject>().Move(false);
+        }
+        if (disableAfter)
+        {
+            x.text = "";
+            ClearAllBattleLogText();
+            characterdialog.gameObject.SetActive(false);
             GetComponent<MoveableObject>().Move(false);
         }
 

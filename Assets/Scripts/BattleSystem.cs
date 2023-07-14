@@ -28,7 +28,6 @@ public class BattleSystem : MonoBehaviour
 
     public static BattleSystem Instance { get; private set; }
     //public Transform BattleOrderpos;
-    public BattleLog BL;
     public GameObject statPopUp;
     public ActionContainer genericActionContainer;
     public GameObject canvasParent;
@@ -83,7 +82,6 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
         state = BattleStates.START;
-        BL = Director.Instance.BL;
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         StartBattle();
     }
@@ -117,29 +115,45 @@ public class BattleSystem : MonoBehaviour
             BattleLog.Instance.ResetBattleLog();
         }
         
-        if (Input.GetKeyDown(KeyCode.D))
+        /*if (Input.GetKeyDown(KeyCode.D))
         {
-            foreach (var unit in Tools.GetAllUnits())
+            if (state == BattleStates.DECISION_PHASE)
             {
-                if (unit.stamina.slider.value == unit.stamina.slider.maxValue && unit.IsPlayerControlled)
-                {
-                    StartCoroutine(AdvanceASecond());
-                    break;
-                }
+                StartCoroutine(AdvanceASecond());
+                print("Advancing");
             }
+        }*/
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            playerUnits[UnityEngine.Random.Range(0, playerUnits.Count - 1)].health.TakeDamage(99999, null);
         }
-      
     }
 
     public BattleStates state;
-    IEnumerator AdvanceASecond()
+    /*IEnumerator AdvanceASecond()
     {
+        foreach(var unit in playerUnits)
+        {
+            SetUIOff(unit);
+            unit.state = PlayerState.WAITING;
+        } 
+        
         Tools.UnpauseAllStaminaTimers();
-        state = BattleStates.WAITING;
-        yield return new WaitForSeconds(1f);
-        Tools.PauseAllStaminaTimers();
-        state = BattleStates.DECISION_PHASE;
+        //state = BattleStates.IDLE;
+        yield return new WaitForSeconds(10f);
+        Tools.PauseAllStaminaTimers();     
+        foreach (var x in playerUnits)
+        {
+            if (x.state == PlayerState.IDLE)
+            {
+                state = BattleStates.DECISION_PHASE;
+                x.StartDecision();
+                break;
+            }
+
+        }
     }
+*/
 
     void StartBattle()
     {
@@ -182,6 +196,7 @@ public class BattleSystem : MonoBehaviour
                 numOfUnits.Add(enemy);
             }
             StartCoroutine(Transition());
+            BattleLog.Instance.ClearAllBattleLogText();
             print(state);
         }
         catch(Exception ex)
@@ -204,11 +219,9 @@ public class BattleSystem : MonoBehaviour
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         LabCamera.Instance.ReadjustCam();
         yield return new WaitForSeconds(1.5f);
-        Director.Instance.BL.GetComponent<MoveableObject>().Move(true);
+        BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
-        BattleLog.SetRandomAmbientTextActive();
-        BL.CreateRandomAmbientText();
-        BL.gameObject.SetActive(true);
+        BattleLog.Instance.ResetBattleLog();
         this.canvas.gameObject.SetActive(true);
         state = BattleStates.DECISION_PHASE;
         foreach (var unit in Tools.GetAllUnits())
@@ -288,17 +301,17 @@ public class BattleSystem : MonoBehaviour
     public bool CheckPlayableState()
     {
         bool check = false;
-        if (BattleSystem.Instance.state != BattleStates.BATTLE && BattleSystem.Instance.state != BattleStates.START && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD)
+        if (BattleSystem.Instance.state != BattleStates.BATTLE && BattleSystem.Instance.state != BattleStates.START && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD && BattleSystem.Instance.state != BattleStates.TALKING)
             check = true;
         else
             check = false;
         return check;
     }
 
-    IEnumerator lineCoroutine;
     public void DisplayEnemyIntent(Action action, Unit unit)
     {
         unit.intentUI.textMesh.text = action.ActionName;
+        if(action.damage != 0)
         unit.intentUI.damageNums.text = " <sprite name=\"ATK\">" + (action.damage + unit.attackStat - action.targets.defenseStat).ToString();
         unit.intentUI.action = action;
         unit.intentUI.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
@@ -370,7 +383,7 @@ public class BattleSystem : MonoBehaviour
                 yield return new WaitUntil(() => !i.isPaused);
                 timer--;
                 i.timerText.text = timer.ToString();
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(1f * Director.Instance.staminaSPDDivider);
             }
             i.DestoryEffectIcon();
         }
@@ -524,7 +537,7 @@ public class BattleSystem : MonoBehaviour
             {
                 unit.state = PlayerState.DECIDING;
                 LabCamera.Instance.MoveToUnit(unit);
-                BattleLog.DisplayCharacterStats(unit, true);
+                BattleLog.Instance.DisplayCharacterStats(unit, true);
                 BattleLog.Instance.inventoryDisplay.gameObject.SetActive(false);
                 unit.skillUIs[i].SetActive(true);
                 var assignedAction = unit.skillUIs[i].GetComponent<ActionContainer>();
@@ -552,18 +565,13 @@ public class BattleSystem : MonoBehaviour
                     assignedAction.durationParent.SetActive(false);
                 i++;
             }
-        }
-        else
-        {
-
+            unit.ActionLayout.gameObject.SetActive(true);
         }
     }
 
     public void AddAction(Action action)
     {
-        BattleLog.ClearAmbientText();
-        BattleLog.DisableCharacterStats();
-        BattleLog.ClearBattleText();
+        BattleLog.Instance.ClearAllBattleLogText();
         if (action.unit != null)
         {
             var newAction = UnityEngine.Object.Instantiate(action);
@@ -593,7 +601,7 @@ public class BattleSystem : MonoBehaviour
         {
             child.Return();
         }
-        Director.Instance.BL.GetComponent<MoveableObject>().Move(false);
+        BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
         foreach (var x in Tools.GetAllUnits())
         {
             x.ExitDecision();
@@ -635,8 +643,7 @@ public class BattleSystem : MonoBehaviour
         }
         yield return new WaitForSeconds(0.5f);
         ActionsToPerform = new List<Action>();
-        BattleLog.SetRandomAmbientTextActive();
-        BL.CreateRandomAmbientText();
+        BattleLog.Instance.ResetBattleLog();
         foreach (var line in GameObject.FindObjectsOfType<LineRenderer>())
         {
             if (line != null)
@@ -666,6 +673,7 @@ public class BattleSystem : MonoBehaviour
             }
             x.DoBattlePhaseEnd();
         }
+        yield return new WaitUntil(() => !BattlePhasePause);
         if (enemyUnits.Count != 0 && playerUnits.Count != 0)
         {
             foreach (var x in playerUnits)
@@ -678,13 +686,12 @@ public class BattleSystem : MonoBehaviour
                 }
 
             }
-            Director.Instance.BL.GetComponent<MoveableObject>().Move(true);
+            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
 
         }     
         Director.Instance.timelinespeedDelay = Director.Instance.UserTimelineSpeedDelay;
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         unit.DoBattlePhaseClose();
-        yield return new WaitUntil(() => !BattlePhasePause);
         if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD)
         {
             state = BattleStates.IDLE;
@@ -764,7 +771,6 @@ public class BattleSystem : MonoBehaviour
                 x.GetComponent<SpriteRenderer>().flipX = true;
             }
         }
-        int i = 0;
         if (unit.IsPlayerControlled && !unit.IsSummon)
         {
             unit.stamina.slider.value = unit.stamina.slider.maxValue;
