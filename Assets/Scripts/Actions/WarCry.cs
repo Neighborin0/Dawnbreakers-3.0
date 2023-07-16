@@ -15,10 +15,8 @@ public class WarCry : Action
     private void OnEnable()
     {
         ActionName = "War Cry";
-        accuracy = 1;
         cost = 30f;
         actionType = ActionType.STATUS;
-        PriorityMove = false;
         targetType = TargetType.SELF;
         duration = 5f;
         statAmount = 3;
@@ -46,7 +44,7 @@ public class WarCry : Action
             unit.ChangeUnitsLight(Light, 150, 15, 0.04f, 0.08f);
             BattleSystem.Instance.SetStatChanges(Stat.ATK, statAmount, false, x);
             var battleSystem = BattleSystem.Instance;
-            battleSystem.StartCoroutine(battleSystem.SetTempEffect(x, "ATK", this, true, statAmount));
+            battleSystem.SetTempEffect(x, "ATK", true, duration, statAmount, 0);
         }
         yield return new WaitForSeconds(0.2f);
         Director.Instance.StartCoroutine(LabCamera.Instance.DoSlowHorizontalSweep());
@@ -57,8 +55,4 @@ public class WarCry : Action
         yield break;
     }
 
-   public override void OnEnded(Unit unit, float storedValue, bool DoFancyStatChnages)
-    {
-        BattleSystem.Instance.SetStatChanges(Stat.ATK, -3f, false, unit);
-    }
 }

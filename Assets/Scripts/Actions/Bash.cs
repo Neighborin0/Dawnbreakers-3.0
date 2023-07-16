@@ -13,7 +13,6 @@ public class Bash : Action
         ActionName = "Bash";
         damage = 5;
         damageText = damage.ToString();
-        accuracy = 1;
         cost = 50f;
         targetType = TargetType.ANY;
         actionType = ActionType.ATTACK;

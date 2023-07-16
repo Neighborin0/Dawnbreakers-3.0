@@ -33,6 +33,9 @@ public class MapController : MonoBehaviour
     public float MaxZoom;
     public float MinZoom;
 
+    public GameObject mapControlBar;
+    public bool enableMapControls = true;
+
     public int completedNodeCount;
 
     public event Action<MapController> ReEnteredMap;
@@ -62,6 +65,7 @@ public class MapController : MonoBehaviour
         SpawnMiniMe();
         SceneManager.sceneLoaded += SaveSceneData;
         SpawnDecorations();
+       
     }
 
     private void SaveSceneData(Scene scene, LoadSceneMode mode)
@@ -115,6 +119,23 @@ public class MapController : MonoBehaviour
             StartCoroutine(DoPlayerJump(force));
         }
         */
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if(enableMapControls)
+            {
+                enableMapControls = false;
+                mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
+                mapControlBar.SetActive(enableMapControls);
+            }
+            else
+            {
+                enableMapControls = true;
+                mapControlBar.SetActive(enableMapControls);
+                mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
+
+            }
+        }
+        
     }
     public IEnumerator DoPlayerJump(float force)
     {
@@ -219,6 +240,8 @@ public class MapController : MonoBehaviour
                     {
                         newNode.gameObject.SetActive(false);
                     }
+                    if (enableMapControls)
+                        mapControlBar.SetActive(true);
                     break;
                 }
 
@@ -280,7 +303,13 @@ public class MapController : MonoBehaviour
         }
         completedNodeCount++;
         StartCoroutine(DrawLine(currentNodes[completedNodeCount].transform.position, currentNodes[completedNodeCount].gameObject));
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.2f);
+        Director.Instance.CharacterSlotEnable();
+        if(enableMapControls)
+        {
+            mapControlBar.GetComponent<MoveableObject>().Move(true);
+            mapControlBar.SetActive(true);
+        }
         ReEnteredMap?.Invoke(this);
     }
 }

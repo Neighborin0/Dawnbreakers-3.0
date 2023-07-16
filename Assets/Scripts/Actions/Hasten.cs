@@ -9,7 +9,6 @@ public class Hasten : Action
     {
         ActionName = "Hasten";
         damage = 5;
-        accuracy = 1;
         damageText = damage.ToString();
         cost = 50f;
         targetType = TargetType.SELF;

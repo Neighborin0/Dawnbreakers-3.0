@@ -15,18 +15,16 @@ public class Defend : Action
     private void OnEnable()
     {
         ActionName = "Defend";
-        accuracy = 1;
-        cost = 25f;
+        cost = 20f;
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
-        PriorityMove = true;
-        targetType = TargetType.ALLIES;
-        duration = 5f;
+        targetType = TargetType.SELF;
+        duration = 3f;
     }
 
     public override string GetDescription()
     {
-        description = $"Applies +{unit.defenseStat} <sprite name=\"FORTIFY\"> for {duration} seconds.";
+        description = $"Applies +{(int)Math.Round(unit.defenseStat * 0.4f)} <sprite name=\"FORTIFY\"> for {duration} seconds.";
         return description;
     }
     public override IEnumerator ExecuteAction()
@@ -37,34 +35,12 @@ public class Defend : Action
         yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;
-        //BattleLog.Instance.StartCoroutine(Tools.ChangeLightIntensityTimed(Light, 150, 15, 0.04f, 0.06f));
-        foreach(Transform icon in targets.namePlate.IconGrid.transform)
-        {
-            var EI = icon.gameObject.GetComponent<EffectIcon>();
-            if(EI.iconName == "Fortify")
-            {
-                EI.DoFancyStatChanges = false;
-                EI.DestoryEffectIcon();
-                break;
-            }
-        }
-        Director.Instance.StartCoroutine(BattleSystem.Instance.SetTempEffect(targets, "DEF", this, true, unit.defenseStat));
-        BattleSystem.Instance.SetStatChanges(Stat.DEF, unit.defenseStat, false, targets);
+        BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, (int)Math.Round(unit.defenseStat * 0.4f));
+        BattleSystem.Instance.SetStatChanges(Stat.DEF, (int)Math.Round(unit.defenseStat * 0.4f), false, targets);
         yield return new WaitForSeconds(1.3f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
         this.Done = true;
         yield break;
-    }
-
-   public override void OnEnded(Unit otherUnit, float storedValue, bool DoFancyStatChanges)
-    {
-        if (DoFancyStatChanges)
-        {
-            BattleSystem.Instance.SetStatChanges(Stat.DEF, -storedValue, false, targets);
-        }
-           
-        else
-            targets.defenseStat -= (int)storedValue;
     }
 }

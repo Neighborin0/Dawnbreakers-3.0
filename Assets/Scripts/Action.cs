@@ -10,17 +10,16 @@ public abstract class Action : ScriptableObject
     //general action parameters
     public string ActionName;
     public int damage;
-    public int accuracy;
     public string description;
-    public int speed;
-    public bool PriorityMove;
     public float cost;
     public float duration;
     public string damageText;
     public bool Done = false;
     public bool New = false;
     public int statAmount;
-  
+    public int numberofUses;
+    public bool limited = false;
+
     public enum TargetType { ANY, SELF, ALL_ENEMIES, ALLIES };
     public enum ActionType { ATTACK, STATUS };
 
@@ -38,13 +37,10 @@ public abstract class Action : ScriptableObject
         //Init();
     }
 
-
-    //sorry to whoever reads this have an amoungus ඞ
     public void OnActivated(){ Director.Instance.StartCoroutine(ExecuteAction()); }
     public virtual IEnumerator ExecuteAction() { yield break; }
 
     public virtual string GetDescription() { return ""; }
-    public virtual void OnEnded(Unit unit = null, float storedValue = 0, bool DoFancyStatChanges = false) { }
 
   
 }

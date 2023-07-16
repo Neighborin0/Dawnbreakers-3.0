@@ -16,14 +16,12 @@ public class Kindle : Action
         ActionName = "Kindle";
         cost = 60f;
         actionType = ActionType.STATUS;
-        damageText = damage.ToString();
-        PriorityMove = false;
         targetType = TargetType.SELF;
     }
 
     public override string GetDescription()
     {
-        description = $"Heals allies by 5 <sprite name=\"HP\"> Increases allies <sprite name=\"ATK RED2\"> by 2.";
+        description = $"Heals allies by 5 <sprite name=\"HP\"> .Increases allies <sprite name=\"ATK RED2\"> by 2.";
         return description;
     }
     public override IEnumerator ExecuteAction()

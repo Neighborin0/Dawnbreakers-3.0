@@ -8,9 +8,10 @@ using UnityEngine.SceneManagement;
 public class ContinueButton : MonoBehaviour
 {
 
-    public void LoadGame()
+   /* public void LoadGame()
     {
         OptionsManager.Instance.Load(PlayerPrefs.GetString("Level"));
     }
+   */
 
 }

@@ -10,8 +10,9 @@ public class StartButton : MonoBehaviour
 
     public void EnterGame()
     {
-        if (PlayerPrefs.GetString("Level") != null)
+       /* if (PlayerPrefs.GetString("Level") != null)
             PlayerPrefs.DeleteKey("Level");
+       */
 
         OptionsManager.Instance.Load("MAP2");
     }

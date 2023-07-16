@@ -25,7 +25,6 @@ public class TutorialEnemy : Unit
     void Start()
     {
         behavior = this.gameObject.AddComponent<TutorialEnemyBehavior>();
-        this.OnDamaged += Damaged;
         this.BattleStarted += CreateTutorialIcon;
         this.GetComponent<TutorialEnemyBehavior>().TutorialIcon2 = TutorialIcon2;
     }
@@ -38,32 +37,8 @@ public class TutorialEnemy : Unit
             tutorialIcon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-5000, 0, 0f);
             StartCoroutine(Tools.SmoothMoveUI(tutorialIcon.GetComponent<RectTransform>(), 0, 0, 0.01f));
         }
-        StartCoroutine(BattleSystem.Instance.SetTempEffect(this, "revitalize", null, false));
+        BattleSystem.Instance.SetTempEffect(this, "revitalize", false, 0, 0, 0);
         this.BattleStarted -= CreateTutorialIcon;
-    }
-
-    private void Damaged(Unit obj)
-    {
-        obj.ActionEnded += SetupRevitalize;
-        obj.OnDamaged -= Damaged;
-
-    }
-
-    private void SetupRevitalize(Unit obj)
-    {
-        foreach (var x in obj.namePlate.IconGrid.GetComponentsInChildren<Image>())
-        {
-            Destroy(x.gameObject);
-            BattleSystem.Instance.DoTextPopup(this, "Revitalize", Color.yellow);
-        }
-        obj.BattlePhaseEnd += RefillStamina;
-        obj.ActionEnded -= SetupRevitalize;
-    }
-    private void RefillStamina(Unit obj)
-    {
-        this.stamina.slider.value = 100;
-        //BattleSystem.Instance.BattlePhasePause = true;
-        this.BattlePhaseEnd -= RefillStamina;
     }
 
     public class TutorialEnemyBehavior : EnemyBehavior

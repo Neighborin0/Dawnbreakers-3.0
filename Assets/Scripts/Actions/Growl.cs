@@ -9,7 +9,6 @@ public class Growl : Action
     {
         ActionName = "Growl";
         damage = 2;
-        accuracy = 1;
         cost = 30f;
         damageText = damage.ToString();
         targetType = TargetType.ANY;

@@ -38,6 +38,12 @@ TextureImporter:
   - first:
       213: 5294615450501218307
     second: Text Symbol Atlas_11
+  - first:
+      213: -8828745289785487828
+    second: Text Symbol Atlas_12
+  - first:
+      213: -4384951218874823445
+    second: Text Symbol Atlas_13
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -374,6 +380,48 @@ TextureImporter:
       bones: []
       spriteID: 3008b6d33b04a7940800000000000000
       internalID: 5294615450501218307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Text Symbol Atlas_12
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 1
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2ecee58feef97580800000000000000
+      internalID: -8828745289785487828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Text Symbol Atlas_13
+      rect:
+        serializedVersion: 2
+        x: 283
+        y: 1
+        width: 19
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: beccc8159168523c0800000000000000
+      internalID: -4384951218874823445
       vertices: []
       indices: 
       edges: []

@@ -207,7 +207,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             }
             else
             {
-                DisplaySwitcher.image.sprite = actionIcon;
+                DisplaySwitcher.image.sprite = actionIcon; 
                 inventoryDisplay.gameObject.SetActive(true);
                 actionDisplay.gameObject.SetActive(false);
             }
@@ -223,10 +223,12 @@ public class CharacterTab : MonoBehaviour, IDropHandler
                 DisplaySwitcher.image.sprite = LevelUpIcon;
                 levelupDisplay.SetActive(false);
                 actionDisplay.gameObject.SetActive(true);
+                detailedDisplay.gameObject.SetActive(true);
                 statText.gameObject.SetActive(true);
             }
             else
             {
+                detailedDisplay.gameObject.SetActive(false);
                 DisplaySwitcher.image.sprite = actionIcon;
                 levelupDisplay.SetActive(true);
                 actionDisplay.gameObject.SetActive(false);

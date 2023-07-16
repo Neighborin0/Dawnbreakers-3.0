@@ -10,7 +10,6 @@ public class Grow : Action
     {
         ActionName = "Empower";
         damage = 3;
-        accuracy = 1;
         cost = 45f;
         statAmount = 2;
         damageText = damage.ToString();

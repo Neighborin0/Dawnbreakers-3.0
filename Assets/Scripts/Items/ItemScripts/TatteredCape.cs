@@ -11,7 +11,7 @@ public class TatteredCape : Item
     private void OnEnable()
     {
         itemName = "Tattered Cape";
-        itemDescription = "Restores 4 <sprite name=\"HP\"> after battle.";
+        itemDescription = "Restores 10% <sprite name=\"HP\"> after battle.";
         CanBeTransfered = false;
         ExcludedFromLootPools = true;
     }
@@ -22,7 +22,7 @@ public class TatteredCape : Item
 
     public void DoHeal(Unit unit)
     {
-        BattleSystem.Instance.SetStatChanges(Stat.HP, 4, false, unit);
+        BattleSystem.Instance.SetStatChanges(Stat.HP, unit.maxHP * 0.1f, false, unit);
         var Light = unit.GetComponentInChildren<Light>();
         Light.color = Color.green;
         BattleLog.Instance.StartCoroutine(Tools.ChangeLightIntensityTimed(Light, 150, 15, 0.04f, 1f));

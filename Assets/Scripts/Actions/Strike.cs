@@ -9,7 +9,6 @@ public class Strike : Action
     {
         ActionName = "Strike";
         damage = 5;
-        accuracy = 1;
         damageText = damage.ToString();
         cost = 50f;
         actionType = ActionType.ATTACK;

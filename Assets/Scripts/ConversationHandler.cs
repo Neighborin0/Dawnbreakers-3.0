@@ -9,7 +9,7 @@ public struct LabLine
     public string unit;
     public float textSpeed;
 }
-public class ConvserationHandler : MonoBehaviour
+public class TutorialConversationHandler : MonoBehaviour
 {
     
     public static List<LabLine> DustyAureliaMeeting1 = new List<LabLine>

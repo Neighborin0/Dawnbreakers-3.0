@@ -9,7 +9,6 @@ public class Enrage : Action
     {
         ActionName = "Enrage";
         damage = 3;
-        accuracy = 1;
         damageText = damage.ToString();
         cost = 25f;
         statAmount = 2;

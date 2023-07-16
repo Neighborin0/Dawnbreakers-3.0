@@ -31,7 +31,7 @@ public class Aurelia : Unit
 
     public static List<LabLine> AureliaDeath1 = new List<LabLine>
     {
-       new LabLine { expression = "neutral", text = "You suck ass bruh.",  unit = "Aurelia", textSpeed = 0.02f,},
+         new LabLine { expression = "neutral", text = "You suck ass bruh.",  unit = "Aurelia", textSpeed = 0.02f,},
          new LabLine { expression = "neutral", text = "It is so over.", unit = "Aurelia", textSpeed = 0.03f, }
     };
 }

@@ -41,10 +41,10 @@ public class OptionsManager : MonoBehaviour
             OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
             OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 1);
             StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
-            if(PlayerPrefs.GetString("Level") != null)
+            /*if(PlayerPrefs.GetString("Level") != null)
             {
                 Continue.gameObject.SetActive(true);
-            }
+            }*/
 #endif
         }
 

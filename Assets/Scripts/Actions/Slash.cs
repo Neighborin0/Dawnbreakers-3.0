@@ -10,7 +10,6 @@ public class Slash : Action
     {
         ActionName = "Slash";
         damage = 5;
-        accuracy = 1;
         cost = 50f;
         targetType = TargetType.ANY;
         actionType = ActionType.ATTACK;

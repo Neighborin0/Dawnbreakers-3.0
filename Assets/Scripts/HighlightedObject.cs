@@ -6,7 +6,7 @@ using TMPro;
 using System;
 using UnityEngine.EventSystems;
 
-public class HighlightedObject : MonoBehaviour
+public class HighlightedObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public bool IsHighlighted = false;
     public float StartingThickness;
@@ -27,41 +27,57 @@ public class HighlightedObject : MonoBehaviour
             {
                 this.disabled = true;
             }
+            
+        }
+
+        if (mouse_over)
+        {
+            EnableHighlight();
         }
     }
-    public void ToggleHighlight()
+
+    public void EnableHighlight()
     {
         if (!disabled)
         {
-            if (!IsHighlighted)
+            if (DoesntHighlightInBattle)
             {
-                if (DoesntHighlightInBattle)
-                {
-                    if (BattleSystem.Instance.state != BattleStates.BATTLE)
-                    {
-                        gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
-                        gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-                        IsHighlighted = true;
-                    }
-                    else
-                    {
-                        IsHighlighted = false;
-                    }
-                }
-                else
+                if (BattleSystem.Instance.state != BattleStates.BATTLE)
                 {
                     gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
                     gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
                     IsHighlighted = true;
                 }
-
+                else
+                {
+                    IsHighlighted = false;
+                }
             }
             else
             {
-                gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", StartingThickness);
-                gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
-                IsHighlighted = false;
+                gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
+                gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+                IsHighlighted = true;
             }
         }
+    }
+
+    public void DisableHighlight()
+    {
+        gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", StartingThickness);
+        gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
+        IsHighlighted = false;
+    }
+   
+     private bool mouse_over = false;
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        mouse_over = true;    
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        mouse_over = false;
     }
 }

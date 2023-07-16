@@ -79,10 +79,6 @@ public class Unit : MonoBehaviour
     void Start()
     {
         currentHP = maxHP;
-        Debug.Log(maxHP);
-        Debug.Log(attackStat);
-        Debug.Log(defenseStat);
-        Debug.Log(speedStat);
         state = PlayerState.IDLE;
     }
 

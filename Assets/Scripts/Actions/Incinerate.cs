@@ -12,7 +12,6 @@ public class Incinerate : Action
     {
         ActionName = "Incinerate";
         damage = 50;
-        damageText = damage.ToString();
         cost = 50f;
         targetType = TargetType.ANY;
         actionType = ActionType.ATTACK;

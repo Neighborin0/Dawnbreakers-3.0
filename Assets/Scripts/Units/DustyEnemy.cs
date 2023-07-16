@@ -28,7 +28,7 @@ public class DustyEnemy : Unit
     private void DoCharacterText(Unit obj)
     {
         Tools.PauseAllStaminaTimers();
-        BattleLog.Instance.CharacterDialog(ConvserationHandler.DustyAureliaMeeting1 ,true, false);
+        BattleLog.Instance.CharacterDialog(TutorialConversationHandler.DustyAureliaMeeting1 ,true, false);
         foreach(var unit in Tools.GetAllUnits())
         {
             unit.StaminaHighlightIsDisabled = true;
@@ -79,7 +79,7 @@ public class DustyEnemy : Unit
 
         private IEnumerator ForceBattleEnd()
         {
-            BattleLog.Instance.CharacterDialog(ConvserationHandler.DustyAureliaMeeting2, true, false);
+            BattleLog.Instance.CharacterDialog(TutorialConversationHandler.DustyAureliaMeeting2, true, false);
             yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
             BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
             if (!BattleSystem.Instance.playerUnits[0].actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Sweep").SingleOrDefault()))

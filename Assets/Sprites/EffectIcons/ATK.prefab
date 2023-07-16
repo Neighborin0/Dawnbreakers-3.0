@@ -71,7 +71,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 4bb4ed0115fe81a49919c95f8d5cd23f, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -110,7 +110,7 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 8596398589058066822}
           m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
-          m_MethodName: ToggleHighlight
+          m_MethodName: DisableHighlight
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -138,7 +138,7 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 8596398589058066822}
           m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
-          m_MethodName: ToggleHighlight
+          m_MethodName: DisableHighlight
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -163,7 +163,6 @@ MonoBehaviour:
   icon: {fileID: 7742311054285998417}
   owner: {fileID: 0}
   timerText: {fileID: 5881326393283092459}
-  action: {fileID: 0}
   isPaused: 1
   ForceEnd: 0
   DoFancyStatChanges: 0
@@ -171,6 +170,7 @@ MonoBehaviour:
   iconName: Vigor
   storedValue: 0
   TimedEffect: 1
+  NumberofStacks: 0
   currentEffectPopup: {fileID: 0}
   descriptionSize: 0.4
 --- !u!114 &8596398589058066822
@@ -188,6 +188,7 @@ MonoBehaviour:
   IsHighlighted: 0
   StartingThickness: 1
   DoesntHighlightInBattle: 1
+  disabled: 0
 --- !u!1 &8030429467529856473
 GameObject:
   m_ObjectHideFlags: 0

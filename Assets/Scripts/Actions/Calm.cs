@@ -9,7 +9,6 @@ public class Calm : Action
     {
         ActionName = "Fortify";
         damage = 3;
-        accuracy = 1;
         damageText = damage.ToString();
         cost = 50f;
         statAmount = 2;

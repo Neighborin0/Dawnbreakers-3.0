@@ -111,6 +111,18 @@ MonoBehaviour:
     m_Scale: 1.1
     m_Name: HP
     m_HashCode: 2328
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 12
+    m_Scale: 1
+    m_Name: BLOCK
+    m_HashCode: 81055401
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 13
+    m_Scale: 1.1
+    m_Name: STAGGER
+    m_HashCode: 1773212049
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -302,6 +314,38 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     sprite: {fileID: 5294615450501218307, guid: 548ed9d445938f949ba1c20620b3d89b,
+      type: 3}
+  - m_Index: 12
+    m_Metrics:
+      m_Width: 20
+      m_Height: 22
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 20
+      m_HorizontalAdvance: 20
+    m_GlyphRect:
+      m_X: 262
+      m_Y: 1
+      m_Width: 20
+      m_Height: 22
+    m_Scale: 1.1
+    m_AtlasIndex: 0
+    sprite: {fileID: -8828745289785487828, guid: 548ed9d445938f949ba1c20620b3d89b,
+      type: 3}
+  - m_Index: 13
+    m_Metrics:
+      m_Width: 19
+      m_Height: 21
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 20
+      m_HorizontalAdvance: 19
+    m_GlyphRect:
+      m_X: 283
+      m_Y: 1
+      m_Width: 19
+      m_Height: 21
+    m_Scale: 1
+    m_AtlasIndex: 0
+    sprite: {fileID: -4384951218874823445, guid: 548ed9d445938f949ba1c20620b3d89b,
       type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []

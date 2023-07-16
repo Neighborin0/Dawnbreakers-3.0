@@ -116,6 +116,7 @@ public class TimeLineChild : MonoBehaviour
             unit.IsHighlighted = true;
             UnitIsHighlighted = true;
             HighlightedIsBeingOverwritten = true;
+            BattleLog.Instance.DisplayEnemyCharacterStats(unit);
             transform.SetAsLastSibling();
             Shift(unit);
         }

@@ -18,14 +18,15 @@ public class SaveAndQuitButton : MonoBehaviour
         {
             SceneManager.MoveGameObjectToScene(MapController.Instance.gameObject, SceneManager.GetActiveScene());
         }
-        if(RunTracker.Instance != null)
+        /*if(RunTracker.Instance != null)
         {
             Destroy(RunTracker.Instance.gameObject);
         }
-        SaveGame();
+        */
+        //SaveGame();
     }
 
-    public void SaveGame()
+    /*public void SaveGame()
     {
         PlayerPrefs.SetString("Level", SceneManager.GetActiveScene().name);
         PlayerPrefs.Save();
@@ -35,5 +36,6 @@ public class SaveAndQuitButton : MonoBehaviour
     {
         SceneManager.LoadScene(PlayerPrefs.GetInt("Level"));
     }
+    */
 }
 

@@ -26,6 +26,7 @@ public class Dusty : Unit
         currentHP = maxHP;
         IsPlayerControlled = true;
         deathQuotes = DustyDeath1;
+        Tools.AddItemToInventory(this, "Iron Shield");
     }
 
     public static List<LabLine> DustyDeath1 = new List<LabLine>

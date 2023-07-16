@@ -9,7 +9,7 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class RunTracker : MonoBehaviour
 {
-    public static RunTracker Instance { get; private set; }
+    //public static RunTracker Instance { get; private set; }
     public Image TrackerMenu;
     public Button QuitButton;
     public List<Unit> partyMembersCollected;
@@ -25,7 +25,7 @@ public class RunTracker : MonoBehaviour
     public TextMeshProUGUI slayerText;
     void Awake()
     {
-        if (Instance != null)
+        /*if (Instance != null)
         {
             Destroy(this.gameObject);
         }
@@ -34,7 +34,7 @@ public class RunTracker : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-
+        */
     }
 
     public void DisplayStats()

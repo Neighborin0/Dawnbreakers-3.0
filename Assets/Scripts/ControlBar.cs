@@ -9,26 +9,32 @@ using System;
 
 public class ControlBar : MonoBehaviour
 {
-    public GameObject DecisionControls;
-    public GameObject DecisionControlsCancel;
-    public GameObject WaitingControls;
+    public GameObject Select;
+    public GameObject Cancel;
+    //public GameObject WaitingControls;
 
     public void Update()
     {
-        if (BattleSystem.Instance != null)
+        if (Director.Instance.timeline.gameObject.activeSelf)
         {
             this.gameObject.SetActive(true);
-            switch (BattleSystem.Instance.state)
+            this.GetComponent<Image>().enabled = true;
+            if (Tools.CheckIfAnyUnitIsDeciding())
             {
-                case BattleStates.DECISION_PHASE:
-                    DecisionControls.SetActive(true);
-                    WaitingControls.SetActive(false);
-                    break;
-                case BattleStates.IDLE:
-                    DecisionControls.SetActive(false);
-                    WaitingControls.SetActive(true);
-                    break;
+                Select.SetActive(true);
+                Cancel.SetActive(true);
             }
+            else
+            {
+                Select.SetActive(true);
+                Cancel.SetActive(false);
+            }
+        }
+        else
+        {
+            this.GetComponent<Image>().enabled = false;
+            Select.SetActive(false);
+            Cancel.SetActive(false);
         }
     }
 }

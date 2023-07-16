@@ -58,19 +58,11 @@ public class ItemDisplay : MonoBehaviour
         Director.Instance.CharacterSlotEnable();
         Tools.ToggleUiBlocker(true, true);
         Tools.ToggleUiBlocker(true, false);
-        MapController.Instance.ReEnteredMap += ReEntered;
         MapController.Instance.StartCoroutine(MapController.Instance.DoReEnteredMap(false));
         foreach (var ID in GameObject.FindObjectsOfType<ItemDisplay>())
         {
             Destroy(ID.gameObject);
         }
-
-    }
-
-    public void ReEntered(MapController mc)
-    {
-        Director.Instance.CharacterSlotEnable();
-        MapController.Instance.ReEnteredMap -= ReEntered;
 
     }
 

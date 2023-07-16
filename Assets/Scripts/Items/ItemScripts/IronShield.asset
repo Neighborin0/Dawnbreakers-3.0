@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78524ff6f202b384aa62baf27703ff2d, type: 3}
+  m_Name: IronShield
+  m_EditorClassIdentifier: 
+  itemName: Iron Shield
+  itemDescription: Applies <sprite name="BLOCK"> at the start of battle.
+  sprite: {fileID: 21300000, guid: 980744691ea8382429bca233be94ab04, type: 3}
+  CanBeTransfered: 0
+  ExcludedFromLootPools: 1

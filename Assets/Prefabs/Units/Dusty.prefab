@@ -245,6 +245,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 0, z: 0}
   timelinechild: {fileID: 0}
+  StopMovingToUnit: 0
   StartingStamina: 0
   introText: []
   inventory: []
@@ -257,7 +258,7 @@ MonoBehaviour:
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: a8ebee44482aa0841914562f52c95421, type: 2}
-  - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
+  - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
   - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
   ActionLayout: {fileID: 0}
   summonables: []

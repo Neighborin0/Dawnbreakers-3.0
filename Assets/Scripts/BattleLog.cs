@@ -231,6 +231,7 @@ public class BattleLog : MonoBehaviour
     {
         DisableCharacterStats();
         SetRandomAmbientTextActive();
+        CreateRandomAmbientText();
         ClearBattleText();
         foreach (var z in Tools.GetAllUnits())
         {
@@ -251,7 +252,7 @@ public class BattleLog : MonoBehaviour
 
     public void DoPostBattleDialouge(Unit unit)
     {
-        CharacterDialog(ConvserationHandler.DustyAureliaPostMeeting, false, false);
+        CharacterDialog(TutorialConversationHandler.DustyAureliaPostMeeting, false, false);
         unit.EnteredMap -= DoPostBattleDialouge;
     }
 

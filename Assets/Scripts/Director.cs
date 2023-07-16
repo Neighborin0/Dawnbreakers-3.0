@@ -74,7 +74,7 @@ public class Director : MonoBehaviour
                 party.Remove(unit);
                 DontDestroyOnLoad(startingUnit);
                 party.Add(startingUnit);
-                RunTracker.Instance.partyMembersCollected.Add(startingUnit);
+                //RunTracker.Instance.partyMembersCollected.Add(startingUnit);
                 startingUnit.gameObject.SetActive(false);
             }   
         }
@@ -100,7 +100,7 @@ public class Director : MonoBehaviour
             }
         }
         //Put Character Slots Away
-        if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null)
+        if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf)
         {
             if(CharacterSlotsDisplayed)
             DisplayCharacterTab(false);
@@ -176,12 +176,14 @@ public class Director : MonoBehaviour
         DontDestroyOnLoad(unitToAdd);
         unitToAdd.gameObject.SetActive(false);
         Director.Instance.party.Add(unitToAdd);
-        RunTracker.Instance.partyMembersCollected.Add(unitToAdd);
+        //RunTracker.Instance.partyMembersCollected.Add(unitToAdd);
     }
 
     public void DisplayCharacterTab(bool LevelUp = true, bool Interactable = false)
     {
         CharacterSlotEnable();
+        if (generalCoruntine != null)
+            StopCoroutine(generalCoruntine);
         BattleLog.Instance.ClearAllBattleLogText();
         Tools.ToggleUiBlocker(false, true);
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(true);
@@ -214,13 +216,17 @@ public class Director : MonoBehaviour
                             x.interactable = true;
                         }
                         CT.unit = unit;
-                        CT.statDisplay.text = $"HP:{unit.maxHP}\nATK:{unit.attackStat}\nDEF:{unit.defenseStat}\nSPD:{unit.speedStat}";
+                        CT.DEFText.text = $"DEF: {unit.defenseStat}";
+                        CT.ATKtext.text = $"ATK: {unit.attackStat}";
+                        CT.HPtext.text = $"HP: {unit.maxHP}";
+                        CT.SPDText.text = $"SPD: {unit.speedStat}";
                         CT.actionDisplay.gameObject.SetActive(true);
                         SetUpActionList(unit, CT);
                         CT.actionDisplay.gameObject.SetActive(false);
                         LevelUpText.GetComponent<MoveableObject>().Move(false);
                         ConfirmButton.GetComponent<MoveableObject>().Move(false);
                         ConfirmButton.GetComponent<Button>().interactable = false;
+
                     }
                     else
                     {
@@ -330,6 +336,13 @@ public class Director : MonoBehaviour
     public void DisableCharacterTab()
     {
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(false);
+        foreach (var CT in FindObjectsOfType<CharacterTab>())
+        {
+            foreach (var actionDisplays in CT.actionDisplay.transform.GetComponentsInChildren<Button>())
+            {
+                actionDisplays.interactable = false;
+            }
+        }
         if (generalCoruntine != null)
             StopCoroutine(generalCoruntine);
 
@@ -344,9 +357,10 @@ public class Director : MonoBehaviour
         Tools.ToggleUiBlocker(true, true);
         BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
         BattleLog.Instance.ClearAllBattleLogText();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         foreach (Transform child in Director.Instance.TabGrid.transform)
         {
+            BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
             Destroy(child.gameObject);
         }
     }

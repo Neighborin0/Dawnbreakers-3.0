@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.AI;
+using Unity.VisualScripting;
 
 public class ItemText : MonoBehaviour
 {
@@ -18,7 +19,8 @@ public class ItemText : MonoBehaviour
     {
         if(BattleSystem.Instance == null)
         unit = this.GetComponentInParent<CharacterTab>().unit;
-
+        if(!item.CanBeTransfered)
+            this.GetComponent<DraggableObject>().CanBeDragged = false;
     }
     public void DisplayDescription()
     {

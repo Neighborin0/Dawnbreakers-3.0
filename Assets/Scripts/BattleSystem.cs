@@ -13,6 +13,8 @@ using static UnityEngine.Rendering.DebugUI;
 using Unity.VisualScripting;
 using System.Text.RegularExpressions;
 using static UnityEngine.UI.CanvasScaler;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 
 public enum BattleStates { START, DECISION_PHASE, BATTLE, WON, DEAD, IDLE, TALKING, WAITING }
 public class BattleSystem : MonoBehaviour
@@ -114,46 +116,15 @@ public class BattleSystem : MonoBehaviour
         {
             BattleLog.Instance.ResetBattleLog();
         }
-        
-        /*if (Input.GetKeyDown(KeyCode.D))
-        {
-            if (state == BattleStates.DECISION_PHASE)
-            {
-                StartCoroutine(AdvanceASecond());
-                print("Advancing");
-            }
-        }*/
-        if (Input.GetKeyDown(KeyCode.U))
+
+        if (Input.GetKeyDown(KeyCode.U) && Director.Instance.DevMode)
         {
             playerUnits[UnityEngine.Random.Range(0, playerUnits.Count - 1)].health.TakeDamage(99999, null);
         }
     }
 
     public BattleStates state;
-    /*IEnumerator AdvanceASecond()
-    {
-        foreach(var unit in playerUnits)
-        {
-            SetUIOff(unit);
-            unit.state = PlayerState.WAITING;
-        } 
-        
-        Tools.UnpauseAllStaminaTimers();
-        //state = BattleStates.IDLE;
-        yield return new WaitForSeconds(10f);
-        Tools.PauseAllStaminaTimers();     
-        foreach (var x in playerUnits)
-        {
-            if (x.state == PlayerState.IDLE)
-            {
-                state = BattleStates.DECISION_PHASE;
-                x.StartDecision();
-                break;
-            }
-
-        }
-    }
-*/
+  
 
     void StartBattle()
     {
@@ -171,7 +142,6 @@ public class BattleSystem : MonoBehaviour
                 var BSP = playerPositions[i].GetComponent<BattleSpawnPoint>();
                 BSP.unit = playerUnits[i];
                 BSP.Occupied = true;
-                //SetupHUD(playerUnits[i], playerPositions[i]);
                 numOfUnits.Add(playerUnits[i]);
                 var ss = new StatStorer
                 {
@@ -188,7 +158,6 @@ public class BattleSystem : MonoBehaviour
                 var enemy = Instantiate(enemiesToLoad[i], enemyPositions[i]);
                 enemy.transform.localScale = new Vector3(9f, 9f, 9f);
                 enemiesToLoad[i].gameObject.SetActive(true);
-                //SetupHUD(enemiesToLoad[i], enemyPositions[i]);
                 var BSP = enemyPositions[i].GetComponent<BattleSpawnPoint>();
                 BSP.unit = enemiesToLoad[i];
                 BSP.Occupied = true;
@@ -360,37 +329,27 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(labPopUp.DestroyPopUp(0.6f));
     }
 
-    public IEnumerator SetTempEffect(Unit unit, string Icon, Action action, bool DoFancyStatChanges, float storedValue = 0)
+    public void SetTempEffect(Unit unit, string Icon, bool DoFancyStatChanges, float duration = 0, float storedValue = 0, float numberofStacks = 0)
     {
-        var icon = Instantiate(Director.Instance.iconDatabase.Where(obj => obj.name == Icon).SingleOrDefault(), unit.namePlate.IconGrid.transform);
-        if (action != null)
+        foreach (Transform x in unit.namePlate.IconGrid.transform)
         {
-            var newAction = Instantiate(action);
-            var i = icon.GetComponent<EffectIcon>();
-            i.timerText.text = newAction.duration.ToString();
-            var manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable = i.timerText.GetComponent<RectTransform>();
-            i.action = newAction;
-            manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable.sizeDelta = new Vector2(70.24f, 21.96f);
-            i.owner = unit;
-            i.storedValue = storedValue;
-            i.DoFancyStatChanges = DoFancyStatChanges;
-            print(newAction.duration);
-            var timer = newAction.duration;
-            i.timerText.text = newAction.duration.ToString();
-            yield return new WaitUntil(() => !i.isPaused);
-            while (timer > 0 && !i.ForceEnd)
+            var EI = x.gameObject.GetComponent<EffectIcon>();
+            print(EI.iconName);
+            print(Icon);
+            if (EI.iconName == Icon)
             {
-                yield return new WaitUntil(() => !i.isPaused);
-                timer--;
-                i.timerText.text = timer.ToString();
-                yield return new WaitForSeconds(1f * Director.Instance.staminaSPDDivider);
+                EI.DoFancyStatChanges = false;
+                EI.DestoryEffectIcon();
+                break;
             }
-            i.DestoryEffectIcon();
         }
-
-        yield break;
-
-
+        var icon = Instantiate(Director.Instance.iconDatabase.Where(obj => obj.name == Icon).SingleOrDefault(), unit.namePlate.IconGrid.transform);
+        var i = icon.GetComponent<EffectIcon>();
+        if (unit == null)
+            Debug.LogError("OWNER SETUP BROKEN");
+        else
+            i.owner = unit;
+        i.Initalize(unit, DoFancyStatChanges, duration, storedValue, numberofStacks);
     }
 
     public IEnumerator ChangeStat(Stat statToRaise, float AmountToRaise, bool multiplicative, Unit target, LabPopup popup)
@@ -543,7 +502,21 @@ public class BattleSystem : MonoBehaviour
                 var assignedAction = unit.skillUIs[i].GetComponent<ActionContainer>();
                 assignedAction.targetting = false;
                 if (!assignedAction.Disabled)
-                    assignedAction.button.interactable = true;
+                {
+                    if (assignedAction.limited)
+                    {
+                        if (assignedAction.numberofUses > 0)
+                        {
+                            assignedAction.button.interactable = true;
+                        }
+                        else
+                        {
+                            assignedAction.button.interactable = false;
+                        }
+                    }
+                    else
+                        assignedAction.button.interactable = true;
+                } 
                 assignedAction.button.enabled = true;
                 assignedAction.action = action;
                 assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (action.damage + unit.attackStat).ToString();
@@ -557,7 +530,7 @@ public class BattleSystem : MonoBehaviour
                 }
                 else
                     assignedAction.damageParent.SetActive(true);
-                if (assignedAction.action.duration > 0)
+                if (assignedAction.action.duration > 0 && assignedAction.action.actionType == Action.ActionType.STATUS)
                 {
                     assignedAction.durationParent.SetActive(true);
                 }
@@ -632,11 +605,20 @@ public class BattleSystem : MonoBehaviour
                     action.unit.state = PlayerState.IDLE;
                 }
                 action.OnActivated();
+                if(action.limited)
+                {
+                    foreach (var act in action.unit.skillUIs)
+                    {
+                        if (action.ActionName == act.GetComponent<ActionContainer>().action.ActionName)
+                        {
+                            act.GetComponent<ActionContainer>().numberofUses--;
+                        }
+                    }
+                }
                 yield return new WaitUntil(() => action.Done);
                 yield return new WaitForSeconds(0.7f);
             }
         }
-       // yield return new WaitForSeconds(1f);
         foreach (var x in Tools.GetAllUnits())
         {
             x.DoActionEnded();
@@ -663,7 +645,6 @@ public class BattleSystem : MonoBehaviour
                 x.intentUI.gameObject.SetActive(true);
                 if (x.intentUI.action == null)
                     StartCoroutine(x.behavior.DoBehavior(x));
-                //x.intentUI.CheckTarget(intent.action, x);
                 Tools.SetImageColorAlphaToZero(x.intentUI.GetComponent<Image>());
                 x.intentUI.GetComponent<UnityEngine.UI.Button>().interactable = true;
                 StartCoroutine(Tools.FadeObject(x.intentUI.GetComponent<Image>(), 0.005f, true, false));

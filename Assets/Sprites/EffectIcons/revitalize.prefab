@@ -146,9 +146,9 @@ GameObject:
   - component: {fileID: 7312104641547316243}
   - component: {fileID: 7826926101456366490}
   - component: {fileID: 8466209792876554515}
-  - component: {fileID: 4529787547679510605}
   - component: {fileID: 1095531887439886962}
   - component: {fileID: 9187573185300547448}
+  - component: {fileID: 7863468966441426928}
   m_Layer: 5
   m_Name: revitalize
   m_TagString: Untagged
@@ -206,7 +206,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 53786aecc8aadbb4d946b94109e4277b, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -214,31 +214,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4529787547679510605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6181490423906128927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 814f25c41300bf341ba0b4b21a26bb25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  icon: {fileID: 8466209792876554515}
-  owner: {fileID: 0}
-  timerText: {fileID: 5921198936861126908}
-  action: {fileID: 0}
-  isPaused: 1
-  ForceEnd: 0
-  DoFancyStatChanges: 0
-  description: Restores <color=#FFEA29>STM</color> when hit
-  iconName: Revitalize
-  storedValue: 0
-  TimedEffect: 0
-  currentEffectPopup: {fileID: 0}
-  descriptionSize: 0.3
 --- !u!114 &1095531887439886962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,7 +231,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4529787547679510605}
+        - m_Target: {fileID: 7863468966441426928}
           m_TargetAssemblyTypeName: EffectIcon, Assembly-CSharp
           m_MethodName: DisplayDescription
           m_Mode: 1
@@ -270,7 +245,7 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 9187573185300547448}
           m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
-          m_MethodName: ToggleHighlight
+          m_MethodName: EnableHighlight
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -284,7 +259,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4529787547679510605}
+        - m_Target: {fileID: 7863468966441426928}
           m_TargetAssemblyTypeName: EffectIcon, Assembly-CSharp
           m_MethodName: RemoveDescription
           m_Mode: 1
@@ -298,7 +273,7 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 9187573185300547448}
           m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
-          m_MethodName: ToggleHighlight
+          m_MethodName: DisableHighlight
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -323,3 +298,29 @@ MonoBehaviour:
   IsHighlighted: 0
   StartingThickness: 1
   DoesntHighlightInBattle: 1
+  disabled: 0
+--- !u!114 &7863468966441426928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6181490423906128927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9ea923746cfb7459443da33c3a35fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 8466209792876554515}
+  owner: {fileID: 0}
+  timerText: {fileID: 5921198936861126908}
+  isPaused: 1
+  ForceEnd: 0
+  DoFancyStatChanges: 0
+  description: 
+  iconName: revitalize
+  storedValue: 0
+  TimedEffect: 1
+  NumberofStacks: 0
+  currentEffectPopup: {fileID: 0}
+  descriptionSize: 0.4

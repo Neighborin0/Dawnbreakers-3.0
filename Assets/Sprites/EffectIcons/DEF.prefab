@@ -206,7 +206,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: f221002b2d668df49b645505fb1da7e2, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -229,14 +229,14 @@ MonoBehaviour:
   icon: {fileID: 867368141710318576}
   owner: {fileID: 0}
   timerText: {fileID: 7313636165021292569}
-  action: {fileID: 0}
   isPaused: 1
   ForceEnd: 0
   DoFancyStatChanges: 0
   description: 
-  iconName: Fortify
+  iconName: DEF
   storedValue: 0
   TimedEffect: 1
+  NumberofStacks: 0
   currentEffectPopup: {fileID: 0}
   descriptionSize: 0.4
 --- !u!114 &1842711397144075814
@@ -270,7 +270,7 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 8664704550182275798}
           m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
-          m_MethodName: ToggleHighlight
+          m_MethodName: EnableHighlight
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -298,7 +298,7 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 8664704550182275798}
           m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
-          m_MethodName: ToggleHighlight
+          m_MethodName: DisableHighlight
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -323,3 +323,4 @@ MonoBehaviour:
   IsHighlighted: 0
   StartingThickness: 1
   DoesntHighlightInBattle: 1
+  disabled: 0

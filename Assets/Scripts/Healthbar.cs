@@ -15,14 +15,21 @@ public class Healthbar : MonoBehaviour
     public LabPopup damagePopUp;
     public Slider backSlider;
     public bool DeathPaused = false;
+    public float DamageModifier = 1;
 
     void Start()
     {
-        slider.maxValue = unit.maxHP;
-        backSlider.maxValue = slider.maxValue;
-        slider.value = unit.currentHP;
-        slider.value = unit.currentHP;
-        text.text = $"{unit.currentHP} / {unit.maxHP}";
+        try
+        {
+            slider.maxValue = unit.maxHP;
+            backSlider.maxValue = slider.maxValue;
+            slider.value = unit.currentHP;
+            text.text = $"{unit.currentHP} / {unit.maxHP}";
+        }
+        catch
+        {
+
+        }
     }
     void Update()
     {
@@ -33,13 +40,12 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-
     public void TakeDamage(int damage, Unit DamageSource)
     {
-        RunTracker.Instance.slayer = DamageSource;
+        //RunTracker.Instance.slayer = DamageSource;
         if (unit != null)
         {
-            var truedamage = damage - unit.defenseStat;
+            var truedamage = (int)Math.Round((damage - unit.defenseStat) * DamageModifier);
             if (truedamage < 1)
             {
                 truedamage = 0;
@@ -94,7 +100,7 @@ public class Healthbar : MonoBehaviour
             }
             else
             {
-                RunTracker.Instance.DisplayStats();
+                //RunTracker.Instance.DisplayStats();
                 Tools.ToggleUiBlocker(false, false);
                 Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
                 Tools.PauseAllStaminaTimers();
@@ -119,7 +125,6 @@ public class Healthbar : MonoBehaviour
         if (unit != null)
         {
             unit.DoOnDamaged();
-
             if (unit.currentHP < 1)
             {
                 var popup = Instantiate(damagePopUp, new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x, unit.GetComponent<SpriteRenderer>().bounds.center.y + 2, unit.transform.position.z), Quaternion.identity);

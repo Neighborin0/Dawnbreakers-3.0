@@ -20,6 +20,7 @@ public class MapFlow : MonoBehaviour
 
     public static List<LabNode> TestFlow = new List<LabNode>
     {
+         new LabNode{RoomType = RoomType.COMBAT, enemies = new string[]{ "TestDummy" } },
         new LabNode{RoomType = RoomType.COMBAT, enemies = new string[]{ "Tutorial_Creature"} },
         new LabNode{RoomType = RoomType.COMBAT, enemies = new string[]{ "DustyEnemy"} },
         new LabNode{RoomType = RoomType.REST },

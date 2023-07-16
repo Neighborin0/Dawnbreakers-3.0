@@ -22,6 +22,8 @@ public class ActionContainer : MonoBehaviour
     public GameObject durationParent;
     private float newTimeLineSpeedDelay = 0.1f;
     public bool Disabled = false;
+    public int numberofUses;
+    public bool limited = false;
 
     void Awake()
     {
@@ -36,34 +38,39 @@ public class ActionContainer : MonoBehaviour
                 unit.isDarkened = false;
             }
         }
+        numberofUses = action.numberofUses;
+        limited = action.limited;
     }
 
     void Update()
     {
         var hit = Tools.GetMousePos();
+        if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null && hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ANY && action.actionType == Action.ActionType.ATTACK && hit.collider.gameObject.GetComponent<Unit>().IsHighlighted && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
+        {
+            var unit = hit.collider.gameObject.GetComponent<Unit>();
+            unit.timelinechild.Shift(unit);
+            damageNums.text = action.damage + baseUnit.attackStat - unit.defenseStat > 0 ?
+                "<sprite name=\"ATK\">" + (action.damage + baseUnit.attackStat - unit.defenseStat).ToString()
+                : "<sprite name=\"ATK\">" + "0";
 
+            if (action.damage + baseUnit.attackStat - unit.defenseStat > action.damage + baseUnit.attackStat)
+            {
+                damageNums.color = Color.green;
+            }
+            else if (action.damage + baseUnit.attackStat - unit.defenseStat < action.damage + baseUnit.attackStat)
+            {
+                damageNums.color = Color.red;
+            }
+        }
+        else if (action.targetType == Action.TargetType.ANY && action.actionType == Action.ActionType.ATTACK)
+        {
+            damageNums.text = "<sprite name=\"ATK\">" + (action.damage + baseUnit.attackStat).ToString();
+            damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
+        }
         if (targetting && BattleSystem.Instance.state != BattleStates.WON)
         {
 
-            if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null && hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ANY && action.actionType == Action.ActionType.ATTACK && hit.collider.gameObject.GetComponent<Unit>().IsHighlighted)
-            {
-                var unit = hit.collider.gameObject.GetComponent<Unit>();
-                unit.timelinechild.Shift(unit);
-                damageNums.text = action.damage + baseUnit.attackStat - hit.collider.gameObject.GetComponent<Unit>().defenseStat > 0 ? "<sprite name=\"ATK\">" +(action.damage + baseUnit.attackStat - hit.collider.gameObject.GetComponent<Unit>().defenseStat).ToString() : "<sprite name=\"ATK\">"+"0";
-                if (action.damage + baseUnit.attackStat - hit.collider.gameObject.GetComponent<Unit>().defenseStat > action.damage + baseUnit.attackStat)
-                {
-                    damageNums.color = Color.green;
-                }
-                else if (action.damage + baseUnit.attackStat - hit.collider.gameObject.GetComponent<Unit>().defenseStat < action.damage + baseUnit.attackStat)
-                {
-                    damageNums.color = Color.red;
-                }
-            }
-            else if (action.targetType == Action.TargetType.ANY && action.actionType == Action.ActionType.ATTACK)
-            {
-                damageNums.text = "<sprite name=\"ATK\">" + (action.damage + baseUnit.attackStat).ToString();
-                damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
-            }
+            
 
             switch (action.targetType)
             {
@@ -103,7 +110,6 @@ public class ActionContainer : MonoBehaviour
                             LabCamera.Instance.ResetPosition();
                             BattleLog.Instance.ResetBattleLog();
                             SetActive();
-
                         }
 
 
@@ -126,7 +132,6 @@ public class ActionContainer : MonoBehaviour
                             baseUnit.state = PlayerState.READY;
                             action.targets = baseUnit;
                             action.unit = baseUnit;
-                            action.speed = action.unit.speedStat;
                             baseUnit.Queue(action);
                             SetActive();
                             baseUnit.timelinechild.CanMove = true;
@@ -192,19 +197,28 @@ public class ActionContainer : MonoBehaviour
     {
        
         AudioManager.Instance.Play("ButtonHover");
-        //BattleLog.SetBattleText("");
         action.unit = baseUnit;
         if (Director.Instance.timeline.gameObject.activeSelf)
         {
-            BattleLog.Instance.DoBattleText(action.GetDescription());
-            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+            if(limited)
+                BattleLog.Instance.DoBattleText($"{action.GetDescription()}\nUses: {numberofUses}.");
+            else
+                BattleLog.Instance.DoBattleText($"{action.GetDescription()}");
         }
         else
         {
-            BattleLog.Instance.itemText.gameObject.SetActive(false);
-            BattleLog.Instance.ambientText.gameObject.SetActive(true);
-            BattleLog.Instance.ambientText.text = $"{action.ActionName}\n{action.GetDescription()}";
-            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+            if(this.GetComponent<Button>().interactable)
+            {
+                BattleLog.Instance.itemText.gameObject.SetActive(false);
+                BattleLog.Instance.ambientText.gameObject.SetActive(true);
+                BattleLog.Instance.ambientText.text = $"{action.ActionName}\n{action.GetDescription()}";
+                if (limited)
+                    BattleLog.Instance.ambientText.text = $"{action.ActionName}\n{action.GetDescription()}\nUses: {numberofUses}.";
+                else
+                    BattleLog.Instance.ambientText.text = $"{action.ActionName}\n{action.GetDescription()}";
+                BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+            }
+        
         }
 
 
@@ -213,7 +227,7 @@ public class ActionContainer : MonoBehaviour
 
     public void RemoveDescription()
     {
-        if(BattleSystem.Instance != null)
+        if(BattleSystem.Instance != null && targetting == false)
         {
             BattleLog.Instance.itemText.gameObject.SetActive(false);
         }
@@ -250,7 +264,21 @@ public class ActionContainer : MonoBehaviour
                         {
                             var button = x.GetComponent<Button>();
                             if (!x.Disabled)
-                                button.interactable = true;
+                            {
+                                if (x.limited)
+                                {
+                                    if (numberofUses > 0)
+                                    {
+                                        button.interactable = true;
+                                    }
+                                    else
+                                    {
+                                        button.interactable = false;
+                                    }
+                                }
+                                else
+                                    button.interactable = true;
+                            } 
                             x.targetting = false;
                             foreach (var z in Tools.GetAllUnits())
                             {
@@ -281,6 +309,7 @@ public class ActionContainer : MonoBehaviour
                     TL.rectTransform.anchoredPosition = new Vector3((TL.unit.stamina.slider.maxValue - action.cost) * -11.89f, 85);
                     TL.stamina.text = (TL.unit.stamina.slider.maxValue - action.cost).ToString();
                     TL.CanClear = true;
+                    TL.playerPoint.gameObject.SetActive(true);
                     TL.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
                     TL.portrait.color = new Color(1, 1, 1, 0.5f);
                     targetting = true;

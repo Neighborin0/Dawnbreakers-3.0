@@ -10,6 +10,7 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 {
     public Transform originalParent;
     public Image image;
+    public bool CanBeDragged = true;
 
     void Start()
     {
@@ -17,20 +18,30 @@ public class DraggableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        originalParent = transform.parent;
-        transform.SetParent(Director.Instance.canvas.transform, true);
-        transform.SetAsLastSibling();
-        image.raycastTarget = false;
+        if(CanBeDragged)
+        {
+            originalParent = transform.parent;
+            transform.SetParent(Director.Instance.canvas.transform, true);
+            transform.SetAsLastSibling();
+            image.raycastTarget = false;
+        }
+       
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        this.GetComponent<RectTransform>().position = Input.mousePosition;
+        if (CanBeDragged)
+        {
+            this.GetComponent<RectTransform>().position = Input.mousePosition;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.SetParent(originalParent, true);
-        image.raycastTarget = true;
+        if (CanBeDragged)
+        {
+            transform.SetParent(originalParent, true);
+            image.raycastTarget = true;
+        }
     }
 }

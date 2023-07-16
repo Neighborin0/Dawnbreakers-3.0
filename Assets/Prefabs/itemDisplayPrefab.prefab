@@ -166,6 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originalParent: {fileID: 0}
   image: {fileID: 0}
+  CanBeDragged: 1
 --- !u!114 &163319887242382276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,7 +202,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 163319887242382276}
           m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
-          m_MethodName: ToggleHighlight
+          m_MethodName: EnableHighlight
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -217,7 +218,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 163319887242382276}
           m_TargetAssemblyTypeName: HighlightedObject, Assembly-CSharp
-          m_MethodName: ToggleHighlight
+          m_MethodName: DisableHighlight
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

@@ -9,7 +9,6 @@ public class Slow : Action
     {
         ActionName = "Slow";
         damage = 2;
-        accuracy = 1;
         cost = 75f;
         statAmount = 2;
         targetType = TargetType.ANY;
