@@ -28,7 +28,7 @@ public class StaminaBar : MonoBehaviour
     {
         if (slider.value < slider.maxValue && !Paused)
         {
-            slider.value += (float)(unit.speedStat * Time.deltaTime) / Director.Instance.staminaSPDDivider;
+            slider.value += (float)(unit.speedStat * Time.deltaTime) / OptionsManager.Instance.UserTimelineSpeedDelay;
         }
 
 

@@ -81,7 +81,7 @@ public class EffectIcon : MonoBehaviour
             yield return new WaitUntil(() => !isPaused);
             timer--;
             timerText.text = timer.ToString();
-            yield return new WaitForSeconds(1f * Director.Instance.staminaSPDDivider);
+            yield return new WaitForSeconds(1f * OptionsManager.Instance.UserTimelineSpeedDelay);
         }
         DestoryEffectIcon();
     }

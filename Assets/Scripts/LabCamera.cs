@@ -186,9 +186,9 @@ public class LabCamera : MonoBehaviour
             if (Input.GetMouseButton(1))
             {
                 followDisplacement = new Vector3(
-                Mathf.Clamp(followDisplacement.x - Input.GetAxis("Mouse X") * 3f, MapController.Instance.MinMapBounds.x - this.transform.position.x, MapController.Instance.MaxMapBounds.x + this.transform.position.x),
-                   Mathf.Clamp(followDisplacement.y - Input.GetAxis("Mouse Y"), -3, 32),
-                   Mathf.Clamp(followDisplacement.z -Input.GetAxis("Mouse Y"), -89f, -48f));
+                Mathf.Clamp(followDisplacement.x - Input.GetAxis("Mouse X") * OptionsManager.Instance.mapSensitivityMultiplier, MapController.Instance.MinMapBounds.x - this.transform.position.x, MapController.Instance.MaxMapBounds.x + this.transform.position.x),
+                   Mathf.Clamp(followDisplacement.y - Input.GetAxis("Mouse Y")  * OptionsManager.Instance.mapSensitivityMultiplier, -3, 32),
+                   Mathf.Clamp(followDisplacement.z -Input.GetAxis("Mouse Y")  * OptionsManager.Instance.mapSensitivityMultiplier, -89f, -48f));
 
             }
             if (Input.GetKeyDown(KeyCode.R))

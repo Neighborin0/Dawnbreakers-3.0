@@ -670,7 +670,7 @@ public class BattleSystem : MonoBehaviour
             BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
 
         }     
-        Director.Instance.timelinespeedDelay = Director.Instance.UserTimelineSpeedDelay;
+        Director.Instance.timelinespeedDelay = OptionsManager.Instance.UserTimelineSpeedDelay;
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         unit.DoBattlePhaseClose();
         if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD)

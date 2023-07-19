@@ -5,6 +5,10 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering.Universal;
+using System;
 
 public class OptionsManager : MonoBehaviour
 {
@@ -16,13 +20,25 @@ public class OptionsManager : MonoBehaviour
     public TMPro.TMP_Dropdown vsynDropdown;
     public TMPro.TMP_Dropdown fullScreenDropdown;
     public TMPro.TMP_Dropdown QualityDropdown;
+    public TMPro.TMP_Dropdown FPSLimit;
+    //public TMPro.TMP_Dropdown BloomDropDown;
+    //public Slider BloomSlider;
+    //public TextMeshProUGUI bloomValue;
+    public Slider MapSensitivitySlider;
+    public TextMeshProUGUI mapSensValue;
+    public Slider WaitTimeMultiplier;
+    public TextMeshProUGUI waitTimeValue;
     public FPSCounter fPSCounter;
     public bool SettingsMenuDisabled;
     public Image blackScreen;
     public Button quitButton;
     public Button Continue;
     public Canvas canvas;
-    public int IntensityLevel = 0; 
+    public int IntensityLevel = 0;
+    //public int bloomMultiplier;
+    public float UserTimelineSpeedDelay = 0.5f;
+    public float mapSensitivityMultiplier = 1;
+    
     void Awake()
     {
         if (Instance != null)
@@ -58,7 +74,7 @@ public class OptionsManager : MonoBehaviour
         int currentResIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = resolutions[i].width + "x" + resolutions[i].height;
+            string option = resolutions[i].width + " x " + resolutions[i].height + " ( " + resolutions[i].refreshRate + "hz)";
             resoultionparams.Add(option);
             if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
             {
@@ -78,6 +94,13 @@ public class OptionsManager : MonoBehaviour
         else
             fullScreenDropdown.value = 1;
         QualityDropdown.value = QualitySettings.GetQualityLevel();
+        FPSLimit.value = Application.targetFrameRate;
+        MapSensitivitySlider.value = 1;
+        //BloomDropDown.value = 1;
+        WaitTimeMultiplier.value = 0.5f;
+        //bloomValue.text = Math.Round(BloomSlider.value, 1).ToString();
+        mapSensValue.text = Math.Round(MapSensitivitySlider.value, 1).ToString();
+        waitTimeValue.text = Math.Round(WaitTimeMultiplier.value, 1).ToString();
     }
 
 
@@ -141,6 +164,43 @@ public class OptionsManager : MonoBehaviour
         QualitySettings.vSyncCount = vsyncIndex;
     }
 
+    public void SetTargetFrameRate(int fpsLimitIndex)
+    {
+        QualitySettings.vSyncCount = 0;
+        //Application.targetFrameRate = fpsLimitIndex;
+        print("Fps index is:" + fpsLimitIndex);
+        if (fpsLimitIndex == 0)
+        {
+            Application.targetFrameRate = -1;
+            print("Unlimited");
+        }
+        else if(fpsLimitIndex == 1)
+        {
+            Application.targetFrameRate = 30;
+            print(Application.targetFrameRate);
+        }
+        else if (fpsLimitIndex == 2)
+        {
+            Application.targetFrameRate = 60;
+            print(Application.targetFrameRate);
+        }
+        else if (fpsLimitIndex == 3)
+        {
+            Application.targetFrameRate = 120;
+            print(Application.targetFrameRate);
+        }
+        else if (fpsLimitIndex == 4)
+        {
+            Application.targetFrameRate = 144;
+            print(Application.targetFrameRate);
+        }
+        else if (fpsLimitIndex == 5)
+        {
+            Application.targetFrameRate = 240;
+            print(Application.targetFrameRate);
+        }
+    }
+
     public void SetQualitySettings(int qualityindex)
     {
         QualitySettings.SetQualityLevel(qualityindex);
@@ -157,6 +217,33 @@ public class OptionsManager : MonoBehaviour
             Screen.fullScreen = false;
         }
     }
+
+    public void SetBloom(int bloomVal)
+    {
+        /* bloomValue.text = Math.Round(BloomSlider.value, 1).ToString() + "x";
+         foreach (var volume in FindObjectsOfType<Volume>())
+         {
+             if (volume.sharedProfile.TryGet<UnityEngine.Rendering.Universal.Bloom>(out var bloom))
+             {
+                 bloom.intensity.value = (float)Math.Round(BloomSlider.value, 1);
+             }
+         }
+        */
+     
+    }
+
+    public void SetMapSensitivity()
+    {
+        mapSensValue.text = Math.Round(MapSensitivitySlider.value, 1).ToString();
+        mapSensitivityMultiplier = (float)Math.Round(MapSensitivitySlider.value, 1);
+    }
+
+    public void SetWaitTime()
+    {
+        waitTimeValue.text = Math.Round(WaitTimeMultiplier.value, 1).ToString();
+        UserTimelineSpeedDelay = (float)Math.Round(WaitTimeMultiplier.value, 1);
+    }
+
     public void Move(bool moveUp)
     {
         if (moveUp)
@@ -180,7 +267,7 @@ public class OptionsManager : MonoBehaviour
             StartCoroutine(generalCoruntine);
             Tools.ToggleUiBlocker(true);
             SettingsMenuDisabled = true;
-            canvas.sortingOrder = 1;
+            canvas.sortingOrder = 2;
         }
 
     }
@@ -207,7 +294,7 @@ public class OptionsManager : MonoBehaviour
         yield return new WaitUntil(() => blackScreen.color == new Color(0, 0, 0, 1));
         yield return new WaitForSeconds(1f);
         print("TRANSITIONED");
-        SceneManager.LoadScene(SceneToLoad);
-        canvas.sortingOrder = 1;
+        SceneManager.LoadScene(SceneToLoad);  
+        canvas.sortingOrder = 2;
     }
 }

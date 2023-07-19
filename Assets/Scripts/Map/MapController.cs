@@ -61,7 +61,14 @@ public class MapController : MonoBehaviour
     void Start()
     {
         mapCanvas.transform.localScale /= 2;
-        GenerateNodesFromFlow(MapFlow.TestFlow);
+        if(Director.Instance.DevMode)
+        {
+            GenerateNodesFromFlow(MapFlow.DevFlow);
+        }
+         else
+        {
+            GenerateNodesFromFlow(MapFlow.TutorialFlow);
+        }
         SpawnMiniMe();
         SceneManager.sceneLoaded += SaveSceneData;
         SpawnDecorations();

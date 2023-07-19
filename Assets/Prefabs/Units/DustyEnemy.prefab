@@ -102,19 +102,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c66c6349047fd4eb82b05236014e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: Dusty
-  currentHP: 0
   IsPlayerControlled: 0
   skillUIs: []
-  intentUI: {fileID: 0}
   health: {fileID: 0}
-  stamina: {fileID: 0}
-  namePlate: {fileID: 0}
-  IsHighlighted: 0
-  isDarkened: 0
-  IsDead: 0
-  StaminaHighlightIsDisabled: 0
-  behavior: {fileID: 0}
   charPortraits:
   - {fileID: 21300000, guid: 34355069512a9454487a6a6d8e02c199, type: 3}
   - {fileID: 21300000, guid: 1837556329e91ac4695f398f6e2e14e9, type: 3}
@@ -125,9 +115,6 @@ MonoBehaviour:
   MiniMapIcons: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
-  timelinechild: {fileID: 0}
-  StopMovingToUnit: 0
-  StartingStamina: 0
   introText: []
   inventory: []
   state: 0
@@ -135,15 +122,12 @@ MonoBehaviour:
   attackStat: 0
   defenseStat: 0
   speedStat: 0
-  spotLight: {fileID: 6244526254157401335}
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
   - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
   - {fileID: 11400000, guid: a8ebee44482aa0841914562f52c95421, type: 2}
-  ActionLayout: {fileID: 0}
   summonables: []
-  IsSummon: 0
 --- !u!95 &1571792269196389254
 Animator:
   serializedVersion: 3

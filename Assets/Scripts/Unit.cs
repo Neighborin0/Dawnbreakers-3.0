@@ -14,18 +14,28 @@ public enum PlayerState { IDLE, DECIDING, READY, WAITING }
 public enum Stat { ATK, DEF, SPD, HP }
 public class Unit : MonoBehaviour
 {
+    [NonSerialized]
     public string unitName;
+    [NonSerialized]
     public int currentHP;
     public bool IsPlayerControlled;
     public List<GameObject> skillUIs;
+    [NonSerialized]
     public IntentContainer intentUI;
     public Healthbar health;
+    [NonSerialized]
     public StaminaBar stamina;
+    [NonSerialized]
     public NamePlate namePlate;
+    [NonSerialized]
     public bool IsHighlighted;
+    [NonSerialized]
     public bool isDarkened;
+    [NonSerialized]
     public bool IsDead;
+    [NonSerialized]
     public bool StaminaHighlightIsDisabled = false;
+    [NonSerialized]
     public EnemyBehavior behavior;
     public List<Sprite> charPortraits;
     public Animator anim;
@@ -33,8 +43,11 @@ public class Unit : MonoBehaviour
     public List<Sprite> MiniMapIcons;
     public Vector3 offset;
     public Vector3 enemyintentOffset;
+    [NonSerialized]
     public TimeLineChild timelinechild;
+    [NonSerialized]
     public bool StopMovingToUnit = false;
+    [NonSerialized]
     public float StartingStamina;
     IEnumerator generalCoroutine;
 
@@ -62,24 +75,25 @@ public class Unit : MonoBehaviour
     public int attackStat;
     public int defenseStat;
     public int speedStat;
+    [NonSerialized]
     public Light spotLight;
     public float actionCostMultiplier = 1;
 
     //actions
     public List<Action> actionList;
+    [NonSerialized]
     public GameObject ActionLayout;
 
     //summon stuff 
     public string[] summonables;
+    [NonSerialized]
     public bool IsSummon = false;
-    void Awake()
-    {
-        spotLight = GetComponentInChildren<Light>();
-    }
+   
     void Start()
     {
         currentHP = maxHP;
         state = PlayerState.IDLE;
+        spotLight = GetComponentInChildren<Light>();
     }
 
 

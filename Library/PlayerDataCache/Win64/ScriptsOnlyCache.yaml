@@ -91,7 +91,6 @@ ScriptsOnlyBuild:
     - VFXEffect
     - Vigor
     - WarCry
-    - Whack
     - WornGauntlet
     Cinemachine.dll:
     - Cinemachine.CinemachineBrain
@@ -178,8 +177,6 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
-    UnityEditor.UI.dll:
-    - UnityEditor.EventSystems.EventTriggerEditor
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.EventTrigger
@@ -743,6 +740,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 1846}
     - Class: 114
       Script: {instanceID: 1848}
+    - Class: 114
+      Script: {instanceID: 1850}
     - Class: 114
       Script: {instanceID: 1852}
     - Class: 114
@@ -1478,7 +1477,7 @@ ScriptsOnlyBuild:
     className: TextMeshPro
   - hash:
       serializedVersion: 2
-      Hash: a0799702683ce7ce077e67d9a3eb03fc
+      Hash: 6e19b1d6d55ac0f3d56c5824bd03cd44
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: OptionsManager
@@ -1526,7 +1525,7 @@ ScriptsOnlyBuild:
     className: ActivationTrack
   - hash:
       serializedVersion: 2
-      Hash: ad87da8d0013b08e76233896bfe99f99
+      Hash: 7d8da6843ccffe16c120cfe569e4d51d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DustyEnemy
@@ -2084,7 +2083,7 @@ ScriptsOnlyBuild:
     className: VFXPreviousPositionBinder
   - hash:
       serializedVersion: 2
-      Hash: ad87da8d0013b08e76233896bfe99f99
+      Hash: 7d8da6843ccffe16c120cfe569e4d51d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Husk
@@ -2666,7 +2665,7 @@ ScriptsOnlyBuild:
     className: VariablesAsset
   - hash:
       serializedVersion: 2
-      Hash: ad87da8d0013b08e76233896bfe99f99
+      Hash: 7d8da6843ccffe16c120cfe569e4d51d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: TutorialMatriarch
@@ -2816,7 +2815,7 @@ ScriptsOnlyBuild:
     className: VariablesSaver
   - hash:
       serializedVersion: 2
-      Hash: b860b2303ba20b941c9a1c371ba16da3
+      Hash: 2dbadddd4ec08cebed8a9b0b3bac05d8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Director
@@ -2960,7 +2959,7 @@ ScriptsOnlyBuild:
     className: RestNode
   - hash:
       serializedVersion: 2
-      Hash: ad87da8d0013b08e76233896bfe99f99
+      Hash: 7d8da6843ccffe16c120cfe569e4d51d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: TestDummy
@@ -3050,7 +3049,7 @@ ScriptsOnlyBuild:
     className: Tonemapping
   - hash:
       serializedVersion: 2
-      Hash: ad87da8d0013b08e76233896bfe99f99
+      Hash: 7d8da6843ccffe16c120cfe569e4d51d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Unit
@@ -3152,7 +3151,7 @@ ScriptsOnlyBuild:
     className: UIFoldout
   - hash:
       serializedVersion: 2
-      Hash: ad87da8d0013b08e76233896bfe99f99
+      Hash: 7d8da6843ccffe16c120cfe569e4d51d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Dusty
@@ -3188,7 +3187,7 @@ ScriptsOnlyBuild:
     className: AspectRatioFitter
   - hash:
       serializedVersion: 2
-      Hash: ad87da8d0013b08e76233896bfe99f99
+      Hash: 7d8da6843ccffe16c120cfe569e4d51d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Rat
@@ -3356,7 +3355,7 @@ ScriptsOnlyBuild:
     className: UnityOnCollisionExitMessageListener
   - hash:
       serializedVersion: 2
-      Hash: ad87da8d0013b08e76233896bfe99f99
+      Hash: 7d8da6843ccffe16c120cfe569e4d51d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Aurelia
@@ -3506,7 +3505,7 @@ ScriptsOnlyBuild:
     className: UnityOnMouseUpMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 7a144c4655991a4439aeaace0c97b845
+      Hash: d6466f79ebe9cbebc5ecb4bbe4ab2b91
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: TutorialEnemy
