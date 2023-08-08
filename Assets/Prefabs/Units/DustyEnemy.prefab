@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 1204275268878849916}
   m_Layer: 0
   m_Name: DustyEnemy
-  m_TagString: Enemy
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,6 +122,7 @@ MonoBehaviour:
   attackStat: 0
   defenseStat: 0
   speedStat: 0
+  spotLight: {fileID: 0}
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}

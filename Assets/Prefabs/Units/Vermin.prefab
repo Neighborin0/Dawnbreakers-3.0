@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 3992291284986016858}
   m_Layer: 0
   m_Name: Vermin
-  m_TagString: Enemy
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,6 +121,7 @@ MonoBehaviour:
   attackStat: 0
   defenseStat: -2
   speedStat: 0
+  spotLight: {fileID: 0}
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}

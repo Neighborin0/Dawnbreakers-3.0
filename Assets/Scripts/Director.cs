@@ -49,6 +49,8 @@ public class Director : MonoBehaviour
     public GameObject EffectPopUp;
     public GameObject ConfirmButton;
     public GameObject CharacterSlotButtonprefab;
+    public TextMeshProUGUI LevelDropText;
+    public TextMeshProUGUI LevelDropSubText;
 
     public LabCamera.CameraState previousCameraState;
     public static Director Instance { get; private set;  }
@@ -96,6 +98,13 @@ public class Director : MonoBehaviour
             {
                 Time.timeScale -= 1;
                 print(Time.timeScale);
+            }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                if (Time.timeScale != 0)
+                    Time.timeScale = 0;
+                else
+                    Time.timeScale = 1;
             }
         }
         //Put Character Slots Away

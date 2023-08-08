@@ -254,6 +254,11 @@ public class ActionContainer : MonoBehaviour
                             break;
                         }
                     }
+                    foreach (var z in Tools.GetAllUnits())
+                    {
+                        z.IsHighlighted = false;
+                        z.isDarkened = false;
+                    }
                 }
                 else
                 {

@@ -31,12 +31,12 @@ public class WarCry : Action
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
-        LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, 0, 8, -50, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", Color.red, new Vector3(0, 0, -2f), 0.2f));
-        yield return new WaitForSeconds(0.05f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", Color.red, new Vector3(0, 0, -2f), 0.2f));
-        yield return new WaitForSeconds(0.5f);
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 0.2f));
+        yield return new WaitForSeconds(0.1f);
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 0.2f));
+        yield return new WaitForSeconds(0.4f);
         foreach (var x in Tools.DetermineAllies(unit))
         {
             var Light = x.spotLight;
@@ -46,8 +46,6 @@ public class WarCry : Action
             var battleSystem = BattleSystem.Instance;
             battleSystem.SetTempEffect(x, "ATK", true, duration, statAmount, 0);
         }
-        yield return new WaitForSeconds(0.2f);
-        Director.Instance.StartCoroutine(LabCamera.Instance.DoSlowHorizontalSweep());
         yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();

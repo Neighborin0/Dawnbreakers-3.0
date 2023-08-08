@@ -51,8 +51,11 @@ public class MapController : MonoBehaviour
         {
             Instance = this;
             StartCoroutine(LoadSlots());
-            if(OptionsManager.Instance.blackScreen.color.a > 0)
-            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
+            if(OptionsManager.Instance != null)
+            {
+                if (OptionsManager.Instance.blackScreen.color.a > 0)
+                    StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
+            }
             DontDestroyOnLoad(gameObject);
         }
 
@@ -249,10 +252,29 @@ public class MapController : MonoBehaviour
                     }
                     if (enableMapControls)
                         mapControlBar.SetActive(true);
+                    StartCoroutine(DoLevelDrop());
                     break;
                 }
 
             }
+        }
+    }
+
+    private IEnumerator DoLevelDrop()
+    {
+        if (!Director.Instance.DevMode)
+        {
+            OptionsManager.Instance.CanPause = false;
+            Tools.ToggleUiBlocker(false, true);
+            yield return new WaitForSeconds(0.5f);
+            StartCoroutine(Tools.FadeText(Director.Instance.LevelDropText, 0.05f, true, false));
+            yield return new WaitForSeconds(0.8f);
+            StartCoroutine(Tools.FadeText(Director.Instance.LevelDropSubText, 0.05f, true, false));
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(Tools.FadeText(Director.Instance.LevelDropText, 0.05f, false, false));
+            StartCoroutine(Tools.FadeText(Director.Instance.LevelDropSubText, 0.05f, false, false));
+            Tools.ToggleUiBlocker(true, true);
+            OptionsManager.Instance.CanPause = true;
         }
     }
 

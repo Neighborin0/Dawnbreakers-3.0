@@ -34,6 +34,8 @@ public class Unit : MonoBehaviour
     [NonSerialized]
     public bool IsDead;
     [NonSerialized]
+    public bool Dying = false;
+    [NonSerialized]
     public bool StaminaHighlightIsDisabled = false;
     [NonSerialized]
     public EnemyBehavior behavior;
@@ -41,6 +43,7 @@ public class Unit : MonoBehaviour
     public Animator anim;
     public bool Execute = false;
     public List<Sprite> MiniMapIcons;
+    public List<EffectIcon> statusEffects;
     public Vector3 offset;
     public Vector3 enemyintentOffset;
     [NonSerialized]
@@ -75,7 +78,6 @@ public class Unit : MonoBehaviour
     public int attackStat;
     public int defenseStat;
     public int speedStat;
-    [NonSerialized]
     public Light spotLight;
     public float actionCostMultiplier = 1;
 
@@ -103,34 +105,37 @@ public class Unit : MonoBehaviour
         var sprite = this.gameObject.GetComponent<SpriteRenderer>();
         if (BattleSystem.Instance != null)
         {
-            if (IsHighlighted)
+            if (!Dying)
             {
-                sprite.material.SetFloat("_OutlineThickness", 1f);
-                sprite.material.SetColor("_OutlineColor", Color.white);
-                sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
+                if (IsHighlighted)
+                {
+                    sprite.material.SetFloat("_OutlineThickness", 1f);
+                    sprite.material.SetColor("_OutlineColor", Color.white);
+                    sprite.material.SetColor("_CharacterEmission", new Color(0.01f, 0.01f, 0.01f));
 
-            }
-            else if (state == PlayerState.DECIDING)
-            {
+                }
+                else if (state == PlayerState.DECIDING)
+                {
 
-                sprite.material.SetFloat("_OutlineThickness", 1f);
-                sprite.material.SetColor("_OutlineColor", Color.yellow);
-                sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
+                    sprite.material.SetFloat("_OutlineThickness", 1f);
+                    sprite.material.SetColor("_OutlineColor", Color.yellow);
+                    sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
 
-            }
-            else if (state == PlayerState.WAITING)
-            {
+                }
+                else if (state == PlayerState.WAITING)
+                {
 
-                sprite.material.SetFloat("_OutlineThickness", 1f);
-                sprite.material.SetColor("_OutlineColor", Color.black);
-                sprite.material.SetColor("_CharacterEmission", new Color(-0.1f, -0.1f, -0.1f, 1f));
+                    sprite.material.SetFloat("_OutlineThickness", 1f);
+                    sprite.material.SetColor("_OutlineColor", Color.black);
+                    sprite.material.SetColor("_CharacterEmission", new Color(-0.01f, -0.01f, -0.01f, 1f));
 
-            }
-            else
-            {
-                sprite.material.SetFloat("_OutlineThickness", 1f);
-                sprite.material.SetColor("_OutlineColor", Color.black);
-                sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
+                }
+                else
+                {
+                    sprite.material.SetFloat("_OutlineThickness", 1f);
+                    sprite.material.SetColor("_OutlineColor", Color.black);
+                    sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
+                }
             }
 
         }
@@ -173,7 +178,7 @@ public class Unit : MonoBehaviour
                 }
                 if (BattleSystem.Instance.CheckPlayableState())
                 {
-                    sprite.material.SetColor("_CharacterEmission", new Color(0.1f, 0.1f, 0.1f));
+                    sprite.material.SetColor("_CharacterEmission", new Color(0.01f, 0.01f, 0.01f));
                     this.timelinechild.Shift(this);
                 }
 
@@ -187,7 +192,7 @@ public class Unit : MonoBehaviour
 
             if (isDarkened && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
             {
-                sprite.material.SetColor("_CharacterEmission", new Color(-0.1f, -0.1f, -0.1f));
+                sprite.material.SetColor("_CharacterEmission", new Color(-0.01f, -0.01f, -0.01f));
             }
 
             if (Input.GetMouseButtonUp(0))

@@ -53,7 +53,7 @@ public class TimeLineChild : MonoBehaviour
             stamina.text = Mathf.Round(unit.stamina.slider.value).ToString();
         }
         TimelineChildChild.GetComponent<Image>().color = GetComponent<Image>().color;
-        if(unit.IsHighlighted)
+        /*if(unit.IsHighlighted)
         {
             UnitIsHighlighted = true;
         }
@@ -61,6 +61,7 @@ public class TimeLineChild : MonoBehaviour
         {
             UnitIsHighlighted = false;
         }
+        */
 
     }
 

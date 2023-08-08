@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 [CreateAssetMenu(fileName = "Sweep", menuName = "Assets/Actions/Sweep")]
 public class Sweep : Action
@@ -40,18 +41,20 @@ public class Sweep : Action
         yield return new WaitUntil(() => unit.Execute);
         LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Vector3(0, 0, -2f), 1f));
         AudioManager.Instance.Play("slash_001");
         LabCamera.Instance.Shake(0.3f, 1f);
-        foreach (Transform icon in targets.namePlate.IconGrid.transform)
+        if(targets.statusEffects.Contains(targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault()))
         {
-            var EI = icon.gameObject.GetComponent<EffectIcon>();
-            if (EI.GetComponent<Stagger>() != null)
-            {
-                EI.DestoryEffectIcon();
-                AdditionalDMG += 2;
-            }
+            var Stagger = targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault();
+            Stagger.DestoryEffectIcon();
+            AdditionalDMG += 2;
+            BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), 1f));
         }
+        else
+        {
+            BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Color(156, 14, 207), new Vector3(0, 0, -2f), 1f));
+        }
+        LabCamera.Instance.Shake(0.5f, 1f);
         targets.health.TakeDamage(damage + AdditionalDMG + unit.attackStat, unit);
         yield return new WaitForSeconds(0.5f);
         LabCamera.Instance.ResetPosition();

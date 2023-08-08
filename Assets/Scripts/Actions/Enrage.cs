@@ -24,10 +24,10 @@ public class Enrage : Action
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
-        LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, 0, 8, -50, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.SetStatChanges(Stat.ATK, statAmount, false, targets);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
         this.Done = true;

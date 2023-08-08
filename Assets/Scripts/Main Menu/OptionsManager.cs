@@ -9,13 +9,20 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering.Universal;
 using System;
+using static BattleSystem;
 
 public class OptionsManager : MonoBehaviour
 {
     public static OptionsManager Instance { get; private set; }
     public Image SettingsMenu;
     public IEnumerator generalCoruntine;
-    Resolution[] resolutions;
+    public struct FilteredResolutions
+    {
+        public int width;
+        public int height;
+        public int refreshRate;
+    }
+    public List<FilteredResolutions> filteredResolutions;
     public TMPro.TMP_Dropdown resolutionsDropdown;
     public TMPro.TMP_Dropdown vsynDropdown;
     public TMPro.TMP_Dropdown fullScreenDropdown;
@@ -38,6 +45,7 @@ public class OptionsManager : MonoBehaviour
     //public int bloomMultiplier;
     public float UserTimelineSpeedDelay = 0.5f;
     public float mapSensitivityMultiplier = 1;
+    public bool CanPause = true;
     
     void Awake()
     {
@@ -57,10 +65,6 @@ public class OptionsManager : MonoBehaviour
             OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
             OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 1);
             StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
-            /*if(PlayerPrefs.GetString("Level") != null)
-            {
-                Continue.gameObject.SetActive(true);
-            }*/
 #endif
         }
 
@@ -68,17 +72,28 @@ public class OptionsManager : MonoBehaviour
 
     void Start()
     {
-        resolutions = Screen.resolutions;
+
+        filteredResolutions = new List<FilteredResolutions>();
         resolutionsDropdown.ClearOptions();
         List<string> resoultionparams = new List<string>();
         int currentResIndex = 0;
-        for (int i = 0; i < resolutions.Length; i++)
+        for (int i = 0; i < Screen.resolutions.Length; i++)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height + " ( " + resolutions[i].refreshRate + "hz)";
-            resoultionparams.Add(option);
-            if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+            var fr = new FilteredResolutions
             {
-                currentResIndex = i;
+                width = Screen.resolutions[i].width,
+                height = Screen.resolutions[i].height,
+                refreshRate = Screen.resolutions[i].refreshRate
+            };
+            if (fr.refreshRate == Screen.currentResolution.refreshRate)
+            {
+                string option = fr.width + " x " + fr.height;
+                filteredResolutions.Add(fr);
+                resoultionparams.Add(option);
+                if (fr.width == Screen.width && fr.refreshRate == Screen.currentResolution.refreshRate)
+                {
+                    currentResIndex = i;
+                }
             }
 
         }
@@ -110,7 +125,8 @@ public class OptionsManager : MonoBehaviour
         {
             FPSCounterEnable();
         }
-        if (Input.GetKeyDown(KeyCode.Tab) && SceneManager.GetActiveScene().name != "Main Menu")
+       
+        if (Input.GetKeyDown(KeyCode.Tab) && SceneManager.GetActiveScene().name != "Main Menu" && CanPause)
         {
             if (BattleSystem.Instance != null && Director.Instance != null && BattleSystem.Instance.CheckPlayableState())
             {
@@ -155,7 +171,7 @@ public class OptionsManager : MonoBehaviour
 
     public void SetResolution(int resolutionIndex)
     {
-       var resolution = resolutions[resolutionIndex];
+       var resolution = filteredResolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 

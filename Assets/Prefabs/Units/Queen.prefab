@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4366057301948650451}
   m_Layer: 0
   m_Name: Queen
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,23 +148,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daed55c9820c6014f92e0fc28b90b0dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: Aurelia
-  currentHP: 0
   IsPlayerControlled: 0
   skillUIs:
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
-  intentUI: {fileID: 0}
   health: {fileID: 0}
-  stamina: {fileID: 0}
-  namePlate: {fileID: 0}
-  IsHighlighted: 0
-  isDarkened: 0
-  IsDead: 0
-  StaminaHighlightIsDisabled: 0
-  behavior: {fileID: 0}
   charPortraits:
   - {fileID: 21300000, guid: 3e449902b5ccbab42907ae257ab9d358, type: 3}
   anim: {fileID: 8920539224179958371}
@@ -174,9 +164,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d1a4026457431634e94612e79ca206af, type: 3}
   offset: {x: -3, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 0, z: 0}
-  timelinechild: {fileID: 0}
-  StopMovingToUnit: 0
-  StartingStamina: 0
   introText: []
   inventory: []
   state: 0
@@ -191,9 +178,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
   - {fileID: 11400000, guid: 8626ced7933e1d04eb4f6721e66a6f6f, type: 2}
   - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
-  ActionLayout: {fileID: 0}
   summonables: []
-  IsSummon: 0
 --- !u!1 &6181608128609589123
 GameObject:
   m_ObjectHideFlags: 0

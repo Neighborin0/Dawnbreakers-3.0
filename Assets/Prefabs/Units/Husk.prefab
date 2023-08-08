@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 8397412041751674270}
   m_Layer: 0
   m_Name: Husk
-  m_TagString: Enemy
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5009,6 +5009,7 @@ MonoBehaviour:
   attackStat: 0
   defenseStat: 0
   speedStat: 0
+  spotLight: {fileID: 271764350120129049}
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
@@ -5040,7 +5041,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 114
   m_CollisionDetection: 0
 --- !u!114 &8397412041751674270
 MonoBehaviour:

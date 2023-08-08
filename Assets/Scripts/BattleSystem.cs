@@ -253,7 +253,7 @@ public class BattleSystem : MonoBehaviour
         if (LevelUpScreen)
         {
             Director.Instance.DisplayCharacterTab();
-            LabCamera.Instance.MoveToUnit(playerUnits[0], 0, -8, 40, false, 0.5f);
+            LabCamera.Instance.MoveToUnit(playerUnits[0], 0, 8, 40, false, 0.5f);
         }
         else
         {
@@ -331,20 +331,15 @@ public class BattleSystem : MonoBehaviour
 
     public void SetTempEffect(Unit unit, string Icon, bool DoFancyStatChanges, float duration = 0, float storedValue = 0, float numberofStacks = 0)
     {
-        foreach (Transform x in unit.namePlate.IconGrid.transform)
-        {
-            var EI = x.gameObject.GetComponent<EffectIcon>();
-            print(EI.iconName);
-            print(Icon);
-            if (EI.iconName == Icon)
-            {
-                EI.DoFancyStatChanges = false;
-                EI.DestoryEffectIcon();
-                break;
-            }
-        }
+
         var icon = Instantiate(Director.Instance.iconDatabase.Where(obj => obj.name == Icon).SingleOrDefault(), unit.namePlate.IconGrid.transform);
         var i = icon.GetComponent<EffectIcon>();
+        if (unit.statusEffects.Contains(unit.statusEffects.Where(obj => obj.iconName == i.iconName).SingleOrDefault()))
+        {
+            i.DoFancyStatChanges = false;
+            i.DestoryEffectIcon();
+        }
+        unit.statusEffects.Add(i);
         if (unit == null)
             Debug.LogError("OWNER SETUP BROKEN");
         else
@@ -453,11 +448,11 @@ public class BattleSystem : MonoBehaviour
     {
         if (AmountToRaise > 0)
         {
-            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatUpVFX", color, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), 1f, 0, false, true));
+            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatUpVFX", color, color,new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), 1f, 0, false, true));
         }
         else
         { 
-            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatDownVFX", color, new Vector3(0, 15, 0), 1f, 0, false, true));
+            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatDownVFX", color, color ,new Vector3(0, 15, 0), 1f, 0, false, true));
         }
     }
 
@@ -476,6 +471,11 @@ public class BattleSystem : MonoBehaviour
                 var actionContainer = unit.skillUIs[i].GetComponent<ActionContainer>();
                 actionContainer.targetting = false;
                 i++;
+            }
+            foreach (var z in Tools.GetAllUnits())
+            {
+                z.IsHighlighted = false;
+                z.isDarkened = false;
             }
         }
 

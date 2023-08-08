@@ -39,8 +39,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 45.2}
-  m_SizeDelta: {x: 105, y: 100}
+  m_AnchoredPosition: {x: 0, y: 44.517323}
+  m_SizeDelta: {x: 105, y: 98.483}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4778800779202628921
 CanvasRenderer:
@@ -70,7 +70,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 68801d1677c78374cac54e7881a07c70, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0c6ca0e4b98a4364cb2a4eed5720035e, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 0.5
 --- !u!114 &6568516722610899599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,6 +103,7 @@ MonoBehaviour:
   playerPoint: {fileID: 5403960351164552912}
   EnemyPoint: {fileID: 8699265723279433572}
   UnitIsHighlighted: 0
+  HighlightedIsBeingOverwritten: 0
 --- !u!114 &7428458782112312656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,8 +261,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000030517578, y: -63.147438}
-  m_SizeDelta: {x: 105, y: 35}
+  m_AnchoredPosition: {x: -0.0000047684, y: -62.69}
+  m_SizeDelta: {x: 105, y: 35.3522}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8981231100123275676
 CanvasRenderer:
@@ -300,7 +301,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 0.5
 --- !u!1 &6274673440444810145
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,8 +336,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 95}
+  m_AnchoredPosition: {x: -0.0761, y: 0.000026997}
+  m_SizeDelta: {x: 92.8488, y: 86.521}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7226852307815771969
 CanvasRenderer:

@@ -35,13 +35,13 @@ public class Slash : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, 0, 8, -50, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
         AudioManager.Instance.Play("slash_001");
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Vector3(0, 0, -2f), 1f));
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow ,new Vector3(0, 0, -2f), 1f));
         yield return new WaitForSeconds(0.01f);
         targets.health.TakeDamage(damage + unit.attackStat, unit);
-        LabCamera.Instance.Shake(0.3f, 1.5f);
+        LabCamera.Instance.Shake(0.5f, 1.5f);
         yield return new WaitForSeconds(0.5f);
         Done = true;
         LabCamera.Instance.ResetPosition();

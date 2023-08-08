@@ -40,7 +40,7 @@ public class Incinerate : Action
         LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
         yield return new WaitForSeconds(0.3f);     
         AudioManager.Instance.Play("slash_001");
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash" ,Color.yellow, new Vector3(0, 0, -2f)));
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash" ,Color.yellow, Color.white, new Vector3(0, 0, -2f)));
         targets.health.TakeDamage(damage + unit.attackStat, unit);
         LabCamera.Instance.Shake(0.2f, 0.7f);
         yield return new WaitForSeconds(0.5f);

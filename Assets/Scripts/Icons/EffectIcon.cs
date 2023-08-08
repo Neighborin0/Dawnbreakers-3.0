@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.Rendering;
+using System.Linq;
 
 public class EffectIcon : MonoBehaviour
 {
@@ -124,6 +125,7 @@ public class EffectIcon : MonoBehaviour
     public void DestoryEffectIcon()
     {
         OnEnded();
+        owner.statusEffects.Remove(owner.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault());
     }
     public virtual string GetDescription() { return description; }
 

@@ -499,14 +499,15 @@ public class Tools : MonoBehaviour
     {
         return new Vector3(obj.transform.position.x, obj.transform.position.y, obj.transform.position.z);
     }
-    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Vector3 offset, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, bool haveExtraDelay = false)
+    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, bool haveExtraDelay = false, float intensityMultiplier = 10, bool Fade = false)
     {
         var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).SingleOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, Quaternion.identity);
+        VFX.transform.parent = null;
         if (VFX.GetComponent<SpriteRenderer>() != null)
         {
             VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
             var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
-            vfxMaterial.SetColor("_EmissionColor", vfxColor * 10);
+            vfxMaterial.SetColor("_EmissionColor", vfxColor * intensityMultiplier);
         }
         if (VFX.GetComponent<Animator>() != null)
         {
@@ -518,8 +519,8 @@ public class Tools : MonoBehaviour
             var particleSystem = VFX.GetComponent<ParticleSystem>();
             particleSystem.GetComponent<ParticleSystemRenderer>().material = Instantiate(particleSystem.GetComponent<ParticleSystemRenderer>().material);
             var particleMaterial = particleSystem.GetComponent<ParticleSystemRenderer>().material;
-            particleMaterial.SetColor("_Color", vfxColor * 10);
-            particleMaterial.SetColor("_EmissionColor", vfxColor * 10);
+            particleMaterial.SetColor("_Color", particleColor * intensityMultiplier);
+            particleMaterial.SetColor("_EmissionColor", particleColor * intensityMultiplier);
         }
         if (ApplyChromaticAbberation)
             Director.Instance.StartCoroutine(Tools.ApplyAndReduceChromaticAbberation());
@@ -535,11 +536,19 @@ public class Tools : MonoBehaviour
             var particleSystem = VFX.GetComponent<ParticleSystem>();
             particleSystem.Stop();
         }
-        if (haveExtraDelay)
+        if (Fade)
         {
-            yield return new WaitForSeconds(2f);
+            Director.Instance.StartCoroutine(ChangeObjectEmissionToMinIntensity(VFX, 0.001f));
+            print("FADING");
         }
-        Destroy(VFX);
+        else
+        {
+            if (haveExtraDelay)
+            {
+                yield return new WaitForSeconds(2f);
+            }
+            Destroy(VFX);
+        }
 
     }
 
@@ -588,6 +597,31 @@ public class Tools : MonoBehaviour
         }
     }
 
+    public static IEnumerator ChangeObjectEmissionToMaxIntensity(GameObject gameObjectToChange, Color newColor, float delay)
+    {
+        var sprite = gameObjectToChange.GetComponent<SpriteRenderer>();
+        float intensity = 1;
+        while (intensity < 10)
+        {
+            sprite.material.SetColor("_CharacterEmission", newColor * intensity);
+            intensity++;
+            print(intensity);
+            yield return new WaitForSeconds(delay);
+        }
+    }
+
+    public static IEnumerator ChangeObjectEmissionToMinIntensity(GameObject gameObjectToChange, float delay)
+    {
+        var sprite = gameObjectToChange.GetComponent<SpriteRenderer>();
+        float alpha = 1;
+        while (sprite.material.color.a > 0)
+        {
+            alpha = 0.1f;
+            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
+            yield return new WaitForSeconds(delay);
+        }
+        Destroy(gameObjectToChange);
+    }
     public static IEnumerator TurnOnDirectionalLight(float delay = 0.0001f)
     {
         if (BattleSystem.Instance.mainLight != null)

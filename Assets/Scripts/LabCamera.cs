@@ -207,22 +207,28 @@ public class LabCamera : MonoBehaviour
         state = CameraState.MOVING;
         smoothingTime = 0f;
         this.MovingTimeDivider = MovingTimeDivider;
+        var sprite = unit.GetComponent<SpriteRenderer>();
         if (useDefaultOffset)
         {
-            PositonToMoveTo = unit.transform.position / 5f;
+            PositonToMoveTo.x = sprite.bounds.center.x / 5f;
+            PositonToMoveTo.y = camTransform.position.y;
+            PositonToMoveTo.z = camTransform.position.z;
         }
         else
         {
-            PositonToMoveTo = unit.transform.position;
-        }
-        if (xOffset != 0)
-        {
             if (unit.IsPlayerControlled)
                 xOffset *= -1;
-            PositonToMoveTo.x = unit.transform.position.x + xOffset;
+
+            PositonToMoveTo.x = sprite.bounds.center.x + xOffset;
+            PositonToMoveTo.y = sprite.bounds.center.y + yOffset;
+            PositonToMoveTo.z = unit.transform.position.z + zOffset;
+            print("POSITION Z: " + unit.transform.position.z);
+            print("POSITION Y: " + sprite.bounds.center.y);
+            print("Y OFFSET: " + yOffset);
+            print("Z OFFSET: " + zOffset);
+            print(PositonToMoveTo);
         }
-        PositonToMoveTo.y = camTransform.position.y + yOffset;
-        PositonToMoveTo.z = camTransform.position.z + zOffset;
+      
     }
 
     public void MoveAndFollowGameObject(GameObject gameObject, Vector3 followDisplacement)

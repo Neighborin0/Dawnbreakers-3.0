@@ -148,7 +148,7 @@ public class Healthbar : MonoBehaviour
                     LabCamera.Instance.state = LabCamera.CameraState.IDLE;
                     yield return new WaitForSeconds(1f);
                     unit.DoDeathQuote();
-                    LabCamera.Instance.MoveToUnit(unit, 0, -6, 32, false, 0.5f);
+                    LabCamera.Instance.MoveToUnit(unit, 0, 2, -40, false, 0.5f);
                     yield return new WaitForSeconds(0.2f);
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
                 }
@@ -159,7 +159,9 @@ public class Healthbar : MonoBehaviour
                 BattleLog.Instance.ResetBattleLog();
                 var sprite = unit.GetComponent<SpriteRenderer>();
                 yield return new WaitForSeconds(0.5f);
-                sprite.forceRenderingOff = true;
+                unit.Dying = true;
+                Director.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMaxIntensity(unit.gameObject, Color.yellow, 0.07f));
+                /*sprite.forceRenderingOff = true;
                 yield return new WaitForSeconds(0.1f);
                 sprite.forceRenderingOff = false;
                 yield return new WaitForSeconds(0.1f);
@@ -173,6 +175,12 @@ public class Healthbar : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
                 sprite.forceRenderingOff = true;
                 yield return new WaitForSeconds(0.1f);
+                
+                */
+                yield return new WaitForSeconds(0.7f);
+                LabCamera.Instance.Shake(0.5f, 2f);
+                Director.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow , Color.yellow, Vector3.zero, 4, 0, false));
+                yield return new WaitForSeconds(0.03f);
                 if (popup != null)
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
                 Die();
