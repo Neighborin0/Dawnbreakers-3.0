@@ -112,6 +112,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   Execute: 0
   MiniMapIcons: []
+  statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
   introText: []
@@ -121,7 +122,7 @@ MonoBehaviour:
   attackStat: 0
   defenseStat: -2
   speedStat: 0
-  spotLight: {fileID: 0}
+  spotLight: {fileID: 7512584013941237244}
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}

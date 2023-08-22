@@ -32,6 +32,7 @@ public class BossNode : MapNode
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         var battlesystem = BattleSystem.Instance;
+        battlesystem.BossNode = true;
         battlesystem.playerUnits = playerUnits;
         battlesystem.enemiesToLoad = enemies;
         print(battlesystem.enemyUnits.Count);

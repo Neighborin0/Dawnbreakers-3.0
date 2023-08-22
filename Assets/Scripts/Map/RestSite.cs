@@ -56,6 +56,10 @@ public class RestSite : MonoBehaviour
 
     IEnumerator Transition()
     {
+        foreach (var button in buttons)
+        {
+            button.gameObject.SetActive(true);
+        }
         yield return new WaitForSeconds(1f);
         StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
@@ -65,11 +69,12 @@ public class RestSite : MonoBehaviour
         OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
         LabCamera.Instance.MovingTimeDivider = 1;
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
-        foreach(var button in buttons)
+        foreach (var button in buttons)
         {
-            button.gameObject.SetActive(true);
+            button.GetComponent<MoveableObject>().Move(true);
         }
         Director.Instance.CharacterSlotEnable();
+        OptionsManager.Instance.CanPause = true;
 
     }
     public void Train()
@@ -87,6 +92,10 @@ public class RestSite : MonoBehaviour
         for (int i = 0; i <= Director.Instance.party.Count - 1; i++)
         {
             Director.Instance.party[i].currentHP = Director.Instance.party[i].maxHP;
+        }
+        foreach (var button in buttons)
+        {
+            button.GetComponent<MoveableObject>().Move(false);
         }
         StartCoroutine(TransitionToMap());
     }

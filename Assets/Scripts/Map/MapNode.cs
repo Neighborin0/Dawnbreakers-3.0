@@ -20,6 +20,7 @@ public class MapNode : MonoBehaviour
     public bool IsEnabled;
     public Light maplight;
     public GameObject mapline;
+    public bool disabled = false;
 
 
     private void Start()
@@ -37,7 +38,9 @@ public class MapNode : MonoBehaviour
     public IEnumerator StartLoadingNode()
     {
         var button = this.GetComponent<Button>();
+        button.interactable = false;
         int i = 0;
+        disabled = true;
         LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
         yield return new WaitForSeconds(0.3f);
         foreach (var MM in MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>())
@@ -46,7 +49,6 @@ public class MapNode : MonoBehaviour
             i++;
         }
         MapController.Instance.StartingPosition = this.transform.position;
-        button.interactable = false;
         this.gameObject.transform.localScale = oldScaleSize;
         print(gameObject.transform.localScale);
         if (scaler != null)
@@ -67,31 +69,32 @@ public class MapNode : MonoBehaviour
 
     public void ToggleHighlight()
     {
-
-        if (IsHighlighted && GetComponent<Button>().interactable)
         {
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-            if (scaler != null)
+            if (IsHighlighted && GetComponent<Button>().interactable && !disabled)
             {
-                StopCoroutine(scaler);
-            }
+                gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
+                gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+                if (scaler != null)
+                {
+                    StopCoroutine(scaler);
+                }
 
-            scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), newScaleSize, 0.01f);
-            StartCoroutine(scaler);
-            IsHighlighted = false;
-        }
-        else
-        {
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-            if (scaler != null)
-            {
-                StopCoroutine(scaler);
+                scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), newScaleSize, 0.01f);
+                StartCoroutine(scaler);
+                IsHighlighted = false;
             }
-            scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), oldScaleSize, 0.01f);
-            StartCoroutine(scaler);
-            IsHighlighted = true;
+            else
+            {
+                gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
+                gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+                if (scaler != null)
+                {
+                    StopCoroutine(scaler);
+                }
+                scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), oldScaleSize, 0.01f);
+                StartCoroutine(scaler);
+                IsHighlighted = true;
+            }
         }
     }
 

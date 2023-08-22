@@ -49,8 +49,8 @@ public class Director : MonoBehaviour
     public GameObject EffectPopUp;
     public GameObject ConfirmButton;
     public GameObject CharacterSlotButtonprefab;
-    public TextMeshProUGUI LevelDropText;
-    public TextMeshProUGUI LevelDropSubText;
+    public Image LevelDropText;
+    //public TextMeshProUGUI LevelDropSubText;
 
     public LabCamera.CameraState previousCameraState;
     public static Director Instance { get; private set;  }

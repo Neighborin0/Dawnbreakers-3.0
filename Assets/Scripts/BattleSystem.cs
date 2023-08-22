@@ -62,10 +62,12 @@ public class BattleSystem : MonoBehaviour
     public Volume effectsSetting;
     public Light mainLight;
     public float mainLightValue;
+    public bool BossNode = false;
 
     public Vector3 cameraPos1Units;
     public Vector3 cameraPos2Units;
     public Vector3 cameraPos3Units;
+    public Vector3 bossNodeCamPos;
     void Awake()
     {
         if (Instance != null)
@@ -210,6 +212,7 @@ public class BattleSystem : MonoBehaviour
         {
             unit.DoPostBattleStarted();
         }
+        OptionsManager.Instance.CanPause = true;
     }
 
    
@@ -331,14 +334,21 @@ public class BattleSystem : MonoBehaviour
 
     public void SetTempEffect(Unit unit, string Icon, bool DoFancyStatChanges, float duration = 0, float storedValue = 0, float numberofStacks = 0)
     {
-
+        foreach (Transform x in unit.namePlate.IconGrid.transform)
+        {
+            var EI = x.gameObject.GetComponent<EffectIcon>();
+            print(EI.iconName);
+            print(Icon);
+            if (EI.iconName == Icon)
+            {
+                unit.statusEffects.Remove(EI);
+                EI.DoFancyStatChanges = false;
+                EI.DestoryEffectIcon();
+                break;
+            }
+        }
         var icon = Instantiate(Director.Instance.iconDatabase.Where(obj => obj.name == Icon).SingleOrDefault(), unit.namePlate.IconGrid.transform);
         var i = icon.GetComponent<EffectIcon>();
-        if (unit.statusEffects.Contains(unit.statusEffects.Where(obj => obj.iconName == i.iconName).SingleOrDefault()))
-        {
-            i.DoFancyStatChanges = false;
-            i.DestoryEffectIcon();
-        }
         unit.statusEffects.Add(i);
         if (unit == null)
             Debug.LogError("OWNER SETUP BROKEN");
@@ -448,11 +458,11 @@ public class BattleSystem : MonoBehaviour
     {
         if (AmountToRaise > 0)
         {
-            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatUpVFX", color, color,new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), 1f, 0, false, true));
+            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatUpVFX", color, color,new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), 1f, 0, false, 1));        
         }
         else
         { 
-            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatDownVFX", color, color ,new Vector3(0, 15, 0), 1f, 0, false, true));
+            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatDownVFX", color, color ,new Vector3(0, 15, 0), 1f, 0, false, 1));
         }
     }
 

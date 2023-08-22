@@ -29,7 +29,7 @@ public class Kindle : Action
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
         unit.spotLight.color = Color.green;
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, 0.04f, 0.1f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "Beacon", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), 1f, 0, true, false, 4f));
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "Beacon", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), 1f, 0, true, 0, 4));
         yield return new WaitForSeconds(1f);
         foreach (var x in Tools.DetermineAllies(unit))
         {

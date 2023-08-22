@@ -30,7 +30,7 @@ public class Guard : Action
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Defend_001", Color.blue, Color.white, new Vector3(0, 5, -2f), 0.2f, 0, true, false, 10, true));
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Defend_001", Color.blue, Color.white, new Vector3(0, 5, -2f), 2f, 0, true, 0, 10));
         LabCamera.Instance.MoveToUnit(targets, 0, 6, -40, false, 0.5f);
         yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();

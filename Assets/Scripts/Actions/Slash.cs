@@ -41,7 +41,7 @@ public class Slash : Action
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow ,new Vector3(0, 0, -2f), 1f));
         yield return new WaitForSeconds(0.01f);
         targets.health.TakeDamage(damage + unit.attackStat, unit);
-        LabCamera.Instance.Shake(0.5f, 1.5f);
+        LabCamera.Instance.Shake(0.2f, 1.5f);
         yield return new WaitForSeconds(0.5f);
         Done = true;
         LabCamera.Instance.ResetPosition();

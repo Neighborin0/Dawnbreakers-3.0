@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class FloatingObject : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class FloatingObject : MonoBehaviour
     private float TimeDivider = 100f;
     public float smoothingTime = 0.5f;
 
+    [SerializeField]
+    private Vector3 RotationVectors;
+    [SerializeField]
+    private float RotationSpeed = 0f;
+
     Vector3 originalPos;
     private void Start()
     {
@@ -25,23 +31,26 @@ public class FloatingObject : MonoBehaviour
     {
         smoothingTime += Time.deltaTime;
         if (!DoneMovingUp)
+        {
+            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, originalPos.y + amountToSway, originalPos.z), smoothingTime / TimeDivider);
+            if (transform.position.y > originalPos.y + amountToSway - .1f)
             {
-                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, originalPos.y + amountToSway, originalPos.z), smoothingTime / TimeDivider);
-                if (transform.position.y > originalPos.y + amountToSway - .1f)
-                {
-                    DoneMovingUp = true;
-                    smoothingTime = 0f;
-                }
-            }
-            else
-            {
-            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, originalPos.y - amountToSway * 2, originalPos.z), smoothingTime / TimeDivider);
-                if (transform.position.y < originalPos.y - amountToSway * 2 + .1f)
-                {
-                    DoneMovingUp = false;
-                    smoothingTime = 0f;
-                }
+                DoneMovingUp = true;
+                smoothingTime = 0f;
             }
         }
-    
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, originalPos.y - amountToSway * 2, originalPos.z), smoothingTime / TimeDivider);
+            if (transform.position.y < originalPos.y - amountToSway * 2 + .1f)
+            {
+                DoneMovingUp = false;
+                smoothingTime = 0f;
+            }
+        }
+        this.transform.Rotate(RotationVectors * (RotationSpeed * Time.deltaTime));
+    }
+
+
+
 }

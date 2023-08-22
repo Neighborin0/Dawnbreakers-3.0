@@ -44,21 +44,6 @@ public class EffectIcon : MonoBehaviour
         {
             timerText.text = string.Empty;
         }
-        /*foreach (Transform icon in unit.namePlate.IconGrid.transform)
-        {
-            var EI = icon.gameObject.GetComponent<EffectIcon>();
-            if (EI.iconName == this.iconName)
-            {
-                if(EI.NumberofStacks > 0)
-                {
-                    NumberofStacks += 1;
-                }
-                EI.DoFancyStatChanges = false;
-                EI.DestoryEffectIcon();
-                break;
-            }
-        }
-        */
         this.isPaused = true;
         var manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable = timerText.GetComponent<RectTransform>();
         manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable.sizeDelta = new Vector2(70.24f, 21.96f);    
@@ -125,7 +110,8 @@ public class EffectIcon : MonoBehaviour
     public void DestoryEffectIcon()
     {
         OnEnded();
-        owner.statusEffects.Remove(owner.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault());
+        
+        //owner.statusEffects.Remove(owner.statusEffects.Where(obj => obj == this).SingleOrDefault());
     }
     public virtual string GetDescription() { return description; }
 
@@ -133,7 +119,7 @@ public class EffectIcon : MonoBehaviour
     public virtual IEnumerator End() { yield break; }
     public void Update()
     {
-        if(TimedEffect)
+        if(TimedEffect && owner != null)
         {
             if (owner.stamina.Paused)
             {

@@ -255,6 +255,7 @@ MonoBehaviour:
   MiniMapIcons:
   - {fileID: 21300000, guid: 99ca25e0c43390b4aa017d062af2fbed, type: 3}
   - {fileID: 21300000, guid: d1a4026457431634e94612e79ca206af, type: 3}
+  statusEffects: []
   offset: {x: -7, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 0, z: 0}
   introText: []
@@ -267,7 +268,8 @@ MonoBehaviour:
   spotLight: {fileID: 0}
   actionCostMultiplier: 1
   actionList:
-  - {fileID: 11400000, guid: 10f4714b8376b234c9d3857803d3c02a, type: 2}
-  - {fileID: 11400000, guid: 2286e3232ce0a514389455649b743e8e, type: 2}
-  - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
+  - {fileID: 11400000, guid: 2591929b617328944b8d631f46e412a6, type: 2}
+  - {fileID: 11400000, guid: 6932bd23da6b1f3478b0f7a9b429a994, type: 2}
+  - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
+  - {fileID: 11400000, guid: a4d8a7ac53a1c3e488204ae9b11b8fd3, type: 2}
   summonables: []

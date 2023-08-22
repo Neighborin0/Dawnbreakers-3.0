@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 
 public class Aurelia : Unit
 {
-    private string[] summons = 
+    private string[] summons =
    {
         "Husk",
    };
@@ -32,6 +32,11 @@ public class Aurelia : Unit
         IsPlayerControlled = true;
         deathQuotes = AureliaDeath1;
         Tools.AddItemToInventory(this, "Tattered Cape");
+        if (!Director.Instance.DevMode)
+        {
+            actionList.Clear();
+            Tools.AddNewActionToUnit(this, "Slash");
+        }
     }
 
     public static List<LabLine> AureliaDeath1 = new List<LabLine>

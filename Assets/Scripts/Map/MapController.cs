@@ -252,7 +252,8 @@ public class MapController : MonoBehaviour
                     }
                     if (enableMapControls)
                         mapControlBar.SetActive(true);
-                    StartCoroutine(DoLevelDrop());
+                    if(!Director.Instance.DevMode)
+                        StartCoroutine(DoLevelDrop());
                     break;
                 }
 
@@ -262,20 +263,16 @@ public class MapController : MonoBehaviour
 
     private IEnumerator DoLevelDrop()
     {
-        if (!Director.Instance.DevMode)
-        {
+        
             OptionsManager.Instance.CanPause = false;
             Tools.ToggleUiBlocker(false, true);
             yield return new WaitForSeconds(0.5f);
-            StartCoroutine(Tools.FadeText(Director.Instance.LevelDropText, 0.05f, true, false));
-            yield return new WaitForSeconds(0.8f);
-            StartCoroutine(Tools.FadeText(Director.Instance.LevelDropSubText, 0.05f, true, false));
-            yield return new WaitForSeconds(1f);
-            StartCoroutine(Tools.FadeText(Director.Instance.LevelDropText, 0.05f, false, false));
-            StartCoroutine(Tools.FadeText(Director.Instance.LevelDropSubText, 0.05f, false, false));
+            StartCoroutine(Tools.FadeObject(Director.Instance.LevelDropText, 0.001f, true, false));
+            yield return new WaitForSeconds(3f);
+            StartCoroutine(Tools.FadeObject(Director.Instance.LevelDropText, 0.05f, false, true));
             Tools.ToggleUiBlocker(true, true);
             OptionsManager.Instance.CanPause = true;
-        }
+        
     }
 
     private IEnumerator DrawLine(Vector3 pointToDrawTo, GameObject node)

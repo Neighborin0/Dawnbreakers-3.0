@@ -33,9 +33,14 @@ public class WarCry : Action
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
         LabCamera.Instance.MoveToUnit(targets, 0, 8, -50, false, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 0.2f));
-        yield return new WaitForSeconds(0.1f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 0.2f));
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 1.1f));
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCryParticles", new Color(1, 0, 0f), new Color(1, 0, 0f), new Vector3(0, 0, -2f), 1.1f));
+        yield return new WaitForSeconds(0.2f);
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 1.1f));
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCryParticles", new Color(1, 0, 0f), new Color(1, 0, 0f), new Vector3(0, 0, -2f), 1.1f));
+        yield return new WaitForSeconds(0.2f);
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 1.1f));
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCryParticles", new Color(1, 0, 0f), new Color(1, 0, 0f), new Vector3(0, 0, -2f), 1.1f));
         yield return new WaitForSeconds(0.4f);
         foreach (var x in Tools.DetermineAllies(unit))
         {

@@ -232,6 +232,7 @@ MonoBehaviour:
   MiniMapIcons:
   - {fileID: 21300000, guid: 4d0531293d0c76a47a2d8842267e3393, type: 3}
   - {fileID: 21300000, guid: 292f843abf204ee48a108565b313508a, type: 3}
+  statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 0, z: 0}
   introText: []
@@ -244,9 +245,10 @@ MonoBehaviour:
   spotLight: {fileID: 4101498702268122146}
   actionCostMultiplier: 1
   actionList:
-  - {fileID: 11400000, guid: a8ebee44482aa0841914562f52c95421, type: 2}
-  - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
+  - {fileID: 11400000, guid: a68410d0d95842a44a6ed79cdaf1d746, type: 2}
   - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
+  - {fileID: 11400000, guid: a367c5a61075e5d439a7f2eea9211cd5, type: 2}
+  - {fileID: 11400000, guid: a4d8a7ac53a1c3e488204ae9b11b8fd3, type: 2}
   summonables: []
 --- !u!65 &960339281062212297
 BoxCollider:

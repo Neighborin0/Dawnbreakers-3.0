@@ -295,6 +295,7 @@ public class OptionsManager : MonoBehaviour
 
     public IEnumerator DoLoad(string SceneToLoad)
     {
+        OptionsManager.Instance.CanPause = false;
         Move(false);
         blackScreen.gameObject.SetActive(true);
         canvas.sortingOrder = 100;

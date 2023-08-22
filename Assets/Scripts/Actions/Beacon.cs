@@ -36,7 +36,7 @@ public class Beacon : Action
         LabCamera.Instance.MoveToUnit(unit, 0f, 10, -55, false, 0.5f);
         unit.spotLight.color = new Color(1, 0.5409836f, 0, 1);
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, 0.04f, 0.1f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "Beacon", new Color(1, 0.5409836f, 0, 0), Color.white, new Vector3(-3.21f, 5.7f, 0f), 1f, 0, true, false, 4f));
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "Beacon", new Color(1, 0.5409836f, 0, 0), new Color(1, 0.5409836f, 0, 0), new Vector3(-3.21f, 5.7f, 0f), 1f, 0, true, 0, 4));
         yield return new WaitForSeconds(1f);
         for (int i = 0; i < numofUnitsToAdd; i++)
         {
@@ -60,7 +60,7 @@ public class Beacon : Action
                         BattleSystem.Instance.playerUnits.Add(summon);
                         BattlePoint.Occupied = true;
                         BattlePoint.unit = summon;
-                        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(summon.gameObject, "Summon", Color.yellow, Color.white, new Vector3(0, 0, -2f), 10f));
+                        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(summon.gameObject, "Summon", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), 10f));
                         LabCamera.Instance.MoveToUnit(summon, 0f, 15, -55, false, 0.5f);
                         summon.spotLight.color = new Color(1, 0.5409836f, 0, 1);
                         summon.ChangeUnitsLight(summon.spotLight, 150, 15, 0.04f, 0.1f);
@@ -88,7 +88,7 @@ public class Beacon : Action
                         BattleSystem.Instance.playerUnits.Add(summon);
                         BattlePoint.Occupied = true;
                         BattlePoint.unit = summon;
-                        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(summon.gameObject, "Summon", Color.yellow, Color.white,  new Vector3(0, 0, -2f), 10f));
+                        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(summon.gameObject, "Summon", Color.yellow, Color.yellow,  new Vector3(0, 0, -2f), 10f));
                         LabCamera.Instance.MoveToUnit(summon, 0f, 15, -55, false, 0.5f);
                         summon.spotLight.color = new Color(1, 0.5409836f, 0, 1);
                         summon.ChangeUnitsLight(summon.spotLight, 150, 15, 0.04f, 0.1f);

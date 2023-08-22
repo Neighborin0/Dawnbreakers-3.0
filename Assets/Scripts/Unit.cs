@@ -138,16 +138,15 @@ public class Unit : MonoBehaviour
                 }
             }
 
-        }
-        else
-        {
-            sprite.material.SetFloat("_OutlineThickness", 1f);
-            sprite.material.SetColor("_OutlineColor", Color.black);
-            sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
-        }
 
-        if (BattleSystem.Instance != null)
-        {
+            else
+            {
+                sprite.material.SetFloat("_OutlineThickness", 1f);
+                sprite.material.SetColor("_OutlineColor", Color.black);
+                sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
+            }
+
+
             if (stamina != null)
             {
                 if (IsPlayerControlled && stamina.slider.value == stamina.slider.maxValue && state == PlayerState.WAITING)
@@ -172,7 +171,7 @@ public class Unit : MonoBehaviour
                         BattleLog.Instance.DisplayCharacterStats(this, true);
                     }
                 }
-                 if(BattleSystem.Instance.state == BattleStates.IDLE)
+                if (BattleSystem.Instance.state == BattleStates.IDLE)
                 {
                     BattleLog.Instance.DisplayCharacterStats(this, true);
                 }
@@ -239,6 +238,7 @@ public class Unit : MonoBehaviour
 
             }
         }
+       
 
 
 

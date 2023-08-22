@@ -5151,6 +5151,7 @@ MonoBehaviour:
   anim: {fileID: 761733661741645332}
   Execute: 0
   MiniMapIcons: []
+  statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 0, z: 0}
   introText: []

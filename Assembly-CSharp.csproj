@@ -107,7 +107,6 @@
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Main Menu\SettingsButton.cs" />
     <Compile Include="Assets\Scripts\Actions\Calm.cs" />
-    <Compile Include="Assets\Scripts\Actions\Growl.cs" />
     <Compile Include="Assets\Scripts\Map\MapNode.cs" />
     <Compile Include="Assets\Scripts\Actions\Defend.cs" />
     <Compile Include="Assets\Scripts\Actions\Nothing.cs" />
@@ -166,6 +165,7 @@
     <Compile Include="Assets\Scripts\ConversationHandler.cs" />
     <Compile Include="Assets\Scripts\CharacterJoinSceneScript.cs" />
     <Compile Include="Assets\Scripts\Main Menu\SettingsBackButton.cs" />
+    <Compile Include="Assets\Scripts\Actions\Screech.cs" />
     <Compile Include="Assets\Scripts\LabAnimator.cs" />
     <Compile Include="Assets\Scripts\Actions\Guard.cs" />
     <Compile Include="Assets\Scripts\Units\TutorialEnemy.cs" />

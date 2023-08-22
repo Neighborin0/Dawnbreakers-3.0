@@ -19,7 +19,7 @@ public class Rat : Unit
         behavior = this.gameObject.AddComponent<VerminBehavior>();
         Tools.ModifyAction(this, "Strike", 0, 50f);
         Tools.ModifyAction(this, "Enrage", 1, 30f);
-        Tools.ModifyAction(this, "Growl", 2, 30f);
+        Tools.ModifyAction(this, "Screech", 2, 30f);
         StartingStamina = UnityEngine.Random.Range(45, 50);
      
     }

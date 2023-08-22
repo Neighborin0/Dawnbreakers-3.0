@@ -35,15 +35,18 @@ public class Incinerate : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        unit.PlayAction("Attack", unit);
-        yield return new WaitUntil(() => unit.Execute);
-        LabCamera.Instance.MoveToUnit(targets, 0, -8, 40, false, 0.5f);
-        yield return new WaitForSeconds(0.3f);     
-        AudioManager.Instance.Play("slash_001");
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash" ,Color.yellow, Color.white, new Vector3(0, 0, -2f)));
+        Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
+        LabCamera.Instance.MoveToUnit(targets, 0, 8, -50, false, 0.5f);
+        yield return new WaitForSeconds(0.3f);
+        var Light = targets.spotLight;
+        Light.color = new Color(191, 21, 0);
+        targets.ChangeUnitsLight(Light, 150, 15, 0.04f, 0.1f);
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "IncinerateParticles2", new Color(191, 21, 0), new Color(191, 21, 0), new Vector3(0, 0, -2f), 2.5f, 0, true, 5, 0));
+        yield return new WaitForSeconds(0.1f);
         targets.health.TakeDamage(damage + unit.attackStat, unit);
-        LabCamera.Instance.Shake(0.2f, 0.7f);
-        yield return new WaitForSeconds(0.5f);
+        LabCamera.Instance.Shake(1f, 1.3f);
+        yield return new WaitForSeconds(2.8f);
+        Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
         this.Done = true;
     }

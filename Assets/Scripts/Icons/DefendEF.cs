@@ -22,7 +22,6 @@ public class DefendEF : EffectIcon
         {
             BattleSystem.Instance.SetStatChanges(Stat.DEF, -storedValue, false, owner);
         }
-
         else
             owner.defenseStat -= (int)storedValue;
         Destroy(gameObject);

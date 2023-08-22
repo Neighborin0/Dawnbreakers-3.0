@@ -27,6 +27,12 @@ public class Dusty : Unit
         IsPlayerControlled = true;
         deathQuotes = DustyDeath1;
         Tools.AddItemToInventory(this, "Iron Shield");
+        if (!Director.Instance.DevMode)
+        {
+            actionList.Clear();
+            Tools.AddNewActionToUnit(this, "Slash");
+            Tools.AddNewActionToUnit(this, "Guard");
+        }
     }
 
     public static List<LabLine> DustyDeath1 = new List<LabLine>

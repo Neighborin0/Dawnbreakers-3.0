@@ -499,15 +499,22 @@ public class Tools : MonoBehaviour
     {
         return new Vector3(obj.transform.position.x, obj.transform.position.y, obj.transform.position.z);
     }
-    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, bool haveExtraDelay = false, float intensityMultiplier = 10, bool Fade = false)
+    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, float ExtraDelay = 0, int intensityMultiplier = 10)
     {
+        print("INTENSITY: " + intensityMultiplier);
         var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).SingleOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, Quaternion.identity);
         VFX.transform.parent = null;
         if (VFX.GetComponent<SpriteRenderer>() != null)
         {
             VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
             var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
-            vfxMaterial.SetColor("_EmissionColor", vfxColor * intensityMultiplier);
+            vfxMaterial.SetColor("_EmissionColor", vfxColor * (1 + intensityMultiplier));
+        }
+        if (VFX.GetComponent<MeshRenderer>() != null)
+        {
+            VFX.GetComponent<MeshRenderer>().material = Instantiate(VFX.GetComponent<MeshRenderer>().material);
+            var vfxMaterial = VFX.GetComponent<MeshRenderer>().material;
+            vfxMaterial.SetColor("_EmissionColor", vfxColor * (1 + intensityMultiplier));
         }
         if (VFX.GetComponent<Animator>() != null)
         {
@@ -519,12 +526,12 @@ public class Tools : MonoBehaviour
             var particleSystem = VFX.GetComponent<ParticleSystem>();
             particleSystem.GetComponent<ParticleSystemRenderer>().material = Instantiate(particleSystem.GetComponent<ParticleSystemRenderer>().material);
             var particleMaterial = particleSystem.GetComponent<ParticleSystemRenderer>().material;
-            particleMaterial.SetColor("_Color", particleColor * intensityMultiplier);
-            particleMaterial.SetColor("_EmissionColor", particleColor * intensityMultiplier);
+            particleMaterial.SetColor("_Color", particleColor * (1 + intensityMultiplier));
+            particleMaterial.SetColor("_EmissionColor", particleColor * (1 + intensityMultiplier));
         }
         if (ApplyChromaticAbberation)
             Director.Instance.StartCoroutine(Tools.ApplyAndReduceChromaticAbberation());
-        if (VFX.GetComponent<Animator>() != null)
+        if (VFX.GetComponent<Animator>() != null && VFX.GetComponent<Animator>().GetBool("Done"))
         {
             yield return new WaitUntil(() => VFX.GetComponent<Animator>().GetBool("Done") == true);
             if (stopDuration > 0)
@@ -536,19 +543,20 @@ public class Tools : MonoBehaviour
             var particleSystem = VFX.GetComponent<ParticleSystem>();
             particleSystem.Stop();
         }
-        if (Fade)
-        {
-            Director.Instance.StartCoroutine(ChangeObjectEmissionToMinIntensity(VFX, 0.001f));
-            print("FADING");
-        }
-        else
-        {
-            if (haveExtraDelay)
-            {
-                yield return new WaitForSeconds(2f);
-            }
-            Destroy(VFX);
-        }
+         if (VFX.GetComponent<SpriteRenderer>() != null)
+         {
+            VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
+            var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
+            float alpha = vfxMaterial.GetColor("_BaseColor").a;
+            while (vfxMaterial.GetColor("_BaseColor").a >= 0)
+            {    
+                 vfxMaterial.SetColor("_BaseColor", new Color(vfxColor.r, vfxColor.g, vfxColor.b, alpha));
+                 alpha -= 0.05f;
+                 yield return new WaitForSeconds(0.001f);
+             }
+         }
+        yield return new WaitForSeconds(ExtraDelay);
+        Destroy(VFX);
 
     }
 
