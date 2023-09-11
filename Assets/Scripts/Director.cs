@@ -19,7 +19,8 @@ public class Director : MonoBehaviour
     public List<GameObject> VFXList;
     public List<Action> actionDatabase;
     public List<GameObject> iconDatabase;
-    
+    public static List<DialogueHandler> dialogues;
+
 
 
     public CharacterTab characterTab;
@@ -54,7 +55,7 @@ public class Director : MonoBehaviour
 
     public LabCamera.CameraState previousCameraState;
     public static Director Instance { get; private set;  }
-     void Awake()
+    void Awake()
     {
         if (Instance != null)
         {
@@ -69,7 +70,8 @@ public class Director : MonoBehaviour
 #endif
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            foreach(var unit in party.ToList())
+            dialogues = Resources.LoadAll<DialogueHandler>("Dialogue").ToList();
+            foreach (var unit in party.ToList())
             {
                 var startingUnit = Instantiate(unit);
                 party.Remove(unit);
@@ -269,17 +271,11 @@ public class Director : MonoBehaviour
         }
 
     }
-
-    /*public void MoveCharacterTabGrid(bool MoveUp)
+    public List<LabLine> FindObjectFromDialogueDatabase(string dialogueName)
     {
-        if(MoveUp)
-        StartCoroutine(Tools.SmoothMoveUI(TabGrid.GetComponent<RectTransform>(), TabGrid.GetComponent<RectTransform>().anchoredPosition.x, 61, 0.01f));
-        else
-        {
-            StartCoroutine(Tools.SmoothMoveUI(TabGrid.GetComponent<RectTransform>(), TabGrid.GetComponent<RectTransform>().anchoredPosition.x, -1020, 0.01f));
-        }
+        var dialogueToReturn = dialogues.Where(obj => obj.name == dialogueName).SingleOrDefault();
+        return dialogueToReturn.LabLines;
     }
-    */
     private void SetUpActionList(Unit unit, CharacterTab CT)
     {
         foreach (var action in unit.actionList)
@@ -386,5 +382,6 @@ public class Director : MonoBehaviour
              unit.maxHP += 2;
              unit.currentHP += 2;
         }
-   
+
+  
 }

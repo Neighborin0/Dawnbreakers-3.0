@@ -252,7 +252,7 @@ public class BattleLog : MonoBehaviour
 
     public void DoPostBattleDialouge(Unit unit)
     {
-        CharacterDialog(TutorialConversationHandler.DustyAureliaPostMeeting, false, false);
+        CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaPostMeeting"), false, false);
         unit.EnteredMap -= DoPostBattleDialouge;
     }
 

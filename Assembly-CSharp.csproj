@@ -171,6 +171,7 @@
     <Compile Include="Assets\Scripts\Units\TutorialEnemy.cs" />
     <Compile Include="Assets\Scripts\Main Menu\QuitButton.cs" />
     <Compile Include="Assets\Scripts\Actions\Strike.cs" />
+    <Compile Include="Assets\Scripts\DialogueHandler.cs" />
     <Compile Include="Assets\Scripts\InventoryDisplay.cs" />
   </ItemGroup>
   <ItemGroup>

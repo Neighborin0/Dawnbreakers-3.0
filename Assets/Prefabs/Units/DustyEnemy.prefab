@@ -113,10 +113,12 @@ MonoBehaviour:
   anim: {fileID: 1571792269196389254}
   Execute: 0
   MiniMapIcons: []
+  statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
   introText: []
   inventory: []
+  deathQuotes: []
   state: 0
   maxHP: 0
   attackStat: 0

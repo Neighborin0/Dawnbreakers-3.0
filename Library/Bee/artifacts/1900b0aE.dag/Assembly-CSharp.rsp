@@ -389,6 +389,7 @@
 "Assets/Scripts/ConfirmButton.cs"
 "Assets/Scripts/ControlBar.cs"
 "Assets/Scripts/ConversationHandler.cs"
+"Assets/Scripts/DialogueHandler.cs"
 "Assets/Scripts/Director.cs"
 "Assets/Scripts/DirectorInfo.cs"
 "Assets/Scripts/DisplaySwitcher.cs"
