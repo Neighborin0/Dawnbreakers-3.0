@@ -5,15 +5,6 @@ using UnityEngine;
 public class Dusty : Unit
 {
 
-    private List<string> intro = new List<string>
-   {
-        "yo.",
-   };
-
-    public override void Intro()
-    {
-        introText = intro;
-    }
     void Awake()
     {
         unitName = "Dusty";
@@ -25,7 +16,6 @@ public class Dusty : Unit
         StartingStamina = UnityEngine.Random.Range(80, 90);
         currentHP = maxHP;
         IsPlayerControlled = true;
-        deathQuotes = DustyDeath1;
         Tools.AddItemToInventory(this, "Iron Shield");
         if (!Director.Instance.DevMode)
         {

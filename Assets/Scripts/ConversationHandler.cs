@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public struct LabLine
@@ -9,8 +11,12 @@ public struct LabLine
     public string expression;
     public string unit;
     public float textSpeed;
+
+    public UnityEvent OnLineStarted;
+    public UnityEvent OnLineEnded;
+
 }
-public class TutorialConversationHandler : MonoBehaviour
+/*public class TutorialConversationHandler : MonoBehaviour
 {
     
     public static List<LabLine> DustyAureliaMeeting1 = new List<LabLine>
@@ -83,5 +89,7 @@ public class TutorialConversationHandler : MonoBehaviour
           new LabLine { expression = "neutral", text = "I know...", unit = "Aurelia", textSpeed = 0.03f, },
 
     };
-}
+*/
+
+
 

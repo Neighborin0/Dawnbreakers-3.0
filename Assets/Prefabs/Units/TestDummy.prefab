@@ -5156,12 +5156,13 @@ MonoBehaviour:
   enemyintentOffset: {x: 0, y: 0, z: 0}
   introText: []
   inventory: []
+  deathQuotes: []
   state: 0
   maxHP: 100
   attackStat: 0
   defenseStat: 0
   speedStat: 0
-  spotLight: {fileID: 0}
+  spotLight: {fileID: 451083467285158434}
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}

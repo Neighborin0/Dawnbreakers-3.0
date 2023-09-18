@@ -13,11 +13,44 @@ MonoBehaviour:
   m_Name: DustyAureliaMeeting(2)
   m_EditorClassIdentifier: 
   labLines:
-  - text: Blah blah I'm old
+  - text: You still lie...
+    expression: neutral_darkened
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+  - text: You hesitate. It's not something I've seen in the other things here.
     expression: neutral
     unit: Dusty
-    textSpeed: 0.1
-  - text: girlboss
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+  - text: Consider it a warning. I am getting past, whether that is of your own volition
+      or not.
     expression: neutral
     unit: Aurelia
-    textSpeed: 0.1
+    textSpeed: 0.02
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+  - text: Hmm...Very well then. I'll lay down my arms. You may go.
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []

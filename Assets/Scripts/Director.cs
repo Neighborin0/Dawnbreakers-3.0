@@ -79,6 +79,8 @@ public class Director : MonoBehaviour
                 party.Add(startingUnit);
                 //RunTracker.Instance.partyMembersCollected.Add(startingUnit);
                 startingUnit.gameObject.SetActive(false);
+                if(!DevMode)
+                startingUnit.currentHP -= 15;
             }   
         }
 
@@ -89,7 +91,7 @@ public class Director : MonoBehaviour
     {
         
         //Speed Up
-        if(Director.Instance.DevMode)
+        if(Director.Instance.DevMode && SceneManager.GetActiveScene().name != "Main Menu")
         {
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
@@ -110,7 +112,7 @@ public class Director : MonoBehaviour
             }
         }
         //Put Character Slots Away
-        if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf)
+        if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf && SceneManager.GetActiveScene().name != "Main Menu")
         {
             if(CharacterSlotsDisplayed)
             DisplayCharacterTab(false);
@@ -163,6 +165,8 @@ public class Director : MonoBehaviour
         {
             characterSlotpos.GetComponent<MoveableObject>().Move(true);
             CharacterSlotsDisplayed = false;
+            if (MapController.Instance.mapControlBar != null)
+                MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
         }
         else
         {
@@ -170,11 +174,15 @@ public class Director : MonoBehaviour
             {
                 characterSlotpos.GetComponent<MoveableObject>().Move(true);
                 CharacterSlotsDisplayed = false;
+                if (MapController.Instance.mapControlBar != null)
+                    MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
             }
             else
             {
                 characterSlotpos.GetComponent<MoveableObject>().Move(false);
                 CharacterSlotsDisplayed = true;
+                if (MapController.Instance.mapControlBar != null)
+                    MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
             }
         }
     }

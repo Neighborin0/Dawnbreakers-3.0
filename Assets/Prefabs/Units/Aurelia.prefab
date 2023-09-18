@@ -260,12 +260,16 @@ MonoBehaviour:
   enemyintentOffset: {x: 0, y: 0, z: 0}
   introText: []
   inventory: []
+  levelUpScreenQuotes:
+  - {fileID: 11400000, guid: c4e582adbabf2a143bf47acc91437f57, type: 2}
+  deathQuotes:
+  - {fileID: 11400000, guid: 4d180b95c82f52c45aa2b9e86ba9ee69, type: 2}
   state: 0
   maxHP: 0
   attackStat: 0
   defenseStat: 0
   speedStat: 0
-  spotLight: {fileID: 0}
+  spotLight: {fileID: 8380202918096390495}
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: 2591929b617328944b8d631f46e412a6, type: 2}

@@ -50,7 +50,8 @@ public class MapController : MonoBehaviour
         else
         {
             Instance = this;
-            StartCoroutine(LoadSlots());
+            if (SceneManager.GetActiveScene().name == "MAP2")
+             StartCoroutine(LoadSlots());
             if(OptionsManager.Instance != null)
             {
                 if (OptionsManager.Instance.blackScreen.color.a > 0)
@@ -129,7 +130,7 @@ public class MapController : MonoBehaviour
             StartCoroutine(DoPlayerJump(force));
         }
         */
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name == "MAP2")
         {
             if(enableMapControls)
             {
@@ -196,7 +197,7 @@ public class MapController : MonoBehaviour
             }
             MM.mapIcon.material.SetFloat("OutlineThickness", 1f);
             MM.mapIcon.material.SetColor("OutlineColor", Color.black);
-            if(i == 0)
+            if(i == 0 && LabCamera.Instance != null)
              LabCamera.Instance.MoveAndFollowGameObject(MM.gameObject, new Vector3(0, MinZoom, -MinZoom * 3.4f));
 
             i++;
@@ -245,14 +246,26 @@ public class MapController : MonoBehaviour
                             bossNode.enemies.Add(Director.Instance.Unitdatabase.Where(obj => obj.name == enemy).FirstOrDefault());
                         }
                     }
+                    if (node.RoomType == MapFlow.RoomType.TUTORIAL)
+                    {
+                        var tutorialNode = newNode.GetComponent<TutorialEncounterNode>();
+                        foreach (var enemy in node.enemies)
+                        {
+                            tutorialNode.enemies.Add(Director.Instance.Unitdatabase.Where(obj => obj.name == enemy).FirstOrDefault());
+                        }
+                    }
                     currentNodes.Add(newNode);
                     if (!newNode.IsStartingNode && !Director.Instance.DevMode)
                     {
                         newNode.gameObject.SetActive(false);
                     }
-                    if (enableMapControls)
-                        mapControlBar.SetActive(true);
                     if(!Director.Instance.DevMode)
+                    {
+                        enableMapControls = true;
+                    }
+                    if (enableMapControls && SceneManager.GetActiveScene().name == "MAP2")
+                        mapControlBar.SetActive(true);
+                    if(!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2")
                         StartCoroutine(DoLevelDrop());
                     break;
                 }
@@ -332,9 +345,9 @@ public class MapController : MonoBehaviour
         yield return new WaitForSeconds(1.2f);
         Director.Instance.CharacterSlotEnable();
         if(enableMapControls)
-        {
-            mapControlBar.GetComponent<MoveableObject>().Move(true);
+        {           
             mapControlBar.SetActive(true);
+            mapControlBar.GetComponent<MoveableObject>().Move(true);
         }
         ReEnteredMap?.Invoke(this);
     }

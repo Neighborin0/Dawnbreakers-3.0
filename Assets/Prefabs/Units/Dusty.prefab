@@ -237,6 +237,9 @@ MonoBehaviour:
   enemyintentOffset: {x: 0, y: 0, z: 0}
   introText: []
   inventory: []
+  levelUpScreenQuotes: []
+  deathQuotes:
+  - {fileID: 11400000, guid: ecd629bffc940e64986e5fb8be5d4663, type: 2}
   state: 0
   maxHP: 0
   attackStat: 0

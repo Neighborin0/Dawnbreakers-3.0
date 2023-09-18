@@ -16,7 +16,7 @@ public class Unit : MonoBehaviour
 {
     [NonSerialized]
     public string unitName;
-    [NonSerialized]
+
     public int currentHP;
     public bool IsPlayerControlled;
     public List<GameObject> skillUIs;
@@ -33,7 +33,7 @@ public class Unit : MonoBehaviour
     public bool isDarkened;
     [NonSerialized]
     public bool IsDead;
-    [NonSerialized]
+    [SerializeField]
     public bool Dying = false;
     [NonSerialized]
     public bool StaminaHighlightIsDisabled = false;
@@ -55,9 +55,10 @@ public class Unit : MonoBehaviour
     IEnumerator generalCoroutine;
 
     //text stuff
-    public List<string> introText;
+    public List<DialogueHandler> introText;
     public List<Item> inventory;
-    public List<LabLine> deathQuotes;
+    public List<DialogueHandler> levelUpScreenQuotes;
+    public List<DialogueHandler> deathQuotes;
 
     //action events
     public event Action<Unit> BattlePhaseEnd;
@@ -137,15 +138,6 @@ public class Unit : MonoBehaviour
                     sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
                 }
             }
-
-
-            else
-            {
-                sprite.material.SetFloat("_OutlineThickness", 1f);
-                sprite.material.SetColor("_OutlineColor", Color.black);
-                sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
-            }
-
 
             if (stamina != null)
             {
@@ -346,11 +338,11 @@ public class Unit : MonoBehaviour
         BattleLog.Instance.ClearAllBattleLogText();
         if(BattleSystem.Instance.playerUnits.Count <= 1)
         {
-            BattleLog.Instance.CharacterDialog(deathQuotes, true, true);
+            BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(deathQuotes[UnityEngine.Random.Range(0, deathQuotes.Count)].name), true, true);
         }
         else
         {
-            BattleLog.Instance.CharacterDialog(deathQuotes, true, false);
+            BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(deathQuotes[UnityEngine.Random.Range(0, deathQuotes.Count)].name), true, true);
         }
         BattleSystem.Instance.BattlePhasePause = true;
     }

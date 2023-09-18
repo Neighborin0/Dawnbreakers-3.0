@@ -207,8 +207,10 @@ public class ActionContainer : MonoBehaviour
         }
         else
         {
-            if(this.GetComponent<Button>().interactable)
-            {
+            BattleLog.Instance.DisableCharacterDialog();
+            BattleLog.Instance.Portraitparent.gameObject.SetActive(false);
+            if (this.GetComponent<Button>().interactable)
+            { 
                 BattleLog.Instance.itemText.gameObject.SetActive(false);
                 BattleLog.Instance.ambientText.gameObject.SetActive(true);
                 BattleLog.Instance.ambientText.text = $"{action.ActionName}\n{action.GetDescription()}";

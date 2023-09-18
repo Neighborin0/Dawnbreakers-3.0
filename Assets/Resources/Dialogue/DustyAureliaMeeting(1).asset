@@ -13,11 +13,54 @@ MonoBehaviour:
   m_Name: DustyAureliaMeeting(1)
   m_EditorClassIdentifier: 
   labLines:
-  - text: 'Who goes there!? Another accursed creature? '
+  - text: Who goes there!? Show yourself!
     expression: neutral_darkened
     unit: Dusty
     textSpeed: 0.03
-  - text: Have at you!
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+  - text: I mean you no harm...I just wish to pass...
+    expression: neutral
+    unit: Aurelia
+    textSpeed: 0.02
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+  - text: Bah! As if I would fall another trick!
     expression: neutral_darkened
     unit: Dusty
     textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+  - text: I shall cut your lying tongue!
+    expression: neutral_darkened
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+  - text: Fine then. If you will not let me pass, then I will have no hesitation
+      in striking you down.
+    expression: neutral
+    unit: Aurelia
+    textSpeed: 0.02
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []

@@ -30,7 +30,6 @@ public class Aurelia : Unit
         currentHP = maxHP;
         summonables = summons;
         IsPlayerControlled = true;
-        deathQuotes = AureliaDeath1;
         Tools.AddItemToInventory(this, "Tattered Cape");
         if (!Director.Instance.DevMode)
         {

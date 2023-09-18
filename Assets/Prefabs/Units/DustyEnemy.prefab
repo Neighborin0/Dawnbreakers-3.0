@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4153687179548735329}
   - component: {fileID: 3767246738405216190}
   - component: {fileID: 1571792269196389254}
-  - component: {fileID: -385204207131550788}
   - component: {fileID: 7709275678245878219}
   - component: {fileID: 1785922997347174372}
   - component: {fileID: 1204275268878849916}
@@ -102,9 +101,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c66c6349047fd4eb82b05236014e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHP: 0
   IsPlayerControlled: 0
   skillUIs: []
   health: {fileID: 0}
+  Dying: 0
   charPortraits:
   - {fileID: 21300000, guid: 34355069512a9454487a6a6d8e02c199, type: 3}
   - {fileID: 21300000, guid: 1837556329e91ac4695f398f6e2e14e9, type: 3}
@@ -118,13 +119,14 @@ MonoBehaviour:
   enemyintentOffset: {x: 0, y: 1, z: 0}
   introText: []
   inventory: []
+  levelUpScreenQuotes: []
   deathQuotes: []
   state: 0
   maxHP: 0
   attackStat: 0
   defenseStat: 0
   speedStat: 0
-  spotLight: {fileID: 0}
+  spotLight: {fileID: 6244526254157401335}
   actionCostMultiplier: 1
   actionList:
   - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
@@ -150,68 +152,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!108 &-385204207131550788
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4153687179548735330}
-  m_Enabled: 0
-  serializedVersion: 10
-  m_Type: 2
-  m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 1
-    m_Resolution: 128
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 1
-    m_NormalBias: 1
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
 --- !u!65 &7709275678245878219
 BoxCollider:
   m_ObjectHideFlags: 0

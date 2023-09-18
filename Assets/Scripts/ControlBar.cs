@@ -11,29 +11,43 @@ public class ControlBar : MonoBehaviour
 {
     public GameObject Select;
     public GameObject Cancel;
+    public GameObject Continue;
     //public GameObject WaitingControls;
 
     public void Update()
     {
-        if (Director.Instance.timeline.gameObject.activeSelf)
+        if (BattleSystem.Instance != null)
         {
             this.gameObject.SetActive(true);
             this.GetComponent<Image>().enabled = true;
-            if (Tools.CheckIfAnyUnitIsDeciding())
+            if (BattleSystem.Instance.state == BattleStates.TALKING)
             {
-                Select.SetActive(true);
-                Cancel.SetActive(true);
+                Continue.SetActive(true);
+                Select.SetActive(false);
+                Cancel.SetActive(false);
             }
             else
             {
-                Select.SetActive(true);
-                Cancel.SetActive(false);
+                if (Tools.CheckIfAnyUnitIsDeciding())
+                {
+                    Select.SetActive(true);
+                    Continue.SetActive(false);
+                    Cancel.SetActive(true);
+                }
+                else
+                {
+                    Select.SetActive(true);
+                    Continue.SetActive(false);
+                    Cancel.SetActive(false);
+                }
             }
+            
         }
         else
         {
             this.GetComponent<Image>().enabled = false;
             Select.SetActive(false);
+            Continue.SetActive(false);
             Cancel.SetActive(false);
         }
     }

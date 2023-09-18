@@ -1,15 +1,23 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class TutorialIcon : MonoBehaviour
 {
-    [SerializeField]
-    private bool PauseStaminaTimers = false;
+    private bool IsBeingDestroyed = false;
 
-    private void Start()
+
+
+    public void Update()
     {
-        if (PauseStaminaTimers)
+        if(!IsBeingDestroyed)
+        {
             Tools.PauseAllStaminaTimers();
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && !IsBeingDestroyed)
+        {
+            StartCoroutine(StartDestroying());
+        }
     }
     public void Destroy()
     {
@@ -18,10 +26,12 @@ public class TutorialIcon : MonoBehaviour
 
     private IEnumerator StartDestroying()
     {
-        StartCoroutine(Tools.SmoothMoveUI(this.GetComponent<RectTransform>(), 5000, 140, 0.01f));
-        if (PauseStaminaTimers)
-            Tools.UnpauseAllStaminaTimers();
-        yield return new WaitUntil(() => this.GetComponent<RectTransform>().position.x == 5000);
+        IsBeingDestroyed = true;
+        GetComponent<MoveableObject>().Move(false);
+        BattleSystem.Instance.playerUnits[0].StartDecision();
+        Tools.ToggleUiBlocker(true, true);
+        Tools.UnpauseAllStaminaTimers();
+        yield return new WaitForSeconds(2f);
         Destroy(this.gameObject);
     }
 }

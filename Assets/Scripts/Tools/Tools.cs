@@ -563,9 +563,18 @@ public class Tools : MonoBehaviour
     public static void AddNewActionToUnit(Unit unit, string actionName)
     {
         var oldAction = Director.Instance.actionDatabase.Where(obj => obj.ActionName == actionName).SingleOrDefault();
+        print("ACTION NAME: " + actionName);
         var newAction = Instantiate(oldAction);
-        unit.actionList[unit.actionList.Count] = newAction;
-        unit.actionList[unit.actionList.Count].New = true;
+        if (unit.actionList.Count != 0)
+        {
+            unit.actionList[unit.actionList.Count] = newAction;
+            unit.actionList[unit.actionList.Count].New = true;
+        }
+        else
+        {
+            unit.actionList.Add(newAction);
+        }
+     
     }
 
     public static IEnumerator ApplyAndReduceChromaticAbberation()

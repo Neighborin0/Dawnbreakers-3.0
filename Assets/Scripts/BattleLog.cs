@@ -7,7 +7,8 @@ using System;
 using System.Linq;
 using UnityEngine.ProBuilder.Shapes;
 using UnityEditor;
-
+using UnityEngine.Rendering.Universal.Internal;
+using System.Diagnostics.Contracts;
 
 public class BattleLog : MonoBehaviour
 {
@@ -81,12 +82,18 @@ public class BattleLog : MonoBehaviour
         ambientText.text = "";
     }
 
-    public void CharacterDialog(List<LabLine> dialog, bool PausesBattle = false, bool disableAfter = true)
+    public void CharacterDialog(List<LabLine> dialog, bool PausesBattle = false, bool disableAfter = true, bool ambientText = false)
     {
         ClearAllBattleLogText();
         Portraitparent.gameObject.SetActive(true);
         characterdialog.gameObject.SetActive(true);
-        StartCoroutine(TypeMultiText(dialog, characterdialog, disableAfter, PausesBattle));
+        if (!ambientText)
+        {
+            StartCoroutine(TypeMultiText(dialog, characterdialog, disableAfter, PausesBattle));
+        }
+        else
+            AmbientCharacterText(dialog, characterdialog);
+       
     }
 
     public void DisableCharacterDialog()
@@ -250,6 +257,12 @@ public class BattleLog : MonoBehaviour
         enemyIntent.gameObject.SetActive(false);
     }
 
+    public void DoRandomLevelUpScreenDialogue()
+    {
+       var unit = BattleSystem.Instance.playerUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.playerUnits.Count)];
+            if(unit.levelUpScreenQuotes.Count > 0)
+            CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(unit.levelUpScreenQuotes[UnityEngine.Random.Range(0, unit.levelUpScreenQuotes.Count)].name), false, false, true); 
+    }
     public void DoPostBattleDialouge(Unit unit)
     {
         CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaPostMeeting"), false, false);
@@ -267,7 +280,7 @@ public class BattleLog : MonoBehaviour
     private IEnumerator TypeMultiText(List<LabLine> text, TMP_Text x, bool disableAfter, bool Pauses = false)
     {
         BattleStates previousState = BattleStates.IDLE;
-        GetComponent<MoveableObject>().Move(true);
+        GetComponent<MoveableObject>().Move(true);      
         if (Pauses)
         {
             if (BattleSystem.Instance != null)
@@ -278,8 +291,13 @@ public class BattleLog : MonoBehaviour
                     unit.state = PlayerState.DECIDING;
                     unit.StaminaHighlightIsDisabled = true;
                     unit.ExitDecision();
+                    if(!unit.IsPlayerControlled)
+                    {
+                        unit.intentUI.gameObject.SetActive(false);
+                    }
                 }
                 LabCamera.Instance.uicam.gameObject.SetActive(false);
+                Director.Instance.timeline.GetComponent<MoveableObject>().Move(false);
                 Tools.PauseAllStaminaTimers();
                 print("BATTLE SHOULD BE PAUSED");
                 ClearAllBattleLogText();
@@ -296,20 +314,28 @@ public class BattleLog : MonoBehaviour
 
         for (int i = 0; i < text.Count; i++)
         {
-            charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression);
+            Portraitparent.gameObject.SetActive(true);
+            foreach (var unit in Tools.GetAllUnits())
+            {
+                if(!unit.IsPlayerControlled)
+                unit.intentUI.gameObject.SetActive(false);
+            }
+                text[i].OnLineStarted.Invoke();
+            if (Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression) != null)
+                 charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression);
+            else
+                charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == "neutral");
+
             textSpeed = text[i].textSpeed;
             foreach (char letter in text[i].text.ToCharArray())
             {
                  x.text += letter;
                  yield return new WaitForSeconds(textSpeed);
             }
-            indicator.gameObject.SetActive(true);
-            yield return new WaitForSeconds(0.01f);
-            indicator.gameObject.SetActive(true);
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
             characterdialog.text = "";
-            indicator.gameObject.SetActive(false);
             yield return new WaitForSeconds(0.01f);
+            text[i].OnLineEnded.Invoke();
         }
         if (Pauses)
         {
@@ -326,10 +352,15 @@ public class BattleLog : MonoBehaviour
                     unit.state = PlayerState.WAITING;
                     else
                         unit.state = PlayerState.IDLE;
+
                     unit.StaminaHighlightIsDisabled = false;
-                    unit.health.DeathPaused = false;
+                    if(unit.health != null)
+                        unit.health.DeathPaused = false;
+                    if (!unit.IsPlayerControlled)
+                        unit.intentUI.gameObject.SetActive(true);
                     LabCamera.Instance.uicam.gameObject.SetActive(true);
-                }         
+                }
+                Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
             }
             if (RestSite.Instance != null)
             {
@@ -350,6 +381,22 @@ public class BattleLog : MonoBehaviour
             ClearAllBattleLogText();
             characterdialog.gameObject.SetActive(false);
             GetComponent<MoveableObject>().Move(false);
+        }
+    }
+
+    private void AmbientCharacterText(List<LabLine> text, TMP_Text x)
+    {
+        GetComponent<MoveableObject>().Move(true);
+        ClearAllBattleLogText();
+        Portraitparent.gameObject.SetActive(true);
+        for (int i = 0; i < text.Count; i++)
+        {
+            if (Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression) != null)
+                charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression);
+            else
+                charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == "neutral");
+
+            x.text = text[i].text;
         }
 
     }

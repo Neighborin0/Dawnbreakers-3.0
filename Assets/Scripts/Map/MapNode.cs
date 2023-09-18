@@ -11,15 +11,23 @@ using UnityEngine.UI;
 public class MapNode : MonoBehaviour
 {
     public string NodeName;
+    [NonSerialized]
     bool IsHighlighted = true;
     public Vector3 newScaleSize = new Vector3(3, 3, 3);
     public Vector3 oldScaleSize;
+    [NonSerialized]
     private IEnumerator scaler;
+    [NonSerialized]
     public bool NodeIsCompleted = false;
+    [NonSerialized]
     public bool IsStartingNode;
+    [NonSerialized]
     public bool IsEnabled;
+    [NonSerialized]
     public Light maplight;
+    [NonSerialized]
     public GameObject mapline;
+    [NonSerialized]
     public bool disabled = false;
 
 
@@ -41,7 +49,8 @@ public class MapNode : MonoBehaviour
         button.interactable = false;
         int i = 0;
         disabled = true;
-        LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
+        if(LabCamera.Instance != null)
+            LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
         yield return new WaitForSeconds(0.3f);
         foreach (var MM in MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>())
         {
@@ -49,6 +58,8 @@ public class MapNode : MonoBehaviour
             i++;
         }
         MapController.Instance.StartingPosition = this.transform.position;
+        if (MapController.Instance.mapControlBar.activeSelf)
+            MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
         this.gameObject.transform.localScale = oldScaleSize;
         print(gameObject.transform.localScale);
         if (scaler != null)

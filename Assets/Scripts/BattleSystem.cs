@@ -64,6 +64,12 @@ public class BattleSystem : MonoBehaviour
     public float mainLightValue;
     public bool BossNode = false;
 
+    //Tutorial Stuff
+    public bool TutorialNode = false;
+    public TextMeshProUGUI TutorialText;
+    public Image TutorialButton;
+    public GameObject TutorialParent;
+
     public Vector3 cameraPos1Units;
     public Vector3 cameraPos2Units;
     public Vector3 cameraPos3Units;
@@ -186,8 +192,21 @@ public class BattleSystem : MonoBehaviour
         }
         StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
-
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
+        if (TutorialNode)
+        {
+            LabCamera.Instance.state = LabCamera.CameraState.IDLE;
+            TutorialParent.gameObject.SetActive(true);
+            LabCamera.Instance.transform.position = new Vector3(0, 1000, -93);
+            StartCoroutine(Tools.FadeText(TutorialText, 0.04f, true, false));
+            yield return new WaitForSeconds(3f);
+            StartCoroutine(Tools.FadeObject(TutorialButton, 0.04f, true, false));
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+            StartCoroutine(Tools.FadeObject(TutorialButton, 0.04f, false, false));
+            StartCoroutine(Tools.FadeText(TutorialText, 0.04f, false, false));
+            yield return new WaitForSeconds(3f);
+            TutorialParent.gameObject.SetActive(false);
+        }
         LabCamera.Instance.ReadjustCam();
         yield return new WaitForSeconds(1.5f);
         BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
@@ -206,7 +225,11 @@ public class BattleSystem : MonoBehaviour
         }
         yield return new WaitForSeconds(0.5f);
         OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
-        playerUnits[0].StartDecision();
+        if(state != BattleStates.TALKING)
+        {
+            playerUnits[0].StartDecision();
+        }
+          
         LabCamera.Instance.MovingTimeDivider = 1;
         foreach (var unit in Tools.GetAllUnits())
         {
@@ -256,7 +279,8 @@ public class BattleSystem : MonoBehaviour
         if (LevelUpScreen)
         {
             Director.Instance.DisplayCharacterTab();
-            LabCamera.Instance.MoveToUnit(playerUnits[0], 0, 8, 40, false, 0.5f);
+            LabCamera.Instance.MoveToUnit(playerUnits[0], 0, 8, -50, false, 0.5f);
+            BattleLog.Instance.DoRandomLevelUpScreenDialogue();
         }
         else
         {

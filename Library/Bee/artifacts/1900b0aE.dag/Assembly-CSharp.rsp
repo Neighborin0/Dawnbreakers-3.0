@@ -441,6 +441,7 @@
 "Assets/Scripts/Map/MapNode.cs"
 "Assets/Scripts/Map/RestNode.cs"
 "Assets/Scripts/Map/RestSite.cs"
+"Assets/Scripts/Map/TutorialEncounterNode.cs"
 "Assets/Scripts/MiniMapIcon.cs"
 "Assets/Scripts/MoveableObject.cs"
 "Assets/Scripts/NamePlate.cs"

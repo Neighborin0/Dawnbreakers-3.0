@@ -10,11 +10,12 @@ public class StartButton : MonoBehaviour
 
     public void EnterGame()
     {
-       /* if (PlayerPrefs.GetString("Level") != null)
-            PlayerPrefs.DeleteKey("Level");
-       */
+        /* if (PlayerPrefs.GetString("Level") != null)
+             PlayerPrefs.DeleteKey("Level");
+        */
+        //OptionsManager.Instance.Load("Battle");
+        MapController.Instance.currentNodes[0].DisableNode();
 
-        OptionsManager.Instance.Load("MAP2");
     }
 
 }
