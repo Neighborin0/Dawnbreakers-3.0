@@ -103,9 +103,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394ae795396016d4f9aff3f26ddbccb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHP: 0
   IsPlayerControlled: 0
   skillUIs: []
   health: {fileID: 0}
+  Dying: 0
   charPortraits:
   - {fileID: 21300000, guid: f9ba9f8f1c30c4a4aa76318536d19c7d, type: 3}
   anim: {fileID: 0}
@@ -116,6 +118,7 @@ MonoBehaviour:
   enemyintentOffset: {x: 0, y: 1, z: 0}
   introText: []
   inventory: []
+  levelUpScreenQuotes: []
   deathQuotes: []
   state: 0
   maxHP: 0

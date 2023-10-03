@@ -14,7 +14,7 @@ public class StartButton : MonoBehaviour
              PlayerPrefs.DeleteKey("Level");
         */
         //OptionsManager.Instance.Load("Battle");
-        MapController.Instance.currentNodes[0].DisableNode();
+        MapController.Instance.currentNodes[0].DisableNode(false);
 
     }
 

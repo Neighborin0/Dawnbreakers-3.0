@@ -19,17 +19,12 @@ public class Healthbar : MonoBehaviour
 
     void Start()
     {
-        try
-        {
-            slider.maxValue = unit.maxHP;
-            backSlider.maxValue = slider.maxValue;
-            slider.value = unit.currentHP;
-            text.text = $"{unit.currentHP} / {unit.maxHP}";
-        }
-        catch
-        {
+        slider.maxValue = unit.maxHP;
+        backSlider.maxValue = slider.maxValue;
+        slider.value = unit.currentHP;
+        backSlider.value = unit.currentHP;
+        text.text = $"{unit.currentHP} / {unit.maxHP}";
 
-        }
     }
     void Update()
     {
@@ -65,18 +60,23 @@ public class Healthbar : MonoBehaviour
     public void Die()
     {
         var battlesystem = BattleSystem.Instance;
-        var BSP = unit.GetComponentInParent<BattleSpawnPoint>();
-        BSP.Occupied = false;
-        BSP.unit = null;
+        var BattleSpawnPoint = unit.GetComponentInParent<BattleSpawnPoint>();
+        BattleSpawnPoint.Occupied = false;
+        BattleSpawnPoint.unit = null;
         if (unit.IsPlayerControlled)
         {
             battlesystem.playerUnits.Remove(unit);
             LabCamera.Instance.ResetPosition(true);
             BattleLog.Instance.ResetBattleLog();
-            if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
+            foreach (var x in BattleSystem.Instance.playerUnits)
             {
-                Tools.PauseAllStaminaTimers();
-                BattleSystem.Instance.playerUnits[0].StartDecision();
+                if (x.stamina.slider.value == x.stamina.slider.maxValue)
+                {
+                    BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
+                    x.StartDecision();
+                    break;
+                }
+
             }
             print("Player should be dead");
         }
@@ -91,7 +91,6 @@ public class Healthbar : MonoBehaviour
         Destroy(unit.gameObject);
         if (battlesystem.playerUnits.Count == 0)
         {
-            //LabCamera.Instance.ReadjustCam();
             if (OptionsManager.Instance.IntensityLevel == 0)
             {
                 Tools.PauseAllStaminaTimers();
@@ -104,6 +103,21 @@ public class Healthbar : MonoBehaviour
                 Tools.ToggleUiBlocker(false, false);
                 Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
                 Tools.PauseAllStaminaTimers();
+            }
+        }
+        else
+        {
+            if (BattleSystem.Instance.state != BattleStates.DECISION_PHASE && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD && BattleSystem.Instance.state != BattleStates.TALKING)
+            {
+                BattleSystem.Instance.state = BattleStates.IDLE;
+                Tools.UnpauseAllStaminaTimers();
+            }
+        }
+        if(unit.IsPlayerControlled)
+        {
+            foreach (var x in Tools.GetAllUnits())
+            {
+                x.DoOnPlayerUnitDeath();
             }
         }
         Destroy(this.gameObject);
@@ -148,7 +162,7 @@ public class Healthbar : MonoBehaviour
                     LabCamera.Instance.state = LabCamera.CameraState.IDLE;
                     yield return new WaitForSeconds(1f);
                     unit.DoDeathQuote();
-                    LabCamera.Instance.MoveToUnit(unit, 0, 2, -40, false, 0.5f);
+                    LabCamera.Instance.MoveToUnit(unit, 0, 8, -50, false, 0.5f);
                     yield return new WaitForSeconds(0.2f);
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
                 }
@@ -165,7 +179,7 @@ public class Healthbar : MonoBehaviour
                 unit.ChangeUnitsLight(unit.spotLight, 150, 15, 0.04f, 0.1f);
                 yield return new WaitForSeconds(0.7f);
                 LabCamera.Instance.Shake(0.5f, 2f);
-                Director.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow , Color.yellow, Vector3.zero, 3, 0, false));
+                Director.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero, 3, 0, false));
                 yield return new WaitForSeconds(0.03f);
                 if (popup != null)
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());

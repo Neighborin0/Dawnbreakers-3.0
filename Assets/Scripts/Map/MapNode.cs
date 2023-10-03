@@ -38,12 +38,12 @@ public class MapNode : MonoBehaviour
         maplight = GetComponentInChildren<Light>();
     }
 
-    public void DisableNode()
+    public void DisableNode(bool ApplyDelays = true)
     {
-        StartCoroutine(StartLoadingNode());
+        StartCoroutine(StartLoadingNode(ApplyDelays));
     }
 
-    public IEnumerator StartLoadingNode()
+    public IEnumerator StartLoadingNode(bool ApplyDelays = true)
     {
         var button = this.GetComponent<Button>();
         button.interactable = false;
@@ -51,7 +51,8 @@ public class MapNode : MonoBehaviour
         disabled = true;
         if(LabCamera.Instance != null)
             LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
-        yield return new WaitForSeconds(0.3f);
+        if(ApplyDelays)
+            yield return new WaitForSeconds(0.3f);
         foreach (var MM in MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>())
         {
             StartCoroutine(MM.Move(this.transform.position.x - i * 2, transform.position.y + 1f, transform.position.z));
@@ -72,9 +73,13 @@ public class MapNode : MonoBehaviour
             mapline.GetComponent<LineRenderer>().material.SetColor("_BaseColor", new Color(0, 0, 0, 0.5f));
         }
         NodeIsCompleted = true;
+        if(maplight != null)
         maplight.gameObject.SetActive(false);
-        yield return new WaitUntil(() => MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
-        yield return new WaitForSeconds(0.8f);
+        if (ApplyDelays)
+        {
+          yield return new WaitUntil(() => MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
+          yield return new WaitForSeconds(0.8f);
+        }
         this.OnInteracted();
     }
 

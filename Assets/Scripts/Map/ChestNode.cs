@@ -48,7 +48,7 @@ public class ChestNode : MapNode
     {
         foreach(var id in FindObjectsOfType<ItemDisplay>())
         {
-            id.GetComponent<MoveableObject>().Move(true, true);
+            id.GetComponent<MoveableObject>().Move(true);
             yield return new WaitForSeconds(0.5f);
         }
         foreach (var id in FindObjectsOfType<ItemDisplay>())

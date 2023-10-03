@@ -13,6 +13,7 @@ using static UnityEngine.UI.CanvasScaler;
 public class Director : MonoBehaviour
 {
     public List<Unit> party;
+    public List<Unit> currentUnitsInScene;
     public List<Unit> characterdatabase;
     public List<Unit> Unitdatabase;
     public List<Item> itemDatabase;
@@ -123,6 +124,7 @@ public class Director : MonoBehaviour
         
     }
 
+   
     public void CreateCharacterSlots(List<Unit> units)
     {
         int i = 0;
@@ -151,7 +153,6 @@ public class Director : MonoBehaviour
                         newcharacterSlot.portrait.sprite = x.charPortraits.Find(obj => obj.name == "neutral");
                     }
                     newcharacterSlot.ResetStats();
-                    //CharacterSlotButtonprefab.GetComponent<RectTransform>().anchoredPosition = newcharacterSlot.GetComponent<RectTransform>().anchoredPosition + new Vector2(100, 0);
                     i++;
                 }
             }
@@ -166,7 +167,8 @@ public class Director : MonoBehaviour
             characterSlotpos.GetComponent<MoveableObject>().Move(true);
             CharacterSlotsDisplayed = false;
             if (MapController.Instance.mapControlBar != null)
-                MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
+                if (MapController.Instance.mapControlBar.activeInHierarchy)
+                    MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
         }
         else
         {
@@ -175,6 +177,7 @@ public class Director : MonoBehaviour
                 characterSlotpos.GetComponent<MoveableObject>().Move(true);
                 CharacterSlotsDisplayed = false;
                 if (MapController.Instance.mapControlBar != null)
+                    if(MapController.Instance.mapControlBar.activeInHierarchy)
                     MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
             }
             else
@@ -182,7 +185,8 @@ public class Director : MonoBehaviour
                 characterSlotpos.GetComponent<MoveableObject>().Move(false);
                 CharacterSlotsDisplayed = true;
                 if (MapController.Instance.mapControlBar != null)
-                    MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
+                    if (MapController.Instance.mapControlBar.activeInHierarchy)
+                        MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
             }
         }
     }

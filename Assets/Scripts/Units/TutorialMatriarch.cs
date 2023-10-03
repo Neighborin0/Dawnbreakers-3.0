@@ -20,8 +20,38 @@ public class TutorialMatriarch : Unit
         behavior = this.gameObject.AddComponent<MatriarchBehaviorLV0>();
         summonables = TutorialSummons;
         StartingStamina = 60;
+        IsHidden = true;
+        BattleStarted += DoCharacterText;
+        OnPlayerUnitDeath += Gloat;
+    }
+    private void DoCharacterText(Unit obj)
+    {
+        Tools.PauseAllStaminaTimers();
+        BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("MatriarchIntro"), true, false);
+        foreach (var unit in Tools.GetAllUnits())
+        {
+            unit.StaminaHighlightIsDisabled = true;
+        }
+        BattlePostStarted -= DoCharacterText;
     }
 
+    private void Gloat(Unit obj)
+    {
+        StartCoroutine(GloatRoutine());
+    }
+
+    private IEnumerator GloatRoutine()
+    {
+        BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyPostDeath"), true, false);
+        foreach (var unit in Tools.GetAllUnits())
+        {
+            unit.StaminaHighlightIsDisabled = true;
+        }
+        yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
+        Tools.UnpauseAllStaminaTimers();
+        OnPlayerUnitDeath -= Gloat;
+    }
+}
     public class MatriarchBehaviorLV0 : EnemyBehavior
     {
         private int turn = 0;
@@ -152,5 +182,5 @@ public class TutorialMatriarch : Unit
             }
         }
     }
-}
+
     

@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3a06e15de5651e438b26e72f2bd266a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHP: 0
   IsPlayerControlled: 1
   skillUIs:
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
@@ -222,6 +223,7 @@ MonoBehaviour:
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
   health: {fileID: 0}
+  Dying: 0
   charPortraits:
   - {fileID: 21300000, guid: 34355069512a9454487a6a6d8e02c199, type: 3}
   - {fileID: 21300000, guid: 1837556329e91ac4695f398f6e2e14e9, type: 3}
@@ -235,6 +237,7 @@ MonoBehaviour:
   statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 0, z: 0}
+  IsHidden: 0
   introText: []
   inventory: []
   levelUpScreenQuotes: []
@@ -264,8 +267,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.54, y: 0.6, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.54, y: 0.59701073, z: 0.2}
+  m_Center: {x: 0, y: 0.0014946342, z: 0}
 --- !u!54 &9222240404116336846
 Rigidbody:
   m_ObjectHideFlags: 0

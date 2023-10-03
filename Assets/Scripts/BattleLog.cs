@@ -82,14 +82,14 @@ public class BattleLog : MonoBehaviour
         ambientText.text = "";
     }
 
-    public void CharacterDialog(List<LabLine> dialog, bool PausesBattle = false, bool disableAfter = true, bool ambientText = false)
+    public void CharacterDialog(List<LabLine> dialog, bool PausesBattle = false, bool disableAfter = true, bool ambientText = false, bool EndBattle = false)
     {
         ClearAllBattleLogText();
         Portraitparent.gameObject.SetActive(true);
         characterdialog.gameObject.SetActive(true);
         if (!ambientText)
         {
-            StartCoroutine(TypeMultiText(dialog, characterdialog, disableAfter, PausesBattle));
+            StartCoroutine(TypeMultiText(dialog, characterdialog, disableAfter, PausesBattle, EndBattle));
         }
         else
             AmbientCharacterText(dialog, characterdialog);
@@ -263,10 +263,10 @@ public class BattleLog : MonoBehaviour
             if(unit.levelUpScreenQuotes.Count > 0)
             CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(unit.levelUpScreenQuotes[UnityEngine.Random.Range(0, unit.levelUpScreenQuotes.Count)].name), false, false, true); 
     }
-    public void DoPostBattleDialouge(Unit unit)
+    public void DoPostBattleDialouge(MapController MC)
     {
-        CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaPostMeeting"), false, false);
-        unit.EnteredMap -= DoPostBattleDialouge;
+        CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaPostMeeting"), true, true);
+        MapController.Instance.ReEnteredMap -= DoPostBattleDialouge;
     }
 
     public void Update()
@@ -277,7 +277,7 @@ public class BattleLog : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeMultiText(List<LabLine> text, TMP_Text x, bool disableAfter, bool Pauses = false)
+    private IEnumerator TypeMultiText(List<LabLine> text, TMP_Text x, bool disableAfter, bool Pauses = false, bool EndBattle = false)
     {
         BattleStates previousState = BattleStates.IDLE;
         GetComponent<MoveableObject>().Move(true);      
@@ -303,24 +303,29 @@ public class BattleLog : MonoBehaviour
                 ClearAllBattleLogText();
                 BattleSystem.Instance.state = BattleStates.TALKING;
             }
-            else if (RestSite.Instance != null)
-            {
-                foreach (var button in RestSite.Instance.buttons)
-                {
-                    button.gameObject.SetActive(false);
-                }
-            }
         }
 
         for (int i = 0; i < text.Count; i++)
         {
+            x.text = "";
             Portraitparent.gameObject.SetActive(true);
+            Tools.ToggleUiBlocker(false, true, true);
+            if (text[i].PositionToMoveTo != Vector3.zero)
+            {
+                LabCamera.Instance.MoveToPosition((text[i].PositionToMoveTo));  
+            }
+            if (text[i].CameraRotation != Vector3.zero)
+            {
+                LabCamera.Instance.Rotate(text[i].CameraRotation);
+            }
             foreach (var unit in Tools.GetAllUnits())
             {
                 if(!unit.IsPlayerControlled)
                 unit.intentUI.gameObject.SetActive(false);
             }
                 text[i].OnLineStarted.Invoke();
+
+
             if (Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression) != null)
                  charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression);
             else
@@ -341,39 +346,39 @@ public class BattleLog : MonoBehaviour
         {
             if (BattleSystem.Instance != null)
             {
-                BattleSystem.Instance.state = previousState;
                 DisableCharacterDialog();
-                ResetBattleLog();
-                BattleSystem.Instance.BattlePhasePause = false;
-
-                foreach (var unit in Tools.GetAllUnits())
+                if (!EndBattle)
                 {
-                    if(unit.IsPlayerControlled)
-                    unit.state = PlayerState.WAITING;
-                    else
-                        unit.state = PlayerState.IDLE;
+                    BattleSystem.Instance.state = previousState;
+                    BattleSystem.Instance.BattlePhasePause = false;
+                    Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
+                    ResetBattleLog();
+                    foreach (var unit in Tools.GetAllUnits())
+                    {
+                        if (unit.IsPlayerControlled)
+                            unit.state = PlayerState.WAITING;
+                        else
+                            unit.state = PlayerState.IDLE;
 
-                    unit.StaminaHighlightIsDisabled = false;
-                    if(unit.health != null)
-                        unit.health.DeathPaused = false;
-                    if (!unit.IsPlayerControlled)
-                        unit.intentUI.gameObject.SetActive(true);
-                    LabCamera.Instance.uicam.gameObject.SetActive(true);
+                        unit.StaminaHighlightIsDisabled = false;
+                        if (unit.health != null)
+                            unit.health.DeathPaused = false;
+                        if (!unit.IsPlayerControlled)
+                            unit.intentUI.gameObject.SetActive(true);
+                        LabCamera.Instance.uicam.gameObject.SetActive(true);
+                    }
                 }
-                Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
             }
             if (RestSite.Instance != null)
             {
-                foreach (var button in RestSite.Instance.buttons)
-                {
-                    button.gameObject.SetActive(true);
-                }
                 GetComponent<MoveableObject>().Move(false);
             }
+            Tools.ToggleUiBlocker(true, true, true);
         }
         else
         {
             GetComponent<MoveableObject>().Move(false);
+            Tools.ToggleUiBlocker(true, true, true);
         }
         if (disableAfter)
         {

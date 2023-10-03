@@ -43,6 +43,13 @@ public class ControlBar : MonoBehaviour
             }
             
         }
+        else if(BattleLog.Instance.characterdialog.gameObject.activeSelf)
+        {
+            this.GetComponent<Image>().enabled = true;
+            Continue.SetActive(true);
+            Select.SetActive(false);
+            Cancel.SetActive(false);
+        }
         else
         {
             this.GetComponent<Image>().enabled = false;

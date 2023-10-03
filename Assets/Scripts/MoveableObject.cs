@@ -12,37 +12,39 @@ public class MoveableObject : MonoBehaviour
     public float PositionUpY;
     public float PositionDownX;
     public float PositionDownY;
+    public bool moved = false;
     IEnumerator generalCoruntine;
-    public void Move(bool moveUp, bool retainXpos = false, bool retainYpos = false)
+    public void Move(bool moveUp, float delay = 0.01f, float TimeDivder = 1)
     {
-        /*if(retainXpos)
-        {
-            PositionUpX = this.gameObject.transform.position.x;
-            PositionDownX = this.gameObject.transform.position.x;
-        }
-        if (retainYpos)
-        {
-            PositionUpY = this.gameObject.GetComponent<RectTransform>().position.y;
-            PositionDownY = this.gameObject.GetComponent<RectTransform>().position.y;
-        }
-        */
 
-            if (moveUp)
-            {
-                if (generalCoruntine != null)
-                    StopCoroutine(generalCoruntine);
+        if (moveUp)
+        {
+            Stop();
 
-                generalCoruntine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), PositionUpX, PositionUpY, 0.01f);
-                StartCoroutine(generalCoruntine);
-            }
+            if (this.gameObject.GetComponent<RectTransform>() != null)
+                generalCoruntine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), PositionUpX, PositionUpY, delay);
             else
-            {
-                if (generalCoruntine != null)
-                    StopCoroutine(generalCoruntine);
+                generalCoruntine = Tools.SmoothMoveObject(this.gameObject.transform, PositionUpX, PositionUpY, delay, false, 0, 10000, TimeDivder);
+            StartCoroutine(generalCoruntine);
+            moved = false;
+        }
+        else
+        {
+            Stop();
 
-                generalCoruntine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), PositionDownX, PositionDownY, 0.01f);
-                StartCoroutine(generalCoruntine);
-            }
+            if (this.gameObject.GetComponent<RectTransform>() != null)
+                generalCoruntine = Tools.SmoothMoveUI(this.gameObject.GetComponent<RectTransform>(), PositionDownX, PositionDownY, delay);
+            else
+                generalCoruntine = Tools.SmoothMoveObject(this.gameObject.transform, PositionUpX, PositionUpY, delay, false, 0, 10000, TimeDivder);
+            StartCoroutine(generalCoruntine);
+            moved = true;
+        }
 
+    }
+
+    public void Stop()
+    {
+        if (generalCoruntine != null)
+            StopCoroutine(generalCoruntine);
     }
 }

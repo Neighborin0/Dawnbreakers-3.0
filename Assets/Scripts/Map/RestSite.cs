@@ -47,10 +47,6 @@ public class RestSite : MonoBehaviour
                 Director.Instance.party[i].anim.Play("Resting");
             }
         }
-        if (!Director.Instance.DevMode)
-        {
-            BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaRestMeeting"), true, false);
-        }
         StartCoroutine(Transition());
     }
 
@@ -96,12 +92,18 @@ public class RestSite : MonoBehaviour
         foreach (var button in buttons)
         {
             button.GetComponent<MoveableObject>().Move(false);
+            button.interactable = false;
         }
         StartCoroutine(TransitionToMap());
     }
 
     public IEnumerator TransitionToMap()
     {
+        if (!Director.Instance.DevMode)
+        {
+            BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaRestMeeting"), true, true);
+        }
+        yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
         for (int i = 0; i <= Director.Instance.party.Count - 1; i++)
         {
             DontDestroyOnLoad(Director.Instance.party[i].gameObject);

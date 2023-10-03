@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using System.Threading;
+
 
 public class LabCamera : MonoBehaviour
 {
@@ -23,14 +25,15 @@ public class LabCamera : MonoBehaviour
     public float decreaseFactor = 0.1f;
     public Vector3 originalLocalPos;
     public float smoothingTime = 0.5f;
-    Vector3 originalPos;
-    private Vector3 PositonToMoveTo;
+    public Vector3 originalPos;
+    public Vector3 PositonToMoveTo;
     public GameObject followTarget;
     public Vector3 followDisplacement;
     public float FOV = 23;
     bool forceSway = false;
 
     public CameraState state;
+
 
     public enum CameraState { IDLE, SWAY, MOVING, SHAKE, SWEEP, MAP }
 
@@ -85,7 +88,8 @@ public class LabCamera : MonoBehaviour
                     uicam.transform.position = new Vector3(uicam.transform.position.x, uicam.transform.position.y, uicam.transform.position.z);
                 }
             }
-           
+
+
         }
         else if (RestSite.Instance != null)
         {
@@ -97,10 +101,14 @@ public class LabCamera : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonUp(1) && camTransform.position.x != originalPos.x && BattleSystem.Instance != null)
+        if (BattleSystem.Instance != null)
         {
-            ResetPosition();
+            if (Input.GetMouseButtonUp(1) && camTransform.position.x != originalPos.x && BattleSystem.Instance.CheckPlayableState())
+            {
+                ResetPosition();
+            }
         }
+
     }
 
     private void LateUpdate()
@@ -123,7 +131,7 @@ public class LabCamera : MonoBehaviour
                         state = CameraState.SWAY;
                         forceSway = false;
                     }
-                        
+
                 }
                 else
                     state = CameraState.IDLE;
@@ -181,25 +189,25 @@ public class LabCamera : MonoBehaviour
                     Mathf.Clamp(followTarget.transform.position.y + followDisplacement.y, MapController.Instance.MinMapBounds.y, MapController.Instance.MaxMapBounds.y),
                     Mathf.Clamp(followTarget.transform.position.z + followDisplacement.z, MapController.Instance.MinMapBounds.z, MapController.Instance.MaxMapBounds.z));
             //Zoom In
-            if (Input.GetAxis("Mouse ScrollWheel") > 0 && FOV > MapController.Instance.MinZoom && !Tools.CheckUiBlockers())
-			{
+            if (Input.GetAxis("Mouse ScrollWheel") > 0 && FOV > MapController.Instance.MinZoom && !Tools.CheckUiBlockers() && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
+            {
                 FOV -= MapController.Instance.ZoomAmount;
             }
             //Zoom Out
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0 && FOV < MapController.Instance.MaxZoom && !Tools.CheckUiBlockers())
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0 && FOV < MapController.Instance.MaxZoom && !Tools.CheckUiBlockers() && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
             {
                 FOV += MapController.Instance.ZoomAmount;
             }
 
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButton(1) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
             {
                 followDisplacement = new Vector3(
                 Mathf.Clamp(followDisplacement.x - Input.GetAxis("Mouse X") * OptionsManager.Instance.mapSensitivityMultiplier, MapController.Instance.MinMapBounds.x - this.transform.position.x, MapController.Instance.MaxMapBounds.x + this.transform.position.x),
-                   Mathf.Clamp(followDisplacement.y - Input.GetAxis("Mouse Y")  * OptionsManager.Instance.mapSensitivityMultiplier, -3, 32),
-                   Mathf.Clamp(followDisplacement.z -Input.GetAxis("Mouse Y")  * OptionsManager.Instance.mapSensitivityMultiplier, -89f, -48f));
+                   Mathf.Clamp(followDisplacement.y - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier, -3, 32),
+                   Mathf.Clamp(followDisplacement.z - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier, -89f, -48f));
 
             }
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
             {
                 followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
             }
@@ -210,17 +218,32 @@ public class LabCamera : MonoBehaviour
     }
 
 
-    public void MoveToUnit(Unit unit, float xOffset = 0, float yOffset = 0, float zOffset = 0, bool useDefaultOffset = true, float MovingTimeDivider = 1f)
+    public void MoveToUnit(Unit unit, float xOffset = 0, float yOffset = 0, float zOffset = 0, bool MoveWhileReturnToBase = false, float MovingTimeDivider = 1f, bool UsesDefaultOffset = false)
     {
         state = CameraState.MOVING;
         smoothingTime = 0f;
         this.MovingTimeDivider = MovingTimeDivider;
         var sprite = unit.GetComponent<SpriteRenderer>();
-        if (useDefaultOffset)
+        if (MoveWhileReturnToBase)
+        {
+            PositonToMoveTo.x = sprite.bounds.center.x / 5f;
+            if (camTransform.position.y > BattleSystem.Instance.cameraPos1Units.y)
+                PositonToMoveTo.y = camTransform.position.y;
+            else
+                PositonToMoveTo.y = BattleSystem.Instance.cameraPos1Units.y;
+
+            PositonToMoveTo.z = originalPos.z;
+        }
+        else if(UsesDefaultOffset)
         {
             PositonToMoveTo.x = sprite.bounds.center.x / 5f;
             PositonToMoveTo.y = camTransform.position.y;
             PositonToMoveTo.z = camTransform.position.z;
+        }
+        else if (xOffset == 0 && yOffset == 0 && zOffset == 0)
+        {
+            PositonToMoveTo.y = BattleSystem.Instance.cameraPos1Units.y;
+            PositonToMoveTo.z = BattleSystem.Instance.cameraPos1Units.z;
         }
         else
         {
@@ -236,7 +259,7 @@ public class LabCamera : MonoBehaviour
             print("Z OFFSET: " + zOffset);
             print(PositonToMoveTo);
         }
-      
+
     }
 
     public void MoveAndFollowGameObject(GameObject gameObject, Vector3 followDisplacement)
@@ -265,6 +288,13 @@ public class LabCamera : MonoBehaviour
         }
     }
 
+    public void MoveToPosition(Vector3 position)
+    {
+        smoothingTime = 0f;
+        state = CameraState.MOVING;
+        PositonToMoveTo = position;
+    }
+
     public void ResetPosition(bool forceSWAY = false)
     {
         smoothingTime = 0f;
@@ -272,11 +302,45 @@ public class LabCamera : MonoBehaviour
         PositonToMoveTo = originalPos;
         PositonToMoveTo.y = originalPos.y;
         PositonToMoveTo.z = originalPos.z;
-        if(forceSWAY)
+        if (forceSWAY)
         {
             forceSway = true;
         }
     }
+
+    public void Rotate(Vector3 rotation)
+    {
+        StartCoroutine(Rotating(rotation));
+    }
+
+    public void ResetRotation()
+    {
+        StartCoroutine(Rotating(Vector3.zero));
+    }
+
+    private IEnumerator Rotating(Vector3 rotation)
+    {
+        if (rotation.z < 0f)
+        {
+            while (this.transform.eulerAngles.z != 360 + rotation.z)
+            {
+                this.transform.Rotate(new Vector3(0, 0, -1));
+                yield return new WaitForSeconds(0.001f);
+            }
+        }
+
+        else if (rotation.z >= 0f)
+        {
+            while (!Mathf.Approximately(this.transform.eulerAngles.z, rotation.z))
+            {
+                this.transform.rotation = Quaternion.Lerp(transform.rotation, new Quaternion(transform.rotation.x, transform.rotation.y, rotation.z, transform.rotation.w), 0.1f);
+                yield return new WaitForSeconds(0.001f);
+            }
+        }
+
+    }
+
+
     public void Shake(float newShakeDuration, float newShakeAmount)
     {
         state = CameraState.SHAKE;

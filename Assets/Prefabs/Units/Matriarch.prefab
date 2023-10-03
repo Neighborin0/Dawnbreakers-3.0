@@ -4993,9 +4993,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb6ea14db3b53a489550f68b35c5045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHP: 0
   IsPlayerControlled: 0
   skillUIs: []
   health: {fileID: 0}
+  Dying: 0
   charPortraits:
   - {fileID: 21300000, guid: 0764ef8394073de488f5de17cb6afbe1, type: 3}
   anim: {fileID: 0}
@@ -5004,8 +5006,11 @@ MonoBehaviour:
   statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: -5, z: 0}
+  IsHidden: 0
   introText: []
   inventory: []
+  levelUpScreenQuotes: []
+  deathQuotes: []
   state: 0
   maxHP: 0
   attackStat: 0

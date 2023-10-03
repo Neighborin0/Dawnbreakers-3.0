@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Aurelia_LevelUpScreen(1)
   m_EditorClassIdentifier: 
   labLines:
-  - text: What the duece?!
+  - text: Huff...Huff...
     expression: neutral
     unit: Aurelia
     textSpeed: 0
@@ -23,3 +23,5 @@ MonoBehaviour:
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}

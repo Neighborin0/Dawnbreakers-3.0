@@ -117,6 +117,7 @@ MonoBehaviour:
   statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
+  IsHidden: 0
   introText: []
   inventory: []
   levelUpScreenQuotes: []
@@ -163,8 +164,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.54, y: 0.6, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.54, y: 0.5969252, z: 0.2}
+  m_Center: {x: 0, y: 0.0015374303, z: 0}
 --- !u!54 &1785922997347174372
 Rigidbody:
   m_ObjectHideFlags: 0

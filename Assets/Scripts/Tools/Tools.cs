@@ -365,7 +365,7 @@ public class Tools : MonoBehaviour
         }
     }
 
-    public static void ToggleUiBlocker(bool disable, bool DirectorBlocker = false)
+    public static void ToggleUiBlocker(bool disable, bool DirectorBlocker = false, bool CantBeSeen = false)
     {
         var img = OptionsManager.Instance.blackScreen;
         if (DirectorBlocker)
@@ -373,6 +373,7 @@ public class Tools : MonoBehaviour
             img.gameObject.SetActive(false);
             img = Director.Instance.blackScreen;
         }
+
 
         if (disable)
         {
@@ -388,6 +389,12 @@ public class Tools : MonoBehaviour
         }
 
 
+        if (CantBeSeen)
+        {
+            img.color = new Color(0, 0, 0, 0);
+        }
+
+
     }
 
     public static bool CheckUiBlockers()
@@ -400,7 +407,7 @@ public class Tools : MonoBehaviour
 
 
 
-    public static IEnumerator SmoothMoveObject(Transform obj, float transformPointX, float transformPointY, float delay, bool destroy = false, float transformPointZ = 0, float fallbackTicks = 10000)
+    public static IEnumerator SmoothMoveObject(Transform obj, float transformPointX, float transformPointY, float delay, bool destroy = false, float transformPointZ = 0, float fallbackTicks = 10000, float TimeDivider = 1)
     {
         float SmoothTime = 0f;
         int i = 0;
@@ -411,7 +418,7 @@ public class Tools : MonoBehaviour
         while (new Vector3((obj.position.x), (obj.position.y), (obj.position.z)) != new Vector3((transformPointX), transformPointY, transformPointZ) || i != fallbackTicks)
         {
             obj.position = Vector3.Lerp(obj.position, new Vector3(transformPointX, transformPointY, transformPointZ), SmoothTime);
-            SmoothTime += Time.deltaTime;
+            SmoothTime += Time.deltaTime / TimeDivider;
             i++;
             yield return new WaitForSeconds(delay);
         }
@@ -519,7 +526,8 @@ public class Tools : MonoBehaviour
         if (VFX.GetComponent<Animator>() != null)
         {
             var anim = VFX.GetComponent<Animator>();
-            anim.Play(VFXName);
+            if(anim.HasState(0, Animator.StringToHash(VFXName)))
+                anim.Play(VFXName);
         }
         if (VFX.GetComponent<ParticleSystem>() != null)
         {
@@ -528,9 +536,12 @@ public class Tools : MonoBehaviour
             var particleMaterial = particleSystem.GetComponent<ParticleSystemRenderer>().material;
             particleMaterial.SetColor("_Color", particleColor * (1 + intensityMultiplier));
             particleMaterial.SetColor("_EmissionColor", particleColor * (1 + intensityMultiplier));
+            Debug.LogWarning(particleColor * (1 + intensityMultiplier));
         }
+
         if (ApplyChromaticAbberation)
             Director.Instance.StartCoroutine(Tools.ApplyAndReduceChromaticAbberation());
+
         if (VFX.GetComponent<Animator>() != null && VFX.GetComponent<Animator>().GetBool("Done"))
         {
             yield return new WaitUntil(() => VFX.GetComponent<Animator>().GetBool("Done") == true);
@@ -563,18 +574,8 @@ public class Tools : MonoBehaviour
     public static void AddNewActionToUnit(Unit unit, string actionName)
     {
         var oldAction = Director.Instance.actionDatabase.Where(obj => obj.ActionName == actionName).SingleOrDefault();
-        print("ACTION NAME: " + actionName);
-        var newAction = Instantiate(oldAction);
-        if (unit.actionList.Count != 0)
-        {
-            unit.actionList[unit.actionList.Count] = newAction;
-            unit.actionList[unit.actionList.Count].New = true;
-        }
-        else
-        {
-            unit.actionList.Add(newAction);
-        }
-     
+        unit.actionList.Add(oldAction);
+        unit.actionList[unit.actionList.Count - 1].New = true;
     }
 
     public static IEnumerator ApplyAndReduceChromaticAbberation()
@@ -698,7 +699,14 @@ public class Tools : MonoBehaviour
     }
 
 
-
+    public static void StartAndCheckCoroutine(IEnumerator ienumerator)
+    {
+        if(ienumerator != null)
+        {
+            Director.Instance.StopCoroutine(ienumerator);
+        }
+        Director.Instance.StartCoroutine(ienumerator);
+    }
 
 
     public static void ModifyAction(Unit unit, string actionToChange, int slotToChange, float newCost = 0f)

@@ -25,7 +25,7 @@ public class Kindle : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(unit, 0, 0, -55);
+        LabCamera.Instance.MoveToUnit(targets, 0, 8, -50, false, 0.5f);
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
         unit.spotLight.color = Color.green;
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, 0.04f, 0.1f);

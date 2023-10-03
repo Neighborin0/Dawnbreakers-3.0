@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using static System.Collections.Specialized.BitVector32;
 using static UnityEngine.UI.CanvasScaler;
 using UnityEngine.EventSystems;
+using UnityEngine.ProBuilder.Shapes;
 
 public enum PlayerState { IDLE, DECIDING, READY, WAITING }
 public enum Stat { ATK, DEF, SPD, HP }
@@ -39,10 +40,10 @@ public class Unit : MonoBehaviour
     public bool StaminaHighlightIsDisabled = false;
     [NonSerialized]
     public EnemyBehavior behavior;
-    public List<Sprite> charPortraits;
+    public List<UnityEngine.Sprite> charPortraits;
     public Animator anim;
     public bool Execute = false;
-    public List<Sprite> MiniMapIcons;
+    public List<UnityEngine.Sprite> MiniMapIcons;
     public List<EffectIcon> statusEffects;
     public Vector3 offset;
     public Vector3 enemyintentOffset;
@@ -53,6 +54,7 @@ public class Unit : MonoBehaviour
     [NonSerialized]
     public float StartingStamina;
     IEnumerator generalCoroutine;
+    public bool IsHidden;
 
     //text stuff
     public List<DialogueHandler> introText;
@@ -70,6 +72,7 @@ public class Unit : MonoBehaviour
     public event Action<Unit> ActionEnded;
     public event Action<Unit> EnteredMap;
     public event Action<Unit> OnPreDeath;
+    public event Action<Unit> OnPlayerUnitDeath;
 
     //player states
     public PlayerState state;
@@ -108,12 +111,19 @@ public class Unit : MonoBehaviour
         {
             if (!Dying)
             {
+                
                 if (IsHighlighted)
                 {
                     sprite.material.SetFloat("_OutlineThickness", 1f);
                     sprite.material.SetColor("_OutlineColor", Color.white);
                     sprite.material.SetColor("_CharacterEmission", new Color(0.01f, 0.01f, 0.01f));
 
+                }
+                else if (IsHidden)
+                {
+                    sprite.material.SetFloat("_OutlineThickness", 1f);
+                    sprite.material.SetColor("_OutlineColor", Color.black);
+                    sprite.material.SetColor("_CharacterEmission", new Color(-0.1f, -0.1f, -0.1f, 1f));
                 }
                 else if (state == PlayerState.DECIDING)
                 {
@@ -136,7 +146,7 @@ public class Unit : MonoBehaviour
                     sprite.material.SetFloat("_OutlineThickness", 1f);
                     sprite.material.SetColor("_OutlineColor", Color.black);
                     sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
-                }
+                }    
             }
 
             if (stamina != null)
@@ -194,7 +204,6 @@ public class Unit : MonoBehaviour
                     {
                         BattleLog.Instance.itemText.text = "";
                         BattleLog.Instance.DisplayCharacterStats(this, true);
-                        //LabCamera.Instance.MoveToUnit(this);
                         if (this.IsPlayerControlled)
                         {
                             foreach (var x in Tools.GetAllUnits())
@@ -291,10 +300,12 @@ public class Unit : MonoBehaviour
         yield break;
     }
 
-    public void StartDecision()
+    public void StartDecision(bool MoveToUnit = true)
     {
         BattleSystem.SetUIOn(this);
-        LabCamera.Instance.MoveToUnit(this);
+        var sprite = GetComponent<SpriteRenderer>();
+        if (MoveToUnit)
+            LabCamera.Instance.MoveToUnit(this, sprite.bounds.center.x / 5f, 0, 0, true);
         BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
         print("Unit is deciding an action");
     }
@@ -426,6 +437,11 @@ public class Unit : MonoBehaviour
     public void DoEnteredMap()
     {
         EnteredMap?.Invoke(this);
+    }
+
+    public void DoOnPlayerUnitDeath()
+    {
+        OnPlayerUnitDeath?.Invoke(this);
     }
 
 

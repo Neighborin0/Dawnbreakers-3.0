@@ -11,7 +11,7 @@ public class Incinerate : Action
     private void OnEnable()
     {
         ActionName = "Incinerate";
-        damage = 50;
+        damage = 500;
         cost = 50f;
         targetType = TargetType.ANY;
         actionType = ActionType.ATTACK;

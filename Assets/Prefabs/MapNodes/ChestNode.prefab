@@ -242,14 +242,14 @@ MonoBehaviour:
       - m_Target: {fileID: 5841483914208900974}
         m_TargetAssemblyTypeName: MapNode, Assembly-CSharp
         m_MethodName: DisableNode
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &5841483914208900974
 MonoBehaviour:
@@ -266,11 +266,6 @@ MonoBehaviour:
   NodeName: Chest
   newScaleSize: {x: 3, y: 3, z: 3}
   oldScaleSize: {x: 2, y: 2, z: 2}
-  NodeIsCompleted: 0
-  IsStartingNode: 0
-  IsEnabled: 0
-  light: {fileID: 0}
-  mapline: {fileID: 0}
   itemDisplayPrefab: {fileID: 448137344890289466, guid: 457b38a4e3738a24c9bc85b3257f0a99,
     type: 3}
   itemDisplays: []

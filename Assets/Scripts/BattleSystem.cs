@@ -29,7 +29,6 @@ public class BattleSystem : MonoBehaviour
     }
 
     public static BattleSystem Instance { get; private set; }
-    //public Transform BattleOrderpos;
     public GameObject statPopUp;
     public ActionContainer genericActionContainer;
     public GameObject canvasParent;
@@ -43,7 +42,6 @@ public class BattleSystem : MonoBehaviour
     public NamePlate namePlate;
     public IntentContainer intent;
     public Canvas canvas;
-    //public LineRenderer targetLine;
     public GameObject dot;
     public bool HasStarted = false;
     public bool BattlePhasePause = false;
@@ -74,6 +72,8 @@ public class BattleSystem : MonoBehaviour
     public Vector3 cameraPos2Units;
     public Vector3 cameraPos3Units;
     public Vector3 bossNodeCamPos;
+    [NonSerialized]
+    public bool DoPostBattleDialogue = true;
     void Awake()
     {
         if (Instance != null)
@@ -195,19 +195,32 @@ public class BattleSystem : MonoBehaviour
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         if (TutorialNode)
         {
+            IEnumerator fadeCoroutineText;
+            IEnumerator fadeCoroutineButton;
             LabCamera.Instance.state = LabCamera.CameraState.IDLE;
             TutorialParent.gameObject.SetActive(true);
-            LabCamera.Instance.transform.position = new Vector3(0, 1000, -93);
-            StartCoroutine(Tools.FadeText(TutorialText, 0.04f, true, false));
+            LabCamera.Instance.transform.position = new Vector3(0, 10000, -93);
+            fadeCoroutineText = Tools.FadeText(TutorialText, 0.04f, true, false);
+            StartCoroutine(fadeCoroutineText);
             yield return new WaitForSeconds(3f);
-            StartCoroutine(Tools.FadeObject(TutorialButton, 0.04f, true, false));
+            fadeCoroutineButton = Tools.FadeObject(TutorialButton, 0.04f, true, false);
+            StartCoroutine(fadeCoroutineButton);
+            yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-            StartCoroutine(Tools.FadeObject(TutorialButton, 0.04f, false, false));
-            StartCoroutine(Tools.FadeText(TutorialText, 0.04f, false, false));
-            yield return new WaitForSeconds(3f);
+            StopCoroutine(fadeCoroutineButton);
+            StopCoroutine(fadeCoroutineText);
+            StartCoroutine(Tools.FadeObject(TutorialButton, 0.01f, false, false));
+            StartCoroutine(Tools.FadeText(TutorialText, 0.01f, false, false));
+            yield return new WaitForSeconds(2f);
             TutorialParent.gameObject.SetActive(false);
+            LabCamera.Instance.GetComponent<MoveableObject>().Move(false, 0.01f, 100);
+            yield return new WaitUntil(() => LabCamera.Instance.transform.position.y <= BattleSystem.Instance.cameraPos1Units.y + 0.01f);
+            LabCamera.Instance.GetComponent<MoveableObject>().Stop();
+
+
         }
         LabCamera.Instance.ReadjustCam();
+        if(!TutorialNode)
         yield return new WaitForSeconds(1.5f);
         BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
@@ -220,6 +233,14 @@ public class BattleSystem : MonoBehaviour
             {
                 StartCoroutine(unit.behavior.DoBehavior(unit));
             }
+            if(TutorialNode)
+            {
+                if(unit.IsPlayerControlled)
+                {
+                    unit.currentHP = (int)(unit.currentHP * 0.5f);
+                    unit.health.backSlider.value = (int)(unit.currentHP * 0.5f);
+                }
+            }
             unit.StaminaHighlightIsDisabled = false;
             unit.DoBattleStarted();
         }
@@ -227,7 +248,7 @@ public class BattleSystem : MonoBehaviour
         OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
         if(state != BattleStates.TALKING)
         {
-            playerUnits[0].StartDecision();
+           playerUnits[0].StartDecision();
         }
           
         LabCamera.Instance.MovingTimeDivider = 1;
@@ -280,6 +301,7 @@ public class BattleSystem : MonoBehaviour
         {
             Director.Instance.DisplayCharacterTab();
             LabCamera.Instance.MoveToUnit(playerUnits[0], 0, 8, -50, false, 0.5f);
+            if(DoPostBattleDialogue)
             BattleLog.Instance.DoRandomLevelUpScreenDialogue();
         }
         else
@@ -587,7 +609,7 @@ public class BattleSystem : MonoBehaviour
             {
                 StopCoroutine(actionCo);
             }
-            actionCo = PerformAction(newAction, newAction.unit);
+            actionCo = PerformAction(newAction.unit);
             StartCoroutine(actionCo);
         }
     }
@@ -598,7 +620,7 @@ public class BattleSystem : MonoBehaviour
 
 
 
-    public IEnumerator PerformAction(Action newaction, Unit unit)
+    public IEnumerator PerformAction(Unit unit)
     {
         LabCamera.Instance.ResetPosition();
         Tools.PauseAllStaminaTimers();
@@ -693,7 +715,7 @@ public class BattleSystem : MonoBehaviour
         {
             foreach (var x in playerUnits)
             {
-                if (x.state == PlayerState.IDLE)
+                if (x.stamina.slider.value == x.stamina.slider.maxValue)
                 {
                     state = BattleStates.DECISION_PHASE;
                     x.StartDecision();
@@ -707,7 +729,7 @@ public class BattleSystem : MonoBehaviour
         Director.Instance.timelinespeedDelay = OptionsManager.Instance.UserTimelineSpeedDelay;
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         unit.DoBattlePhaseClose();
-        if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD)
+        if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD && state != BattleStates.TALKING)
         {
             state = BattleStates.IDLE;
             Tools.UnpauseAllStaminaTimers();

@@ -27,7 +27,7 @@ public class ItemDisplay : MonoBehaviour
         Director.Instance.chooseYourItemText.gameObject.SetActive(false);
         foreach (var ID in GameObject.FindObjectsOfType<ItemDisplay>())
         {
-            ID.GetComponent<MoveableObject>().Move(false, true);
+            ID.GetComponent<MoveableObject>().Move(false);
             ID.GetComponent<Button>().interactable = false;
         }
         yield return new WaitForSeconds(0.5f);
@@ -53,7 +53,7 @@ public class ItemDisplay : MonoBehaviour
             CS.ResetStats();
         }
         Director.Instance.backButton.gameObject.SetActive(false);
-        GetComponent<MoveableObject>().Move(false, true);
+        GetComponent<MoveableObject>().Move(false);
         Director.Instance.DisableCharacterTab();
         Director.Instance.CharacterSlotEnable();
         Tools.ToggleUiBlocker(true, true);

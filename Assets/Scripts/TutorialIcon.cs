@@ -28,7 +28,7 @@ public class TutorialIcon : MonoBehaviour
     {
         IsBeingDestroyed = true;
         GetComponent<MoveableObject>().Move(false);
-        BattleSystem.Instance.playerUnits[0].StartDecision();
+        BattleSystem.Instance.playerUnits[0].StartDecision(false);
         Tools.ToggleUiBlocker(true, true);
         Tools.UnpauseAllStaminaTimers();
         yield return new WaitForSeconds(2f);

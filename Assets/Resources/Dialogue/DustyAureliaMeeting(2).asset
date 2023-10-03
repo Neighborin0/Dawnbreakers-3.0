@@ -19,20 +19,63 @@ MonoBehaviour:
     textSpeed: 0.03
     OnLineStarted:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: ZoomOnUnit
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Dusty
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: ChangeVignetteIntensity
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0.5
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
   - text: You hesitate. It's not something I've seen in the other things here.
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
     OnLineStarted:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: ChangeVignetteIntensity
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0.13
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
+    PositionToMoveTo: {x: 0, y: 11.17, z: -79.28}
+    CameraRotation: {x: 0, y: 0, z: 0}
   - text: Consider it a warning. I am getting past, whether that is of your own volition
       or not.
     expression: neutral
@@ -40,17 +83,60 @@ MonoBehaviour:
     textSpeed: 0.02
     OnLineStarted:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: MoveToUnit
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Aurelia
+            m_BoolArgument: 0
+          m_CallState: 2
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
   - text: Hmm...Very well then. I'll lay down my arms. You may go.
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
     OnLineStarted:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: MoveToUnit
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Dusty
+            m_BoolArgument: 0
+          m_CallState: 2
     OnLineEnded:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: ResetCam
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}

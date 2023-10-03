@@ -2,34 +2,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.UI.CanvasScaler;
 
 public class DustyEnemy : Unit
 {
-   
-  
+
     void Awake()
     {
         unitName = "Dusty";
         maxHP = 40;
         attackStat = 5;
         defenseStat = 8;
-        speedStat = 7;
+        speedStat = 9;
         actionCostMultiplier = 1f;
         currentHP = maxHP;
         IsPlayerControlled = false;
-        behavior =  this.gameObject.AddComponent<DustyBehavior>();
+        behavior = this.gameObject.AddComponent<DustyBehavior>();
         StartingStamina = 75;
-
-        if(!Director.Instance.DevMode)
-        BattlePostStarted += DoCharacterText;
+        if (!Director.Instance.DevMode)
+            BattleStarted += DoCharacterText;
+        IsHidden = true;
     }
     private void DoCharacterText(Unit obj)
     {
         Tools.PauseAllStaminaTimers();
         BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaMeeting(1)"), true, false);
-        foreach(var unit in Tools.GetAllUnits())
+        foreach (var unit in Tools.GetAllUnits())
         {
             unit.StaminaHighlightIsDisabled = true;
         }
@@ -41,7 +42,7 @@ public class DustyEnemy : Unit
         private int turn;
         private BattleSystem battlesystem;
         private Unit BaseUnit;
-     
+
         public override IEnumerator DoBehavior(Unit baseUnit)
         {
             battlesystem = BattleSystem.Instance;
@@ -79,24 +80,23 @@ public class DustyEnemy : Unit
 
         private IEnumerator ForceBattleEnd()
         {
-            BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaMeeting(2)"), true, false);
+            BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaMeeting(2)"), true, false, false, true);
+            BattleSystem.Instance.DoPostBattleDialogue = false;
             yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
+            StartCoroutine(BattleSystem.Instance.TransitionToMap(true));
+            LabCamera.Instance.uicam.gameObject.SetActive(false);
             BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
-            if (!BattleSystem.Instance.playerUnits[0].actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Sweep").SingleOrDefault()))
-            {
-                Tools.AddNewActionToUnit(BattleSystem.Instance.playerUnits[0], "Sweep");
-                BattleSystem.Instance.playerUnits[0].EnteredMap += BattleLog.Instance.DoPostBattleDialouge;
-            }
+            Tools.AddNewActionToUnit(BattleSystem.Instance.playerUnits[0], "Sweep");
+            MapController.Instance.ReEnteredMap += BattleLog.Instance.DoPostBattleDialouge;
             SceneManager.sceneLoaded += AddDusty;
             Tools.PauseAllStaminaTimers();
             BattleSystem.Instance.StopUpdating = true;
-            Tools.TurnOffCriticalUI(BaseUnit);
-            StartCoroutine(BattleSystem.Instance.TransitionToMap(true));
+            Tools.TurnOffCriticalUI(BaseUnit);  
         }
 
         private void AddDusty(Scene scene, LoadSceneMode mode)
         {
-            Director.AddUnitToParty("Dusty");   
+            Director.AddUnitToParty("Dusty");
             SceneManager.sceneLoaded -= AddDusty;
 
         }

@@ -11,10 +11,7 @@ using UnityEngine.SceneManagement;
 
 public class Aurelia : Unit
 {
-    private string[] summons =
-   {
-        "Husk",
-   };
+
     void Awake()
     {
         unitName = "Aurelia";
@@ -25,10 +22,8 @@ public class Aurelia : Unit
         //defenseStat = -2000;
         speedStat = 10;
         //StartingStamina = UnityEngine.Random.Range(85, 95);
-        StartingStamina = 95;
         //speedStat = 100;
         currentHP = maxHP;
-        summonables = summons;
         IsPlayerControlled = true;
         Tools.AddItemToInventory(this, "Tattered Cape");
         if (!Director.Instance.DevMode)

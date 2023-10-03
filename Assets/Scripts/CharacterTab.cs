@@ -91,7 +91,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         foreach (var CT in Director.Instance.TabGrid.transform.GetComponentsInChildren<CharacterTab>())
         {
             CT.DEFText.text = $"DEF:{CT.unit.defenseStat}";
-            CT.ATKtext.text = $"ATK: {CT.unit.attackStat}";
+            CT.ATKtext.text = $"ATK: {CT.unit.attackStat}"; 
             CT.HPtext.text = $"HP: {CT.unit.maxHP}";
             CT.SPDText.text = $"SPD: {CT.unit.speedStat}";
             GetComponent<HighlightedObject>().disabled = false;

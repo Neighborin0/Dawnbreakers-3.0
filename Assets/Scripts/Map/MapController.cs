@@ -343,6 +343,7 @@ public class MapController : MonoBehaviour
         completedNodeCount++;
         StartCoroutine(DrawLine(currentNodes[completedNodeCount].transform.position, currentNodes[completedNodeCount].gameObject));
         yield return new WaitForSeconds(1.2f);
+        Tools.ToggleUiBlocker(true, true, true);
         Director.Instance.CharacterSlotEnable();
         if(enableMapControls)
         {           
