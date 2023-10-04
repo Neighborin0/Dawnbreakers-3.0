@@ -25,10 +25,5 @@ public class Dusty : Unit
         }
     }
 
-    public static List<LabLine> DustyDeath1 = new List<LabLine>
-    {
-        new LabLine { expression = "neutral", text = "Prostate Cancer got me", unit = "Dusty", textSpeed = 0.03f, }
-    };
-
 
 }

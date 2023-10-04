@@ -43,8 +43,7 @@ public class Slash : Action
         targets.health.TakeDamage(damage + unit.attackStat, unit);
         LabCamera.Instance.Shake(0.2f, 1.5f);
         yield return new WaitForSeconds(0.5f);
-        Done = true;
-        LabCamera.Instance.ResetPosition();
+        Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 
   

@@ -5005,6 +5005,7 @@ MonoBehaviour:
   statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
+  IsHidden: 0
   introText: []
   inventory: []
   levelUpScreenQuotes: []

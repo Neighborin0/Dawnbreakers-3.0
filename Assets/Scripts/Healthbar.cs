@@ -35,12 +35,17 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage, Unit DamageSource)
+    public void TakeDamage(int damage, Unit DamageSource, bool IgnoresDEF = false)
     {
         //RunTracker.Instance.slayer = DamageSource;
         if (unit != null)
         {
-            var truedamage = (int)Math.Round((damage - unit.defenseStat) * DamageModifier);
+            int truedamage = 0;
+            if(IgnoresDEF)
+                truedamage = damage;
+            else
+                truedamage = (int)Math.Round((damage - unit.defenseStat) * DamageModifier);
+
             if (truedamage < 1)
             {
                 truedamage = 0;
@@ -57,17 +62,22 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-    public void Die()
+    public IEnumerator Die()
     {
-        var battlesystem = BattleSystem.Instance;
         var BattleSpawnPoint = unit.GetComponentInParent<BattleSpawnPoint>();
         BattleSpawnPoint.Occupied = false;
         BattleSpawnPoint.unit = null;
+        unit.GetComponent<SpriteRenderer>().enabled = false;
         if (unit.IsPlayerControlled)
         {
-            battlesystem.playerUnits.Remove(unit);
+            BattleSystem.Instance.playerUnits.Remove(unit);
+            foreach (var x in Tools.GetAllUnits())
+            {
+                x.DoOnPlayerUnitDeath();
+            }
+            yield return new WaitUntil(() => BattleLog.Instance.characterdialog.IsActive());
+            yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
             LabCamera.Instance.ResetPosition(true);
-            BattleLog.Instance.ResetBattleLog();
             foreach (var x in BattleSystem.Instance.playerUnits)
             {
                 if (x.stamina.slider.value == x.stamina.slider.maxValue)
@@ -82,14 +92,14 @@ public class Healthbar : MonoBehaviour
         }
         else
         {
-            battlesystem.enemyUnits.Remove(unit);
+            BattleSystem.Instance.enemyUnits.Remove(unit);
             print("Enemy should be dead");
         }
-        battlesystem.numOfUnits.Remove(unit);
+        BattleSystem.Instance.numOfUnits.Remove(unit);
         Tools.TurnOffCriticalUI(unit);
         Destroy(unit.ActionLayout);
         Destroy(unit.gameObject);
-        if (battlesystem.playerUnits.Count == 0)
+        if (BattleSystem.Instance.playerUnits.Count == 0)
         {
             if (OptionsManager.Instance.IntensityLevel == 0)
             {
@@ -105,23 +115,9 @@ public class Healthbar : MonoBehaviour
                 Tools.PauseAllStaminaTimers();
             }
         }
-        else
-        {
-            if (BattleSystem.Instance.state != BattleStates.DECISION_PHASE && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD && BattleSystem.Instance.state != BattleStates.TALKING)
-            {
-                BattleSystem.Instance.state = BattleStates.IDLE;
-                Tools.UnpauseAllStaminaTimers();
-            }
-        }
-        if(unit.IsPlayerControlled)
-        {
-            foreach (var x in Tools.GetAllUnits())
-            {
-                x.DoOnPlayerUnitDeath();
-            }
-        }
+        BattleSystem.Instance.BattlePhasePause = false;
+        Director.Instance.StartCoroutine(Tools.LateUnpause());
         Destroy(this.gameObject);
-
     }
 
     private IEnumerator HandleSlider()
@@ -160,30 +156,37 @@ public class Healthbar : MonoBehaviour
                 {
                     DeathPaused = true;
                     LabCamera.Instance.state = LabCamera.CameraState.IDLE;
+                    BattleSystem.Instance.BattlePhasePause = true;
                     yield return new WaitForSeconds(1f);
                     unit.DoDeathQuote();
                     LabCamera.Instance.MoveToUnit(unit, 0, 8, -50, false, 0.5f);
                     yield return new WaitForSeconds(0.2f);
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
                 }
+                else
+                {
+                    LabCamera.Instance.state = LabCamera.CameraState.IDLE;
+                    LabCamera.Instance.MoveToUnit(unit, 0, 8, -50, false, 0.5f);
+                }
                 unit.DoOnPreDeath();
                 yield return new WaitUntil(() => !DeathPaused);
                 if (unit.IsPlayerControlled)
                     Tools.PauseAllStaminaTimers();
-                BattleLog.Instance.ResetBattleLog();
-                var sprite = unit.GetComponent<SpriteRenderer>();
+                else
+                    BattleLog.Instance.ResetBattleLog();
+
                 yield return new WaitForSeconds(0.5f);
                 unit.Dying = true;
                 Director.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMaxIntensity(unit.gameObject, Color.yellow, 0.07f));
                 unit.spotLight.color = Color.yellow;
                 unit.ChangeUnitsLight(unit.spotLight, 150, 15, 0.04f, 0.1f);
                 yield return new WaitForSeconds(0.7f);
-                LabCamera.Instance.Shake(0.5f, 2f);
-                Director.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero, 3, 0, false));
+                LabCamera.Instance.Shake(0.5f, 1f);
+                Director.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero, 10, 0, false));
                 yield return new WaitForSeconds(0.03f);
                 if (popup != null)
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
-                Die();
+                Director.Instance.StartCoroutine(Die());
 
             }
             else

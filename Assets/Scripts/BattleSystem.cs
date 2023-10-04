@@ -672,7 +672,7 @@ public class BattleSystem : MonoBehaviour
                     }
                 }
                 yield return new WaitUntil(() => action.Done);
-                yield return new WaitForSeconds(0.7f);
+                yield return new WaitForSeconds(1f);
             }
         }
         foreach (var x in Tools.GetAllUnits())
@@ -681,20 +681,12 @@ public class BattleSystem : MonoBehaviour
         }
         yield return new WaitForSeconds(0.5f);
         ActionsToPerform = new List<Action>();
-        BattleLog.Instance.ResetBattleLog();
-        foreach (var line in GameObject.FindObjectsOfType<LineRenderer>())
-        {
-            if (line != null)
-                line.enabled = true;
-                line.gameObject.SetActive(true);
-        }
         if (!unit.IsPlayerControlled)
         {
             StartCoroutine(unit.behavior.DoBehavior(unit));
         }
         foreach (var x in Tools.GetAllUnits())
         {
-
             if (x.intentUI != null)
             {
                 yield return new WaitForSeconds(0.1f);
@@ -710,7 +702,9 @@ public class BattleSystem : MonoBehaviour
             }
             x.DoBattlePhaseEnd();
         }
+        //State just before player gets control
         yield return new WaitUntil(() => !BattlePhasePause);
+        BattleLog.Instance.ResetBattleLog();
         if (enemyUnits.Count != 0 && playerUnits.Count != 0)
         {
             foreach (var x in playerUnits)
@@ -727,13 +721,13 @@ public class BattleSystem : MonoBehaviour
 
         }     
         Director.Instance.timelinespeedDelay = OptionsManager.Instance.UserTimelineSpeedDelay;
-        LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         unit.DoBattlePhaseClose();
-        if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD && state != BattleStates.TALKING)
+        if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD && state != BattleStates.TALKING && enemyUnits.Count > 0 && playerUnits.Count > 0)
         {
             state = BattleStates.IDLE;
             Tools.UnpauseAllStaminaTimers();
         }
+       // LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         yield break;
     }
 

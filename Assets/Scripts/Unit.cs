@@ -53,7 +53,7 @@ public class Unit : MonoBehaviour
     public bool StopMovingToUnit = false;
     [NonSerialized]
     public float StartingStamina;
-    IEnumerator generalCoroutine;
+    IEnumerator lightCoroutine;
     public bool IsHidden;
 
     //text stuff
@@ -361,8 +361,11 @@ public class Unit : MonoBehaviour
 
     public void ChangeUnitsLight(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0, float stagnantDelay = 0)
     {
-        generalCoroutine = ChangeUnitsLightCoroutine(light, desiredIntensity, amountToRaiseBy, delay, stagnantDelay);
-        StartCoroutine(generalCoroutine);
+        if (lightCoroutine != null)
+            StopCoroutine(lightCoroutine);
+
+        lightCoroutine = ChangeUnitsLightCoroutine(light, desiredIntensity, amountToRaiseBy, delay, stagnantDelay);
+        StartCoroutine(lightCoroutine);
     }
     private IEnumerator ChangeUnitsLightCoroutine(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0, float stagnantDelay = 0)
     {
@@ -372,7 +375,7 @@ public class Unit : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
         yield return new WaitForSeconds(stagnantDelay);
-        while (light.intensity > 0)
+        while (light.intensity > 0 && light != null)
         {
             light.intensity -= amountToRaiseBy;
             yield return new WaitForSeconds(delay);

@@ -516,12 +516,13 @@ public class Tools : MonoBehaviour
             VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
             var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
             vfxMaterial.SetColor("_EmissionColor", vfxColor * (1 + intensityMultiplier));
+            Debug.LogWarning(vfxColor * (1 + intensityMultiplier));
         }
         if (VFX.GetComponent<MeshRenderer>() != null)
         {
             VFX.GetComponent<MeshRenderer>().material = Instantiate(VFX.GetComponent<MeshRenderer>().material);
             var vfxMaterial = VFX.GetComponent<MeshRenderer>().material;
-            vfxMaterial.SetColor("_EmissionColor", vfxColor * (1 + intensityMultiplier));
+            vfxMaterial.SetColor("_EmissionColor", vfxColor * (0 + intensityMultiplier));
         }
         if (VFX.GetComponent<Animator>() != null)
         {
@@ -536,7 +537,6 @@ public class Tools : MonoBehaviour
             var particleMaterial = particleSystem.GetComponent<ParticleSystemRenderer>().material;
             particleMaterial.SetColor("_Color", particleColor * (1 + intensityMultiplier));
             particleMaterial.SetColor("_EmissionColor", particleColor * (1 + intensityMultiplier));
-            Debug.LogWarning(particleColor * (1 + intensityMultiplier));
         }
 
         if (ApplyChromaticAbberation)
@@ -716,6 +716,23 @@ public class Tools : MonoBehaviour
         newAction.cost = newCost;
         unit.actionList[slotToChange] = newAction;
     }
+
+    public static void CheckIfActionWasFatalAndResetCam(Action action, int targetHP)
+    {
+        action.Done = true;
+        if (targetHP >= 0)
+        {
+            LabCamera.Instance.ResetPosition();
+        }
+    }
+
+    public static IEnumerator LateUnpause()
+    {
+        yield return new WaitForSeconds(0.5f);
+        LabCamera.Instance.ResetPosition();
+        yield break;
+    }
+
 
 
 }

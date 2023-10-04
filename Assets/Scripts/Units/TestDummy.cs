@@ -11,9 +11,9 @@ public class TestDummy : Unit
     {
         unitName = "TestDummy";
         maxHP = 100;
-        attackStat = 0;
+        attackStat = 100;
         defenseStat = 0;
-        speedStat = 0;
+        speedStat = 10;
         currentHP = maxHP;
         IsPlayerControlled = false;
         StartingStamina = 1;

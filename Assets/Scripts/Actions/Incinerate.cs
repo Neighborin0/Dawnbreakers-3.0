@@ -11,7 +11,7 @@ public class Incinerate : Action
     private void OnEnable()
     {
         ActionName = "Incinerate";
-        damage = 500;
+        damage = 50;
         cost = 50f;
         targetType = TargetType.ANY;
         actionType = ActionType.ATTACK;
@@ -20,13 +20,13 @@ public class Incinerate : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.";
+            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.\nIgnores <sprite name=\"DEF BLUE\">";
         }
         else
         {
-            if(damage + unit.attackStat - targets.defenseStat > 0)
+            if(damage + unit.attackStat > 0)
             {
-                description = $"Deals <color=#FF0000>{damage + unit.attackStat - targets.defenseStat}</color> DMG.";
+                description = $"Deals <color=#FF0000>{damage + unit.attackStat}</color> DMG.";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG."; 
@@ -41,14 +41,13 @@ public class Incinerate : Action
         var Light = targets.spotLight;
         Light.color = new Color(191, 21, 0);
         targets.ChangeUnitsLight(Light, 150, 15, 0.04f, 0.1f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "IncinerateParticles2", new Color(191, 21, 0), new Color(191, 21, 0), new Vector3(0, 0, -2f), 2.5f, 0, true, 5, 0));
+        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "IncinerateParticles2", new Color(191, 21, 0), new Color(191, 21, 0), new Vector3(0, 0, -2f), 2.5f, 0, true, 0));
         yield return new WaitForSeconds(0.1f);
-        targets.health.TakeDamage(damage + unit.attackStat, unit);
+        targets.health.TakeDamage(damage + unit.attackStat, unit, true);
         LabCamera.Instance.Shake(1f, 1.3f);
-        yield return new WaitForSeconds(2.8f);
+        yield return new WaitForSeconds(0.5f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
-        LabCamera.Instance.ResetPosition();
-        this.Done = true;
+        Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 
   

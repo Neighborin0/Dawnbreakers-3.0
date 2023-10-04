@@ -17,7 +17,6 @@ public class Aurelia : Unit
         unitName = "Aurelia";
         maxHP = 32;
         attackStat = 7;
-        //attackStat = 999;
         defenseStat = 6;
         //defenseStat = -2000;
         speedStat = 10;
@@ -28,14 +27,9 @@ public class Aurelia : Unit
         Tools.AddItemToInventory(this, "Tattered Cape");
         if (!Director.Instance.DevMode)
         {
+            attackStat = 7;
             actionList.Clear();
             Tools.AddNewActionToUnit(this, "Slash");
         }
     }
-
-    public static List<LabLine> AureliaDeath1 = new List<LabLine>
-    {
-         new LabLine { expression = "neutral", text = "You suck ass bruh.",  unit = "Aurelia", textSpeed = 0.02f,},
-         new LabLine { expression = "neutral", text = "It is so over.", unit = "Aurelia", textSpeed = 0.03f, }
-    };
 }

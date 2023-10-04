@@ -85,7 +85,7 @@ public class Beacon : Action
                         summon.transform.SetParent(BSP.transform);
                         summon.transform.localScale = new Vector3(9f, 9f, 9f);     
                         summon.GetComponent<Rigidbody>().mass = 10000;
-                        BattleSystem.Instance.playerUnits.Add(summon);
+                        BattleSystem.Instance.enemyUnits.Add(summon);
                         BattlePoint.Occupied = true;
                         BattlePoint.unit = summon;
                         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(summon.gameObject, "Summon", Color.yellow, Color.yellow,  new Vector3(0, 0, -2f), 10f));

@@ -57,8 +57,7 @@ public class Sweep : Action
         LabCamera.Instance.Shake(0.2f, 1f);
         targets.health.TakeDamage(damage + AdditionalDMG + unit.attackStat, unit);
         yield return new WaitForSeconds(0.5f);
-        LabCamera.Instance.ResetPosition();
-        this.Done = true;
+        Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 
   

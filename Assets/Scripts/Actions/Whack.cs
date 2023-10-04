@@ -45,8 +45,7 @@ public class Whack : Action
         LabCamera.Instance.Shake(0.3f, 1.5f);
         BattleSystem.Instance.SetTempEffect(targets, "STAGGER", true, duration);
         yield return new WaitForSeconds(0.5f);
-        Done = true;
-        LabCamera.Instance.ResetPosition();
+        Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 
   

@@ -47,8 +47,7 @@ public class Strike : Action
             targets.health.TakeDamage(damage + unit.attackStat, unit);
             LabCamera.Instance.Shake(0.3f, 1.5f);
             yield return new WaitForSeconds(0.5f);
-            LabCamera.Instance.ResetPosition();
-            this.Done = true;
+            Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
         }
     }
 
