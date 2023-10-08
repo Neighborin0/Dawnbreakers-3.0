@@ -641,6 +641,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11364}
     - Class: 114
+      Script: {instanceID: 11424}
+    - Class: 114
       Script: {instanceID: 11462}
     - Class: 114
       Script: {instanceID: 11564}
@@ -2866,7 +2868,7 @@ ScriptsOnlyBuild:
     className: ScreenSpaceShadows
   - hash:
       serializedVersion: 2
-      Hash: 6f45b32a149a47ebe346e3e00073cdef
+      Hash: 46b2993f705c08721deceddd66baa923
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LabCamera

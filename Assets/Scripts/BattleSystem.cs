@@ -103,6 +103,8 @@ public class BattleSystem : MonoBehaviour
             {
                 state = BattleStates.DEAD;
                 print("you lose");
+                battleCo = TransitionToDeath();
+                StartCoroutine(battleCo);
             }
             else if (enemyUnits.Count == 0 && playerUnits.Count != 0)
             {
@@ -259,7 +261,25 @@ public class BattleSystem : MonoBehaviour
         OptionsManager.Instance.CanPause = true;
     }
 
-   
+   public IEnumerator TransitionToDeath()
+    {
+        LabCamera.Instance.ResetPosition();
+        yield return new WaitForSeconds(1f);
+        if (OptionsManager.Instance.IntensityLevel == 0)
+        {
+            Tools.PauseAllStaminaTimers();
+            MapController.Instance.gameObject.transform.SetParent(this.transform);
+            OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Prologue Ending"));
+        }
+        else
+        {
+            //RunTracker.Instance.DisplayStats();
+            Tools.ToggleUiBlocker(false, false);
+            Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
+            Tools.PauseAllStaminaTimers();
+        }
+        yield break;
+    }
     public IEnumerator TransitionToMap(bool LevelUpScreen = true)
     {
         yield return new WaitForSeconds(1f);
@@ -673,6 +693,7 @@ public class BattleSystem : MonoBehaviour
                 }
                 yield return new WaitUntil(() => action.Done);
                 yield return new WaitForSeconds(1f);
+                yield return new WaitUntil(() => !BattlePhasePause);
             }
         }
         foreach (var x in Tools.GetAllUnits())
@@ -703,7 +724,7 @@ public class BattleSystem : MonoBehaviour
             x.DoBattlePhaseEnd();
         }
         //State just before player gets control
-        yield return new WaitUntil(() => !BattlePhasePause);
+        //yield return new WaitUntil(() => !BattlePhasePause);
         BattleLog.Instance.ResetBattleLog();
         if (enemyUnits.Count != 0 && playerUnits.Count != 0)
         {
@@ -727,7 +748,6 @@ public class BattleSystem : MonoBehaviour
             state = BattleStates.IDLE;
             Tools.UnpauseAllStaminaTimers();
         }
-       // LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         yield break;
     }
 

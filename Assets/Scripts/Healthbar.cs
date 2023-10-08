@@ -68,9 +68,12 @@ public class Healthbar : MonoBehaviour
         BattleSpawnPoint.Occupied = false;
         BattleSpawnPoint.unit = null;
         unit.GetComponent<SpriteRenderer>().enabled = false;
+        slider.enabled = false;
+        backSlider.enabled = false;
         if (unit.IsPlayerControlled)
         {
             BattleSystem.Instance.playerUnits.Remove(unit);
+            yield return new WaitForSeconds(0.7f);
             foreach (var x in Tools.GetAllUnits())
             {
                 x.DoOnPlayerUnitDeath();
@@ -86,7 +89,6 @@ public class Healthbar : MonoBehaviour
                     x.StartDecision();
                     break;
                 }
-
             }
             print("Player should be dead");
         }
@@ -96,28 +98,11 @@ public class Healthbar : MonoBehaviour
             print("Enemy should be dead");
         }
         BattleSystem.Instance.numOfUnits.Remove(unit);
-        Tools.TurnOffCriticalUI(unit);
         Destroy(unit.ActionLayout);
         Destroy(unit.gameObject);
-        if (BattleSystem.Instance.playerUnits.Count == 0)
-        {
-            if (OptionsManager.Instance.IntensityLevel == 0)
-            {
-                Tools.PauseAllStaminaTimers();
-                Destroy(MapController.Instance.gameObject);
-                Director.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Prologue Ending"));
-            }
-            else
-            {
-                //RunTracker.Instance.DisplayStats();
-                Tools.ToggleUiBlocker(false, false);
-                Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
-                Tools.PauseAllStaminaTimers();
-            }
-        }
+        Tools.TurnOffCriticalUI(unit);
         BattleSystem.Instance.BattlePhasePause = false;
         Director.Instance.StartCoroutine(Tools.LateUnpause());
-        Destroy(this.gameObject);
     }
 
     private IEnumerator HandleSlider()
@@ -152,16 +137,16 @@ public class Healthbar : MonoBehaviour
                     print("text isn't being found?");
                 }
                 StartCoroutine(popup.Pop());
+                unit.Dying = true;
                 if (unit.IsPlayerControlled)
                 {
                     DeathPaused = true;
                     LabCamera.Instance.state = LabCamera.CameraState.IDLE;
                     BattleSystem.Instance.BattlePhasePause = true;
                     yield return new WaitForSeconds(1f);
+                    Director.Instance.StartCoroutine(popup.DestroyPopUp());
                     unit.DoDeathQuote();
                     LabCamera.Instance.MoveToUnit(unit, 0, 8, -50, false, 0.5f);
-                    yield return new WaitForSeconds(0.2f);
-                    Director.Instance.StartCoroutine(popup.DestroyPopUp());
                 }
                 else
                 {
@@ -169,14 +154,12 @@ public class Healthbar : MonoBehaviour
                     LabCamera.Instance.MoveToUnit(unit, 0, 8, -50, false, 0.5f);
                 }
                 unit.DoOnPreDeath();
+                if(unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
+                 LabCamera.Instance.uicam.gameObject.SetActive(false);
                 yield return new WaitUntil(() => !DeathPaused);
-                if (unit.IsPlayerControlled)
-                    Tools.PauseAllStaminaTimers();
-                else
-                    BattleLog.Instance.ResetBattleLog();
-
+                if (unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
+                    LabCamera.Instance.uicam.gameObject.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
-                unit.Dying = true;
                 Director.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMaxIntensity(unit.gameObject, Color.yellow, 0.07f));
                 unit.spotLight.color = Color.yellow;
                 unit.ChangeUnitsLight(unit.spotLight, 150, 15, 0.04f, 0.1f);
@@ -186,8 +169,8 @@ public class Healthbar : MonoBehaviour
                 yield return new WaitForSeconds(0.03f);
                 if (popup != null)
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
-                Director.Instance.StartCoroutine(Die());
 
+                Director.Instance.StartCoroutine(Die());
             }
             else
             {

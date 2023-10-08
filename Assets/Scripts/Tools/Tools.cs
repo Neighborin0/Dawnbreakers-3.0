@@ -257,12 +257,7 @@ public class Tools : MonoBehaviour
                 Destroy(child.gameObject);
                 break;
             }
-        }
-        if (unit.GetComponentInChildren<TargetLine>() != null)
-        {
-            var line = unit.GetComponentInChildren<TargetLine>();
-            Destroy(line.gameObject);
-        }
+        }       
         Destroy(unit.health.gameObject);
 
     }

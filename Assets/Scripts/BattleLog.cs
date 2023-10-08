@@ -350,7 +350,7 @@ public class BattleLog : MonoBehaviour
                 if (!EndBattle)
                 {
                     BattleSystem.Instance.state = previousState;
-                    BattleSystem.Instance.BattlePhasePause = false;
+                    //BattleSystem.Instance.BattlePhasePause = false;
                     Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
                     ResetBattleLog();
                     foreach (var unit in Tools.GetAllUnits())
@@ -363,10 +363,11 @@ public class BattleLog : MonoBehaviour
                         unit.StaminaHighlightIsDisabled = false;
                         if (unit.health != null)
                             unit.health.DeathPaused = false;
+                       
                         if (!unit.IsPlayerControlled)
-                            unit.intentUI.gameObject.SetActive(true);
-                        LabCamera.Instance.uicam.gameObject.SetActive(true);
+                            unit.intentUI.gameObject.SetActive(true);  
                     }
+                    LabCamera.Instance.uicam.gameObject.SetActive(true);
                 }
             }
             if (RestSite.Instance != null)

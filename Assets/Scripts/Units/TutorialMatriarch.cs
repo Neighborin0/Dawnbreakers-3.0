@@ -59,7 +59,16 @@ public class TutorialMatriarch : Unit
         private Unit BaseUnit;
         int move = 0;
 
-        public override IEnumerator DoBehavior(Unit baseUnit)
+    private void PreIncinerateText()
+    {
+        Tools.PauseAllStaminaTimers();
+        BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("MatriarchPreIncinerate"), true, false);
+        foreach (var unit in Tools.GetAllUnits())
+        {
+            unit.StaminaHighlightIsDisabled = true;
+        }
+    }
+    public override IEnumerator DoBehavior(Unit baseUnit)
         {
             battlesystem = BattleSystem.Instance;
             BaseUnit = baseUnit;
@@ -151,9 +160,10 @@ public class TutorialMatriarch : Unit
                     battlesystem.AddAction(baseUnit.actionList[move]);
                     turn++;
                 }
-                //Destroys Dusty
+                //Destroys Dusty and taunts player
                 else if (turn == 3)
                 {
+                    PreIncinerateText();
                     Tools.DetermineActionData(baseUnit, turn, num, true, BattleSystem.Instance.playerUnits[1]);
                     battlesystem.DisplayEnemyIntent(baseUnit.actionList[turn], baseUnit);
                     baseUnit.state = PlayerState.READY;
