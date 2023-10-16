@@ -65,7 +65,7 @@ public class BattleSystem : MonoBehaviour
     //Tutorial Stuff
     public bool TutorialNode = false;
     public TextMeshProUGUI TutorialText;
-    public Image TutorialButton;
+    //public Image TutorialButton;
     public GameObject TutorialParent;
 
     public Vector3 cameraPos1Units;
@@ -102,9 +102,18 @@ public class BattleSystem : MonoBehaviour
             if (playerUnits.Count == 0 && enemyUnits.Count != 0)
             {
                 state = BattleStates.DEAD;
-                print("you lose");
-                battleCo = TransitionToDeath();
-                StartCoroutine(battleCo);
+                if(!StopUpdating)
+                {
+                    Tools.EndAllTempEffectTimers();
+                    StopUpdating = true;
+                    if (battleCo != null)
+                        StopCoroutine(battleCo);
+
+                    print("you lose");
+                    battleCo = TransitionToDeath();
+                    StartCoroutine(battleCo);
+                }
+            
             }
             else if (enemyUnits.Count == 0 && playerUnits.Count != 0)
             {
@@ -198,20 +207,13 @@ public class BattleSystem : MonoBehaviour
         if (TutorialNode)
         {
             IEnumerator fadeCoroutineText;
-            IEnumerator fadeCoroutineButton;
             LabCamera.Instance.state = LabCamera.CameraState.IDLE;
             TutorialParent.gameObject.SetActive(true);
             LabCamera.Instance.transform.position = new Vector3(0, 10000, -93);
             fadeCoroutineText = Tools.FadeText(TutorialText, 0.04f, true, false);
             StartCoroutine(fadeCoroutineText);
             yield return new WaitForSeconds(3f);
-            fadeCoroutineButton = Tools.FadeObject(TutorialButton, 0.04f, true, false);
-            StartCoroutine(fadeCoroutineButton);
-            yield return new WaitForSeconds(0.1f);
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-            StopCoroutine(fadeCoroutineButton);
             StopCoroutine(fadeCoroutineText);
-            StartCoroutine(Tools.FadeObject(TutorialButton, 0.01f, false, false));
             StartCoroutine(Tools.FadeText(TutorialText, 0.01f, false, false));
             yield return new WaitForSeconds(2f);
             TutorialParent.gameObject.SetActive(false);
@@ -250,7 +252,14 @@ public class BattleSystem : MonoBehaviour
         OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
         if(state != BattleStates.TALKING)
         {
-           playerUnits[0].StartDecision();
+            if (TutorialNode || BossNode)
+            {
+                playerUnits[0].StartDecision(false);
+            }
+            else
+            {
+                playerUnits[0].StartDecision(true);
+            }
         }
           
         LabCamera.Instance.MovingTimeDivider = 1;
@@ -320,7 +329,7 @@ public class BattleSystem : MonoBehaviour
         if (LevelUpScreen)
         {
             Director.Instance.DisplayCharacterTab();
-            LabCamera.Instance.MoveToUnit(playerUnits[0], 0, 8, -50, false, 0.5f);
+            LabCamera.Instance.MoveToUnit(playerUnits[0], Vector3.zero, 0, 8, -50, 0.5f);
             if(DoPostBattleDialogue)
             BattleLog.Instance.DoRandomLevelUpScreenDialogue();
         }
@@ -571,7 +580,7 @@ public class BattleSystem : MonoBehaviour
             foreach (var action in unit.actionList)
             {
                 unit.state = PlayerState.DECIDING;
-                LabCamera.Instance.MoveToUnit(unit);
+                LabCamera.Instance.MoveToUnit(unit, Vector3.zero);
                 BattleLog.Instance.DisplayCharacterStats(unit, true);
                 BattleLog.Instance.inventoryDisplay.gameObject.SetActive(false);
                 unit.skillUIs[i].SetActive(true);
@@ -724,7 +733,6 @@ public class BattleSystem : MonoBehaviour
             x.DoBattlePhaseEnd();
         }
         //State just before player gets control
-        //yield return new WaitUntil(() => !BattlePhasePause);
         BattleLog.Instance.ResetBattleLog();
         if (enemyUnits.Count != 0 && playerUnits.Count != 0)
         {

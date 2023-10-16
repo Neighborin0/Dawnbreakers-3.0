@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MatriarchPreIncinerate
   m_EditorClassIdentifier: 
   labLines:
-  - text: Those who are lost will their place with me. They all do in the end...
+  - text: Those who are lost will find their place with me. They all do in the end...
     expression: neutral
     unit: Matriarch
     textSpeed: 0.05

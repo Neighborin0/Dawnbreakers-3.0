@@ -59,7 +59,7 @@ public class TutorialMatriarch : Unit
         private Unit BaseUnit;
         int move = 0;
 
-    private void PreIncinerateText()
+    private IEnumerator PreIncinerateText()
     {
         Tools.PauseAllStaminaTimers();
         BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("MatriarchPreIncinerate"), true, false);
@@ -67,6 +67,23 @@ public class TutorialMatriarch : Unit
         {
             unit.StaminaHighlightIsDisabled = true;
         }
+        yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
+        foreach (var x in BattleSystem.Instance.playerUnits)
+        {
+            if (x.stamina.slider.value == x.stamina.slider.maxValue)
+            {
+                BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
+                x.StartDecision();
+                break;
+            }
+
+        }
+        if (BattleSystem.Instance.state != BattleStates.DECISION_PHASE && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD && BattleSystem.Instance.state != BattleStates.TALKING && BattleSystem.Instance.enemyUnits.Count > 0 && BattleSystem.Instance.playerUnits.Count > 0)
+        {
+            BattleSystem.Instance.state = BattleStates.IDLE;
+            Tools.UnpauseAllStaminaTimers();
+        }
+
     }
     public override IEnumerator DoBehavior(Unit baseUnit)
         {
@@ -163,7 +180,7 @@ public class TutorialMatriarch : Unit
                 //Destroys Dusty and taunts player
                 else if (turn == 3)
                 {
-                    PreIncinerateText();
+                    StartCoroutine(PreIncinerateText());
                     Tools.DetermineActionData(baseUnit, turn, num, true, BattleSystem.Instance.playerUnits[1]);
                     battlesystem.DisplayEnemyIntent(baseUnit.actionList[turn], baseUnit);
                     baseUnit.state = PlayerState.READY;

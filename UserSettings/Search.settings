@@ -7,7 +7,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.83F126EB" = "scr"
+	"last_search.83F126EB" = "ending"
 	"InspectorPreview.83F126EB" = "0"
 	"currentGroup.83F126EB" = "asset"
 	"last_search.785D90A9" = "playmode"
@@ -52,6 +52,7 @@ providers = {
 	}
 }
 recentSearches = [
+	"ending"
 	"scr"
 	"vermin"
 	"DIREC"

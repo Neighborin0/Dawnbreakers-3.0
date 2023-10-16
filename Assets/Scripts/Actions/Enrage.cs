@@ -24,7 +24,7 @@ public class Enrage : Action
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
-        LabCamera.Instance.MoveToUnit(targets, 0, 8, -50, false, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -50, 0.5f);
         yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Smoke", new Color(48, 1, 0), new Color(48, 1, 0), new Vector3(0, unit.GetComponent<SpriteRenderer>().bounds.max.y - 1, -2f), 2, 0, false, 3, -1));
         yield return new WaitForSeconds(0.3f);

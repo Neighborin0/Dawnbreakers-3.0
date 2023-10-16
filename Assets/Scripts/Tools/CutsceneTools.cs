@@ -12,7 +12,7 @@ public class CutsceneTools : MonoBehaviour
         {
             if (unit.unitName == unitName)
             {
-                LabCamera.Instance.MoveToUnit(unit, 0, 8, -50, false, 0.5f, false);
+                LabCamera.Instance.MoveToUnit(unit,Vector3.zero ,0, 8, -50, 0.5f, false);
 
             }
         }
@@ -24,7 +24,7 @@ public class CutsceneTools : MonoBehaviour
         {
             if (unit.unitName == unitName)
             {
-                LabCamera.Instance.MoveToUnit(unit, 0, 0, 0, false, 1, true);
+                LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 0, 0, 1, true);
 
             }
         }

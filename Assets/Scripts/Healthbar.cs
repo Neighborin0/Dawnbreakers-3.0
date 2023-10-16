@@ -67,11 +67,10 @@ public class Healthbar : MonoBehaviour
         var BattleSpawnPoint = unit.GetComponentInParent<BattleSpawnPoint>();
         BattleSpawnPoint.Occupied = false;
         BattleSpawnPoint.unit = null;
-        unit.GetComponent<SpriteRenderer>().enabled = false;
-        slider.enabled = false;
-        backSlider.enabled = false;
+        unit.GetComponent<SpriteRenderer>().enabled = false;      
         if (unit.IsPlayerControlled)
         {
+            LabCamera.Instance.uicam.gameObject.SetActive(false);
             BattleSystem.Instance.playerUnits.Remove(unit);
             yield return new WaitForSeconds(0.7f);
             foreach (var x in Tools.GetAllUnits())
@@ -146,12 +145,12 @@ public class Healthbar : MonoBehaviour
                     yield return new WaitForSeconds(1f);
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
                     unit.DoDeathQuote();
-                    LabCamera.Instance.MoveToUnit(unit, 0, 8, -50, false, 0.5f);
+                    LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 8, -50, 0.5f);
                 }
                 else
                 {
                     LabCamera.Instance.state = LabCamera.CameraState.IDLE;
-                    LabCamera.Instance.MoveToUnit(unit, 0, 8, -50, false, 0.5f);
+                    LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 8, -50, 0.5f);
                 }
                 unit.DoOnPreDeath();
                 if(unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())

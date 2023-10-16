@@ -334,8 +334,9 @@ public class BattleLog : MonoBehaviour
             textSpeed = text[i].textSpeed;
             foreach (char letter in text[i].text.ToCharArray())
             {
+                 Portraitparent.gameObject.SetActive(true);
                  x.text += letter;
-                 yield return new WaitForSeconds(textSpeed);
+                 yield return new WaitForSeconds(textSpeed / 2f);
             }
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
             characterdialog.text = "";
@@ -350,7 +351,6 @@ public class BattleLog : MonoBehaviour
                 if (!EndBattle)
                 {
                     BattleSystem.Instance.state = previousState;
-                    //BattleSystem.Instance.BattlePhasePause = false;
                     Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
                     ResetBattleLog();
                     foreach (var unit in Tools.GetAllUnits())

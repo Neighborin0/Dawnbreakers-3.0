@@ -22,7 +22,7 @@ public class Awaken : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(targets, 0, 8, -50, false, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -50, 0.5f);
         yield return new WaitForSeconds(0.3f);
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
         var Light = targets.spotLight;

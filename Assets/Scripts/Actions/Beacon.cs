@@ -33,7 +33,7 @@ public class Beacon : Action
     {
         int numofUnitsToAdd = 3 - Tools.DetermineAllies(unit).Count;
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
-        LabCamera.Instance.MoveToUnit(unit, 0f, 10, -55, false, 0.5f);
+        LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0f, 10, -55, 0.5f);
         unit.spotLight.color = new Color(1, 0.5409836f, 0, 1);
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, 0.04f, 0.1f);
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "Beacon", new Color(1, 0.5409836f, 0, 0), new Color(1, 0.5409836f, 0, 0), new Vector3(-3.21f, 5.7f, 0f), 1f, 0, true, 0, 4));
@@ -61,7 +61,7 @@ public class Beacon : Action
                         BattlePoint.Occupied = true;
                         BattlePoint.unit = summon;
                         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(summon.gameObject, "Summon", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), 10f));
-                        LabCamera.Instance.MoveToUnit(summon, 0f, 15, -55, false, 0.5f);
+                        LabCamera.Instance.MoveToUnit(summon, Vector3.zero ,0f, 15, -55, 0.5f);
                         summon.spotLight.color = new Color(1, 0.5409836f, 0, 1);
                         summon.ChangeUnitsLight(summon.spotLight, 150, 15, 0.04f, 0.1f);
                         yield return new WaitForSeconds(0.5f);
@@ -89,7 +89,7 @@ public class Beacon : Action
                         BattlePoint.Occupied = true;
                         BattlePoint.unit = summon;
                         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(summon.gameObject, "Summon", Color.yellow, Color.yellow,  new Vector3(0, 0, -2f), 10f));
-                        LabCamera.Instance.MoveToUnit(summon, 0f, 15, -55, false, 0.5f);
+                        LabCamera.Instance.MoveToUnit(summon, Vector3.zero, 0f, 15, -55, 0.5f);
                         summon.spotLight.color = new Color(1, 0.5409836f, 0, 1);
                         summon.ChangeUnitsLight(summon.spotLight, 150, 15, 0.04f, 0.1f);
                         yield return new WaitForSeconds(0.5f);

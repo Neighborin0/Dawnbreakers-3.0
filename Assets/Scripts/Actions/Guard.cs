@@ -31,21 +31,10 @@ public class Guard : Action
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Defend_001", Color.blue, Color.white, new Vector3(0, 5, -2f), 2f, 0, true, 0, 10));
-        LabCamera.Instance.MoveToUnit(targets, 0, 6, -40, false, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 6, -40, 0.5f);
         yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;
-        /*foreach(Transform icon in targets.namePlate.IconGrid.transform)
-        {
-            var EI = icon.gameObject.GetComponent<EffectIcon>();
-            if(EI.iconName == "Fortify")
-            {
-                EI.DoFancyStatChanges = false;
-                EI.DestoryEffectIcon();
-                break;
-            }
-        }
-        */
         BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, unit.defenseStat);
         BattleSystem.Instance.SetStatChanges(Stat.DEF, unit.defenseStat, false, targets);
         yield return new WaitForSeconds(1.3f);

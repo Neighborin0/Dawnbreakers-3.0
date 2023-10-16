@@ -123,7 +123,7 @@ public class Unit : MonoBehaviour
                 {
                     sprite.material.SetFloat("_OutlineThickness", 1f);
                     sprite.material.SetColor("_OutlineColor", Color.black);
-                    sprite.material.SetColor("_CharacterEmission", new Color(-0.1f, -0.1f, -0.1f, 1f));
+                    sprite.material.SetColor("_CharacterEmission", new Color(-0.3f, -0.3f, -0.3f, 1f));
                 }
                 else if (state == PlayerState.DECIDING)
                 {
@@ -300,12 +300,15 @@ public class Unit : MonoBehaviour
         yield break;
     }
 
-    public void StartDecision(bool MoveToUnit = true)
+    public void StartDecision(bool DoesNotSetUnitPos = true)
     {
         BattleSystem.SetUIOn(this);
         var sprite = GetComponent<SpriteRenderer>();
-        if (MoveToUnit)
-            LabCamera.Instance.MoveToUnit(this, sprite.bounds.center.x / 5f, 0, 0, true);
+        if (DoesNotSetUnitPos)
+            LabCamera.Instance.MoveToUnit(this, Vector3.zero, sprite.bounds.center.x / 5f, 0, 0, 1, true);
+        else
+            LabCamera.Instance.MoveToUnit(this, new Vector3(0, 16.8f, 0), sprite.bounds.center.x / 5f, 0, 0);
+
         BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
         print("Unit is deciding an action");
     }

@@ -39,7 +39,7 @@ public class Sweep : Action
         int AdditionalDMG = 0;
         unit.PlayAction("Attack", unit);
         yield return new WaitUntil(() => unit.Execute);
-        LabCamera.Instance.MoveToUnit(targets, 0, 8, -50, false, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -50, 0.5f);
         yield return new WaitForSeconds(0.3f);
         AudioManager.Instance.Play("slash_001");
         LabCamera.Instance.Shake(0.3f, 1f);

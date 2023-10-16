@@ -218,20 +218,17 @@ public class LabCamera : MonoBehaviour
     }
 
 
-    public void MoveToUnit(Unit unit, float xOffset = 0, float yOffset = 0, float zOffset = 0, bool MoveWhileReturningToBase = false, float MovingTimeDivider = 1f, bool UsesDefaultOffset = false)
+    public void MoveToUnit(Unit unit, Vector3 overrideYPos, float xOffset = 0, float yOffset = 0, float zOffset = 0, float MovingTimeDivider = 1f, bool UsesDefaultOffset = false)
     {
         state = CameraState.MOVING;
         smoothingTime = 0f;
         this.MovingTimeDivider = MovingTimeDivider;
         var sprite = unit.GetComponent<SpriteRenderer>();
-        if (MoveWhileReturningToBase)
+
+        if (overrideYPos.y != 0)
         {
             PositonToMoveTo.x = sprite.bounds.center.x / 5f;
-            if (camTransform.position.y > BattleSystem.Instance.cameraPos1Units.y)
-                PositonToMoveTo.y = camTransform.position.y;
-            else
-                PositonToMoveTo.y = BattleSystem.Instance.cameraPos1Units.y;
-
+            PositonToMoveTo.y  = originalPos.y;
             PositonToMoveTo.z = originalPos.z;
         }
         else if(UsesDefaultOffset)

@@ -31,7 +31,7 @@ public class Defend : Action
     {
         Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "DefendSelf", Color.blue, Color.blue ,new Vector3(0, 1, -2f), 2f, 0, true, 0, 10)); 
-        LabCamera.Instance.MoveToUnit(targets, 0, 6, -40, false, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 6, -40, 0.5f);
         yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;

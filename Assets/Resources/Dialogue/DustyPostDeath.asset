@@ -51,8 +51,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: -1, y: 13.4, z: -75.5}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Don't fret now. He's not truly gone...he still needs to become one of my
-      Husks!
+  - text: Don't fret now! He'll make a fine Husk!
     expression: neutral
     unit: Matriarch
     textSpeed: 0.04
