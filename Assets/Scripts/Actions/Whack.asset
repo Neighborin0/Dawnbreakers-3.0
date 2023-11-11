@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a39261b43d3805e4584535a02191e107, type: 3}
+  m_Name: Whack
+  m_EditorClassIdentifier: 
+  ActionName: Whack
+  damage: 2
+  description: Deals <color=#FF0000>7</color> DMG. Applies <sprite name="STAGGER">
+    for 5 seconds.
+  cost: 40
+  duration: 0
+  damageText: 2
+  Done: 0
+  New: 0
+  statAmount: 0
+  numberofUses: 0
+  limited: 0
+  text: {fileID: 0}
+  unit: {fileID: 0}
+  targetType: 0
+  actionType: 0
+  targets: {fileID: 0}

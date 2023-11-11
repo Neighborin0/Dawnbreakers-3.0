@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c07b9844c35fb49a3318ce059a5043, type: 3}
+  m_Name: Sweep
+  m_EditorClassIdentifier: 
+  ActionName: Sweep
+  damage: 1
+  accuracy: 1
+  description: Deals <color=#FF0000>1</color> damage.
+  speed: 5
+  PriorityMove: 0
+  cost: 30
+  duration: 0
+  damageText: 1
+  Done: 0
+  New: 0
+  text: {fileID: 0}
+  unit: {fileID: 0}
+  targetType: 0
+  actionType: 0
+  targets: {fileID: 0}

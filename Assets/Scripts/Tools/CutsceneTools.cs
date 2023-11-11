@@ -1,0 +1,62 @@
+﻿using System.Collections;
+
+using UnityEngine;
+using UnityEngine.Rendering.Universal;
+
+public class CutsceneTools : MonoBehaviour
+{
+    private IEnumerator vignetteIEnumerator;
+    public static void ZoomOnUnit(string unitName)
+    {
+        LabCamera.Instance.MoveToUnit(Tools.CheckAndReturnNamedUnit(unitName), Vector3.zero,0,8, -40, 0.5f, false);
+    }
+
+    public static void MoveToUnit(string unitName)
+    {
+        LabCamera.Instance.MoveToUnit(Tools.CheckAndReturnNamedUnit(unitName), Vector3.zero, 0, 0, 0, 1, true);
+    }
+
+    public static void ResetCam()
+    {
+        LabCamera.Instance.ResetPosition();
+    }
+
+    public static void ResetRotation()
+    {
+        LabCamera.Instance.ResetRotation();
+    }
+
+    public static void RevealUnit(string unitName)
+    {
+        Tools.CheckAndReturnNamedUnit(unitName).IsHidden = false;
+    }
+    public void ChangeVignetteIntensity(float DesiredValue)
+    {
+        Tools.StartAndCheckCoroutine(vignetteIEnumerator, ChangeVignetteIntensityCoroutine(DesiredValue));
+    }
+
+    private IEnumerator ChangeVignetteIntensityCoroutine(float DesiredValue)
+    {
+        if (BattleSystem.Instance.effectsSetting.sharedProfile.TryGet<Vignette>(out var vignette))
+        {
+            if (vignette.intensity.value > DesiredValue)
+            {
+                while (vignette.intensity.value > DesiredValue)
+                {
+                    vignette.intensity.value -= 0.01f;
+                    yield return new WaitForSeconds(0.01f);
+                }
+            }
+            if (vignette.intensity.value < DesiredValue)
+            {
+                while (vignette.intensity.value < DesiredValue)
+                {
+                    vignette.intensity.value += 0.01f;
+                    yield return new WaitForSeconds(0.01f);
+                }
+            }
+        }
+    }
+
+
+}
