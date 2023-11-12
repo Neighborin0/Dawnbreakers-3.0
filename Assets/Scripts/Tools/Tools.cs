@@ -87,22 +87,14 @@ public class Tools : MonoBehaviour
         return i;
     }
 
-    public static void PauseAllStaminaTimers()
+    public static void PauseStaminaTimer()
     {
-        //print("ALL STAMINA TIMERS ARE PAUSED");
-        foreach (var SB in FindObjectsOfType<StaminaBar>())
-        {
-            SB.Paused = true;
-        }
+        Director.Instance.timeline.Paused = true;
     }
 
-    public static void UnpauseAllStaminaTimers()
+    public static void UnpauseStaminaTimer()
     {
-        //print("ALL STAMINA TIMERS ARE UNPAUSED");
-        foreach (var SB in FindObjectsOfType<StaminaBar>())
-        {
-            SB.Paused = false;
-        }
+        Director.Instance.timeline.Paused = false;
     }
 
     public static bool CheckIfAnyUnitIsDeciding()
@@ -117,6 +109,21 @@ public class Tools : MonoBehaviour
 
     }
 
+    public static bool CheckIfAllUnitsAreReady()
+    {
+        bool result = true;
+        if(BattleSystem.Instance != null)
+        {
+            foreach (var unit in BattleSystem.Instance.playerUnits)
+            {
+                if (unit.state != PlayerState.READY)
+                    result = false;
+            }
+        }       
+        return result;
+
+    }
+
     public static bool CheckIfAnyUnitIsTargetting()
     {
         bool result = false;
@@ -127,6 +134,36 @@ public class Tools : MonoBehaviour
         }
         return result;
 
+    }
+
+    public static Unit GetRandomEnemy(Unit unit)
+    {
+        Unit unitToReturn = new Unit();
+
+        if (unitToReturn.IsPlayerControlled)
+        {
+            unitToReturn = BattleSystem.Instance.enemyUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.enemyUnits.Count)];
+        }
+        else
+        {
+            unitToReturn = BattleSystem.Instance.playerUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.playerUnits.Count)];
+        }
+        return unitToReturn;
+    }
+
+    public static Unit GetRandomAlly(Unit unit)
+    {
+        Unit unitToReturn = new Unit();
+
+        if (unitToReturn.IsPlayerControlled)
+        {
+            unitToReturn = BattleSystem.Instance.playerUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.playerUnits.Count)];
+        }
+        else
+        {
+            unitToReturn = BattleSystem.Instance.enemyUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.enemyUnits.Count)];
+        }
+        return unitToReturn;
     }
 
     public static void EndAllTempEffectTimers()
@@ -245,14 +282,6 @@ public class Tools : MonoBehaviour
             unit.intentUI.gameObject.SetActive(false);
         }
         Destroy(unit.namePlate.gameObject);
-        foreach (var bar in GameObject.FindObjectsOfType<BattleBar>())
-        {
-            if (bar.unit == unit)
-            {
-                Destroy(bar.gameObject);
-                break;
-            }
-        }
         foreach (TimeLineChild child in Director.Instance.timeline.children)
         {
             if (child.unit.unitName == unit.unitName)
@@ -263,7 +292,6 @@ public class Tools : MonoBehaviour
             }
         }       
         Destroy(unit.health.gameObject);
-
     }
 
     public static List<Unit> DetermineAllies(Unit baseUnit)
@@ -304,16 +332,19 @@ public class Tools : MonoBehaviour
         }
         return enemies;
     }
-    public static void DetermineActionData(Unit baseUnit, int HowIsThisDetermined, int TargetNum, bool overrideTarget = false, Unit newTarget = null)
+    public static void DetermineActionData(Unit baseUnit, int HowIsThisDetermined, Unit overrideTarget = null)
     {
         var battlesystem = BattleSystem.Instance;
         baseUnit.actionList[HowIsThisDetermined].unit = baseUnit;
-        if (!overrideTarget)
+        if (overrideTarget != null)
         {
             switch (baseUnit.actionList[HowIsThisDetermined].targetType)
             {
-                case Action.TargetType.ANY:
-                    baseUnit.actionList[HowIsThisDetermined].targets = battlesystem.numOfUnits[TargetNum];
+                case Action.TargetType.ENEMY:
+                    {
+                        baseUnit.actionList[HowIsThisDetermined].targets = GetRandomEnemy(baseUnit);
+                    }
+                  
                     break;
                 case Action.TargetType.SELF:
                     baseUnit.actionList[HowIsThisDetermined].targets = baseUnit;
@@ -321,22 +352,23 @@ public class Tools : MonoBehaviour
                 case Action.TargetType.ALL_ENEMIES:
                     baseUnit.actionList[HowIsThisDetermined].targets = baseUnit;
                     break;
-                case Action.TargetType.ALLIES:
-                    baseUnit.actionList[HowIsThisDetermined].targets = baseUnit;
+                case Action.TargetType.ALLY:
+                    baseUnit.actionList[HowIsThisDetermined].targets = Tools.GetRandomAlly(baseUnit);
                     break;
             }
         }
         else
         {
-            baseUnit.actionList[HowIsThisDetermined].targets = newTarget;
+            baseUnit.actionList[HowIsThisDetermined].targets = overrideTarget;
         }
 
     }
-    public static IEnumerator RepeatBehavior(Unit unit)
+    /*public static IEnumerator RepeatBehavior(Unit unit)
     {
-        unit.StartCoroutine(unit.behavior.DoBehavior(unit));
+        unit.behavior.DoBehavior(unit);
         yield break;
     }
+    */
 
 
 
@@ -757,6 +789,15 @@ public class Tools : MonoBehaviour
             random = UnityEngine.Random.Range(min, max);
         }
         return random;
+    }
+
+    public static void SetupEnemyAction(Unit baseUnit, int DecidingNum, Unit overrideTarget = null)
+    {
+        Tools.DetermineActionData(baseUnit, DecidingNum, overrideTarget);
+        BattleSystem.Instance.DisplayEnemyIntent(baseUnit.actionList[DecidingNum], baseUnit);
+        baseUnit.state = PlayerState.READY;
+        baseUnit.timelinechild.stamina.DoCost(baseUnit.actionList[DecidingNum].cost);
+        BattleSystem.Instance.AddAction(baseUnit.actionList[DecidingNum]);
     }
 
 

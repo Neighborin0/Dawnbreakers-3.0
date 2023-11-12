@@ -44,7 +44,7 @@ public class ActionContainer : MonoBehaviour
     void Update()
     {
         var hit = Tools.GetMousePos();
-        if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null && hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ANY && action.actionType == Action.ActionType.ATTACK && hit.collider.gameObject.GetComponent<Unit>().IsHighlighted && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
+        if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null && hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK && hit.collider.gameObject.GetComponent<Unit>().IsHighlighted && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
         {
             var unit = hit.collider.gameObject.GetComponent<Unit>();
             unit.timelinechild.Shift(unit);
@@ -61,7 +61,7 @@ public class ActionContainer : MonoBehaviour
                 damageNums.color = Color.red;
             }
         }
-        else if (action.targetType == Action.TargetType.ANY && action.actionType == Action.ActionType.ATTACK)
+        else if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
         {
             damageNums.text = "<sprite name=\"ATK\">" + (action.damage + baseUnit.attackStat).ToString();
             damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
@@ -74,7 +74,6 @@ public class ActionContainer : MonoBehaviour
                 RemoveDescription();
                 foreach (var z in Tools.GetAllUnits())
                 {
-                    //Debug.LogWarning(z.unitName);
                     z.isDarkened = false;
                     z.IsHighlighted = false;
                 }
@@ -83,7 +82,7 @@ public class ActionContainer : MonoBehaviour
 
                 switch (action.targetType)
             {
-                case Action.TargetType.ANY:
+                case Action.TargetType.ENEMY:
                     foreach (var unit in Tools.GetAllUnits())
                     {
                         if(targetting)
@@ -162,7 +161,7 @@ public class ActionContainer : MonoBehaviour
                         }
                     }
                     break;
-                case Action.TargetType.ALLIES:
+                case Action.TargetType.ALLY:
                     foreach (var unit in Tools.GetAllUnits())
                     {
                         if (targetting)
@@ -352,10 +351,10 @@ public class ActionContainer : MonoBehaviour
                     Director.Instance.timeline.children.Add(TL);
                     TL.CanMove = false;
                     TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
-                    TL.rectTransform.anchoredPosition = new Vector3((TL.unit.stamina.slider.maxValue - action.cost) * -11.89f, 85);
-                    TL.stamina.text = (TL.unit.stamina.slider.maxValue - action.cost).ToString();
+                    TL.rectTransform.anchoredPosition = new Vector3((100 - action.cost) * -11.89f, 85);
+                    TL.staminaText.text = (100 - action.cost).ToString();
                     TL.CanClear = true;
-                    TL.playerPoint.gameObject.SetActive(true);
+                    //TL.playerPoint.gameObject.SetActive(true);
                     TL.CanBeHighlighted = false;
                     TL.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
                     TL.portrait.color = new Color(1, 1, 1, 0.5f);

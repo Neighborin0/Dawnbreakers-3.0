@@ -10,7 +10,7 @@ public class Slash : Action
         ActionName = "Slash";
         damage = 5;
         cost = 50f;
-        targetType = TargetType.ANY;
+        targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
         damageText = damage.ToString();
     }

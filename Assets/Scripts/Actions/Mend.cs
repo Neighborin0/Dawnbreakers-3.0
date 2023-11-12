@@ -11,7 +11,7 @@ public class Mend : Action
         limited = true;
         numberofUses = 3;
         statAmount = 5;
-        targetType = TargetType.ALLIES;
+        targetType = TargetType.ALLY;
         actionType = ActionType.STATUS;
         
     }

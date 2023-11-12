@@ -11,7 +11,7 @@ public class Slow : Action
         damage = 2;
         cost = 75f;
         statAmount = 2;
-        targetType = TargetType.ANY;
+        targetType = TargetType.ENEMY;
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
     }

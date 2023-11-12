@@ -18,7 +18,7 @@ public class Husk : Unit
 
         if (BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
         {
-            behavior = this.gameObject.AddComponent<RandomEnemyBehavior>();
+            behavior = this.gameObject.AddComponent<TutorialHuskMatriarchBehavior>();
             maxHP = UnityEngine.Random.Range(17, 22);
             attackStat = UnityEngine.Random.Range(4, 5);
             print("using Matriarch behavior");
@@ -29,54 +29,25 @@ public class Husk : Unit
             attackStat = UnityEngine.Random.Range(7, 12);
             print("using regular behavior");
         }
-        StartingStamina = UnityEngine.Random.Range(45, 50);
     }
 
-public class TutorialHuskMatriarchBehavior : EnemyBehavior
-{
-
-    public override IEnumerator DoBehavior(Unit baseUnit)
+    public class TutorialHuskMatriarchBehavior : EnemyBehavior
+    {
+        public override void DoBehavior(Unit baseUnit)
         {
             var battlesystem = BattleSystem.Instance;
-            var num = UnityEngine.Random.Range(0, battlesystem.numOfUnits.Count);
-            if (battlesystem.numOfUnits[num].IsPlayerControlled)
+            int move = UnityEngine.Random.Range(0, baseUnit.actionList.Count);
+            if (battlesystem.playerUnits[1] != null)
             {
-                int move = UnityEngine.Random.Range(0, baseUnit.actionList.Count);
-             
-                if(battlesystem.playerUnits[1] != null)
-                {
-                    Tools.DetermineActionData(baseUnit, move, num, true, battlesystem.playerUnits[1]);
-                }
-                else
-                {
-                    Tools.DetermineActionData(baseUnit, move, num);
-                }
-                
-
-                baseUnit.state = PlayerState.READY;
-                battlesystem.DisplayEnemyIntent(baseUnit.actionList[move], baseUnit);
-                yield return new WaitUntil(() => baseUnit.stamina.slider.value >= baseUnit.stamina.slider.maxValue);
-                if (battlesystem.playerUnits[1] != null)
-                {
-                    Tools.DetermineActionData(baseUnit, move, num, true, battlesystem.playerUnits[1]);
-                }
-                else
-                {
-                    Tools.DetermineActionData(baseUnit, move, num);
-                }
-                baseUnit.stamina.DoCost(baseUnit.actionList[move].cost);
-                battlesystem.AddAction(baseUnit.actionList[move]);
+                Tools.SetupEnemyAction(baseUnit, move, battlesystem.playerUnits[1]);
             }
             else
             {
-                StartCoroutine(Tools.RepeatBehavior(baseUnit));
+                Tools.SetupEnemyAction(baseUnit, move);
             }
+
         }
 
-}
-
-
-
-
+    }
 }
 

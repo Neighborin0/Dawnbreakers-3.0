@@ -139,7 +139,7 @@ public class OptionsManager : MonoBehaviour
                 {
                     Director.Instance.previousCameraState = LabCamera.Instance.state;
                     LabCamera.Instance.state = LabCamera.CameraState.IDLE;
-                    Tools.PauseAllStaminaTimers();
+                    Tools.PauseStaminaTimer();
                 }
                 else
                 {
@@ -147,7 +147,7 @@ public class OptionsManager : MonoBehaviour
                     LabCamera.Instance.state = Director.Instance.previousCameraState;
                     if(!Tools.CheckIfAnyUnitIsDeciding() && !BattleSystem.Instance.Paused)
                     {
-                        Tools.UnpauseAllStaminaTimers();
+                        Tools.UnpauseStaminaTimer();
                     }
                    
                 }

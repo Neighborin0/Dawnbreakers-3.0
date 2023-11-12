@@ -46,7 +46,7 @@ public class Revitalize : EffectIcon
 
     private void RefillStamina(Unit obj)
     {
-        obj.stamina.slider.value = 100;
+        //obj.stamina.slider.value = 100;
         obj.BattlePhaseEnd -= RefillStamina;
     }
 

@@ -12,7 +12,7 @@ public class Strike : Action
         damageText = damage.ToString();
         cost = 50f;
         actionType = ActionType.ATTACK;
-        targetType = TargetType.ANY;
+        targetType = TargetType.ENEMY;
 
 
     }
@@ -38,7 +38,7 @@ public class Strike : Action
     {
         if (targets != null)
         {
-            unit.PlayAction("Attack", unit);
+            unit.PlayUnitAction("Attack", unit);
             yield return new WaitUntil(() => unit.Execute);
             LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
             yield return new WaitForSeconds(0.3f);

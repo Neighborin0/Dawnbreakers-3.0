@@ -9,7 +9,7 @@ public class Glint : Action
     {
         ActionName = "Push";
         cost = 25f;
-        targetType = TargetType.ANY;
+        targetType = TargetType.ENEMY;
         actionType = ActionType.STATUS;
         damageText = damage.ToString();
         duration = 5f;

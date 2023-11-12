@@ -62,7 +62,7 @@ public class IntentContainer : MonoBehaviour
         {
             switch (action.targetType)
             {
-                case Action.TargetType.ANY:
+                case Action.TargetType.ENEMY:
                     action.targets = BattleSystem.Instance.numOfUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.numOfUnits.Count)];
                     break;
                 case Action.TargetType.SELF:
@@ -71,7 +71,7 @@ public class IntentContainer : MonoBehaviour
                 case Action.TargetType.ALL_ENEMIES:
                     action.targets = unit;
                     break;
-                case Action.TargetType.ALLIES:
+                case Action.TargetType.ALLY:
                     action.targets = unit;
                     break;
             }

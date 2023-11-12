@@ -10,7 +10,7 @@ public class Whack : Action
         ActionName = "Whack";
         damage = 2;
         cost = 40f;
-        targetType = TargetType.ANY;
+        targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
         damageText = damage.ToString();
         duration = 5f;

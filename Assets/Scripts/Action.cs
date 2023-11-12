@@ -20,7 +20,7 @@ public abstract class Action : ScriptableObject
     public int numberofUses;
     public bool limited = false;
 
-    public enum TargetType { ANY, SELF, ALL_ENEMIES, ALLIES };
+    public enum TargetType { ENEMY, SELF, ALL_ENEMIES, ALLY };
     public enum ActionType { ATTACK, STATUS };
 
     public TextMeshProUGUI text;

@@ -8,7 +8,7 @@ public class BattleBar : MonoBehaviour
 {
     public TextMeshProUGUI nameText;
     public Image portrait;
-    public StaminaBar stamina;
+    public Stamina stamina;
     public Healthbar healthbar;
     public Unit unit;
 

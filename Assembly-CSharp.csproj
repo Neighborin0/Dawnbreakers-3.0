@@ -133,6 +133,7 @@
     <Compile Include="Assets\Scripts\NamePlate.cs" />
     <Compile Include="Assets\Scripts\Director.cs" />
     <Compile Include="Assets\Scripts\PrologueEnding.cs" />
+    <Compile Include="Assets\Scripts\Stamina.cs" />
     <Compile Include="Assets\Scripts\CharacterTabPopup.cs" />
     <Compile Include="Assets\Scripts\Items\ItemDisplay.cs" />
     <Compile Include="Assets\Scripts\Map\CombatNode.cs" />
@@ -175,7 +176,6 @@
     <Compile Include="Assets\Scripts\Map\CharacterNode.cs" />
     <Compile Include="Assets\Scripts\Main Menu\SettingsBackButton.cs" />
     <Compile Include="Assets\Scripts\Map\RestNode.cs" />
-    <Compile Include="Assets\Scripts\StaminaBar.cs" />
     <Compile Include="Assets\Scripts\Main Menu\SettingsButton.cs" />
     <Compile Include="Assets\Scripts\Units\Aurelia.cs" />
     <Compile Include="Assets\Scripts\Actions\Slam.cs" />

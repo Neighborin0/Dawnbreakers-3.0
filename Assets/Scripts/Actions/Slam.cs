@@ -34,7 +34,7 @@ public class Slam : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        unit.PlayAction("Attack", unit);
+        unit.PlayUnitAction("Attack", unit);
         yield return new WaitUntil(() => unit.Execute);
         LabCamera.Instance.Shake(0.3f, 1.5f);
         foreach (var x in Tools.DetermineEnemies(unit))

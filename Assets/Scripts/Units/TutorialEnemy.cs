@@ -20,18 +20,17 @@ public class TutorialEnemy : Unit
         currentHP = maxHP;
         actionCostMultiplier = 1000f;
         IsPlayerControlled = false;
-        StartingStamina = 50f;
     }
     void Start()
     {
-        behavior = this.gameObject.AddComponent<TutorialEnemyBehavior>();
-        this.BattleStarted += CreateTutorialIcon;
-        this.GetComponent<TutorialEnemyBehavior>().TutorialIcon2 = TutorialIcon2;
+        behavior = gameObject.AddComponent<TutorialEnemyBehavior>();
+        BattleStarted += CreateTutorialIcon;
+        GetComponent<TutorialEnemyBehavior>().TutorialIcon2 = TutorialIcon2;
     }
 
     private void CreateTutorialIcon(Unit obj)
     {
-       StartCoroutine(TutorialDialogue(obj));
+        StartCoroutine(TutorialDialogue(obj));
     }
 
     private IEnumerator TutorialDialogue(Unit obj)
@@ -39,6 +38,7 @@ public class TutorialEnemy : Unit
         BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("AureliaTutorialHuskEncounter(1)"), true, false);
         yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
         Tools.ToggleUiBlocker(false, true);
+        yield return new WaitForSeconds(0.3f);
         if (Director.Instance.DevMode != true)
         {
             var tutorialIcon = Instantiate(TutorialIcon1, Director.Instance.canvas.transform);
@@ -46,7 +46,7 @@ public class TutorialEnemy : Unit
             tutorialIcon.GetComponent<MoveableObject>().Move(true);
         }
         BattleSystem.Instance.SetTempEffect(this, "revitalize", false, 0, 0, 0);
-        this.BattleStarted -= CreateTutorialIcon;
+        BattleStarted -= CreateTutorialIcon;
     }
 
     public class TutorialEnemyBehavior : EnemyBehavior
@@ -55,67 +55,48 @@ public class TutorialEnemy : Unit
         [SerializeField]
         public GameObject TutorialIcon2;
         bool DisabledAction = false;
-        public override IEnumerator DoBehavior(Unit baseUnit)
+        public override void DoBehavior(Unit baseUnit)
         {
 
-            yield return new WaitUntil(() => baseUnit.stamina != null);
             var battlesystem = BattleSystem.Instance;
-            var num = UnityEngine.Random.Range(0, battlesystem.numOfUnits.Count);
-            if (battlesystem.numOfUnits[num].IsPlayerControlled)
+            var Aurelia = Tools.CheckAndReturnNamedUnit("Aurelia");
+            //So player can't die during Tutorial Fight
+            if (Aurelia.currentHP <= 10)
             {
-                if (battlesystem.playerUnits[0].currentHP <= 10)
-                {
-                    Tools.DetermineActionData(baseUnit, 2, num);
-                    battlesystem.DisplayEnemyIntent(baseUnit.actionList[2], baseUnit);
-                    baseUnit.state = PlayerState.READY;
-                    yield return new WaitUntil(() => baseUnit.stamina.slider.value == baseUnit.stamina.slider.maxValue);
-                    Tools.DetermineActionData(baseUnit, 2, num);
-                    baseUnit.stamina.DoCost(baseUnit.actionList[2].cost);
-                    battlesystem.AddAction(baseUnit.actionList[2]);
-                }
-                else
-                {
-
-                    Tools.DetermineActionData(baseUnit, turn, num);
-                    battlesystem.DisplayEnemyIntent(baseUnit.actionList[turn], baseUnit);
-                    battlesystem.numOfUnits[num].skillUIs[0].GetComponent<ActionContainer>().Disabled = false;
-                    baseUnit.state = PlayerState.READY;
-                    if (turn == 1)
-                    {
-                        Debug.LogWarning(DisabledAction);
-                        if (!battlesystem.numOfUnits[num].actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault()))
-                        {
-                            battlesystem.numOfUnits[num].actionList.Add(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault());
-                            battlesystem.SetupHUD(battlesystem.numOfUnits[num], null);
-                            battlesystem.numOfUnits[num].stamina.slider.value = 50f;
-                            battlesystem.numOfUnits[num].skillUIs[0].GetComponent<ActionContainer>().Disabled = true;
-                            if (Director.Instance.DevMode != true)
-                            {
-                                Tools.ToggleUiBlocker(false, true);
-                                var tutorialIcon = Instantiate(TutorialIcon2, Director.Instance.canvas.transform);
-                                tutorialIcon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-5000, 0, 0f);
-                                tutorialIcon.GetComponent<MoveableObject>().Move(true);
-                            }
-                        }
-                    }
-                    yield return new WaitUntil(() => baseUnit.stamina.slider.value == baseUnit.stamina.slider.maxValue);
-                    Tools.DetermineActionData(baseUnit, turn, num);
-                    baseUnit.stamina.DoCost(baseUnit.actionList[turn].cost);
-                    battlesystem.AddAction(baseUnit.actionList[turn]);
-                    if (turn != 1)
-                    {
-                        turn += 1;
-                    }
-                    else
-                    {
-                        turn = 0;
-                    }
-                }
+                Tools.SetupEnemyAction(baseUnit, 2);
             }
             else
             {
-                StartCoroutine(Tools.RepeatBehavior(baseUnit));
+
+                Aurelia.skillUIs[0].GetComponent<ActionContainer>().Disabled = false;
+                if (turn == 1)
+                {
+                    Debug.LogWarning(DisabledAction);
+                    if (!Aurelia.actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault()))
+                    {
+                        Aurelia.actionList.Add(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault());
+                        battlesystem.SetupHUD(Aurelia, null);
+                        Aurelia.skillUIs[0].GetComponent<ActionContainer>().Disabled = true;
+                        if (Director.Instance.DevMode != true)
+                        {
+                            Tools.ToggleUiBlocker(false, true);
+                            var tutorialIcon = Instantiate(TutorialIcon2, Director.Instance.canvas.transform);
+                            tutorialIcon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-5000, 0, 0f);
+                            tutorialIcon.GetComponent<MoveableObject>().Move(true);
+                        }
+                    }
+                }
+                Tools.SetupEnemyAction(baseUnit, turn);
+                if (turn != 1)
+                {
+                    turn += 1;
+                }
+                else
+                {
+                    turn = 0;
+                }
             }
         }
+
     }
 }

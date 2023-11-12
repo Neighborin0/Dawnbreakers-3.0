@@ -24,8 +24,9 @@ public class Unit : MonoBehaviour
     [NonSerialized]
     public IntentContainer intentUI;
     public Healthbar health;
-    [NonSerialized]
+    /*[NonSerialized]
     public StaminaBar stamina;
+    */
     [NonSerialized]
     public NamePlate namePlate;
     [NonSerialized]
@@ -52,7 +53,7 @@ public class Unit : MonoBehaviour
     [NonSerialized]
     public bool StopMovingToUnit = false;
     [NonSerialized]
-    public float StartingStamina;
+    //public float StartingStamina;
     IEnumerator lightCoroutine;
     IEnumerator fadeCoroutine;
     public bool IsHidden;
@@ -150,7 +151,7 @@ public class Unit : MonoBehaviour
                 }    
             }
 
-            if (stamina != null)
+           /* if (stamina != null)
             {
                 if (IsPlayerControlled && stamina.slider.value == stamina.slider.maxValue && state == PlayerState.WAITING)
                 {
@@ -165,6 +166,8 @@ public class Unit : MonoBehaviour
                     }
                 }
             }
+           */
+           //Hit Detection
             if (hit.collider == this.GetComponent<BoxCollider>() && !isDarkened && !OverUI())
             {
                 if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && Tools.CheckIfAnyUnitIsDeciding())
@@ -185,18 +188,19 @@ public class Unit : MonoBehaviour
                 }
 
             }
+            //Makes sure Timeline Child Automatically Returns When Not Selected
             else if (timelinechild != null && !timelinechild.HighlightedIsBeingOverwritten)
             {
 
                 timelinechild.Return();
 
             }
-
+            //Decision Phase and Darkened
             if (isDarkened && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
             {
                 sprite.material.SetColor("_CharacterEmission", new Color(-0.01f, -0.01f, -0.01f));
             }
-
+            //Decision Start
             if (Input.GetMouseButtonUp(0))
             {
                 if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !OverUI() && state != PlayerState.DECIDING)
@@ -231,23 +235,11 @@ public class Unit : MonoBehaviour
                 }
             }
 
-            /*if (Input.GetMouseButtonUp(1))
-            {
-                if (state == PlayerState.DECIDING && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
-                {
-                    ExitDecision();
-                }
-
-            }
-            */
         }
        
-
-
-
     }
 
-    public void PlayAction(string AnimationName, Unit unit)
+    public void PlayUnitAction(string AnimationName, Unit unit)
     {
         var stateId = Animator.StringToHash(AnimationName);
         if (unit.anim != null)
@@ -277,33 +269,25 @@ public class Unit : MonoBehaviour
     public void Queue(Action action)
     {
         var newAction = UnityEngine.Object.Instantiate(action);
-        this.StopCoroutine(QueueAction(newAction));
         BattleSystem.SetUIOff(action.unit);
-        this.StartCoroutine(QueueAction(newAction));
+        QueueAction(newAction);
     }
-    private IEnumerator QueueAction(Action action)
+    private void QueueAction(Action action)
     {
         var battlesystem = BattleSystem.Instance;
-        yield return new WaitUntil(() => action.unit.stamina.slider.value == action.unit.stamina.slider.maxValue && battlesystem.state != BattleStates.BATTLE);
         if (action.unit != null && action.targets != null)
         {
-            if (action.unit.state == PlayerState.DECIDING)
-            {
-                yield break;
-            }
-
-            action.unit.stamina.DoCost(action.cost);
+            action.unit.timelinechild.stamina.DoCost(action.cost);
             battlesystem.AddAction(action);
             BattleSystem.SetUIOff(action.unit);
         }
-        yield break;
     }
 
-    public void StartDecision(bool DoesNotSetUnitPos = true)
+    public void StartDecision(bool DoesNotSetToUnitPos = true)
     {
         BattleSystem.SetUIOn(this);
         var sprite = GetComponent<SpriteRenderer>();
-        if (DoesNotSetUnitPos)
+        if (DoesNotSetToUnitPos)
             LabCamera.Instance.MoveToUnit(this, Vector3.zero, sprite.bounds.center.x / 5f, 0, 0, 1, true);
         else
             LabCamera.Instance.MoveToUnit(this, new Vector3(0, 16.8f, 0), sprite.bounds.center.x / 5f, 0, 0);

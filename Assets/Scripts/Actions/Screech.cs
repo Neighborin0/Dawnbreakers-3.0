@@ -11,7 +11,7 @@ public class Screech : Action
         damage = 2;
         cost = 30f;
         damageText = damage.ToString();
-        targetType = TargetType.ANY;
+        targetType = TargetType.ENEMY;
         actionType = ActionType.STATUS;
         statAmount = 2;
     }

@@ -18,7 +18,7 @@ public class Guard : Action
         cost = 30f;
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
-        targetType = TargetType.ALLIES;
+        targetType = TargetType.ALLY;
         duration = 5f;
     }
 

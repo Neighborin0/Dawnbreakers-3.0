@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class EnemyBehavior : MonoBehaviour
 {
-    public virtual IEnumerator DoBehavior(Unit baseUnit) { yield break; }
+    public virtual void DoBehavior(Unit baseUnit) {}
 }

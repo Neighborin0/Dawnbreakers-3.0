@@ -17,7 +17,6 @@ public class TestDummy : Unit
         speedStat = 0;
         currentHP = maxHP;
         IsPlayerControlled = false;
-        StartingStamina = 1;
         behavior = this.gameObject.AddComponent<RandomEnemyBehavior>();
         Tools.AddItemToInventory(this, "Iron Shield");
     }

@@ -41,7 +41,6 @@ public class Summon : Action
                         summon.transform.localScale = new Vector3(9f, 9f, 9f);
                         BattleSystem.Instance.SetupHUD(summon, BSP);
                         BattleSystem.Instance.playerUnits.Add(summon);
-                        summon.stamina.Paused = true;
                         break;
                     }
                    
@@ -59,7 +58,6 @@ public class Summon : Action
                         summon.transform.localScale = new Vector3(9f, 9f, 9f);
                         BattleSystem.Instance.SetupHUD(summon, BSP);
                         BattleSystem.Instance.enemyUnits.Add(summon);
-                        summon.stamina.Paused = true;
                         break;
                     }
 

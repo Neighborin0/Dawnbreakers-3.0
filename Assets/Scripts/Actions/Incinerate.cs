@@ -13,7 +13,7 @@ public class Incinerate : Action
         ActionName = "Incinerate";
         damage = 50;
         cost = 50f;
-        targetType = TargetType.ANY;
+        targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
     }
     public override string GetDescription()

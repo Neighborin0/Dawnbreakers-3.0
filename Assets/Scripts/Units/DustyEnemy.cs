@@ -21,14 +21,12 @@ public class DustyEnemy : Unit
         currentHP = maxHP;
         IsPlayerControlled = false;
         behavior = this.gameObject.AddComponent<DustyBehavior>();
-        StartingStamina = 75;
         if (!Director.Instance.DevMode)
             BattleStarted += DoCharacterText;
         IsHidden = true;
     }
     private void DoCharacterText(Unit obj)
     {
-        Tools.PauseAllStaminaTimers();
         BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaMeeting(1)"), true, false);
         foreach (var unit in Tools.GetAllUnits())
         {
@@ -40,32 +38,15 @@ public class DustyEnemy : Unit
     public class DustyBehavior : EnemyBehavior
     {
         private int turn;
-        private BattleSystem battlesystem;
         private Unit BaseUnit;
 
-        public override IEnumerator DoBehavior(Unit baseUnit)
+        public override void DoBehavior(Unit baseUnit)
         {
-            battlesystem = BattleSystem.Instance;
             BaseUnit = baseUnit;
-            var num = UnityEngine.Random.Range(0, battlesystem.numOfUnits.Count);
-            print(turn);
             if (turn != 3)
             {
-                if (battlesystem.numOfUnits[num].IsPlayerControlled)
-                {
-                    Tools.DetermineActionData(baseUnit, turn, num);
-                    battlesystem.DisplayEnemyIntent(baseUnit.actionList[turn], baseUnit);
-                    baseUnit.state = PlayerState.READY;
-                    yield return new WaitUntil(() => baseUnit.stamina.slider.value == baseUnit.stamina.slider.maxValue);
-                    Tools.DetermineActionData(baseUnit, turn, num);
-                    baseUnit.stamina.DoCost(baseUnit.actionList[turn].cost);
-                    battlesystem.AddAction(baseUnit.actionList[turn]);
-                    turn++;
-                }
-                else
-                {
-                    StartCoroutine(Tools.RepeatBehavior(baseUnit));
-                }
+                Tools.SetupEnemyAction(baseUnit, turn);
+                turn++;
             }
             else
             {
@@ -89,9 +70,9 @@ public class DustyEnemy : Unit
             Tools.AddNewActionToUnit(BattleSystem.Instance.playerUnits[0], "Sweep");
             MapController.Instance.ReEnteredMap += BattleLog.Instance.DoPostBattleDialouge;
             SceneManager.sceneLoaded += AddDusty;
-            Tools.PauseAllStaminaTimers();
+            //Tools.PauseStaminaTimer();
             BattleSystem.Instance.StopUpdating = true;
-            Tools.TurnOffCriticalUI(BaseUnit);  
+            Tools.TurnOffCriticalUI(BaseUnit);
         }
 
         private void AddDusty(Scene scene, LoadSceneMode mode)

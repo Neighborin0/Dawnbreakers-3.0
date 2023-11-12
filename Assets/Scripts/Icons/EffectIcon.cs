@@ -120,7 +120,7 @@ public class EffectIcon : MonoBehaviour
     {
         if(TimedEffect && owner != null)
         {
-            if (owner.stamina.Paused)
+            if (Director.Instance.timeline.Paused)
             {
                 isPaused = true;
             }

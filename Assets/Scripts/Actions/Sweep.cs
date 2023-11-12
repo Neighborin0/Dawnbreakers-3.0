@@ -11,7 +11,7 @@ public class Sweep : Action
         ActionName = "Sweep";
         damage = -1;
         cost = 30f;
-        targetType = TargetType.ANY;
+        targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
         damageText = damage.ToString();
     }
@@ -37,7 +37,7 @@ public class Sweep : Action
     public override IEnumerator ExecuteAction()
     {
         int AdditionalDMG = 0;
-        unit.PlayAction("Attack", unit);
+        unit.PlayUnitAction("Attack", unit);
         yield return new WaitUntil(() => unit.Execute);
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);

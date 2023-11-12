@@ -183,15 +183,6 @@ public class Healthbar : MonoBehaviour
             yield return new WaitUntil(() => BattleLog.Instance.characterdialog.IsActive());
             yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
             LabCamera.Instance.ResetPosition(true);
-            foreach (var x in BattleSystem.Instance.playerUnits)
-            {
-                if (x.stamina.slider.value == x.stamina.slider.maxValue)
-                {
-                    BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
-                    x.StartDecision();
-                    break;
-                }
-            }
             print("Player should be dead");
         }
         else
