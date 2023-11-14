@@ -20,5 +20,9 @@ public class Nothing : Action
         return description;
     }
 
-
+    public override IEnumerator ExecuteAction()
+    {
+        this.Done = true;
+        yield break;
+    }
 }

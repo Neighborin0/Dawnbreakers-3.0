@@ -298,7 +298,7 @@ public class BattleLog : MonoBehaviour
                 }
                 LabCamera.Instance.uicam.gameObject.SetActive(false);
                 Director.Instance.timeline.GetComponent<MoveableObject>().Move(false);
-                Tools.PauseStaminaTimer();
+                //Tools.PauseStaminaTimer();
                 print("BATTLE SHOULD BE PAUSED");
                 ClearAllBattleLogText();
                 BattleSystem.Instance.state = BattleStates.TALKING;

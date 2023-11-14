@@ -22,7 +22,6 @@ public class IntentContainer : MonoBehaviour
         if (BattleSystem.Instance.state != BattleStates.BATTLE)
         {
             action.targets.IsHighlighted = true;
-            action.targets.timelinechild.Shift(action.targets);
             action.unit.timelinechild.HighlightedIsBeingOverwritten = true;
             this.unit.timelinechild.HighlightedIsBeingOverwritten = true;
             this.unit.timelinechild.Shift(this.unit);
@@ -49,9 +48,7 @@ public class IntentContainer : MonoBehaviour
     public void RemoveDescription()
     {
         action.targets.IsHighlighted = false;
-        action.targets.timelinechild.Return();
         this.unit.timelinechild.Return();
-        action.targets.timelinechild.HighlightedIsBeingOverwritten = false;
         this.unit.timelinechild.HighlightedIsBeingOverwritten = false;
         BattleLog.Instance.itemText.gameObject.SetActive(false);
     }

@@ -10,10 +10,6 @@ public class TutorialIcon : MonoBehaviour
 
     public void Update()
     {
-        if(!IsBeingDestroyed)
-        {
-            Tools.PauseStaminaTimer();
-        }
         if (Input.GetKeyDown(KeyCode.Space) && !IsBeingDestroyed)
         {
             StartCoroutine(StartDestroying());
@@ -30,7 +26,6 @@ public class TutorialIcon : MonoBehaviour
         GetComponent<MoveableObject>().Move(false);
         BattleSystem.Instance.playerUnits[0].StartDecision(false);
         Tools.ToggleUiBlocker(true, true);
-        Tools.UnpauseStaminaTimer();
         yield return new WaitForSeconds(2f);
         Destroy(this.gameObject);
     }

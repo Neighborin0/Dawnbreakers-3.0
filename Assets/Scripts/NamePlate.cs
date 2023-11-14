@@ -7,7 +7,7 @@ using System;
 
 public class NamePlate : MonoBehaviour
 {
-    public TextMeshProUGUI nameText;
+    //public TextMeshProUGUI nameText;
     public GridLayoutGroup IconGrid;
     public GameObject DEF_icon;
     public TextMeshProUGUI defText;
@@ -15,8 +15,9 @@ public class NamePlate : MonoBehaviour
 
      void Start()
     {
-        nameText.outlineWidth = 0.2f;
+        /*nameText.outlineWidth = 0.2f;
         nameText.outlineColor = Color.black;
+        */
         if (!unit.IsPlayerControlled)
         {
             DEF_icon.gameObject.SetActive(true);

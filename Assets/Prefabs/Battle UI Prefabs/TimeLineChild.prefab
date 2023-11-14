@@ -98,13 +98,12 @@ MonoBehaviour:
   rectTransform: {fileID: 0}
   CanClear: 0
   PositionToMoveTo: {x: 0, y: 0}
-  stamina: {fileID: 2367804285270959445}
+  staminaText: {fileID: 2367804285270959445}
   TimelineChildChild: {fileID: 6007211996699473503}
-  playerPoint: {fileID: 5403960351164552912}
-  EnemyPoint: {fileID: 8699265723279433572}
   UnitIsHighlighted: 0
   HighlightedIsBeingOverwritten: 0
   CanBeHighlighted: 1
+  value: 0
 --- !u!114 &7428458782112312656
 MonoBehaviour:
   m_ObjectHideFlags: 0

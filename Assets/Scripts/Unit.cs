@@ -184,16 +184,15 @@ public class Unit : MonoBehaviour
                 if (BattleSystem.Instance.CheckPlayableState())
                 {
                     sprite.material.SetColor("_CharacterEmission", new Color(0.01f, 0.01f, 0.01f));
-                    this.timelinechild.Shift(this);
+                    if(timelinechild != null)
+                        this.timelinechild.Shift(this);
                 }
 
             }
             //Makes sure Timeline Child Automatically Returns When Not Selected
             else if (timelinechild != null && !timelinechild.HighlightedIsBeingOverwritten)
             {
-
                 timelinechild.Return();
-
             }
             //Decision Phase and Darkened
             if (isDarkened && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
@@ -274,11 +273,10 @@ public class Unit : MonoBehaviour
     }
     private void QueueAction(Action action)
     {
-        var battlesystem = BattleSystem.Instance;
         if (action.unit != null && action.targets != null)
         {
-            action.unit.timelinechild.stamina.DoCost(action.cost);
-            battlesystem.AddAction(action);
+            Director.Instance.timeline.DoCost(action.cost, action.unit);
+            BattleSystem.Instance.AddAction(action);
             BattleSystem.SetUIOff(action.unit);
         }
     }
@@ -293,6 +291,10 @@ public class Unit : MonoBehaviour
             LabCamera.Instance.MoveToUnit(this, new Vector3(0, 16.8f, 0), sprite.bounds.center.x / 5f, 0, 0);
 
         BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
+        if(timelinechild != null)
+        {
+            Director.Instance.timeline.RemoveTimelineChild(this);
+        }  
         print("Unit is deciding an action");
     }
 
@@ -307,8 +309,9 @@ public class Unit : MonoBehaviour
 
     public void ExitDecision()
     {
-        if (state != PlayerState.WAITING)
+        /*if (state != PlayerState.WAITING)
             state = PlayerState.IDLE;
+        */
 
         BattleSystem.SetUIOff(this);
         foreach (TimeLineChild child in Director.Instance.timeline.children)

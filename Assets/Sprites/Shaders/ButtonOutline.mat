@@ -58,7 +58,7 @@ Material:
     - OutlineThickness: 0
     - _OutlineThickness: 1
     m_Colors:
-    - OutlineColor: {r: 1, g: 1, b: 1, a: 1}
+    - OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _CharacterEmission: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}

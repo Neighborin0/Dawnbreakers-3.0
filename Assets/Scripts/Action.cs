@@ -24,7 +24,6 @@ public abstract class Action : ScriptableObject
     public enum ActionType { ATTACK, STATUS };
 
     public TextMeshProUGUI text;
-   // public GameObject targettingbutton;
     public Unit unit;
     public TargetType targetType;
     public ActionType actionType;
@@ -34,7 +33,6 @@ public abstract class Action : ScriptableObject
     {
         text.text = ActionName;
         damageText = damage.ToString();
-        //Init();
     }
 
     public void OnActivated(){ Director.Instance.StartCoroutine(ExecuteAction()); }

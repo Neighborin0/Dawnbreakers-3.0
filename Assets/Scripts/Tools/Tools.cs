@@ -117,7 +117,10 @@ public class Tools : MonoBehaviour
             foreach (var unit in BattleSystem.Instance.playerUnits)
             {
                 if (unit.state != PlayerState.READY)
+                {
                     result = false;
+                    break;
+                }
             }
         }       
         return result;
@@ -140,7 +143,7 @@ public class Tools : MonoBehaviour
     {
         Unit unitToReturn = new Unit();
 
-        if (unitToReturn.IsPlayerControlled)
+        if (unit.IsPlayerControlled)
         {
             unitToReturn = BattleSystem.Instance.enemyUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.enemyUnits.Count)];
         }
@@ -155,7 +158,7 @@ public class Tools : MonoBehaviour
     {
         Unit unitToReturn = new Unit();
 
-        if (unitToReturn.IsPlayerControlled)
+        if (unit.IsPlayerControlled)
         {
             unitToReturn = BattleSystem.Instance.playerUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.playerUnits.Count)];
         }
@@ -334,9 +337,8 @@ public class Tools : MonoBehaviour
     }
     public static void DetermineActionData(Unit baseUnit, int HowIsThisDetermined, Unit overrideTarget = null)
     {
-        var battlesystem = BattleSystem.Instance;
         baseUnit.actionList[HowIsThisDetermined].unit = baseUnit;
-        if (overrideTarget != null)
+        if (overrideTarget == null)
         {
             switch (baseUnit.actionList[HowIsThisDetermined].targetType)
             {
@@ -344,7 +346,6 @@ public class Tools : MonoBehaviour
                     {
                         baseUnit.actionList[HowIsThisDetermined].targets = GetRandomEnemy(baseUnit);
                     }
-                  
                     break;
                 case Action.TargetType.SELF:
                     baseUnit.actionList[HowIsThisDetermined].targets = baseUnit;
@@ -793,10 +794,11 @@ public class Tools : MonoBehaviour
 
     public static void SetupEnemyAction(Unit baseUnit, int DecidingNum, Unit overrideTarget = null)
     {
-        Tools.DetermineActionData(baseUnit, DecidingNum, overrideTarget);
+        DetermineActionData(baseUnit, DecidingNum);
         BattleSystem.Instance.DisplayEnemyIntent(baseUnit.actionList[DecidingNum], baseUnit);
+        DetermineActionData(baseUnit, DecidingNum);
         baseUnit.state = PlayerState.READY;
-        baseUnit.timelinechild.stamina.DoCost(baseUnit.actionList[DecidingNum].cost);
+        Director.Instance.timeline.DoCost(baseUnit.actionList[DecidingNum].cost, baseUnit);
         BattleSystem.Instance.AddAction(baseUnit.actionList[DecidingNum]);
     }
 

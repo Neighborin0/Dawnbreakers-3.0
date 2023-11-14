@@ -10522,7 +10522,7 @@ MonoBehaviour:
   Continue: {fileID: 0}
   canvas: {fileID: 8266003048278291697}
   IntensityLevel: 0
-  UserTimelineSpeedDelay: 0.5
+  UserTimelineSpeedDelay: 100
   mapSensitivityMultiplier: 1
   textSpeedMultiplier: 1
   CanPause: 1

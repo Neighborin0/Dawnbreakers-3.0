@@ -19,7 +19,7 @@ public class TimeLineChild : MonoBehaviour
     public bool UnitIsHighlighted;
     public bool HighlightedIsBeingOverwritten = false;
     public bool CanBeHighlighted = true;
-    public Stamina stamina;
+    public float value;
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -40,8 +40,8 @@ public class TimeLineChild : MonoBehaviour
     {
         if(CanMove)
         {        
-            rectTransform.anchoredPosition = Vector3.Lerp(rectTransform.anchoredPosition, new Vector3(stamina.value * -11.89f, rectTransform.anchoredPosition.y), Director.Instance.timelinespeedDelay);
-            staminaText.text = Mathf.Round(stamina.value).ToString();
+            rectTransform.anchoredPosition = Vector3.Lerp(rectTransform.anchoredPosition, new Vector3(value * -11.89f, rectTransform.anchoredPosition.y), Director.Instance.timelinespeedDelay);
+            staminaText.text = Mathf.Round(value).ToString();
         }
         TimelineChildChild.GetComponent<Image>().color = GetComponent<Image>().color;
         /*if(unit.IsHighlighted)
@@ -55,7 +55,6 @@ public class TimeLineChild : MonoBehaviour
         */
 
     }
-
     public void MoveToNewPosition(Vector2 pos) 
     {
         PositionToMoveTo = pos;
@@ -115,5 +114,5 @@ public class TimeLineChild : MonoBehaviour
             }
         }
     }
-  
+
 }

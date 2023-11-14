@@ -4768,7 +4768,7 @@ MonoBehaviour:
   backButton: {fileID: 392729442206650620}
   timeline: {fileID: 6650513377061637855}
   timelinespeedDelay: 5
-  staminaSPDDivider: 0.5
+  staminaSPDDivider: 2
   LevelUpText: {fileID: 392729442282237862}
   chooseYourItemText: {fileID: 6593003078322277525}
   EffectPopUp: {fileID: 2722881081763327465, guid: eb8d0c7c2fb7e724ca7adc6491082caa,

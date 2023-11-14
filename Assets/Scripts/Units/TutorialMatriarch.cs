@@ -26,7 +26,6 @@ public class TutorialMatriarch : Unit
     }
     private void DoCharacterText(Unit obj)
     {
-        Tools.PauseStaminaTimer();
         BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("MatriarchIntro"), true, false);
         foreach (var unit in Tools.GetAllUnits())
         {
@@ -48,7 +47,6 @@ public class TutorialMatriarch : Unit
             unit.StaminaHighlightIsDisabled = true;
         }
         yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
-        Tools.UnpauseStaminaTimer();
         OnPlayerUnitDeath -= Gloat;
     }
 }
