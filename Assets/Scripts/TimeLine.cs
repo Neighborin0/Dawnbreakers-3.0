@@ -31,7 +31,7 @@ public class TimeLine : MonoBehaviour
             if (slider.value < slider.maxValue && !Resetting)
                 slider.value += Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay;
             else if(slider.value > 0 && Resetting)
-                slider.value -= Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay;
+                slider.value -= Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay * 2f;
         }
     }
 
@@ -53,6 +53,7 @@ public class TimeLine : MonoBehaviour
         TL.unit = unit;
         unit.timelinechild = TL;
         TL.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        TL.value = slider.maxValue;
         return TL;
     }
 
@@ -72,6 +73,7 @@ public class TimeLine : MonoBehaviour
             if (action.unit.unitName == unit.unitName)
             {
                 BattleSystem.Instance.ActionsToPerform.Remove(action);
+                break;
             }
         }
     }

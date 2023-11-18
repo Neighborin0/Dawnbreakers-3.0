@@ -574,9 +574,8 @@ public class BattleSystem : MonoBehaviour
         int i = 0;
         if (unit.skillUIs != null && unit.IsPlayerControlled)
         {
-            /*if (unit.state != PlayerState.WAITING)
+            if(unit.state == PlayerState.DECIDING)
                 unit.state = PlayerState.IDLE;
-            */
 
             foreach (var skill in unit.skillUIs)
             {
@@ -676,6 +675,9 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PerformAction()
     {
+        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - x.cost).ToList();
+        ActionsToPerform.Reverse();
+        print(ActionsToPerform);
         Director.Instance.timeline.slider.value = 0;
         LabCamera.Instance.ResetPosition();
         Tools.PauseStaminaTimer();

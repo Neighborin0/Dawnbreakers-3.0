@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using static UnityEngine.UI.CanvasScaler;
 
 
 public class ActionContainer : MonoBehaviour
@@ -23,6 +24,7 @@ public class ActionContainer : MonoBehaviour
     public bool Disabled = false;
     public int numberofUses;
     public bool limited = false;
+    private TimeLineChild TL; 
 
     void Awake()
     {
@@ -71,6 +73,7 @@ public class ActionContainer : MonoBehaviour
 
             if (Input.GetMouseButtonUp(1))
             {
+                LabCamera.Instance.MoveToUnit(Tools.FindDecidingUnit(), Vector3.zero);
                 RemoveDescription();
                 foreach (var z in Tools.GetAllUnits())
                 {
@@ -78,11 +81,17 @@ public class ActionContainer : MonoBehaviour
                     z.IsHighlighted = false;
                 }
                 SetActive();
+                if (TL != null)
+                {
+                    Director.Instance.timeline.children.Remove(TL);
+                    Destroy(TL.gameObject);
+                }
             }
 
             switch (action.targetType)
             {
                 case Action.TargetType.ENEMY:
+                   
                     foreach (var unit in Tools.GetAllUnits())
                     {
                         if (targetting)
@@ -122,7 +131,13 @@ public class ActionContainer : MonoBehaviour
                             this.targetting = false;
                             LabCamera.Instance.ResetPosition();
                             BattleLog.Instance.ResetBattleLog();
+                            LabCamera.Instance.ResetPosition();
                             SetActive();
+                            if (TL != null)
+                            {
+                                Director.Instance.timeline.children.Remove(TL);
+                                Destroy(TL.gameObject);
+                            }
                         }
 
 
@@ -153,6 +168,12 @@ public class ActionContainer : MonoBehaviour
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             RemoveDescription();
+                            LabCamera.Instance.ResetPosition();
+                            if (TL != null)
+                            {
+                                Director.Instance.timeline.children.Remove(TL);
+                                Destroy(TL.gameObject);
+                            }
                             foreach (var unit in Tools.GetAllUnits())
                             {
                                 unit.IsHighlighted = false;
@@ -200,6 +221,13 @@ public class ActionContainer : MonoBehaviour
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                             SetActive();
+                            LabCamera.Instance.ResetPosition();
+                            if (TL != null)
+                            {
+                                Director.Instance.timeline.children.Remove(TL);
+                                Destroy(TL.gameObject);
+                            }
+                              
                         }
                     }
                     break;
@@ -281,15 +309,7 @@ public class ActionContainer : MonoBehaviour
                     targetting = false;
                     BattleLog.Instance.DoBattleText("");
                     print("not targetting");
-                    foreach (TimeLineChild child in Director.Instance.timeline.children)
-                    {
-                        if (child.CanClear)
-                        {
-                            Director.Instance.timeline.children.Remove(child);
-                            Destroy(child.gameObject);
-                            break;
-                        }
-                    }
+                    LabCamera.Instance.ResetPosition();
                     var button = GetComponent<Button>();
                     if (!Disabled)
                     {
@@ -357,9 +377,9 @@ public class ActionContainer : MonoBehaviour
                             break;
                         }
                     }
-
+                    LabCamera.Instance.ResetPosition();
                     RemoveDescription();
-                    var TL = Instantiate(Director.Instance.timeline.borderChildprefab, Director.Instance.timeline.startpoint);
+                    TL = Instantiate(Director.Instance.timeline.borderChildprefab, Director.Instance.timeline.startpoint);
                     TL.unit = baseUnit;
                     TL.portrait.sprite = baseUnit.charPortraits[0];
                     Director.Instance.timeline.children.Add(TL);
@@ -368,7 +388,6 @@ public class ActionContainer : MonoBehaviour
                     TL.rectTransform.anchoredPosition = new Vector3((100 - action.cost) * -11.89f, 85);
                     TL.staminaText.text = (100 - action.cost).ToString();
                     TL.CanClear = true;
-                    //TL.playerPoint.gameObject.SetActive(true);
                     TL.CanBeHighlighted = false;
                     TL.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
                     TL.portrait.color = new Color(1, 1, 1, 0.5f);
@@ -376,6 +395,9 @@ public class ActionContainer : MonoBehaviour
                     print("targetting");
                     SetDescription();
                     button.interactable = false;
+                    if(action.targetType == Action.TargetType.ENEMY)
+                        LabCamera.Instance.MoveToPosition(new Vector3(1, LabCamera.Instance.transform.position.y, LabCamera.Instance.transform.position.z), 1f);
+
                 }
             }
             else

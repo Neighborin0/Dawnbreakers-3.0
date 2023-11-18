@@ -135,7 +135,7 @@ public class Unit : MonoBehaviour
                     sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
 
                 }
-                else if (state == PlayerState.WAITING)
+                else if (state == PlayerState.READY && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && IsPlayerControlled)
                 {
 
                     sprite.material.SetFloat("_OutlineThickness", 1f);
@@ -227,6 +227,10 @@ public class Unit : MonoBehaviour
                     {
                         StopMovingToUnit = false;
                         BattleLog.Instance.DisplayCharacterStats(this, true);
+                        if(state == PlayerState.READY)
+                        {
+                            Director.Instance.timeline.RemoveTimelineChild(this);
+                        }
                         StartDecision();
 
                     }

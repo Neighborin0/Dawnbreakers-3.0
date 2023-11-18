@@ -295,11 +295,12 @@ public class LabCamera : MonoBehaviour
         }
     }
 
-    public void MoveToPosition(Vector3 position)
+    public void MoveToPosition(Vector3 position, float MovingTimeDivider = 1f)
     {
         smoothingTime = 0f;
         state = CameraState.MOVING;
         PositonToMoveTo = position;
+        this.MovingTimeDivider = MovingTimeDivider;
     }
 
     public void ResetPosition(bool forceSWAY = false)

@@ -11,8 +11,8 @@ public class EffectIcon : MonoBehaviour
 {
     public Image icon;
     public Unit owner;
-    public TextMeshProUGUI timerText;
-    public bool isPaused = true;
+    //public TextMeshProUGUI timerText;
+    //public bool isPaused = true;
     public bool ForceEnd = false;
     public bool DoFancyStatChanges;
     public string description;
@@ -32,7 +32,7 @@ public class EffectIcon : MonoBehaviour
     public void Initalize(Unit unit, bool dofancystatchanges, float duration = 0, float storedvalue = 0, float numberofStacks = 0)
     {
     
-        if(duration > 0)
+        /*if(duration > 0)
         {
             timerText.text = duration.ToString();
         }
@@ -44,9 +44,10 @@ public class EffectIcon : MonoBehaviour
         {
             timerText.text = string.Empty;
         }
-        this.isPaused = true;
-        var manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable = timerText.GetComponent<RectTransform>();
-        manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable.sizeDelta = new Vector2(70.24f, 21.96f);    
+        */
+        //this.isPaused = true;
+        //var manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable = timerText.GetComponent<RectTransform>();
+        //manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable.sizeDelta = new Vector2(70.24f, 21.96f);    
         storedValue = storedvalue;
         DoFancyStatChanges = dofancystatchanges;
         if(duration > 0)
@@ -56,7 +57,7 @@ public class EffectIcon : MonoBehaviour
 
     }
 
-    public IEnumerator StartTimer(float duration) 
+   /* public IEnumerator StartTimer(float duration) 
     {
         print($"Duration: {duration}");
         var timer = duration;
@@ -71,6 +72,7 @@ public class EffectIcon : MonoBehaviour
         }
         DestoryEffectIcon();
     }
+   */
 
     public IEnumerator Pop()
     {
@@ -118,7 +120,7 @@ public class EffectIcon : MonoBehaviour
     public virtual IEnumerator End() { yield break; }
     public void Update()
     {
-        if(TimedEffect && owner != null)
+       /* if(TimedEffect && owner != null)
         {
             if (Director.Instance.timeline.Paused)
             {
@@ -129,6 +131,7 @@ public class EffectIcon : MonoBehaviour
                 isPaused = false;
             }
         }
+       */
        
        
     }

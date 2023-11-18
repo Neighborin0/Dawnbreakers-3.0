@@ -5674,6 +5674,11 @@ PrefabInstance:
       propertyPath: startpoint
       value: 
       objectReference: {fileID: 392729442457336685}
+    - target: {fileID: 8068871026713233995, guid: abac4264e98c6a24aabfd66a752fd5e3,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8630538620191985867, guid: abac4264e98c6a24aabfd66a752fd5e3,
         type: 3}
       propertyPath: m_Sprite
@@ -5688,7 +5693,7 @@ PrefabInstance:
     - target: {fileID: 9166818699658147911, guid: abac4264e98c6a24aabfd66a752fd5e3,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

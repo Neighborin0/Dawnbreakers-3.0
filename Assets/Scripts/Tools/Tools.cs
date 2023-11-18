@@ -316,6 +316,21 @@ public class Tools : MonoBehaviour
         }
         return allies;
     }
+
+  public static Unit FindDecidingUnit()
+    {
+        var DecidingUnit = new Unit();
+        foreach (var unit in Tools.GetAllUnits())
+        {
+            if (unit.state == PlayerState.DECIDING)
+            {
+                DecidingUnit = unit;
+                break;
+            }
+               
+        }
+        return DecidingUnit;
+    }
     public static List<Unit> DetermineEnemies(Unit baseUnit)
     {
         var enemies = new List<Unit>();
@@ -364,13 +379,6 @@ public class Tools : MonoBehaviour
         }
 
     }
-    /*public static IEnumerator RepeatBehavior(Unit unit)
-    {
-        unit.behavior.DoBehavior(unit);
-        yield break;
-    }
-    */
-
 
 
     public static void ClearAllCharacterSlots()
