@@ -13,6 +13,7 @@ public class DefendEF : EffectIcon
     {
         iconName = "DEF";
         description = $"+{storedValue} <sprite name=\"DEF BLUE\">";
+        TimedEffect = true;
         return description;
     }
 

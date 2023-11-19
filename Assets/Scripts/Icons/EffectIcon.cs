@@ -13,6 +13,7 @@ public class EffectIcon : MonoBehaviour
     public Unit owner;
     //public TextMeshProUGUI timerText;
     //public bool isPaused = true;
+    public float duration;
     public bool ForceEnd = false;
     public bool DoFancyStatChanges;
     public string description;
@@ -50,29 +51,46 @@ public class EffectIcon : MonoBehaviour
         //manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable.sizeDelta = new Vector2(70.24f, 21.96f);    
         storedValue = storedvalue;
         DoFancyStatChanges = dofancystatchanges;
-        if(duration > 0)
+        /*if(duration > 0)
         {
             StartCoroutine(StartTimer(duration));
         }
+        */
 
     }
 
-   /* public IEnumerator StartTimer(float duration) 
+    /* public IEnumerator StartTimer(float duration) 
+     {
+         print($"Duration: {duration}");
+         var timer = duration;
+         timerText.text = duration.ToString();
+         yield return new WaitUntil(() => !isPaused);
+         while (timer > 0 && !ForceEnd)
+         {
+             yield return new WaitUntil(() => !isPaused);
+             timer--;
+             timerText.text = timer.ToString();
+             yield return new WaitForSeconds(1f * OptionsManager.Instance.UserTimelineSpeedDelay);
+         }
+         DestoryEffectIcon();
+     }
+    */
+
+    public void Tick()
     {
-        print($"Duration: {duration}");
-        var timer = duration;
-        timerText.text = duration.ToString();
-        yield return new WaitUntil(() => !isPaused);
-        while (timer > 0 && !ForceEnd)
+        if (TimedEffect)
         {
-            yield return new WaitUntil(() => !isPaused);
-            timer--;
-            timerText.text = timer.ToString();
-            yield return new WaitForSeconds(1f * OptionsManager.Instance.UserTimelineSpeedDelay);
+            if (duration > 1)
+            {
+                duration -= 1;
+            }
+            else
+            {
+                duration -= 1;
+                DestoryEffectIcon();
+            }
         }
-        DestoryEffectIcon();
     }
-   */
 
     public IEnumerator Pop()
     {
@@ -118,9 +136,9 @@ public class EffectIcon : MonoBehaviour
 
     public void OnEnded() { Director.Instance.StartCoroutine(End()); }
     public virtual IEnumerator End() { yield break; }
-    public void Update()
+   /* public void Update()
     {
-       /* if(TimedEffect && owner != null)
+        if(TimedEffect && owner != null)
         {
             if (Director.Instance.timeline.Paused)
             {
@@ -131,8 +149,11 @@ public class EffectIcon : MonoBehaviour
                 isPaused = false;
             }
         }
-       */
+       
        
        
     }
+   */
+
+
 }

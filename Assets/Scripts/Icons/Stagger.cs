@@ -13,6 +13,7 @@ public class Stagger : EffectIcon
      void Start()
     {
         iconName = "STAGGER";
+        TimedEffect = true;
     }
     public override string GetDescription()
     {

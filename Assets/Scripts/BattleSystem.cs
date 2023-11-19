@@ -98,7 +98,7 @@ public class BattleSystem : MonoBehaviour
     }
     void Update()
     {
-        /*if (state != BattleStates.WON | state != BattleStates.DEAD)
+        if (state != BattleStates.WON | state != BattleStates.DEAD)
         {
             if (playerUnits.Count == 0 && enemyUnits.Count != 0)
             {
@@ -130,7 +130,7 @@ public class BattleSystem : MonoBehaviour
                 }
             }
         }
-        */
+        
         if (Input.GetKeyDown(KeyCode.U) && Director.Instance.DevMode)
         {
             playerUnits[UnityEngine.Random.Range(0, playerUnits.Count - 1)].health.TakeDamage(99999, null);
@@ -362,8 +362,10 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
             foreach (var unit in Tools.GetAllUnits())
             {
+                Director.Instance.timeline.RefreshTimeline();
                 unit.StaminaHighlightIsDisabled = true;
                 unit.gameObject.SetActive(false);
+
             }
         }
     }
@@ -452,6 +454,7 @@ public class BattleSystem : MonoBehaviour
         }
         var icon = Instantiate(Director.Instance.iconDatabase.Where(obj => obj.name == Icon).SingleOrDefault(), unit.namePlate.IconGrid.transform);
         var i = icon.GetComponent<EffectIcon>();
+        i.duration = duration;
         unit.statusEffects.Add(i);
         if (unit == null)
             Debug.LogError("OWNER SETUP BROKEN");
@@ -657,7 +660,9 @@ public class BattleSystem : MonoBehaviour
         BattleLog.Instance.ClearAllBattleLogText();
         if (action.unit != null)
         {
-            var newAction = UnityEngine.Object.Instantiate(action);
+            var newAction = Instantiate(action);
+            Debug.LogWarning(action.cost);
+            newAction.cost = action.cost;
             ActionsToPerform.Add(newAction);
             if (Tools.CheckIfAllUnitsAreReady())
             {
@@ -707,7 +712,7 @@ public class BattleSystem : MonoBehaviour
         foreach (var action in ActionsToPerform)
         {
             Tools.UnpauseStaminaTimer();
-            yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - action.cost));
+            yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - action.cost  * action.unit.actionCostMultiplier));
             Tools.PauseStaminaTimer();
             if (action.unit != null)
             {
@@ -762,7 +767,6 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         foreach (var x in Tools.GetAllUnits())
         {
-            Debug.LogWarning("Hello?");
             if (!x.IsPlayerControlled)
             {
                 x.behavior.DoBehavior(x);
@@ -775,10 +779,8 @@ public class BattleSystem : MonoBehaviour
                 
             }
            
-            Debug.LogWarning("Hello? 2");
             x.DoBattlePhaseEnd();
         }
-        Debug.LogWarning("Hello? 3");
         StartCoroutine(Director.Instance.timeline.ResetTimeline());
         //State just before player gets control
         BattleLog.Instance.ResetBattleLog();
@@ -798,6 +800,7 @@ public class BattleSystem : MonoBehaviour
         {
             x.DoBattlePhaseClose();
         }
+        Tools.TickAllEffectIcons();
         if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD && state != BattleStates.TALKING && enemyUnits.Count > 0 && playerUnits.Count > 0)
         {
             state = BattleStates.IDLE;
@@ -849,40 +852,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (x.health == null)
             {
-                //var battlebar = Instantiate(Director.Instance.battlebar);
-                /*var TL = Instantiate(Director.Instance.timeline.borderChildprefab, Director.Instance.timeline.startpoint);
-                Director.Instance.timeline.children.Add(TL);
-                TL.portrait.sprite = x.charPortraits[0];
-                TL.unit = x;
-                x.timelinechild = TL;
-                TL.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                */
-                /*if (x.IsPlayerControlled)
-                {
-                    //battlebar.transform.SetParent(Director.Instance.PlayerBattleBarGrid.transform);
-                    //battlebar.transform.localScale = new Vector3(0, 0, 0);
-                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0);
-                    TL.playerPoint.SetActive(true);
-                }
-                
-
-                else
-                {
-                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -60);
-                    battlebar.transform.localScale = new Vector3(0, 0, 0);
-                    TL.EnemyPoint.SetActive(true);
-                }
-                
-                battlebar.unit = x;
-                battlebar.portrait.sprite = x.charPortraits.Find(obj => obj.name == "neutral");
-                battlebar.nameText.text = Tools.CheckNames(x);
-                */
                 x.transform.rotation = LabCamera.Instance.camTransform.rotation;
-                /*var stamina = battlebar.stamina;
-                stamina.unit = x;
-                x.stamina = stamina;
-                x.stamina.Paused = true;
-                */
                 var HP = Instantiate(hp, canvasParent.transform);
                 x.health = HP;
                 HP.unit = x;
@@ -910,7 +880,6 @@ public class BattleSystem : MonoBehaviour
         }
         if (unit.IsPlayerControlled && !unit.IsSummon)
         {
-            //unit.stamina.slider.value = unit.stamina.slider.maxValue;
             BattleLog.Instance.CreateActionLayout(unit);
         }
 

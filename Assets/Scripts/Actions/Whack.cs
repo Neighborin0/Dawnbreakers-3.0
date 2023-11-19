@@ -13,7 +13,7 @@ public class Whack : Action
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
         damageText = damage.ToString();
-        duration = 5f;
+        duration = 1;
     }
 
     public override string GetDescription()   

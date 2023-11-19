@@ -178,6 +178,16 @@ public class Tools : MonoBehaviour
         }
     }
 
+    public static void TickAllEffectIcons()
+    {
+        foreach (var act in FindObjectsOfType<EffectIcon>())
+        {
+            act.Tick();
+        }
+    }
+
+
+
     public static void SetImageColorAlphaToZero(Image image)
     {
         var tempColor = image.color;
@@ -557,7 +567,6 @@ public class Tools : MonoBehaviour
             var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
             vfxMaterial.SetColor("_BaseColor", vfxColor * intensityMultiplier);
             vfxMaterial.SetColor("_EmissionColor", vfxColor);
-            Debug.LogWarning(vfxColor *  intensityMultiplier);
         }
         if (VFX.GetComponent<MeshRenderer>() != null)
         {

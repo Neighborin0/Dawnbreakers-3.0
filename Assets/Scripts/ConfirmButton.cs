@@ -23,6 +23,7 @@ public class ConfirmButton : MonoBehaviour
         OptionsManager.Instance.Load("MAP2");
         OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+        Director.Instance.timeline.RefreshTimeline();
         Director.Instance.blackScreen.gameObject.SetActive(false);
         foreach (var unit in Tools.GetAllUnits())
         {

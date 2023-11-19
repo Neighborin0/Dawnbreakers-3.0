@@ -18,7 +18,7 @@ public class WarCry : Action
         cost = 30f;
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
-        duration = 5f;
+        duration = 2;
         statAmount = 3;
         damageText = damage.ToString();
     }

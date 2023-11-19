@@ -9,9 +9,11 @@ using System.Linq;
 
 public class Vigor : EffectIcon
 {
+    
     public void Start()
     {
         iconName = "Vigor";
+        TimedEffect = true;
     }
     public override string GetDescription()
     {

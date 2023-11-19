@@ -34,16 +34,25 @@ public class TimeLine : MonoBehaviour
                 slider.value -= Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay * 2f;
         }
     }
-
+    //In Battle
     public IEnumerator ResetTimeline()
     {
-        Debug.LogWarning("rESET tIMELINE IS AGO");
         Resetting = true;
         yield return new WaitUntil(() => slider.value <= 0);
         Resetting = false;
         Paused = true;
     }
+    //Post Battle
+    public void RefreshTimeline()
+    {
+        Paused = true;
+        slider.value = 0;
+        foreach (var unit in Tools.GetAllUnits())
+        {
+            unit.state = PlayerState.IDLE;
+        }
 
+    }
     public TimeLineChild SpawnTimelineChild(Unit unit)
     {
         print("Timeline child has been spawned");

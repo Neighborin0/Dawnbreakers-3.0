@@ -18,8 +18,9 @@ public class TutorialEnemy : Unit
         defenseStat = 0;
         speedStat = 0;
         currentHP = maxHP;
-        actionCostMultiplier = 1000f;
         IsPlayerControlled = false;
+        Tools.ModifyAction(this, "Awaken", 0, 20f);
+        Tools.ModifyAction(this, "Strike", 1, 100f);
     }
     void Start()
     {
@@ -45,7 +46,7 @@ public class TutorialEnemy : Unit
             tutorialIcon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-5000, 0, 0f);
             tutorialIcon.GetComponent<MoveableObject>().Move(true);
         }
-        BattleSystem.Instance.SetTempEffect(this, "revitalize", false, 0, 0, 0);
+        //BattleSystem.Instance.SetTempEffect(this, "revitalize", false, 0, 0, 0);
         BattleStarted -= CreateTutorialIcon;
     }
 

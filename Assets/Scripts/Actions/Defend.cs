@@ -19,7 +19,7 @@ public class Defend : Action
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
-        duration = 3f;
+        duration = 1;
     }
 
     public override string GetDescription()

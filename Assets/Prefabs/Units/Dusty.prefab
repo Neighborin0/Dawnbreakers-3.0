@@ -258,7 +258,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a8ebee44482aa0841914562f52c95421, type: 2}
   - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
   - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
-  - {fileID: 11400000, guid: 2286e3232ce0a514389455649b743e8e, type: 2}
+  - {fileID: 11400000, guid: a68410d0d95842a44a6ed79cdaf1d746, type: 2}
   summonables: []
 --- !u!65 &960339281062212297
 BoxCollider:

@@ -19,7 +19,7 @@ public class Guard : Action
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.ALLY;
-        duration = 5f;
+        duration = 1;
     }
 
     public override string GetDescription()

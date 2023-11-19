@@ -360,7 +360,8 @@ public class BattleLog : MonoBehaviour
                         else
                             unit.state = PlayerState.IDLE;
 
-                        unit.StaminaHighlightIsDisabled = false;
+                        if(unit.IsPlayerControlled)
+                        unit.StaminaHighlightIsDisabled = true;
                         if (unit.health != null)
                             unit.health.DeathPaused = false;
                        

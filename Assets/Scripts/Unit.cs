@@ -127,7 +127,7 @@ public class Unit : MonoBehaviour
                     sprite.material.SetColor("_OutlineColor", Color.black);
                     sprite.material.SetColor("_CharacterEmission", new Color(-0.3f, -0.3f, -0.3f, 1f));
                 }
-                else if (state == PlayerState.DECIDING)
+                else if (state == PlayerState.DECIDING && IsPlayerControlled)
                 {
 
                     sprite.material.SetFloat("_OutlineThickness", 1f);
