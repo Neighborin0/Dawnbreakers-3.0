@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class LabCamera : MonoBehaviour
 {
@@ -40,7 +41,6 @@ public class LabCamera : MonoBehaviour
 
     void Awake()
     {
-
         if (Instance != null)
         {
             Destroy(this);
@@ -50,12 +50,17 @@ public class LabCamera : MonoBehaviour
             camTransform = transform;
             Instance = this;
             state = CameraState.IDLE;
-           
-
         }
-
     }
 
+    public void Start()
+    {
+        if(SceneManager.GetActiveScene().name == "MAP2")
+        {
+            print("This has been ran");
+            this.GetComponent<CinemachineConfiner>().m_BoundingVolume = MapController.Instance.mapCollider;
+        }
+    }
 
     public void ReadjustCam()
     {

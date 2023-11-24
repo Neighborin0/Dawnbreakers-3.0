@@ -12,7 +12,7 @@ public class Incinerate : Action
     {
         ActionName = "Incinerate";
         damage = 50;
-        cost = 50f;
+        cost = 100f;
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
     }

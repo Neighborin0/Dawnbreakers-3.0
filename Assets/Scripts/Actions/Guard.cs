@@ -24,7 +24,7 @@ public class Guard : Action
 
     public override string GetDescription()
     {
-        description = $"Applies +{unit.defenseStat} <sprite name=\"FORTIFY\"> for {duration} seconds.";
+        description = $"Applies +{unit.defenseStat} <sprite name=\"FORTIFY\"> for {duration} round.";
         return description;
     }
     public override IEnumerator ExecuteAction()

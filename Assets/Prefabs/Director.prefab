@@ -4730,7 +4730,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8626ced7933e1d04eb4f6721e66a6f6f, type: 2}
   - {fileID: 11400000, guid: e40d57b7a52487343bdbf34880171f49, type: 2}
   - {fileID: 11400000, guid: 7e885f14f56b74242800e9ce493cba94, type: 2}
-  - {fileID: 11400000, guid: e40d57b7a52487343bdbf34880171f49, type: 2}
   - {fileID: 11400000, guid: a8ebee44482aa0841914562f52c95421, type: 2}
   - {fileID: 11400000, guid: d44c465bd4aed4148bcbbedd2960260f, type: 2}
   - {fileID: 11400000, guid: 10f4714b8376b234c9d3857803d3c02a, type: 2}
@@ -4742,6 +4741,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 37c52802e2be6714281a597a68b5e13f, type: 2}
   - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
   - {fileID: 11400000, guid: 0009c14cfc4d51248a96e32b456b11c6, type: 2}
+  - {fileID: 11400000, guid: a68410d0d95842a44a6ed79cdaf1d746, type: 2}
   iconDatabase:
   - {fileID: 3224179876807452412, guid: 4a914db186eda1243b03ff664338e95a, type: 3}
   - {fileID: 6181490423906128927, guid: 90dd639aefaa91b4b86be4fbc2d5fb54, type: 3}
@@ -5654,6 +5654,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5214956120925992300, guid: abac4264e98c6a24aabfd66a752fd5e3,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6428923612383196763, guid: abac4264e98c6a24aabfd66a752fd5e3,
         type: 3}
       propertyPath: maxPos
@@ -5749,7 +5754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PositionUpX: 0
-  PositionUpY: 347
+  PositionUpY: 422
   PositionDownX: 0
   PositionDownY: 1000
   moved: 0

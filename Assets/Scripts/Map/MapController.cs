@@ -32,6 +32,9 @@ public class MapController : MonoBehaviour
     [SerializeField]
     public Grid grid;
 
+    public Collider mapCollider;
+
+
     public float MaxZoom;
     public float MinZoom;
 

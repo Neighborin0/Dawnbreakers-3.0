@@ -17,7 +17,7 @@ public class Glint : Action
 
     public override string GetDescription()   
     {
-        description = $"Applies <sprite name=\"STAGGER\"> for {duration} seconds";
+        description = $"Applies <sprite name=\"STAGGER\"> for {duration} round";
         return description;
     }
     public override IEnumerator ExecuteAction()

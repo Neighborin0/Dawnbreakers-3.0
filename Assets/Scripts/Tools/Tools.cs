@@ -561,63 +561,67 @@ public class Tools : MonoBehaviour
         print("INTENSITY: " + intensityMultiplier);
         var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).SingleOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, Quaternion.identity);
         VFX.transform.parent = null;
-        if (VFX.GetComponent<SpriteRenderer>() != null)
+        if (VFX != null)
         {
-            VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
-            var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
-            vfxMaterial.SetColor("_BaseColor", vfxColor * intensityMultiplier);
-            vfxMaterial.SetColor("_EmissionColor", vfxColor);
-        }
-        if (VFX.GetComponent<MeshRenderer>() != null)
-        {
-            VFX.GetComponent<MeshRenderer>().material = Instantiate(VFX.GetComponent<MeshRenderer>().material);
-            var vfxMaterial = VFX.GetComponent<MeshRenderer>().material;
-            vfxMaterial.SetColor("_EmissionColor", vfxColor * (intensityMultiplier));
-        }
-        if (VFX.GetComponent<Animator>() != null)
-        {
-            var anim = VFX.GetComponent<Animator>();
-            if(anim.HasState(0, Animator.StringToHash(VFXName)))
-                anim.Play(VFXName);
-        }
-        if (VFX.GetComponent<ParticleSystem>() != null)
-        {
-            var particleSystem = VFX.GetComponent<ParticleSystem>();
-            particleSystem.GetComponent<ParticleSystemRenderer>().material = Instantiate(particleSystem.GetComponent<ParticleSystemRenderer>().material);
-            var particleMaterial = particleSystem.GetComponent<ParticleSystemRenderer>().material;
-            particleMaterial.SetColor("_Color", particleColor * intensityMultiplier);
-            particleMaterial.SetColor("_EmissionColor", particleColor *  intensityMultiplier);
-        }
+            if (VFX.GetComponent<SpriteRenderer>() != null)
+            {
+                VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
+                var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
+                vfxMaterial.SetColor("_BaseColor", vfxColor * intensityMultiplier);
+                vfxMaterial.SetColor("_EmissionColor", vfxColor);
+            }
+            if (VFX.GetComponent<MeshRenderer>() != null)
+            {
+                VFX.GetComponent<MeshRenderer>().material = Instantiate(VFX.GetComponent<MeshRenderer>().material);
+                var vfxMaterial = VFX.GetComponent<MeshRenderer>().material;
+                vfxMaterial.SetColor("_EmissionColor", vfxColor * (intensityMultiplier));
+            }
+            if (VFX.GetComponent<Animator>() != null)
+            {
+                var anim = VFX.GetComponent<Animator>();
+                if (anim.HasState(0, Animator.StringToHash(VFXName)))
+                    anim.Play(VFXName);
+            }
+            if (VFX.GetComponent<ParticleSystem>() != null)
+            {
+                var particleSystem = VFX.GetComponent<ParticleSystem>();
+                particleSystem.GetComponent<ParticleSystemRenderer>().material = Instantiate(particleSystem.GetComponent<ParticleSystemRenderer>().material);
+                var particleMaterial = particleSystem.GetComponent<ParticleSystemRenderer>().material;
+                particleMaterial.SetColor("_Color", particleColor * intensityMultiplier);
+                particleMaterial.SetColor("_EmissionColor", particleColor * intensityMultiplier);
+            }
 
-        if (ApplyChromaticAbberation)
-            Director.Instance.StartCoroutine(Tools.ApplyAndReduceChromaticAbberation());
+            if (ApplyChromaticAbberation)
+                Director.Instance.StartCoroutine(Tools.ApplyAndReduceChromaticAbberation());
 
-        if (VFX.GetComponent<Animator>() != null && VFX.GetComponent<Animator>().GetBool("Done"))
-        {
-            yield return new WaitUntil(() => VFX.GetComponent<Animator>().GetBool("Done") == true);
-            if (stopDuration > 0)
-                Director.Instance.StartCoroutine(Tools.StopTime(stopDuration));
+            if (VFX.GetComponent<Animator>() != null && VFX.GetComponent<Animator>().GetBool("Done"))
+            {
+                yield return new WaitUntil(() => VFX.GetComponent<Animator>().GetBool("Done") == true);
+                if (stopDuration > 0)
+                    Director.Instance.StartCoroutine(Tools.StopTime(stopDuration));
+            }
+            yield return new WaitForSeconds(duration);
+            if (VFX != null && VFX.GetComponent<ParticleSystem>() != null)
+            {
+                var particleSystem = VFX.GetComponent<ParticleSystem>();
+                particleSystem.Stop();
+            }
+            if (VFX != null && VFX.GetComponent<SpriteRenderer>() != null)
+            {
+                VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
+                var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
+                float alpha = vfxMaterial.GetColor("_BaseColor").a;
+                while (vfxMaterial.GetColor("_BaseColor").a >= 0)
+                {
+                    vfxMaterial.SetColor("_BaseColor", new Color(vfxColor.r, vfxColor.g, vfxColor.b, alpha));
+                    alpha -= 0.05f;
+                    yield return new WaitForSeconds(0.001f);
+                }
+            }
+            yield return new WaitForSeconds(ExtraDelay);
+            if (VFX != null)
+            Destroy(VFX);
         }
-        yield return new WaitForSeconds(duration);
-        if (VFX.GetComponent<ParticleSystem>() != null)
-        {
-            var particleSystem = VFX.GetComponent<ParticleSystem>();
-            particleSystem.Stop();
-        }
-         if (VFX.GetComponent<SpriteRenderer>() != null)
-         {
-            VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
-            var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
-            float alpha = vfxMaterial.GetColor("_BaseColor").a;
-            while (vfxMaterial.GetColor("_BaseColor").a >= 0)
-            {    
-                 vfxMaterial.SetColor("_BaseColor", new Color(vfxColor.r, vfxColor.g, vfxColor.b, alpha));
-                 alpha -= 0.05f;
-                 yield return new WaitForSeconds(0.001f);
-             }
-         }
-        yield return new WaitForSeconds(ExtraDelay);
-        Destroy(VFX);
 
     }
 

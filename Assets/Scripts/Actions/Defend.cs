@@ -24,7 +24,7 @@ public class Defend : Action
 
     public override string GetDescription()
     {
-        description = $"Applies +{(int)Math.Round(unit.defenseStat * 0.4f)} <sprite name=\"FORTIFY\"> for {duration} seconds.";
+        description = $"Applies +{(int)Math.Round(unit.defenseStat * 0.4f)} <sprite name=\"FORTIFY\"> for {duration} round.";
         return description;
     }
     public override IEnumerator ExecuteAction()

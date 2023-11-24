@@ -16,7 +16,7 @@ public class Dusty : Unit
         currentHP = maxHP;
         IsPlayerControlled = true;
         Tools.AddItemToInventory(this, "Iron Shield");
-        if (!Director.Instance.DevMode)
+        /*if (!Director.Instance.DevMode)
         {
             actionList.Clear();
             Tools.AddNewActionToUnit(this, "Slash", false);
@@ -24,6 +24,7 @@ public class Dusty : Unit
             Tools.AddNewActionToUnit(this, "War Cry", false);
             Tools.AddNewActionToUnit(this, "Whack", false);
         }
+        */
     }
 
 

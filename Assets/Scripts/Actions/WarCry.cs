@@ -25,7 +25,7 @@ public class WarCry : Action
 
     public override string GetDescription()
     {
-        description = $"Applies +{statAmount} <sprite name=\"VIGOR\"> to all allies for {duration} seconds.";
+        description = $"Applies +{statAmount} <sprite name=\"VIGOR\"> to all allies for {duration} round.";
         return description;
     }
     public override IEnumerator ExecuteAction()

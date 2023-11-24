@@ -228,6 +228,7 @@ public class BattleLog : MonoBehaviour
         itemText.text = text;
     }
 
+    //Clears Item Text
     public void ClearBattleText()
     {
         itemText.gameObject.SetActive(false);
@@ -368,6 +369,7 @@ public class BattleLog : MonoBehaviour
                         if (!unit.IsPlayerControlled)
                             unit.intentUI.gameObject.SetActive(true);  
                     }
+                    BattleSystem.Instance.playerUnits[0].StartDecision();
                     if(TurnOffUiAfter)
                         LabCamera.Instance.uicam.gameObject.SetActive(true);
                 }

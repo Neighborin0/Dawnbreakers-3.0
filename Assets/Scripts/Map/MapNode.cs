@@ -80,6 +80,7 @@ public class MapNode : MonoBehaviour
     
     public void ToggleHighlight()
     {
+        if(gameObject.activeSelf)
         {
             if (IsHighlighted && GetComponent<Button>().interactable && !disabled)
             {
@@ -91,7 +92,8 @@ public class MapNode : MonoBehaviour
                 }
 
                 scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), newScaleSize, 0.01f);
-                StartCoroutine(scaler);
+                if(gameObject.activeSelf)
+                    StartCoroutine(scaler);
                 IsHighlighted = false;
             }
             else

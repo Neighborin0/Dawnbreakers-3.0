@@ -114,6 +114,7 @@ public class RestSite : MonoBehaviour
         {
             unit.StaminaHighlightIsDisabled = true;
             unit.gameObject.SetActive(false);
+            unit.anim.Play("Idle");
         }
     }
 

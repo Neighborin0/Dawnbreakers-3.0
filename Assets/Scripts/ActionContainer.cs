@@ -384,8 +384,8 @@ public class ActionContainer : MonoBehaviour
                     TL.portrait.sprite = baseUnit.charPortraits[0];
                     Director.Instance.timeline.children.Add(TL);
                     TL.CanMove = false;
-                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
-                    TL.rectTransform.anchoredPosition = new Vector3((100 - action.cost) * -11.89f, 85);
+                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0);
+                    TL.rectTransform.anchoredPosition = new Vector3((100 - action.cost) * -11.89f, 0);
                     TL.staminaText.text = (100 - action.cost).ToString();
                     TL.CanClear = true;
                     TL.CanBeHighlighted = false;

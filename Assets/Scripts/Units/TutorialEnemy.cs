@@ -19,7 +19,7 @@ public class TutorialEnemy : Unit
         speedStat = 0;
         currentHP = maxHP;
         IsPlayerControlled = false;
-        Tools.ModifyAction(this, "Awaken", 0, 20f);
+        Tools.ModifyAction(this, "Awaken", 0, 100f);
         Tools.ModifyAction(this, "Strike", 1, 100f);
     }
     void Start()
@@ -72,7 +72,6 @@ public class TutorialEnemy : Unit
                 Aurelia.skillUIs[0].GetComponent<ActionContainer>().Disabled = false;
                 if (turn == 1)
                 {
-                    Debug.LogWarning(DisabledAction);
                     if (!Aurelia.actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault()))
                     {
                         Aurelia.actionList.Add(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault());

@@ -37,9 +37,9 @@ public class Husk : Unit
         {
             var battlesystem = BattleSystem.Instance;
             int move = UnityEngine.Random.Range(0, baseUnit.actionList.Count);
-            if (battlesystem.playerUnits[1] != null)
+            if (Tools.CheckAndReturnNamedUnit("Dusty") != null)
             {
-                Tools.SetupEnemyAction(baseUnit, move, battlesystem.playerUnits[1]);
+                Tools.SetupEnemyAction(baseUnit, move, Tools.CheckAndReturnNamedUnit("Dusty"));
             }
             else
             {

@@ -360,9 +360,14 @@ public class Unit : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
         yield return new WaitForSeconds(stagnantDelay);
-        while (light.intensity > 0 && light != null)
+        while (light != null && light.intensity > 0)
         {
-            light.intensity -= amountToRaiseBy;
+            if (light != null)
+            {
+                light.intensity -= amountToRaiseBy;
+            }
+            else
+                break;
             yield return new WaitForSeconds(delay);
         }
 

@@ -47,6 +47,7 @@ public class TutorialMatriarch : Unit
             unit.StaminaHighlightIsDisabled = true;
         }
         yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
+        StartCoroutine(Director.Instance.timeline.ResetTimeline());
         OnPlayerUnitDeath -= Gloat;
     }
 }
@@ -57,32 +58,6 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
     private Unit BaseUnit;
     int move = 0;
 
-    private IEnumerator PreIncinerateText()
-    {
-        //Tools.PauseStaminaTimer();
-        BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("MatriarchPreIncinerate"), true, false);
-        foreach (var unit in Tools.GetAllUnits())
-        {
-            unit.StaminaHighlightIsDisabled = true;
-        }
-        yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
-        /*foreach (var x in BattleSystem.Instance.playerUnits)
-        {
-            if (x.stamina.slider.value == x.stamina.slider.maxValue)
-            {
-                BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
-                x.StartDecision();
-                break;
-            }
-
-        }
-        if (BattleSystem.Instance.state != BattleStates.DECISION_PHASE && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD && BattleSystem.Instance.state != BattleStates.TALKING && BattleSystem.Instance.enemyUnits.Count > 0 && BattleSystem.Instance.playerUnits.Count > 0)
-        {
-            BattleSystem.Instance.state = BattleStates.IDLE;
-            Tools.UnpauseStaminaTimer();
-        }
-        */
-    }
     public override void DoBehavior(Unit baseUnit)
     {
         battlesystem = BattleSystem.Instance;
@@ -161,7 +136,7 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
             //Destroys Dusty and taunts player
             case 3:
                 {
-                    StartCoroutine(PreIncinerateText());
+                    baseUnit.BattlePhaseClose += PreDustyDeath;
                     Tools.SetupEnemyAction(baseUnit, turn, Tools.CheckAndReturnNamedUnit("Dusty"));
                     turn++;
                 }
@@ -175,6 +150,19 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
                 break;
 
         }
+    }
+
+    private void PreDustyDeath(Unit obj)
+    {
+        obj.BattlePhaseClose -= PreDustyDeath;
+        StartCoroutine(PreIncinerateText());
+    }
+    private IEnumerator PreIncinerateText()
+    {
+        BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("MatriarchPreIncinerate"), true, false);
+        yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
+        Director.Instance.timeline.ResetTimeline();
+
     }
 }
 

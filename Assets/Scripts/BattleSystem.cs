@@ -661,7 +661,6 @@ public class BattleSystem : MonoBehaviour
         if (action.unit != null)
         {
             var newAction = Instantiate(action);
-            Debug.LogWarning(action.cost);
             newAction.cost = action.cost;
             ActionsToPerform.Add(newAction);
             if (Tools.CheckIfAllUnitsAreReady())
@@ -790,7 +789,6 @@ public class BattleSystem : MonoBehaviour
             {
                 state = BattleStates.DECISION_PHASE;
                 x.StartDecision();
-                Debug.LogWarning("I'M IN CONTROL");
                 break;
             }
             BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
@@ -842,7 +840,6 @@ public class BattleSystem : MonoBehaviour
                 StartCoroutine(battleCo);
             }
         }
-        Debug.LogWarning(StopBattle);
         return StopBattle;
     }
     

@@ -767,7 +767,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Seek out SOL.
+  m_text: 'Seek out <color=#FF8F00>SOL</color>.
 
 '
   m_isRightToLeft: 0
