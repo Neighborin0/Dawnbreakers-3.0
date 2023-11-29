@@ -9,6 +9,13 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class ActionContainer : MonoBehaviour
 {
+    public enum ActionStyle { STANDARD, LIGHT, HEAVY };
+
+    public ActionStyle actionStyle;
+    public ActionTypeButton lightButton;
+    public ActionTypeButton heavyButton;  
+
+
     public Action action;
     public TextMeshProUGUI textMesh;
     public bool targetting = false;
@@ -39,6 +46,7 @@ public class ActionContainer : MonoBehaviour
                 unit.isDarkened = false;
             }
         }
+        actionStyle = ActionStyle.STANDARD;
         numberofUses = action.numberofUses;
         limited = action.limited;
     }
@@ -46,6 +54,7 @@ public class ActionContainer : MonoBehaviour
     void Update()
     {
         var hit = Tools.GetMousePos();
+
         if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null && hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK && hit.collider.gameObject.GetComponent<Unit>().IsHighlighted && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
         {
             var unit = hit.collider.gameObject.GetComponent<Unit>();
@@ -68,8 +77,13 @@ public class ActionContainer : MonoBehaviour
             damageNums.text = "<sprite name=\"ATK\">" + (action.damage + baseUnit.attackStat).ToString();
             damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
         }
+
+        costNums.text = action.cost * baseUnit.actionCostMultiplier < 100 ? $"{action.cost * baseUnit.actionCostMultiplier}%" : $"100%";
+
         if (targetting && BattleSystem.Instance.state != BattleStates.WON)
         {
+          
+
 
             if (Input.GetMouseButtonUp(1))
             {
@@ -80,6 +94,7 @@ public class ActionContainer : MonoBehaviour
                     z.isDarkened = false;
                     z.IsHighlighted = false;
                 }
+                ResetAll();
                 SetActive();
                 if (TL != null)
                 {
@@ -132,6 +147,7 @@ public class ActionContainer : MonoBehaviour
                             LabCamera.Instance.ResetPosition();
                             BattleLog.Instance.ResetBattleLog();
                             LabCamera.Instance.ResetPosition();
+                            actionStyle = ActionStyle.STANDARD;
                             SetActive();
                             if (TL != null)
                             {
@@ -180,6 +196,7 @@ public class ActionContainer : MonoBehaviour
                                 unit.isDarkened = false;
                             }
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
+                            actionStyle = ActionStyle.STANDARD;
                         }
                     }
                     break;
@@ -220,6 +237,7 @@ public class ActionContainer : MonoBehaviour
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
+                            actionStyle = ActionStyle.STANDARD;
                             SetActive();
                             LabCamera.Instance.ResetPosition();
                             if (TL != null)
@@ -297,6 +315,21 @@ public class ActionContainer : MonoBehaviour
         }
 
     }
+
+    public void ResetAll(bool turnOn = false)
+    {
+        action.ResetAction();
+        if (heavyButton.state == ActionTypeButton.ActionButtonState.DEFAULT || lightButton.state == ActionTypeButton.ActionButtonState.DEFAULT)
+        {
+            Director.Instance.timeline.pipCounter.AddPip();
+        }
+        lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
+        heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
+        heavyButton.gameObject.SetActive(turnOn);
+        lightButton.gameObject.SetActive(turnOn);
+       
+
+    }
     public void SetActive()
     {
         if (Director.Instance.timeline.gameObject.activeSelf)
@@ -332,10 +365,14 @@ public class ActionContainer : MonoBehaviour
                         z.IsHighlighted = false;
                         z.isDarkened = false;
                     }
+                    ResetAll();
+                    Debug.LogWarning("this is being ran");
 
                 }
                 else
                 {
+                    lightButton.gameObject.SetActive(false);
+                    heavyButton.gameObject.SetActive(false);
                     ActionContainer[] actionContainers = UnityEngine.Object.FindObjectsOfType<ActionContainer>();
                     foreach (var x in actionContainers)
                     {
@@ -395,7 +432,17 @@ public class ActionContainer : MonoBehaviour
                     print("targetting");
                     SetDescription();
                     button.interactable = false;
-                    if(action.targetType == Action.TargetType.ENEMY)
+                    if (Director.Instance.timeline.pipCounter.pipCount > 0)
+                    {
+                        lightButton.gameObject.SetActive(true);
+                        heavyButton.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        lightButton.gameObject.SetActive(false);
+                        heavyButton.gameObject.SetActive(false);
+                    }
+                    if (action.targetType == Action.TargetType.ENEMY)
                         LabCamera.Instance.MoveToPosition(new Vector3(1, LabCamera.Instance.transform.position.y, LabCamera.Instance.transform.position.z), 1f);
 
                 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Rendering;
+using System;
 
 public abstract class Action : ScriptableObject
 {
@@ -35,6 +36,20 @@ public abstract class Action : ScriptableObject
         damageText = damage.ToString();
     }
 
+    public void ResetAction()
+    {
+        var newAction = Instantiate(this);
+        if (actionType == Action.ActionType.STATUS && statAmount != 0)
+        {
+            statAmount = newAction.statAmount;
+        }
+        else
+        {
+           damage = newAction.damage;
+        }
+        cost = newAction.cost;
+
+    }
     public void OnActivated(){ Director.Instance.StartCoroutine(ExecuteAction()); }
     public virtual IEnumerator ExecuteAction() { yield break; }
 

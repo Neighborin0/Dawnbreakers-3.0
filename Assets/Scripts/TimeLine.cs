@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
+using static UnityEngine.UI.CanvasScaler;
 
 public class TimeLine : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class TimeLine : MonoBehaviour
     public Slider slider;
     public bool Paused = true;
     public bool Resetting = false;
+    public PipCounter pipCounter;
 
     public void Start()
     {
@@ -53,6 +55,7 @@ public class TimeLine : MonoBehaviour
         }
 
     }
+
     public TimeLineChild SpawnTimelineChild(Unit unit)
     {
         print("Timeline child has been spawned");

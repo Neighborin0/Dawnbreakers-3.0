@@ -219,6 +219,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
         foreach (var unit in Tools.GetAllUnits())
         {
+            unit.statusEffects.Clear();
             SetupHUD(unit, unit.transform);
         }
         StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
@@ -363,6 +364,7 @@ public class BattleSystem : MonoBehaviour
             foreach (var unit in Tools.GetAllUnits())
             {
                 Director.Instance.timeline.RefreshTimeline();
+                Director.Instance.timeline.pipCounter.ResetPips();
                 unit.StaminaHighlightIsDisabled = true;
                 unit.gameObject.SetActive(false);
 
@@ -584,7 +586,12 @@ public class BattleSystem : MonoBehaviour
             {
                 unit.skillUIs[i].SetActive(false);
                 var actionContainer = unit.skillUIs[i].GetComponent<ActionContainer>();
-                actionContainer.targetting = false;
+                actionContainer.targetting = false;              
+                actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
+                actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
+                actionContainer.lightButton.gameObject.SetActive(false);
+                actionContainer.heavyButton.gameObject.SetActive(false);
+                actionContainer.action.ResetAction();
                 i++;
             }
             foreach (var z in Tools.GetAllUnits())
@@ -604,6 +611,7 @@ public class BattleSystem : MonoBehaviour
         foreach (var x in Tools.GetAllUnits())
         {
             SetUIOff(x);
+
         }
         foreach (var action in unit.actionList)
         {
@@ -637,6 +645,8 @@ public class BattleSystem : MonoBehaviour
             assignedAction.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = action.ActionName;
+            assignedAction.ResetAll();
+            
             if (assignedAction.action.actionType == Action.ActionType.STATUS)
             {
                 assignedAction.damageParent.SetActive(false);
@@ -798,6 +808,7 @@ public class BattleSystem : MonoBehaviour
         {
             x.DoBattlePhaseClose();
         }
+        Director.Instance.timeline.pipCounter.AddPip();
         Tools.TickAllEffectIcons();
         if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD && state != BattleStates.TALKING && enemyUnits.Count > 0 && playerUnits.Count > 0)
         {

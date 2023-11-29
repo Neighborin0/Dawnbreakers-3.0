@@ -99,6 +99,7 @@
     <Compile Include="Assets\Scripts\Actions\Screech.cs" />
     <Compile Include="Assets\Scripts\Icons\EffectIcon.cs" />
     <Compile Include="Assets\Scripts\Actions\Calm.cs" />
+    <Compile Include="Assets\Scripts\ActionTypeButtons.cs" />
     <Compile Include="Assets\Scripts\CharacterJoinSceneScript.cs" />
     <Compile Include="Assets\Scripts\Enemy Behaviors\RandomEnemyBehavior.cs" />
     <Compile Include="Assets\Scripts\FPSCounter.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Assets\Scripts\Icons\DefendEF.cs" />
     <Compile Include="Assets\Scripts\ControlBar.cs" />
     <Compile Include="Assets\Scripts\DialogueHandler.cs" />
+    <Compile Include="Assets\Scripts\PipCounter.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\IronShield.cs" />
     <Compile Include="Assets\Scripts\Items\ItemDisplayBackButton.cs" />

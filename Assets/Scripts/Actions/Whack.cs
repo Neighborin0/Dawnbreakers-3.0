@@ -20,7 +20,7 @@ public class Whack : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.\nApplies <sprite name=\"STAGGER\"> for {duration} rou.";
+            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.\nApplies <sprite name=\"STAGGER\"> for {duration} round.";
         }
         else
         {
