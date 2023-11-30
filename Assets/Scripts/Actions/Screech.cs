@@ -18,7 +18,7 @@ public class Screech : Action
 
     public override string GetDescription()
     {
-        description = $"Decreases <sprite name=\"DEF BLUE2\"> by {statAmount}.";
+        description = $"Decreases <sprite name=\"DEF BLUE2\"> by {Tools.DetermineTrueActionValue(this)}.";
         return description;
     }
     public override IEnumerator ExecuteAction()
@@ -35,7 +35,7 @@ public class Screech : Action
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(0, 0, 1, 0.1f), new Color(0, 0, 1, 0.1f), new Vector3(0, 0, -2f), 1.1f));
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCryParticles", new Color(0, 0, 1), new Color(0, 0, 1), new Vector3(0, 0, -2f), 1.1f));
         yield return new WaitForSeconds(0.4f);
-        BattleSystem.Instance.SetStatChanges(Stat.DEF, -statAmount, false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.DEF, -Tools.DetermineTrueActionValue(this), false, targets);
         yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();

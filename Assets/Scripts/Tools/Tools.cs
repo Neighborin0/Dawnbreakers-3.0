@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using static ActionTypeButton;
 using static UnityEngine.UI.CanvasScaler;
 
 public class Tools : MonoBehaviour
@@ -51,11 +53,11 @@ public class Tools : MonoBehaviour
         Item item = Director.Instance.itemDatabase.Where(obj => obj.itemName == itemName).SingleOrDefault();
         unit.inventory.Add(item);
         item.OnPickup(unit);
-       /* if (!RunTracker.Instance.itemsCollected.Contains(item))
-        {
-            RunTracker.Instance.itemsCollected.Add(item);
-        }
-       */
+        /* if (!RunTracker.Instance.itemsCollected.Contains(item))
+         {
+             RunTracker.Instance.itemsCollected.Add(item);
+         }
+        */
 
     }
 
@@ -112,7 +114,7 @@ public class Tools : MonoBehaviour
     public static bool CheckIfAllUnitsAreReady()
     {
         bool result = true;
-        if(BattleSystem.Instance != null)
+        if (BattleSystem.Instance != null)
         {
             foreach (var unit in BattleSystem.Instance.playerUnits)
             {
@@ -122,7 +124,7 @@ public class Tools : MonoBehaviour
                     break;
                 }
             }
-        }       
+        }
         return result;
 
     }
@@ -260,7 +262,7 @@ public class Tools : MonoBehaviour
             {
                 gameObject.gameObject.SetActive(false);
             }
-            if(DestroyAtEnd)
+            if (DestroyAtEnd)
             {
                 Destroy(gameObject.gameObject);
             }
@@ -303,7 +305,7 @@ public class Tools : MonoBehaviour
                 Destroy(child.gameObject);
                 break;
             }
-        }       
+        }
         Destroy(unit.health.gameObject);
     }
 
@@ -327,7 +329,7 @@ public class Tools : MonoBehaviour
         return allies;
     }
 
-  public static Unit FindDecidingUnit()
+    public static Unit FindDecidingUnit()
     {
         var DecidingUnit = new Unit();
         foreach (var unit in Tools.GetAllUnits())
@@ -337,7 +339,7 @@ public class Tools : MonoBehaviour
                 DecidingUnit = unit;
                 break;
             }
-               
+
         }
         return DecidingUnit;
     }
@@ -620,7 +622,7 @@ public class Tools : MonoBehaviour
             }
             yield return new WaitForSeconds(ExtraDelay);
             if (VFX != null)
-            Destroy(VFX);
+                Destroy(VFX);
         }
 
     }
@@ -629,8 +631,8 @@ public class Tools : MonoBehaviour
     {
         var oldAction = Director.Instance.actionDatabase.Where(obj => obj.ActionName == actionName).SingleOrDefault();
         unit.actionList.Add(oldAction);
-        if(ShownAsNew)
-        unit.actionList[unit.actionList.Count - 1].New = true;
+        if (ShownAsNew)
+            unit.actionList[unit.actionList.Count - 1].New = true;
     }
 
     public static IEnumerator ApplyAndReduceChromaticAbberation()
@@ -756,7 +758,7 @@ public class Tools : MonoBehaviour
 
     public static void StartAndCheckCoroutine(IEnumerator originalIEnumerator, IEnumerator newIEnumerator)
     {
-        if(originalIEnumerator != null)
+        if (originalIEnumerator != null)
         {
             Director.Instance.StopCoroutine(originalIEnumerator);
         }
@@ -819,10 +821,83 @@ public class Tools : MonoBehaviour
         BattleSystem.Instance.DisplayEnemyIntent(baseUnit.actionList[DecidingNum], baseUnit);
         DetermineActionData(baseUnit, DecidingNum);
         baseUnit.state = PlayerState.READY;
-        Director.Instance.timeline.DoCost(baseUnit.actionList[DecidingNum].cost, baseUnit);
+
+        Director.Instance.timeline.DoCost(Tools.DetermineTrueCost(baseUnit.actionList[DecidingNum]), baseUnit);
         BattleSystem.Instance.AddAction(baseUnit.actionList[DecidingNum]);
     }
 
+    public static float DetermineTrueCost(Action action)
+    {
+        float floatToReturn = 0;
+        switch (action.actionStyle)
+        {
+            case Action.ActionStyle.LIGHT:
+                {
+                    floatToReturn = action.lightCost;
+                }
+                break;
+            case Action.ActionStyle.HEAVY:
+                {
+                    floatToReturn = action.heavyCost;
+                }
+                break;
+            case Action.ActionStyle.STANDARD:
+                {
+                    floatToReturn = action.cost;
+                }
+                break;
+        }
+        return floatToReturn; 
+    }
+
+    public static int DetermineTrueActionValue(Action action)
+    {
+        int valueToReturn = 0;
+        if(action.actionType == Action.ActionType.STATUS)
+        {
+            switch (action.actionStyle)
+            {
+                case Action.ActionStyle.LIGHT:
+                    {
+                        valueToReturn = action.lightStatAmount;
+                    }
+                    break;
+                case Action.ActionStyle.HEAVY:
+                    {
+                        valueToReturn = action.heavyStatAmount;
+                    }
+                    break;
+                case Action.ActionStyle.STANDARD:
+                    {
+                        valueToReturn = action.statAmount;
+                    }
+                    break;
+            }
+        }
+        else
+        {
+            switch (action.actionStyle)
+            {
+                case Action.ActionStyle.LIGHT:
+                    {
+                        valueToReturn = action.lightDamage;
+                    }
+                    break;
+                case Action.ActionStyle.HEAVY:
+                    {
+                        valueToReturn = action.heavyDamage;
+                    }
+                    break;
+                case Action.ActionStyle.STANDARD:
+                    {
+                        valueToReturn = action.damage;
+                    }
+                    break;
+            }
+        }
+      
+        return valueToReturn;
+    }
 
 
 }

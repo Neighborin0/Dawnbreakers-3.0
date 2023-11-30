@@ -28,41 +28,48 @@ public class ActionTypeButton : Button
         {
             case ActionButtonState.LIGHT:
                 {
-                    if(action.actionType == Action.ActionType.STATUS && action.statAmount != 0)
+                    var newAction = Instantiate(action);
+                    /*if (newAction.actionType == Action.ActionType.STATUS && newAction.statAmount != 0)
                     {
-                        action.statAmount = (int)(action.statAmount * lightEfficiencyModifier);
+                        newAction.statAmount = (int)(newAction.statAmount * lightEfficiencyModifier);
                     }
                     else
                     {
-                        action.damage = (int)(action.damage * lightEfficiencyModifier);
+                        newAction.damage = (int)(newAction.damage * lightEfficiencyModifier);
                     }
-                    action.cost += lightCostModifier;
+                    */
                     Director.Instance.timeline.pipCounter.TakePip();
                     actionContainerParent.lightButton.gameObject.SetActive(false);
                     actionContainerParent.heavyButton.state = ActionButtonState.DEFAULT;
-                    actionContainerParent.actionStyle = ActionContainer.ActionStyle.LIGHT;
+                    newAction.actionStyle = Action.ActionStyle.LIGHT;
+                    actionContainerParent.action = newAction;
                 }
                 break;
             case ActionButtonState.HEAVY:
                 {
-                    if (action.actionType == Action.ActionType.STATUS && action.statAmount != 0)
+                    
+                    var newAction = Instantiate(action);
+                    /*
+                    if (newAction.actionType == Action.ActionType.STATUS && newAction.statAmount != 0)
                     {
-                        action.statAmount = (int)(action.statAmount * heavyEfficiencyModifier);
+                        newAction.statAmount = (int)(newAction.statAmount * heavyEfficiencyModifier);
                     }
                     else
                     {
-                        action.damage = (int)(action.damage * heavyEfficiencyModifier);
+                        newAction.damage = (int)(newAction.damage * heavyEfficiencyModifier);
                     }
-                    action.cost += heavyCostModifier;
+                    */
                     Director.Instance.timeline.pipCounter.TakePip();
                     actionContainerParent.heavyButton.gameObject.SetActive(false);
                     actionContainerParent.lightButton.state = ActionButtonState.DEFAULT;
-                    actionContainerParent.actionStyle = ActionContainer.ActionStyle.HEAVY;
+                    newAction.actionStyle = Action.ActionStyle.HEAVY;
+                    actionContainerParent.action = newAction;
                 }
                 break;
             case ActionButtonState.DEFAULT:
                 {
                     var newAction = Instantiate(action);
+                    /*
                     if (action.actionType == Action.ActionType.STATUS && action.statAmount != 0)
                     {
                         action.statAmount = newAction.statAmount;
@@ -71,12 +78,13 @@ public class ActionTypeButton : Button
                     {
                         action.damage = newAction.damage;
                     }
+                    */
                     action.cost = newAction.cost;
                     actionContainerParent.heavyButton.gameObject.SetActive(true);
                     actionContainerParent.lightButton.gameObject.SetActive(true);
                     actionContainerParent.lightButton.state = ActionButtonState.LIGHT;
                     actionContainerParent.heavyButton.state = ActionButtonState.HEAVY;
-                    actionContainerParent.actionStyle = ActionContainer.ActionStyle.STANDARD;
+                    action.actionStyle = Action.ActionStyle.STANDARD;
                     Director.Instance.timeline.pipCounter.AddPip();
                 }
                 break;

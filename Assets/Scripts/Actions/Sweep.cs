@@ -20,13 +20,13 @@ public class Sweep : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.\n<color=#FF0000>+2</color> DMG when <sprite name=\"STAGGER\">.";
+            description = $"Deals <color=#FF0000>{unit.attackStat + Tools.DetermineTrueActionValue(this)}</color> DMG.\n<color=#FF0000>+2</color> DMG when <sprite name=\"STAGGER\">.";
         }
         else
         {
-            if (damage + unit.attackStat - targets.defenseStat > 0)
+            if (Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat > 0)
             {
-                description = $"Deals <color=#FF0000>{damage + unit.attackStat - targets.defenseStat}</color> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
+                description = $"Deals <color=#FF0000>{Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat}</color> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
@@ -55,7 +55,7 @@ public class Sweep : Action
             BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), 1f));
         }
         LabCamera.Instance.Shake(0.2f, 1f);
-        targets.health.TakeDamage(damage + AdditionalDMG + unit.attackStat, unit, false);
+        targets.health.TakeDamage(Tools.DetermineTrueActionValue(this) + AdditionalDMG + unit.attackStat, unit, false);
         yield return new WaitForSeconds(0.5f);
         Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }

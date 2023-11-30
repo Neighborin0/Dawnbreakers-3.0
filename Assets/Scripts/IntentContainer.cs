@@ -35,10 +35,10 @@ public class IntentContainer : MonoBehaviour
     {
         if (textMesh != null && damageNums.IsActive() && unit != null && action != null && action.targets != null)
         {
-            if (action.damage + unit.attackStat - action.targets.defenseStat > 0)
+            if (Tools.DetermineTrueActionValue(action) + unit.attackStat - action.targets.defenseStat > 0)
             {
-                damageNums.text = "<sprite name=\"ATK\">" + (action.damage + unit.attackStat - action.targets.defenseStat).ToString();
-                action.damageText = (unit.attackStat + action.damage).ToString();
+                damageNums.text = "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + unit.attackStat - action.targets.defenseStat).ToString();
+                action.damageText = (unit.attackStat + Tools.DetermineTrueActionValue(action)).ToString();
             }
             else
                 damageNums.text = "<sprite name=\"ATK\">" + "0";

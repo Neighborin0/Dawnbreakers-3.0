@@ -20,13 +20,13 @@ public class Whack : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.\nApplies <sprite name=\"STAGGER\"> for {duration} round.";
+            description = $"Deals <color=#FF0000>{unit.attackStat + Tools.DetermineTrueActionValue(this)}</color> DMG.\nApplies <sprite name=\"STAGGER\"> for {duration} round.";
         }
         else
         {
-            if (damage + unit.attackStat - targets.defenseStat > 0)
+            if (Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat > 0)
             {
-                description = $"Deals <color=#FF0000>{damage + unit.attackStat - targets.defenseStat}</color> DMG.\nApplies <sprite name=\"STAGGER\"> for {duration} seconds";
+                description = $"Deals <color=#FF0000>{Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat}</color> DMG.\nApplies <sprite name=\"STAGGER\"> for {duration} seconds";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG. Applies <sprite name=\"STAGGER\"> for {duration} round";
@@ -40,7 +40,7 @@ public class Whack : Action
         AudioManager.Instance.Play("slash_001");
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Color(156, 14, 207), new Vector3(0, 0, -2f), 1f));
         yield return new WaitForSeconds(0.01f);
-        targets.health.TakeDamage(damage + unit.attackStat, unit);
+        targets.health.TakeDamage(Tools.DetermineTrueActionValue(this) + unit.attackStat, unit);
         LabCamera.Instance.Shake(0.3f, 1.5f);
         BattleSystem.Instance.SetTempEffect(targets, "STAGGER", true, duration);
         yield return new WaitForSeconds(0.5f);

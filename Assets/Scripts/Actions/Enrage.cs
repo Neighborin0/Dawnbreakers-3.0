@@ -18,7 +18,7 @@ public class Enrage : Action
 
     public override string GetDescription()
     {
-        description = $"Raises <sprite name=\"ATK RED2\"> by {statAmount}.";
+        description = $"Raises <sprite name=\"ATK RED2\"> by {Tools.DetermineTrueActionValue(this)}.";
         return description;
     }
     public override IEnumerator ExecuteAction()
@@ -28,7 +28,7 @@ public class Enrage : Action
         yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Smoke", new Color(48, 1, 0), new Color(48, 1, 0), new Vector3(0, unit.GetComponent<SpriteRenderer>().bounds.max.y - 1, -2f), 2, 0, false, 3, -1));
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.ATK, statAmount, false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.ATK, Tools.DetermineTrueActionValue(this), false, targets);
         yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();

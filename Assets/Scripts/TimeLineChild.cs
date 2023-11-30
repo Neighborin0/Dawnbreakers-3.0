@@ -44,15 +44,6 @@ public class TimeLineChild : MonoBehaviour
             staminaText.text = Mathf.Round(value).ToString();
         }
         TimelineChildChild.GetComponent<Image>().color = GetComponent<Image>().color;
-        /*if(unit.IsHighlighted)
-        {
-            UnitIsHighlighted = true;
-        }
-        else
-        {
-            UnitIsHighlighted = false;
-        }
-        */
 
     }
     public void MoveToNewPosition(Vector2 pos) 

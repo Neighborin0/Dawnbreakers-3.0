@@ -9,20 +9,35 @@ public abstract class Action : ScriptableObject
 {
 
     //general action parameters
+    
+    public ActionStyle actionStyle;
     public string ActionName;
-    public int damage;
     public string description;
-    public float cost;
     public float duration;
     public string damageText;
     public bool Done = false;
     public bool New = false;
-    public int statAmount;
     public int numberofUses;
     public bool limited = false;
 
+    public int damage;
+    public int lightDamage;
+    public int heavyDamage;
+
+    public int statAmount;
+    public int lightStatAmount;
+    public int heavyStatAmount;
+
+    public float cost;
+    public float lightCost;
+    public float heavyCost;
+
+
+
     public enum TargetType { ENEMY, SELF, ALL_ENEMIES, ALLY };
     public enum ActionType { ATTACK, STATUS };
+
+    public enum ActionStyle { STANDARD, LIGHT, HEAVY };
 
     public TextMeshProUGUI text;
     public Unit unit;
@@ -34,6 +49,8 @@ public abstract class Action : ScriptableObject
     {
         text.text = ActionName;
         damageText = damage.ToString();
+        actionStyle = ActionStyle.STANDARD;
+     
     }
 
     public void ResetAction()
@@ -45,7 +62,7 @@ public abstract class Action : ScriptableObject
         }
         else
         {
-           damage = newAction.damage;
+            damage = newAction.damage;
         }
         cost = newAction.cost;
 

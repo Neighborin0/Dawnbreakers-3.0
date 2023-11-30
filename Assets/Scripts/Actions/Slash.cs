@@ -5,11 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Slash", menuName = "Assets/Actions/Slash")]
 public class Slash : Action
 {
-    private void OnEnable()
+     private void OnEnable()
     {
         ActionName = "Slash";
+
         damage = 5;
+        lightDamage = 2;
+        heavyDamage = 7;
+
         cost = 50f;
+        heavyCost = 70;
+        lightCost = 30;
+
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
         damageText = damage.ToString();
@@ -19,13 +26,13 @@ public class Slash : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.";
+            description = $"Deals <color=#FF0000>{unit.attackStat + Tools.DetermineTrueActionValue(this)}</color> DMG.";
         }
         else
         {
-            if (damage + unit.attackStat - targets.defenseStat > 0)
+            if (Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat > 0)
             {
-                description = $"Deals <color=#FF0000>{damage + unit.attackStat - targets.defenseStat}</color> DMG.";
+                description = $"Deals <color=#FF0000>{Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat}</color> DMG.";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG.";
@@ -39,7 +46,7 @@ public class Slash : Action
         AudioManager.Instance.Play("slash_001");
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow ,new Vector3(0, 0, -2f), 1f));
         yield return new WaitForSeconds(0.01f);
-        targets.health.TakeDamage(damage + unit.attackStat, unit);
+        targets.health.TakeDamage(Tools.DetermineTrueActionValue(this) + unit.attackStat, unit);
         LabCamera.Instance.Shake(0.2f, 1.5f);
         yield return new WaitForSeconds(0.5f);
         Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);

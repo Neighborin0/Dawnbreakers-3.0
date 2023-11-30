@@ -25,7 +25,7 @@ public class WarCry : Action
 
     public override string GetDescription()
     {
-        description = $"Applies +{statAmount} <sprite name=\"VIGOR\"> to all allies for {duration} round.";
+        description = $"Applies +{Tools.DetermineTrueActionValue(this)} <sprite name=\"VIGOR\"> to all allies for {duration} round.";
         return description;
     }
     public override IEnumerator ExecuteAction()
@@ -46,9 +46,9 @@ public class WarCry : Action
         {
             var Light = x.spotLight;
             unit.ChangeUnitsLight(Light, 150, 15, Color.red, 0.04f, 0.08f);
-            BattleSystem.Instance.SetStatChanges(Stat.ATK, statAmount, false, x);
+            BattleSystem.Instance.SetStatChanges(Stat.ATK, Tools.DetermineTrueActionValue(this), false, x);
             var battleSystem = BattleSystem.Instance;
-            battleSystem.SetTempEffect(x, "ATK", true, duration, statAmount, 0);
+            battleSystem.SetTempEffect(x, "ATK", true, duration, Tools.DetermineTrueActionValue(this), 0);
         }
         yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));

@@ -180,8 +180,8 @@
     <Compile Include="Assets\Scripts\Map\RestNode.cs" />
     <Compile Include="Assets\Scripts\Main Menu\SettingsButton.cs" />
     <Compile Include="Assets\Scripts\Units\Aurelia.cs" />
-    <Compile Include="Assets\Scripts\Actions\Slam.cs" />
     <Compile Include="Assets\Scripts\Map\BossNode.cs" />
+    <Compile Include="Assets\Scripts\Actions\Slam.cs" />
     <Compile Include="Assets\Scripts\Map\GridManager.cs" />
     <Compile Include="Assets\Scripts\Save\SaveTools.cs" />
   </ItemGroup>
@@ -1220,10 +1220,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="SingularityGroup.HotReload.Runtime.Public.csproj">
-      <Project>{281B9BD9-4E0C-291B-8EB1-2569AF5E2439}</Project>
-      <Name>SingularityGroup.HotReload.Runtime.Public</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

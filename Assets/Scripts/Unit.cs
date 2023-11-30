@@ -279,7 +279,7 @@ public class Unit : MonoBehaviour
     {
         if (action.unit != null && action.targets != null)
         {
-            Director.Instance.timeline.DoCost(action.cost, action.unit);
+            Director.Instance.timeline.DoCost(Tools.DetermineTrueCost(action), action.unit);
             BattleSystem.Instance.AddAction(action);
             BattleSystem.SetUIOff(action.unit);
         }

@@ -325,9 +325,9 @@ public class Director : MonoBehaviour
             assignedAction.button.interactable = true;
             assignedAction.button.enabled = true;
             assignedAction.action = action;
-            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (action.damage + unit.attackStat).ToString();
+            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
             assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (action.duration).ToString();
-            assignedAction.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
+            assignedAction.costNums.text = Tools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{Tools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = action.ActionName;
             if(assignedAction.action.New)

@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using static UnityEngine.UI.CanvasScaler;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
+using static System.Collections.Specialized.BitVector32;
 
 public enum BattleStates { START, DECISION_PHASE, BATTLE, WON, DEAD, IDLE, TALKING }
 public class BattleSystem : MonoBehaviour
@@ -390,10 +391,10 @@ public class BattleSystem : MonoBehaviour
         else
             print(action.targets.unitName);
         unit.intentUI.textMesh.text = action.ActionName;
-        if (action.damage != 0)
-            unit.intentUI.damageNums.text = " <sprite name=\"ATK\">" + (action.damage + unit.attackStat - action.targets.defenseStat).ToString();
+        if (Tools.DetermineTrueActionValue(action) != 0)
+            unit.intentUI.damageNums.text = " <sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + unit.attackStat - action.targets.defenseStat).ToString();
         unit.intentUI.action = action;
-        unit.intentUI.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
+        unit.intentUI.costNums.text = Tools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{Tools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
         if (unit.intentUI.action.actionType == Action.ActionType.STATUS)
         {
             unit.intentUI.damageParent.SetActive(false);
@@ -587,13 +588,10 @@ public class BattleSystem : MonoBehaviour
                 unit.skillUIs[i].SetActive(false);
                 var actionContainer = unit.skillUIs[i].GetComponent<ActionContainer>();
                 actionContainer.targetting = false;              
-                actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
-                actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
-                actionContainer.lightButton.gameObject.SetActive(false);
-                actionContainer.heavyButton.gameObject.SetActive(false);
                 actionContainer.action.ResetAction();
                 i++;
             }
+
             foreach (var z in Tools.GetAllUnits())
             {
                 z.IsHighlighted = false;
@@ -608,10 +606,10 @@ public class BattleSystem : MonoBehaviour
     public static void SetUIOn(Unit unit)
     {
         int i = 0;
+        
         foreach (var x in Tools.GetAllUnits())
         {
             SetUIOff(x);
-
         }
         foreach (var action in unit.actionList)
         {
@@ -638,15 +636,16 @@ public class BattleSystem : MonoBehaviour
                 else
                     assignedAction.button.interactable = true;
             }
+            var newAction = Instantiate(action);
             assignedAction.button.enabled = true;
-            assignedAction.action = action;
-            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (action.damage + unit.attackStat).ToString();
-            assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (action.duration).ToString();
-            assignedAction.costNums.text = action.cost * unit.actionCostMultiplier < 100 ? $"{action.cost * unit.actionCostMultiplier}%" : $"100%";
+            assignedAction.action = newAction;
+            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
+            assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (newAction.duration).ToString();
+            assignedAction.costNums.text = Tools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{Tools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
-            assignedAction.textMesh.text = action.ActionName;
-            assignedAction.ResetAll();
-            
+            assignedAction.textMesh.text = newAction.ActionName;
+
+
             if (assignedAction.action.actionType == Action.ActionType.STATUS)
             {
                 assignedAction.damageParent.SetActive(false);
@@ -671,8 +670,8 @@ public class BattleSystem : MonoBehaviour
         if (action.unit != null)
         {
             var newAction = Instantiate(action);
-            newAction.cost = action.cost;
-            ActionsToPerform.Add(newAction);
+            //newAction.cost = Tools.DetermineTrueCost(action);
+            ActionsToPerform.Add(action);
             if (Tools.CheckIfAllUnitsAreReady())
             {
                 actionCo = PerformAction();
@@ -689,7 +688,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PerformAction()
     {
-        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - x.cost).ToList();
+        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - Tools.DetermineTrueCost(x)).ToList();
         ActionsToPerform.Reverse();
         print(ActionsToPerform);
         Director.Instance.timeline.slider.value = 0;
@@ -721,7 +720,7 @@ public class BattleSystem : MonoBehaviour
         foreach (var action in ActionsToPerform)
         {
             Tools.UnpauseStaminaTimer();
-            yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - action.cost  * action.unit.actionCostMultiplier));
+            yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - Tools.DetermineTrueCost(action) * action.unit.actionCostMultiplier));
             Tools.PauseStaminaTimer();
             if (action.unit != null)
             {
@@ -776,7 +775,14 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         foreach (var x in Tools.GetAllUnits())
         {
-            if (!x.IsPlayerControlled)
+            foreach (var skill in x.skillUIs)
+            {
+                var actionContainer = skill.GetComponent<ActionContainer>();
+                actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
+                actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
+                actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
+            }
+                if (!x.IsPlayerControlled)
             {
                 x.behavior.DoBehavior(x);
                 if (x.intentUI != null)

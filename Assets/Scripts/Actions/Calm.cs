@@ -18,14 +18,14 @@ public class Calm : Action
 
     public override string GetDescription()
     {
-        description = $"Increases <sprite name=\"DEF BLUE\"> by {statAmount}.";
+        description = $"Increases <sprite name=\"DEF BLUE\"> by {Tools.DetermineTrueActionValue(this)}.";
         return description;
     }
     public override IEnumerator ExecuteAction()
     {
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, -8, 40, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.DEF, statAmount, false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.DEF, Tools.DetermineTrueActionValue(this), false, targets);
         yield return new WaitForSeconds(0.5f);
         LabCamera.Instance.ResetPosition();
         this.Done = true;

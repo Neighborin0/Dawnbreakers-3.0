@@ -21,13 +21,13 @@ public class Bash : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.";
+            description = $"Deals <color=#FF0000>{unit.attackStat + Tools.DetermineTrueActionValue(this)}</color> DMG.";
         }
         else
         {
-            if(damage + unit.attackStat - targets.defenseStat > 0)
+            if(Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat > 0)
             {
-                description = $"Deals <color=#FF0000>{damage + unit.attackStat - targets.defenseStat}</color> DMG.";
+                description = $"Deals <color=#FF0000>{Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat}</color> DMG.";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG."; 
@@ -43,7 +43,7 @@ public class Bash : Action
         AudioManager.Instance.Play("slash_001");
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Strike" ,Color.yellow, Color.yellow, new Vector3(0, 0, -2f)));
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "SmokeBurst", Color.white, Color.white, new Vector3(0, 0, -2f), 1, 0, false, 0, 2));
-        targets.health.TakeDamage(damage + unit.attackStat, unit);
+        targets.health.TakeDamage(Tools.DetermineTrueActionValue(this) + unit.attackStat, unit);
         LabCamera.Instance.Shake(0.2f, 1.5f);
         yield return new WaitForSeconds(0.5f);
         Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);

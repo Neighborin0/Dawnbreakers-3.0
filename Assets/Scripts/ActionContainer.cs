@@ -9,9 +9,7 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class ActionContainer : MonoBehaviour
 {
-    public enum ActionStyle { STANDARD, LIGHT, HEAVY };
 
-    public ActionStyle actionStyle;
     public ActionTypeButton lightButton;
     public ActionTypeButton heavyButton;  
 
@@ -46,7 +44,6 @@ public class ActionContainer : MonoBehaviour
                 unit.isDarkened = false;
             }
         }
-        actionStyle = ActionStyle.STANDARD;
         numberofUses = action.numberofUses;
         limited = action.limited;
     }
@@ -59,26 +56,26 @@ public class ActionContainer : MonoBehaviour
         {
             var unit = hit.collider.gameObject.GetComponent<Unit>();
             unit.timelinechild.Shift(unit);
-            damageNums.text = action.damage + baseUnit.attackStat - unit.defenseStat > 0 ?
-                "<sprite name=\"ATK\">" + (action.damage + baseUnit.attackStat - unit.defenseStat).ToString()
+            damageNums.text = Tools.DetermineTrueActionValue(action) + baseUnit.attackStat - unit.defenseStat > 0 ?
+                "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + baseUnit.attackStat - unit.defenseStat).ToString()
                 : "<sprite name=\"ATK\">" + "0";
 
-            if (action.damage + baseUnit.attackStat - unit.defenseStat > action.damage + baseUnit.attackStat)
+            if (Tools.DetermineTrueActionValue(action) + baseUnit.attackStat - unit.defenseStat > Tools.DetermineTrueActionValue(action) + baseUnit.attackStat)
             {
                 damageNums.color = Color.green;
             }
-            else if (action.damage + baseUnit.attackStat - unit.defenseStat < action.damage + baseUnit.attackStat)
+            else if (Tools.DetermineTrueActionValue(action) + baseUnit.attackStat - unit.defenseStat < Tools.DetermineTrueActionValue(action) + baseUnit.attackStat)
             {
                 damageNums.color = Color.red;
             }
         }
         else if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
         {
-            damageNums.text = "<sprite name=\"ATK\">" + (action.damage + baseUnit.attackStat).ToString();
+            damageNums.text = "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
             damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
         }
 
-        costNums.text = action.cost * baseUnit.actionCostMultiplier < 100 ? $"{action.cost * baseUnit.actionCostMultiplier}%" : $"100%";
+        costNums.text = Tools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier < 100 ? $"{Tools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier}%" : $"100%";
 
         if (targetting && BattleSystem.Instance.state != BattleStates.WON)
         {
@@ -147,7 +144,7 @@ public class ActionContainer : MonoBehaviour
                             LabCamera.Instance.ResetPosition();
                             BattleLog.Instance.ResetBattleLog();
                             LabCamera.Instance.ResetPosition();
-                            actionStyle = ActionStyle.STANDARD;
+                           // actionStyle = ActionStyle.STANDARD;
                             SetActive();
                             if (TL != null)
                             {
@@ -196,7 +193,7 @@ public class ActionContainer : MonoBehaviour
                                 unit.isDarkened = false;
                             }
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
-                            actionStyle = ActionStyle.STANDARD;
+                            //actionStyle = ActionStyle.STANDARD;
                         }
                     }
                     break;
@@ -237,7 +234,7 @@ public class ActionContainer : MonoBehaviour
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
-                            actionStyle = ActionStyle.STANDARD;
+                            //actionStyle = ActionStyle.STANDARD;
                             SetActive();
                             LabCamera.Instance.ResetPosition();
                             if (TL != null)
@@ -316,12 +313,13 @@ public class ActionContainer : MonoBehaviour
 
     }
 
+
     public void ResetAll(bool turnOn = false)
     {
         action.ResetAction();
         if (heavyButton.state == ActionTypeButton.ActionButtonState.DEFAULT || lightButton.state == ActionTypeButton.ActionButtonState.DEFAULT)
         {
-            Director.Instance.timeline.pipCounter.AddPip();
+            Director.Instance.timeline.pipCounter.AddPip();     
         }
         lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
         heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
@@ -340,6 +338,8 @@ public class ActionContainer : MonoBehaviour
                 if (targetting == true)
                 {
                     targetting = false;
+                    lightButton.gameObject.SetActive(false);
+                    heavyButton.gameObject.SetActive(false);
                     BattleLog.Instance.DoBattleText("");
                     print("not targetting");
                     LabCamera.Instance.ResetPosition();
@@ -378,6 +378,8 @@ public class ActionContainer : MonoBehaviour
                     {
                         if (x != this)
                         {
+                            x.action.ResetAction();
+                            x.ResetAll();
                             var button = x.GetComponent<Button>();
                             if (!x.Disabled)
                             {
@@ -422,8 +424,8 @@ public class ActionContainer : MonoBehaviour
                     Director.Instance.timeline.children.Add(TL);
                     TL.CanMove = false;
                     TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0);
-                    TL.rectTransform.anchoredPosition = new Vector3((100 - action.cost) * -11.89f, 0);
-                    TL.staminaText.text = (100 - action.cost).ToString();
+                    TL.rectTransform.anchoredPosition = new Vector3((100 - Tools.DetermineTrueCost(action)) * -11.89f, 0);
+                    TL.staminaText.text = (100 - Tools.DetermineTrueCost(action)).ToString();
                     TL.CanClear = true;
                     TL.CanBeHighlighted = false;
                     TL.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);

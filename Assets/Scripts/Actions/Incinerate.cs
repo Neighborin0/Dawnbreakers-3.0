@@ -20,13 +20,13 @@ public class Incinerate : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + damage}</color> DMG.\nIgnores <sprite name=\"DEF BLUE\">";
+            description = $"Deals <color=#FF0000>{unit.attackStat + Tools.DetermineTrueActionValue(this)}</color> DMG.\nIgnores <sprite name=\"DEF BLUE\">";
         }
         else
         {
-            if(damage + unit.attackStat > 0)
+            if(Tools.DetermineTrueActionValue(this) + unit.attackStat > 0)
             {
-                description = $"Deals <color=#FF0000>{damage + unit.attackStat}</color> DMG.";
+                description = $"Deals <color=#FF0000>{Tools.DetermineTrueActionValue(this) + unit.attackStat}</color> DMG.";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG."; 
@@ -42,7 +42,7 @@ public class Incinerate : Action
         targets.ChangeUnitsLight(Light, 150, 15, new Color(191, 21, 0), 0.04f, 0.1f);
         BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "IncinerateParticles2", new Color32(191, 21, 0, 255), new Color32(191, 21, 0, 255), new Vector3(0, 0, -2f), 2.5f, 0, true, 6));
         yield return new WaitForSeconds(0.1f);
-        targets.health.TakeDamage(damage + unit.attackStat, unit, true);
+        targets.health.TakeDamage(Tools.DetermineTrueActionValue(this) + unit.attackStat, unit, true);
         LabCamera.Instance.Shake(1f, 1.3f);
         yield return new WaitForSeconds(0.5f);
         Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));

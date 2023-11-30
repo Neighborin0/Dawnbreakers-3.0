@@ -84,6 +84,16 @@ public class TimeLine : MonoBehaviour
         {
             if (action.unit.unitName == unit.unitName)
             {
+                if(BattleSystem.Instance.state == BattleStates.DECISION_PHASE && action.actionStyle != Action.ActionStyle.STANDARD)
+                {
+                    Director.Instance.timeline.pipCounter.AddPip();
+                }
+                foreach(var skill in action.unit.skillUIs)
+                {
+                    var actionContainer = skill.GetComponent<ActionContainer>();
+                    actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
+                    actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
+                }
                 BattleSystem.Instance.ActionsToPerform.Remove(action);
                 break;
             }
