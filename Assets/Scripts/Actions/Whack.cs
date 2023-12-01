@@ -8,8 +8,20 @@ public class Whack : Action
     private void OnEnable()
     {
         ActionName = "Whack";
-        damage = 2;
+
+
         cost = 40f;
+
+        damage = 2;
+        lightDamage = 0;
+        damage = 4;
+
+
+        cost = 30f;
+        lightCost = 10f;
+        heavyCost = 50f;
+
+
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
         damageText = damage.ToString();

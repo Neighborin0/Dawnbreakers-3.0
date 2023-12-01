@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Husk : Unit
 {
+    private int[] ActionVariance01 = {40 , 45, 50 ,55, 60 };
     void Awake()
     {
         unitName = "Husk";
@@ -15,7 +16,7 @@ public class Husk : Unit
         //speedStat = 7;
         currentHP = maxHP;
         IsPlayerControlled = false;
-
+        Tools.ModifyAction(this, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0 , ActionVariance01.Length)]);
         if (BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
         {
             behavior = this.gameObject.AddComponent<TutorialHuskMatriarchBehavior>();
@@ -33,17 +34,18 @@ public class Husk : Unit
 
     public class TutorialHuskMatriarchBehavior : EnemyBehavior
     {
+        private int[] ActionVariance01 = { 40, 45, 50, 55, 60 };
         public override void DoBehavior(Unit baseUnit)
         {
-            var battlesystem = BattleSystem.Instance;
             int move = UnityEngine.Random.Range(0, baseUnit.actionList.Count);
+            Tools.ModifyAction(baseUnit, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0, ActionVariance01.Length)]);
             if (Tools.CheckAndReturnNamedUnit("Dusty") != null)
             {
                 Tools.SetupEnemyAction(baseUnit, move, Tools.CheckAndReturnNamedUnit("Dusty"));
             }
             else
             {
-                Tools.SetupEnemyAction(baseUnit, move);
+                Tools.SetupEnemyAction(baseUnit, move, null);
             }
 
         }

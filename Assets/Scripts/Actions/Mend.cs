@@ -6,11 +6,19 @@ public class Mend : Action
     private void OnEnable()
     {
         ActionName = "Mend";
-        damage = 2;
+        //damage = 2;
         cost = 30f;
+        lightCost = 10f;
+        heavyCost = 50;
+
         limited = true;
         numberofUses = 3;
+
         statAmount = 5;
+        lightStatAmount = 3;
+        heavyStatAmount = 7;
+
+
         targetType = TargetType.ALLY;
         actionType = ActionType.STATUS;
         

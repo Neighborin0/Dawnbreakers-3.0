@@ -8,10 +8,18 @@ public class Calm : Action
     private void OnEnable()
     {
         ActionName = "Fortify";
-        damage = 3;
         damageText = damage.ToString();
-        cost = 50f;
+
         statAmount = 2;
+        lightStatAmount = 1;
+        lightStatAmount = 3;
+
+
+
+        cost = 20f;
+        lightCost = 0f;
+        heavyCost = 40;
+       
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
     }

@@ -15,11 +15,15 @@ public class WarCry : Action
     private void OnEnable()
     {
         ActionName = "War Cry";
-        cost = 30f;
+        cost = 20f;
+        lightCost = 0f;
+        heavyCost = 40f;
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
         duration = 2;
         statAmount = 3;
+        lightStatAmount = 2;
+        heavyStatAmount = 4;
         damageText = damage.ToString();
     }
 

@@ -8,7 +8,11 @@ public class Glint : Action
     private void OnEnable()
     {
         ActionName = "Push";
-        cost = 25f;
+
+        cost = 20f;
+        lightCost = 0;
+        heavyCost = 40f;
+
         targetType = TargetType.ENEMY;
         actionType = ActionType.STATUS;
         damageText = damage.ToString();

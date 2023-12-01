@@ -8,10 +8,19 @@ public class Enrage : Action
     private void OnEnable()
     {
         ActionName = "Enrage";
-        damage = 3;
         damageText = damage.ToString();
+
+
         cost = 25f;
+        lightCost = 5f;
+        heavyCost = 45f;
+
+
+
         statAmount = 2;
+        lightStatAmount = 1;
+        heavyStatAmount = 3;
+
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
     }

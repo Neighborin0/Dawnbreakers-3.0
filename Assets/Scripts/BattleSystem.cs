@@ -580,8 +580,22 @@ public class BattleSystem : MonoBehaviour
         int i = 0;
         if (unit.skillUIs != null && unit.IsPlayerControlled)
         {
-            if(unit.state == PlayerState.DECIDING)
+            if (unit.state == PlayerState.DECIDING)
+            {
                 unit.state = PlayerState.IDLE;
+                Director.Instance.timeline.RemoveTimelineChild(unit);
+
+                foreach (var skill in unit.skillUIs)
+                {
+                    var actionContainer = unit.skillUIs[i].GetComponent<ActionContainer>();
+                    if (actionContainer.action.actionStyle != Action.ActionStyle.STANDARD)
+                    {
+                        Director.Instance.timeline.pipCounter.AddPip();
+                        actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
+                    }
+                }
+            }
+                
 
             foreach (var skill in unit.skillUIs)
             {
@@ -639,12 +653,16 @@ public class BattleSystem : MonoBehaviour
             var newAction = Instantiate(action);
             assignedAction.button.enabled = true;
             assignedAction.action = newAction;
+            assignedAction.action.actionStyle = Action.ActionStyle.STANDARD;
             assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
             assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (newAction.duration).ToString();
             assignedAction.costNums.text = Tools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{Tools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = newAction.ActionName;
 
+            assignedAction.lightButton.gameObject.SetActive(false);
+            assignedAction.heavyButton.gameObject.SetActive(false);
+            
 
             if (assignedAction.action.actionType == Action.ActionType.STATUS)
             {

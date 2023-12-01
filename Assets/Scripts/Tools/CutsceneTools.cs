@@ -11,6 +11,10 @@ public class CutsceneTools : MonoBehaviour
         LabCamera.Instance.MoveToUnit(Tools.CheckAndReturnNamedUnit(unitName), Vector3.zero,0,8, -40, 0.5f, false);
     }
 
+    public static void ChangeTimeDelay(float time)
+    {
+        LabCamera.Instance.MovingTimeDivider = time;
+    }
     public static void MoveToUnit(string unitName)
     {
         LabCamera.Instance.MoveToUnit(Tools.CheckAndReturnNamedUnit(unitName), Vector3.zero, 0, 0, 0, 1, true);

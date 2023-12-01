@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class Rat : Unit
 {
+    private int[] ActionVariance01 = { 40, 45, 50, 55, 60 };
+    private int[] ActionVariance02 = { 20, 25, 30, 35, 40 };
     void Awake()
     {
         unitName = "Vermin";
@@ -17,9 +19,9 @@ public class Rat : Unit
         currentHP = maxHP;
         IsPlayerControlled = false;
         behavior = this.gameObject.AddComponent<VerminBehavior>();
-        Tools.ModifyAction(this, "Strike", 0, 50f);
-        Tools.ModifyAction(this, "Enrage", 1, 30f);
-        Tools.ModifyAction(this, "Screech", 2, 30f);
+        Tools.ModifyAction(this, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0, ActionVariance01.Length)]);
+        Tools.ModifyAction(this, "Enrage", 1, ActionVariance02[UnityEngine.Random.Range(0, ActionVariance02.Length)]);
+        Tools.ModifyAction(this, "Screech", 2, ActionVariance02[UnityEngine.Random.Range(0, ActionVariance02.Length)]);
 
     }
 
@@ -38,6 +40,8 @@ public class Rat : Unit
 
     public class VerminBehavior : EnemyBehavior
     {
+        private int[] ActionVariance01 = { 40, 45, 50, 55, 60 };
+        private int[] ActionVariance02 = { 20, 25, 30, 35, 40 };
         private Action lastAction = null;
         private int turn = 0;
         public override void DoBehavior(Unit baseUnit)
@@ -45,6 +49,9 @@ public class Rat : Unit
             var battlesystem = BattleSystem.Instance;
             int move;
 
+            Tools.ModifyAction(baseUnit, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0, ActionVariance01.Length)]);
+            Tools.ModifyAction(baseUnit, "Enrage", 1, ActionVariance02[UnityEngine.Random.Range(0, ActionVariance02.Length)]);
+            Tools.ModifyAction(baseUnit, "Screech", 2, ActionVariance02[UnityEngine.Random.Range(0, ActionVariance02.Length)]);
             if (turn == 0)
             {
                 move = UnityEngine.Random.Range(0, baseUnit.actionList.Count);
@@ -56,12 +63,12 @@ public class Rat : Unit
             {
                 move = 0;
                 lastAction = baseUnit.actionList[move];
-                Tools.SetupEnemyAction(baseUnit, move);
+                Tools.SetupEnemyAction(baseUnit, move, null);
             }
             else if (lastAction.actionType == Action.ActionType.ATTACK)
             {
                 move = UnityEngine.Random.Range(1, baseUnit.actionList.Count);
-                Tools.SetupEnemyAction(baseUnit, move);
+                Tools.SetupEnemyAction(baseUnit, move, null);
             }
         }
     }

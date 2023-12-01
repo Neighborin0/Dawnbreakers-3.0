@@ -11,8 +11,18 @@ public class Incinerate : Action
     private void OnEnable()
     {
         ActionName = "Incinerate";
+
         damage = 50;
-        cost = 100f;
+        lightDamage = 50;
+        heavyDamage = 50;
+
+
+
+        cost = 75f;
+        lightCost = 80;
+        heavyCost = 100;
+
+
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
     }

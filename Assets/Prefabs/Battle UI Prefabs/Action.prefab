@@ -791,7 +791,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6299983212120491824
 RectTransform:
   m_ObjectHideFlags: 0
@@ -868,7 +868,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a68243f499d79741b303ee25de97e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionStyle: 0
   lightButton: {fileID: 7876694886266373561}
   heavyButton: {fileID: 3655007133051986297}
   action: {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}

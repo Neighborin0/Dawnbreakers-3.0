@@ -8,11 +8,18 @@ public class Hasten : Action
     private void OnEnable()
     {
         ActionName = "Hasten";
-        damage = 5;
         damageText = damage.ToString();
-        cost = 50f;
+
+        cost = 20f;
+        lightCost = 0f;
+        heavyCost = 40f;
+
+
         targetType = TargetType.SELF;
-        statAmount = 5;
+        statAmount = 2;
+        lightStatAmount = 1;
+        heavyStatAmount = 3;
+
         actionType = ActionType.STATUS;
     }
 

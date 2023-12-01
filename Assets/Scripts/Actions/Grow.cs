@@ -9,9 +9,19 @@ public class Grow : Action
     private void OnEnable()
     {
         ActionName = "Empower";
-        damage = 3;
+
+
         cost = 45f;
+        lightCost = 25f;
+        heavyCost = 65f;
+
+
         statAmount = 2;
+        lightStatAmount = 1;
+        heavyStatAmount = 3;
+
+
+
         damageText = damage.ToString();
         targetType = TargetType.SELF;
         actionType = ActionType.STATUS;

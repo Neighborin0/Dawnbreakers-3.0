@@ -12,8 +12,17 @@ public class Bash : Action
     {
         ActionName = "Bash";
         damage = 5;
+        lightDamage = 3;
+        heavyDamage = 7;
+
+
+        cost = 40f;
+        lightCost = 20f;
+        heavyCost = 60f;
+
         damageText = damage.ToString();
-        cost = 50f;
+
+
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
     }

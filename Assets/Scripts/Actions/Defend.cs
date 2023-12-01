@@ -15,7 +15,7 @@ public class Defend : Action
     private void OnEnable()
     {
         ActionName = "Defend";
-        cost = 20f;
+        cost = 0f;
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;

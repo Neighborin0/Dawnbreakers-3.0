@@ -325,7 +325,18 @@ public class ActionContainer : MonoBehaviour
         heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
         heavyButton.gameObject.SetActive(turnOn);
         lightButton.gameObject.SetActive(turnOn);
-       
+
+    }
+
+    public void UpdateOnStyleSwitch()
+    {
+        if(TL != null) 
+        {
+            TL.staminaText.text = (100 - Tools.DetermineTrueCost(action)).ToString();
+            TL.rectTransform.anchoredPosition = new Vector3((100 - Tools.DetermineTrueCost(action)) * -11.89f, 0);
+        }
+        SetDescription();
+     
 
     }
     public void SetActive()

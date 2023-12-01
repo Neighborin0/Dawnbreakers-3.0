@@ -30,7 +30,7 @@ public class PipCounter : MonoBehaviour
 
     public void ResetPips()
     {
-        pipCount = 0;
+        pipCount = 1;
         pipText.text = pipCount.ToString();
     }
 

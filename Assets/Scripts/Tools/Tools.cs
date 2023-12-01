@@ -817,9 +817,9 @@ public class Tools : MonoBehaviour
 
     public static void SetupEnemyAction(Unit baseUnit, int DecidingNum, Unit overrideTarget = null)
     {
-        DetermineActionData(baseUnit, DecidingNum);
+        DetermineActionData(baseUnit, DecidingNum, overrideTarget);
         BattleSystem.Instance.DisplayEnemyIntent(baseUnit.actionList[DecidingNum], baseUnit);
-        DetermineActionData(baseUnit, DecidingNum);
+        DetermineActionData(baseUnit, DecidingNum, overrideTarget);
         baseUnit.state = PlayerState.READY;
 
         Director.Instance.timeline.DoCost(Tools.DetermineTrueCost(baseUnit.actionList[DecidingNum]), baseUnit);
@@ -833,7 +833,7 @@ public class Tools : MonoBehaviour
         {
             case Action.ActionStyle.LIGHT:
                 {
-                    floatToReturn = action.lightCost;
+                   floatToReturn = action.lightCost;
                 }
                 break;
             case Action.ActionStyle.HEAVY:

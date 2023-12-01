@@ -14,6 +14,9 @@ public class Beacon : Action
     {
         ActionName = "Beacon";
         cost = 75f;
+        lightCost = 75f;
+        heavyCost = 75f;
+
         targetType = TargetType.SELF;
         actionType = ActionType.STATUS;
         damageText = damage.ToString();

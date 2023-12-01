@@ -9,11 +9,15 @@ public class Screech : Action
     {
         ActionName = "Screech";
         damage = 2;
-        cost = 30f;
+        cost = 10f;
+        lightCost = 0f;
+        heavyCost = 30f;
         damageText = damage.ToString();
         targetType = TargetType.ENEMY;
         actionType = ActionType.STATUS;
         statAmount = 2;
+        lightStatAmount = 1;
+        heavyStatAmount = 3;
     }
 
     public override string GetDescription()

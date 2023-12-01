@@ -8,7 +8,14 @@ public class Awaken : Action
     private void OnEnable()
     {
         ActionName = "Awaken";
+
+
+        
         cost = 100f;
+        lightCost = 80f;
+        heavyCost = 100f;
+
+
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;

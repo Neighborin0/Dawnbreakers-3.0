@@ -14,6 +14,8 @@ public class Kindle : Action
     {
         ActionName = "Kindle";
         cost = 60f;
+        lightCost = 60;
+        heavyCost = 60;
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
     }

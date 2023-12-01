@@ -29,41 +29,24 @@ public class ActionTypeButton : Button
             case ActionButtonState.LIGHT:
                 {
                     var newAction = Instantiate(action);
-                    /*if (newAction.actionType == Action.ActionType.STATUS && newAction.statAmount != 0)
-                    {
-                        newAction.statAmount = (int)(newAction.statAmount * lightEfficiencyModifier);
-                    }
-                    else
-                    {
-                        newAction.damage = (int)(newAction.damage * lightEfficiencyModifier);
-                    }
-                    */
                     Director.Instance.timeline.pipCounter.TakePip();
                     actionContainerParent.lightButton.gameObject.SetActive(false);
                     actionContainerParent.heavyButton.state = ActionButtonState.DEFAULT;
                     newAction.actionStyle = Action.ActionStyle.LIGHT;
                     actionContainerParent.action = newAction;
+                    actionContainerParent.UpdateOnStyleSwitch();
                 }
                 break;
             case ActionButtonState.HEAVY:
                 {
                     
                     var newAction = Instantiate(action);
-                    /*
-                    if (newAction.actionType == Action.ActionType.STATUS && newAction.statAmount != 0)
-                    {
-                        newAction.statAmount = (int)(newAction.statAmount * heavyEfficiencyModifier);
-                    }
-                    else
-                    {
-                        newAction.damage = (int)(newAction.damage * heavyEfficiencyModifier);
-                    }
-                    */
                     Director.Instance.timeline.pipCounter.TakePip();
                     actionContainerParent.heavyButton.gameObject.SetActive(false);
                     actionContainerParent.lightButton.state = ActionButtonState.DEFAULT;
                     newAction.actionStyle = Action.ActionStyle.HEAVY;
                     actionContainerParent.action = newAction;
+                    actionContainerParent.UpdateOnStyleSwitch();
                 }
                 break;
             case ActionButtonState.DEFAULT:
@@ -86,6 +69,7 @@ public class ActionTypeButton : Button
                     actionContainerParent.heavyButton.state = ActionButtonState.HEAVY;
                     action.actionStyle = Action.ActionStyle.STANDARD;
                     Director.Instance.timeline.pipCounter.AddPip();
+                    actionContainerParent.UpdateOnStyleSwitch();
                 }
                 break;
         }

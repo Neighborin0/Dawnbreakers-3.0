@@ -23,7 +23,7 @@ public class Vigor : EffectIcon
 
     public override IEnumerator End()
     {
-        BattleSystem.Instance.SetStatChanges(Stat.ATK, -3f, false, owner);
+        BattleSystem.Instance.SetStatChanges(Stat.ATK, -storedValue, false, owner);
         owner.statusEffects.Remove(owner.statusEffects.Where(obj => obj.iconName == iconName).SingleOrDefault());
         Destroy(gameObject);
         yield break;

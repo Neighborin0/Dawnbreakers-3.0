@@ -10,12 +10,12 @@ public class Slash : Action
         ActionName = "Slash";
 
         damage = 5;
-        lightDamage = 2;
+        lightDamage = 3;
         heavyDamage = 7;
 
-        cost = 50f;
-        heavyCost = 70;
-        lightCost = 30;
+        cost = 40f;
+        heavyCost = 60;
+        lightCost = 20;
 
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;

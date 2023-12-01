@@ -10,7 +10,14 @@ public class Sweep : Action
     {
         ActionName = "Sweep";
         damage = -1;
-        cost = 30f;
+        lightDamage = -3;
+        heavyDamage = 1;
+
+        cost = 20f;
+        lightCost = 0;
+        heavyCost = 40;
+
+
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
         damageText = damage.ToString();

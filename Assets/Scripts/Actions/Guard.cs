@@ -15,7 +15,11 @@ public class Guard : Action
     private void OnEnable()
     {
         ActionName = "Guard";
-        cost = 30f;
+
+        cost = 20f;
+        lightCost = 0;
+        heavyCost = 40f;
+
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.ALLY;

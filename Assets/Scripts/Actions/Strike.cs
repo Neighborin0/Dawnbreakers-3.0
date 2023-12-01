@@ -8,13 +8,19 @@ public class Strike : Action
     private void OnEnable()
     {
         ActionName = "Strike";
+
         damage = 5;
+        lightDamage = 3;
+        heavyDamage = 7;
+
+        cost = 40f;
+        heavyCost = 60;
+        lightCost = 20;
+
+
         damageText = damage.ToString();
-        cost = 50f;
         actionType = ActionType.ATTACK;
         targetType = TargetType.ENEMY;
-
-
     }
 
     public override string GetDescription()

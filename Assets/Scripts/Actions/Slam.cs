@@ -8,8 +8,17 @@ public class Slam : Action
     private void OnEnable()
     {
         ActionName = "Slam";
+
         damage = 10;
-        cost = 100f;
+        lightDamage = 7;
+        damage = 13;
+
+
+        cost = 75f;
+        lightCost = 55f;
+        heavyCost = 95;
+
+
         targetType = TargetType.ALL_ENEMIES;
         damageText = damage.ToString();
         actionType = ActionType.ATTACK;

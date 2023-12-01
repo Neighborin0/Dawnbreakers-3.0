@@ -26,6 +26,7 @@ public class DefendEF : EffectIcon
         }
         else
             owner.defenseStat -= (int)storedValue;
+
         owner.statusEffects.Remove(owner.statusEffects.Where(obj => obj.iconName == iconName).SingleOrDefault());
         Destroy(gameObject);
         yield break;
