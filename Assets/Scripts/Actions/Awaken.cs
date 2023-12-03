@@ -31,7 +31,7 @@ public class Awaken : Action
     {
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
         var Light = targets.spotLight;
         targets.ChangeUnitsLight(Light, 150, 15, Color.blue, 0.04f, 1.6f);
         LabCamera.Instance.Shake(1f, 0.3f);
@@ -41,7 +41,7 @@ public class Awaken : Action
         LabCamera.Instance.Shake(1f, 0.3f);
         BattleSystem.Instance.SetStatChanges(Stat.SPD, 15f, false, targets);
         yield return new WaitForSeconds(1f);
-        Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
         this.Done = true;
     }

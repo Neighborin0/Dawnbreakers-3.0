@@ -56,26 +56,27 @@ public class ActionContainer : MonoBehaviour
         {
             var unit = hit.collider.gameObject.GetComponent<Unit>();
             unit.timelinechild.Shift(unit);
-            damageNums.text = Tools.DetermineTrueActionValue(action) + baseUnit.attackStat - unit.defenseStat > 0 ?
-                "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + baseUnit.attackStat - unit.defenseStat).ToString()
+            damageNums.text = (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat > 0 ?
+                "<sprite name=\"ATK\">" +
+                ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat).ToString()
                 : "<sprite name=\"ATK\">" + "0";
 
-            if (Tools.DetermineTrueActionValue(action) + baseUnit.attackStat - unit.defenseStat > Tools.DetermineTrueActionValue(action) + baseUnit.attackStat)
-            {
-                damageNums.color = Color.green;
-            }
-            else if (Tools.DetermineTrueActionValue(action) + baseUnit.attackStat - unit.defenseStat < Tools.DetermineTrueActionValue(action) + baseUnit.attackStat)
+            if ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat > (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) || CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1)
             {
                 damageNums.color = Color.red;
+            }
+            else if ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat < (int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) || CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1)
+            {
+                damageNums.color = Color.green;
             }
         }
         else if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
         {
-            damageNums.text = "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
+            damageNums.text = "<sprite name=\"ATK\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
             damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
         }
 
-        costNums.text = Tools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier < 100 ? $"{Tools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier}%" : $"100%";
+        costNums.text = CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier}%" : $"100%";
 
         if (targetting && BattleSystem.Instance.state != BattleStates.WON)
         {
@@ -84,7 +85,7 @@ public class ActionContainer : MonoBehaviour
 
             if (Input.GetMouseButtonUp(1))
             {
-                LabCamera.Instance.MoveToUnit(Tools.FindDecidingUnit(), Vector3.zero);
+                LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), Vector3.zero);
                 RemoveDescription();
                 foreach (var z in Tools.GetAllUnits())
                 {
@@ -319,12 +320,11 @@ public class ActionContainer : MonoBehaviour
         action.ResetAction();
         if (heavyButton.state == ActionTypeButton.ActionButtonState.DEFAULT || lightButton.state == ActionTypeButton.ActionButtonState.DEFAULT)
         {
-            Director.Instance.timeline.pipCounter.AddPip();     
+            CombatTools.ReturnPipCounter().AddPip();     
         }
         lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
         heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
-        heavyButton.gameObject.SetActive(turnOn);
-        lightButton.gameObject.SetActive(turnOn);
+        SetActionStyleButtonsActive(turnOn);
 
     }
 
@@ -332,12 +332,24 @@ public class ActionContainer : MonoBehaviour
     {
         if(TL != null) 
         {
-            TL.staminaText.text = (100 - Tools.DetermineTrueCost(action)).ToString();
-            TL.rectTransform.anchoredPosition = new Vector3((100 - Tools.DetermineTrueCost(action)) * -11.89f, 0);
+            TL.staminaText.text = (100 - CombatTools.DetermineTrueCost(action)).ToString();
+            TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * -11.89f, 0);
         }
-        SetDescription();
-     
+        SetDescription();  
+    }
 
+    public void SetActionStyleButtonsActive(bool SetActive)
+    {
+        if (Director.Instance.UnlockedPipSystem)
+        {
+            lightButton.gameObject.SetActive(SetActive); 
+            heavyButton.gameObject.SetActive(SetActive);
+        }
+        else
+        {
+            lightButton.gameObject.SetActive(false);
+            heavyButton.gameObject.SetActive(false);
+        }
     }
     public void SetActive()
     {
@@ -349,8 +361,7 @@ public class ActionContainer : MonoBehaviour
                 if (targetting == true)
                 {
                     targetting = false;
-                    lightButton.gameObject.SetActive(false);
-                    heavyButton.gameObject.SetActive(false);
+                    SetActionStyleButtonsActive(false);
                     BattleLog.Instance.DoBattleText("");
                     print("not targetting");
                     LabCamera.Instance.ResetPosition();
@@ -382,8 +393,7 @@ public class ActionContainer : MonoBehaviour
                 }
                 else
                 {
-                    lightButton.gameObject.SetActive(false);
-                    heavyButton.gameObject.SetActive(false);
+                    SetActionStyleButtonsActive(false);
                     ActionContainer[] actionContainers = UnityEngine.Object.FindObjectsOfType<ActionContainer>();
                     foreach (var x in actionContainers)
                     {
@@ -435,8 +445,8 @@ public class ActionContainer : MonoBehaviour
                     Director.Instance.timeline.children.Add(TL);
                     TL.CanMove = false;
                     TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0);
-                    TL.rectTransform.anchoredPosition = new Vector3((100 - Tools.DetermineTrueCost(action)) * -11.89f, 0);
-                    TL.staminaText.text = (100 - Tools.DetermineTrueCost(action)).ToString();
+                    TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * -11.89f, 0);
+                    TL.staminaText.text = (100 - CombatTools.DetermineTrueCost(action)).ToString();
                     TL.CanClear = true;
                     TL.CanBeHighlighted = false;
                     TL.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
@@ -445,15 +455,13 @@ public class ActionContainer : MonoBehaviour
                     print("targetting");
                     SetDescription();
                     button.interactable = false;
-                    if (Director.Instance.timeline.pipCounter.pipCount > 0)
+                    if (CombatTools.ReturnPipCounter().pipCount > 0)
                     {
-                        lightButton.gameObject.SetActive(true);
-                        heavyButton.gameObject.SetActive(true);
+                        SetActionStyleButtonsActive(true);
                     }
                     else
                     {
-                        lightButton.gameObject.SetActive(false);
-                        heavyButton.gameObject.SetActive(false);
+                        SetActionStyleButtonsActive(false);
                     }
                     if (action.targetType == Action.TargetType.ENEMY)
                         LabCamera.Instance.MoveToPosition(new Vector3(1, LabCamera.Instance.transform.position.y, LabCamera.Instance.transform.position.z), 1f);

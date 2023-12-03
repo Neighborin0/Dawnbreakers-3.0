@@ -35,10 +35,10 @@ public class IntentContainer : MonoBehaviour
     {
         if (textMesh != null && damageNums.IsActive() && unit != null && action != null && action.targets != null)
         {
-            if (Tools.DetermineTrueActionValue(action) + unit.attackStat - action.targets.defenseStat > 0)
+            if ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat > 0)
             {
-                damageNums.text = "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + unit.attackStat - action.targets.defenseStat).ToString();
-                action.damageText = (unit.attackStat + Tools.DetermineTrueActionValue(action)).ToString();
+                damageNums.text = "<sprite name=\"ATK\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
+                action.damageText = ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
             }
             else
                 damageNums.text = "<sprite name=\"ATK\">" + "0";

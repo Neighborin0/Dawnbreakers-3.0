@@ -19,8 +19,8 @@ public class TutorialEnemy : Unit
         speedStat = 0;
         currentHP = maxHP;
         IsPlayerControlled = false;
-        Tools.ModifyAction(this, "Awaken", 0, 100f);
-        Tools.ModifyAction(this, "Strike", 1, 100f);
+        CombatTools.ModifyAction(this, "Awaken", 0, 100f);
+        CombatTools.ModifyAction(this, "Strike", 1, 100f);
     }
     void Start()
     {
@@ -60,11 +60,11 @@ public class TutorialEnemy : Unit
         {
 
             var battlesystem = BattleSystem.Instance;
-            var Aurelia = Tools.CheckAndReturnNamedUnit("Aurelia");
+            var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
             //So player can't die during Tutorial Fight
             if (Aurelia.currentHP <= 10)
             {
-                Tools.SetupEnemyAction(baseUnit, 2);
+                CombatTools.SetupEnemyAction(baseUnit, 2);
             }
             else
             {
@@ -86,7 +86,7 @@ public class TutorialEnemy : Unit
                         }
                     }
                 }
-                Tools.SetupEnemyAction(baseUnit, turn);
+                CombatTools.SetupEnemyAction(baseUnit, turn);
                 if (turn != 1)
                 {
                     turn += 1;

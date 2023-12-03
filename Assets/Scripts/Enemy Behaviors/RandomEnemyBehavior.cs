@@ -8,7 +8,7 @@ public class RandomEnemyBehavior : EnemyBehavior
     public override void DoBehavior(Unit baseUnit)
     {
         int move = UnityEngine.Random.Range(0, baseUnit.actionList.Count);
-        Tools.SetupEnemyAction(baseUnit, move);
+        CombatTools.SetupEnemyAction(baseUnit, move);
     }
 
 }

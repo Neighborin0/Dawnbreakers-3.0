@@ -10,6 +10,7 @@ using static System.Collections.Specialized.BitVector32;
 using static UnityEngine.UI.CanvasScaler;
 using UnityEngine.EventSystems;
 using UnityEngine.ProBuilder.Shapes;
+using System.Data.Common;
 
 public enum PlayerState { IDLE, DECIDING, READY, WAITING }
 public enum Stat { ATK, DEF, SPD, HP }
@@ -24,9 +25,6 @@ public class Unit : MonoBehaviour
     [NonSerialized]
     public IntentContainer intentUI;
     public Healthbar health;
-    /*[NonSerialized]
-    public StaminaBar stamina;
-    */
     [NonSerialized]
     public NamePlate namePlate;
     [NonSerialized]
@@ -52,8 +50,6 @@ public class Unit : MonoBehaviour
     public TimeLineChild timelinechild;
     [NonSerialized]
     public bool StopMovingToUnit = false;
-    [NonSerialized]
-    //public float StartingStamina;
     IEnumerator lightCoroutine;
     IEnumerator fadeCoroutine;
     public bool IsHidden;
@@ -86,6 +82,8 @@ public class Unit : MonoBehaviour
     public int speedStat;
     public Light spotLight;
     public float actionCostMultiplier = 1;
+    public DamageType[] resistances;
+    public DamageType[] weaknesses;
 
     //actions
     public List<Action> actionList;
@@ -170,7 +168,7 @@ public class Unit : MonoBehaviour
            //Hit Detection
             if (hit.collider == this.GetComponent<BoxCollider>() && !isDarkened && !OverUI())
             {
-                if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && Tools.CheckIfAnyUnitIsDeciding())
+                if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && CombatTools.CheckIfAnyUnitIsDeciding())
                 {
                     if (!this.IsPlayerControlled)
                     {
@@ -204,7 +202,7 @@ public class Unit : MonoBehaviour
             {
                 if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !OverUI() && state != PlayerState.DECIDING)
                 {
-                    if (!Tools.CheckIfAnyUnitIsTargetting())
+                    if (!CombatTools.CheckIfAnyUnitIsTargetting())
                     {
                         BattleLog.Instance.itemText.text = "";
                         BattleLog.Instance.DisplayCharacterStats(this, true);
@@ -279,7 +277,7 @@ public class Unit : MonoBehaviour
     {
         if (action.unit != null && action.targets != null)
         {
-            Director.Instance.timeline.DoCost(Tools.DetermineTrueCost(action), action.unit);
+            Director.Instance.timeline.DoCost(CombatTools.DetermineTrueCost(action), action.unit);
             BattleSystem.Instance.AddAction(action);
             BattleSystem.SetUIOff(action.unit);
         }

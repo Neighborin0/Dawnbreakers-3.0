@@ -20,6 +20,7 @@ public class Sweep : Action
 
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
+        damageType = DamageType.STRIKE;
         damageText = damage.ToString();
     }
 
@@ -27,13 +28,13 @@ public class Sweep : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + Tools.DetermineTrueActionValue(this)}</color> DMG.\n<color=#FF0000>+2</color> DMG when <sprite name=\"STAGGER\">.";
+            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> DMG.\n<color=#FF0000>+2</color> DMG when <sprite name=\"STAGGER\">.";
         }
         else
         {
-            if (Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat > 0)
+            if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat > 0)
             {
-                description = $"Deals <color=#FF0000>{Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat}</color> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
+                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat}</color> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
@@ -55,16 +56,16 @@ public class Sweep : Action
             var Stagger = targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault();
             Stagger.DestoryEffectIcon();
             AdditionalDMG += 2;
-            BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Color(156, 14, 207), new Vector3(0, 0, -2f), 1f));
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Color(156, 14, 207), new Vector3(0, 0, -2f), 1f));
         }
         else
         {
-            BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), 1f));
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), 1f));
         }
         LabCamera.Instance.Shake(0.2f, 1f);
-        targets.health.TakeDamage(Tools.DetermineTrueActionValue(this) + AdditionalDMG + unit.attackStat, unit, false);
+        targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat + AdditionalDMG) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType,false);
         yield return new WaitForSeconds(0.5f);
-        Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
+        CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 
   

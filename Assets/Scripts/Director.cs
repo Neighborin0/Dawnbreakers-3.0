@@ -43,16 +43,27 @@ public class Director : MonoBehaviour
     public bool DevMode;
     public Image blackScreen;
     public Button backButton;
-    public TimeLine timeline;
-    public float timelinespeedDelay;
-    public float staminaSPDDivider;
     public GameObject LevelUpText;
     public TextMeshProUGUI chooseYourItemText;
     public GameObject EffectPopUp;
     public GameObject ConfirmButton;
     public GameObject CharacterSlotButtonprefab;
     public Image LevelDropText;
+
+    //Timeline stuff
+    public TimeLine timeline;
+    public float timelinespeedDelay;
+    public float staminaSPDDivider;
+    public float WeaknessMultiplier = 1.3f;
+    public float ResistanceMultiplier = 0.3f;
+    public int TimelineReduction = 20;
+    public int TimelineAddition = 10;
+
+
     //public TextMeshProUGUI LevelDropSubText;
+
+    //psuedo save flags
+    public bool UnlockedPipSystem = false;
 
     public LabCamera.CameraState previousCameraState;
     public static Director Instance { get; private set;  }
@@ -87,7 +98,15 @@ public class Director : MonoBehaviour
 
     }
 
-   
+    private void Start()
+    {
+        if(DevMode)
+        {
+            UnlockedPipSystem = true;
+        }
+    }
+
+
     void Update()
     {
         
@@ -325,9 +344,9 @@ public class Director : MonoBehaviour
             assignedAction.button.interactable = true;
             assignedAction.button.enabled = true;
             assignedAction.action = action;
-            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
+            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (CombatTools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
             assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (action.duration).ToString();
-            assignedAction.costNums.text = Tools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{Tools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
+            assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = action.ActionName;
             if(assignedAction.action.New)

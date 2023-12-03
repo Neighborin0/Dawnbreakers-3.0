@@ -29,14 +29,14 @@ public class Grow : Action
 
     public override string GetDescription()
     {
-        description = $"Raises <sprite name=\"ATK RED2\"> by {Tools.DetermineTrueActionValue(this)}.";
+        description = $"Raises <sprite name=\"ATK RED2\"> by {CombatTools.DetermineTrueActionValue(this)}.";
         return description;
     }
     public override IEnumerator ExecuteAction()
     {
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, -8, 40, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.ATK, Tools.DetermineTrueActionValue(this), false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.ATK, CombatTools.DetermineTrueActionValue(this), false, targets);
         yield return new WaitForSeconds(0.5f);
         LabCamera.Instance.ResetPosition();
         this.Done = true;

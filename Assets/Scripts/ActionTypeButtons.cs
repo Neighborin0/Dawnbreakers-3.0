@@ -29,9 +29,9 @@ public class ActionTypeButton : Button
             case ActionButtonState.LIGHT:
                 {
                     var newAction = Instantiate(action);
-                    Director.Instance.timeline.pipCounter.TakePip();
+                    CombatTools.ReturnPipCounter().TakePip();
                     actionContainerParent.lightButton.gameObject.SetActive(false);
-                    actionContainerParent.heavyButton.state = ActionButtonState.DEFAULT;
+                    actionContainerParent.heavyButton.state = ActionButtonState.DEFAULT;    
                     newAction.actionStyle = Action.ActionStyle.LIGHT;
                     actionContainerParent.action = newAction;
                     actionContainerParent.UpdateOnStyleSwitch();
@@ -41,7 +41,7 @@ public class ActionTypeButton : Button
                 {
                     
                     var newAction = Instantiate(action);
-                    Director.Instance.timeline.pipCounter.TakePip();
+                    CombatTools.ReturnPipCounter().TakePip();
                     actionContainerParent.heavyButton.gameObject.SetActive(false);
                     actionContainerParent.lightButton.state = ActionButtonState.DEFAULT;
                     newAction.actionStyle = Action.ActionStyle.HEAVY;
@@ -52,23 +52,12 @@ public class ActionTypeButton : Button
             case ActionButtonState.DEFAULT:
                 {
                     var newAction = Instantiate(action);
-                    /*
-                    if (action.actionType == Action.ActionType.STATUS && action.statAmount != 0)
-                    {
-                        action.statAmount = newAction.statAmount;
-                    }
-                    else
-                    {
-                        action.damage = newAction.damage;
-                    }
-                    */
                     action.cost = newAction.cost;
-                    actionContainerParent.heavyButton.gameObject.SetActive(true);
-                    actionContainerParent.lightButton.gameObject.SetActive(true);
+                    actionContainerParent.SetActionStyleButtonsActive(true);
                     actionContainerParent.lightButton.state = ActionButtonState.LIGHT;
                     actionContainerParent.heavyButton.state = ActionButtonState.HEAVY;
                     action.actionStyle = Action.ActionStyle.STANDARD;
-                    Director.Instance.timeline.pipCounter.AddPip();
+                    CombatTools.ReturnPipCounter().AddPip();
                     actionContainerParent.UpdateOnStyleSwitch();
                 }
                 break;

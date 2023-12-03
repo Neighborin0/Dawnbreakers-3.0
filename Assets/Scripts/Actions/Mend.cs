@@ -26,14 +26,14 @@ public class Mend : Action
 
     public override string GetDescription()
     {
-        description = $"Heals allies by {Tools.DetermineTrueActionValue(this)} <sprite name=\"HP\">.";
+        description = $"Heals allies by {CombatTools.DetermineTrueActionValue(this)} <sprite name=\"HP\">.";
         return description;
     }
     public override IEnumerator ExecuteAction()
     {
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.HP, Tools.DetermineTrueActionValue(this), false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.HP, CombatTools.DetermineTrueActionValue(this), false, targets);
         yield return new WaitForSeconds(0.5f);
         LabCamera.Instance.ResetPosition();
         this.Done = true;

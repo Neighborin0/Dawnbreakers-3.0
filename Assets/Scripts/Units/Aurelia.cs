@@ -22,6 +22,8 @@ public class Aurelia : Unit
         speedStat = 10;
         //StartingStamina = UnityEngine.Random.Range(85, 95);
         //speedStat = 100;
+        resistances = new DamageType[] { DamageType.LIGHT};
+        weaknesses = new DamageType[] { DamageType.DARK };
         currentHP = maxHP;
         IsPlayerControlled = true;
         Tools.AddItemToInventory(this, "Tattered Cape");

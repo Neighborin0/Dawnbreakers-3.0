@@ -18,6 +18,9 @@ public class TestDummy : Unit
         currentHP = maxHP;
         IsPlayerControlled = false;
         behavior = this.gameObject.AddComponent<RandomEnemyBehavior>();
+        resistances = new DamageType[] { DamageType.STRIKE,};
+        weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE };
+        CombatTools.ModifyAction(this, "Strike", 1, 100f);
     }
 
 }

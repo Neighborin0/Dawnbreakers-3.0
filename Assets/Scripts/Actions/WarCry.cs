@@ -29,33 +29,33 @@ public class WarCry : Action
 
     public override string GetDescription()
     {
-        description = $"Applies +{Tools.DetermineTrueActionValue(this)} <sprite name=\"VIGOR\"> to all allies for {duration} round.";
+        description = $"Applies +{CombatTools.DetermineTrueActionValue(this)} <sprite name=\"VIGOR\"> to all allies for {duration} round.";
         return description;
     }
     public override IEnumerator ExecuteAction()
     {
-        Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 1.1f));
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCryParticles", Color.red, Color.red, new Vector3(0, 0, -2f), 1.1f));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 1.1f));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCryParticles", Color.red, Color.red, new Vector3(0, 0, -2f), 1.1f));
         yield return new WaitForSeconds(0.2f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 1.1f));
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCryParticles", Color.red, Color.red, new Vector3(0, 0, -2f), 1.1f));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 1.1f));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCryParticles", Color.red, Color.red, new Vector3(0, 0, -2f), 1.1f));
         yield return new WaitForSeconds(0.2f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 1.1f));
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "WarCryParticles", Color.red, Color.red, new Vector3(0, 0, -2f), 1.1f));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), 1.1f));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCryParticles", Color.red, Color.red, new Vector3(0, 0, -2f), 1.1f));
         yield return new WaitForSeconds(0.4f);
-        foreach (var x in Tools.DetermineAllies(unit))
+        foreach (var x in CombatTools.DetermineAllies(unit))
         {
             var Light = x.spotLight;
             unit.ChangeUnitsLight(Light, 150, 15, Color.red, 0.04f, 0.08f);
-            BattleSystem.Instance.SetStatChanges(Stat.ATK, Tools.DetermineTrueActionValue(this), false, x);
+            BattleSystem.Instance.SetStatChanges(Stat.ATK, CombatTools.DetermineTrueActionValue(this), false, x);
             var battleSystem = BattleSystem.Instance;
-            battleSystem.SetTempEffect(x, "ATK", true, duration, Tools.DetermineTrueActionValue(this), 0);
+            battleSystem.SetTempEffect(x, "ATK", true, duration, CombatTools.DetermineTrueActionValue(this), 0);
         }
         yield return new WaitForSeconds(1f);
-        Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
         this.Done = true;
         yield break;

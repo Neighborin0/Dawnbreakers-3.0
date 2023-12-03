@@ -5,7 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-
+using static System.Collections.Specialized.BitVector32;
+using static UnityEngine.UI.CanvasScaler;
+using System.Buffers;
 
 public class Healthbar : MonoBehaviour
 {
@@ -44,7 +46,7 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage, Unit DamageSource, bool IgnoresDEF = false)
+    public void TakeDamage(int damage, Unit DamageSource, DamageType damageType, bool IgnoresDEF = false)
     {
         //RunTracker.Instance.slayer = DamageSource;
         if (unit != null)
@@ -53,8 +55,10 @@ public class Healthbar : MonoBehaviour
             if(IgnoresDEF)
                 truedamage = damage;
             else
+            {
                 truedamage = (int)Math.Round((damage - unit.defenseStat) * DamageModifier);
-
+            }
+               
             if (truedamage < 1)
             {
                 truedamage = 0;
@@ -65,7 +69,7 @@ public class Healthbar : MonoBehaviour
             if (this != null)
             {
                 this.gameObject.SetActive(true);
-                StartCoroutine(DamagePopUp(truedamage));
+                StartCoroutine(DamagePopUp(truedamage, damageType));
                 StartCoroutine(HandleSlider());
             }
         }
@@ -82,7 +86,9 @@ public class Healthbar : MonoBehaviour
         }
         yield break;
     }
-    private IEnumerator DamagePopUp(int damage)
+
+
+    private IEnumerator DamagePopUp(int damage,DamageType damageType)
     {
         if (unit != null)
         {
@@ -94,8 +100,39 @@ public class Healthbar : MonoBehaviour
                 try
                 {
                     number.SetText(damage.ToString());
+                    var TL = Director.Instance.timeline.ReturnTimelineChild(unit);
+                    var action = Director.Instance.timeline.ReturnTimeChildAction(unit);
+                    if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1) //effective
+                    {
+                        number.outlineColor = Color.green;
+                        TL.value -= Director.Instance.TimelineReduction;
+                        action.cost += Director.Instance.TimelineReduction;
+
+                        if(TL.value > 100 && !unit.statusEffects.Contains(unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault())) //Applies Stun
+                        {
+                            Director.Instance.timeline.RemoveTimelineChild(unit);
+                            //PlayVFX.Stun();
+                            BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
+                        }
+                        else if(!unit.statusEffects.Contains(unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault()))
+                        {
+                            var stalwart = unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault();
+                            unit.statusEffects.Remove(unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault());
+                            Destroy(stalwart.gameObject);
+                        }
+
+                    }
+                    else if(CombatTools.ReturnTypeMultiplier(unit, damageType) < 1) //resisted
+                    {
+                        number.outlineColor = Color.red;
+                        TL.value += Director.Instance.TimelineAddition;
+                        action.cost -= Director.Instance.TimelineAddition;
+                    }
+                    else
+                    {
+                        number.outlineColor = Color.black;
+                    }
                     number.color = Color.red;
-                    number.outlineColor = Color.black;
                     number.outlineWidth = 0.2f;
 
                 }
@@ -131,7 +168,7 @@ public class Healthbar : MonoBehaviour
                 unit.ChangeUnitsLight(unit.spotLight, 150, 15, Color.yellow, 0.04f, 0.1f);
                 yield return new WaitForSeconds(0.7f);
                 LabCamera.Instance.Shake(0.5f, 1f);
-                Director.Instance.StartCoroutine(Tools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero, 10, 0, false));
+                Director.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero, 10, 0, false));
                 yield return new WaitForSeconds(0.03f);
                 if (popup != null)
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
@@ -147,8 +184,39 @@ public class Healthbar : MonoBehaviour
                 try
                 {
                     number.SetText(damage.ToString());
-                    number.color = Color.red;
-                    number.outlineColor = Color.black;
+                    var TL = Director.Instance.timeline.ReturnTimelineChild(unit);
+                    var action = Director.Instance.timeline.ReturnTimeChildAction(unit);
+                    if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1) //effective
+                    {
+                        number.outlineColor = Color.green;
+                        TL.value -= Director.Instance.TimelineReduction;
+                        action.cost += Director.Instance.TimelineReduction;
+
+                        if (TL.value == 0 && !unit.statusEffects.Contains(unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault())) //Applies Stun
+                        {
+                            Director.Instance.timeline.RemoveTimelineChild(unit);
+                            //PlayVFX.Stun();
+                            BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
+                        }
+                        else if (!unit.statusEffects.Contains(unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault()))
+                        {
+                            var stalwart = unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault();
+                            unit.statusEffects.Remove(unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault());
+                            Destroy(stalwart.gameObject);
+                        }
+
+                    }
+                    else if (CombatTools.ReturnTypeMultiplier(unit, damageType) < 1) //resisted
+                    {
+                        number.outlineColor = Color.red;
+                        TL.value += Director.Instance.TimelineAddition;
+                        action.cost -= Director.Instance.TimelineAddition;
+                    }
+                    else
+                    {
+                        number.outlineColor = Color.black;
+                    }
+                    number.color = Color.red;                  
                     number.outlineWidth = 0.2f;
 
                 }
@@ -193,7 +261,7 @@ public class Healthbar : MonoBehaviour
         BattleSystem.Instance.numOfUnits.Remove(unit);
         Destroy(unit.ActionLayout);
         Destroy(unit.gameObject);
-        Tools.TurnOffCriticalUI(unit);
+        CombatTools.TurnOffCriticalUI(unit);
         BattleSystem.Instance.BattlePhasePause = false;
         Director.Instance.StartCoroutine(Tools.LateUnpause());
     }

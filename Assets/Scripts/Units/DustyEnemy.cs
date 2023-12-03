@@ -20,6 +20,8 @@ public class DustyEnemy : Unit
         actionCostMultiplier = 1f;
         currentHP = maxHP;
         IsPlayerControlled = false;
+        resistances = new DamageType[] { DamageType.SLASH };
+        weaknesses = new DamageType[] { DamageType.STRIKE };
         behavior = this.gameObject.AddComponent<DustyBehavior>();
         if (!Director.Instance.DevMode)
             BattleStarted += DoCharacterText;
@@ -45,7 +47,13 @@ public class DustyEnemy : Unit
             BaseUnit = baseUnit;
             if (turn != 3)
             {
-                Tools.SetupEnemyAction(baseUnit, turn);
+                if(turn == 1) 
+                {
+                    Director.Instance.UnlockedPipSystem = true;
+                    Director.Instance.timeline.pipCounter.gameObject.SetActive(true);
+                    CombatTools.ReturnPipCounter().pipCount = 0;
+                }
+                CombatTools.SetupEnemyAction(baseUnit, turn);
                 turn++;
             }
             else
@@ -72,7 +80,7 @@ public class DustyEnemy : Unit
             SceneManager.sceneLoaded += AddDusty;
             //Tools.PauseStaminaTimer();
             BattleSystem.Instance.StopUpdating = true;
-            Tools.TurnOffCriticalUI(BaseUnit);
+            CombatTools.TurnOffCriticalUI(BaseUnit);
         }
 
         private void AddDusty(Scene scene, LoadSceneMode mode)

@@ -25,18 +25,19 @@ public class Incinerate : Action
 
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
+        damageType = DamageType.HEAT;
     }
     public override string GetDescription()
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + Tools.DetermineTrueActionValue(this)}</color> DMG.\nIgnores <sprite name=\"DEF BLUE\">";
+            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> DMG.\nIgnores <sprite name=\"DEF BLUE\">";
         }
         else
         {
-            if(Tools.DetermineTrueActionValue(this) + unit.attackStat > 0)
+            if((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) > 0)
             {
-                description = $"Deals <color=#FF0000>{Tools.DetermineTrueActionValue(this) + unit.attackStat}</color> DMG.";
+                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> DMG.";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG."; 
@@ -45,18 +46,18 @@ public class Incinerate : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        Director.Instance.StartCoroutine(Tools.TurnOffDirectionalLight(0.01f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
         var Light = targets.spotLight;
         targets.ChangeUnitsLight(Light, 150, 15, new Color(191, 21, 0), 0.04f, 0.1f);
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "IncinerateParticles2", new Color32(191, 21, 0, 255), new Color32(191, 21, 0, 255), new Vector3(0, 0, -2f), 2.5f, 0, true, 6));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "IncinerateParticles2", new Color32(191, 21, 0, 255), new Color32(191, 21, 0, 255), new Vector3(0, 0, -2f), 2.5f, 0, true, 6));
         yield return new WaitForSeconds(0.1f);
-        targets.health.TakeDamage(Tools.DetermineTrueActionValue(this) + unit.attackStat, unit, true);
+        targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, true);
         LabCamera.Instance.Shake(1f, 1.3f);
         yield return new WaitForSeconds(0.5f);
-        Director.Instance.StartCoroutine(Tools.TurnOnDirectionalLight(0.01f));
-        Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
+        CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 
   

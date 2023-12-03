@@ -24,7 +24,7 @@ public class Summon : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        if (Tools.DetermineAllies(unit).Count < 3)
+        if (CombatTools.DetermineAllies(unit).Count < 3)
         {
             var summon = Instantiate(Director.Instance.Unitdatabase.Where(obj => obj.name == unit.summonables[UnityEngine.Random.Range(0, unit.summonables.Length)]).SingleOrDefault());
             summon.IsSummon = true;

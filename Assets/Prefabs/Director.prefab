@@ -4742,12 +4742,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
   - {fileID: 11400000, guid: 0009c14cfc4d51248a96e32b456b11c6, type: 2}
   - {fileID: 11400000, guid: a68410d0d95842a44a6ed79cdaf1d746, type: 2}
+  - {fileID: 11400000, guid: abf50d286d1dffc4ca1b7e3804c86162, type: 2}
   iconDatabase:
   - {fileID: 3224179876807452412, guid: 4a914db186eda1243b03ff664338e95a, type: 3}
   - {fileID: 6181490423906128927, guid: 90dd639aefaa91b4b86be4fbc2d5fb54, type: 3}
   - {fileID: 5459808448902100061, guid: 523a9ab8efbc484419a80b18c25dd6a2, type: 3}
   - {fileID: 8961935493380475670, guid: 121d4c5ac5ace6648b640381d41bae42, type: 3}
   - {fileID: 2046753031281608770, guid: c67ed76d2ec83074c855f2d21e116d63, type: 3}
+  - {fileID: 4023095660993884064, guid: ba6657fb2072c0a4595c3aa5d77d384a, type: 3}
   characterTab: {fileID: 813109552512736325, guid: 66ccc73082801ac4ea3ae58a7496e68a,
     type: 3}
   directorInfo: {fileID: 0}
@@ -4766,9 +4768,6 @@ MonoBehaviour:
   DevMode: 0
   blackScreen: {fileID: 392729441767316513}
   backButton: {fileID: 392729442206650620}
-  timeline: {fileID: 6650513377061637855}
-  timelinespeedDelay: 5
-  staminaSPDDivider: 2
   LevelUpText: {fileID: 392729442282237862}
   chooseYourItemText: {fileID: 6593003078322277525}
   EffectPopUp: {fileID: 2722881081763327465, guid: eb8d0c7c2fb7e724ca7adc6491082caa,
@@ -4777,6 +4776,14 @@ MonoBehaviour:
   CharacterSlotButtonprefab: {fileID: 1927223178346534066, guid: 4a09e02f49970824584bfb7414e65757,
     type: 3}
   LevelDropText: {fileID: 392729441296980311}
+  timeline: {fileID: 6650513377061637855}
+  timelinespeedDelay: 5
+  staminaSPDDivider: 2
+  WeaknessMultiplier: 1.3
+  ResistanceMultiplier: 0.3
+  TimelineReduction: 20
+  TimelineAddition: 10
+  UnlockedPipSystem: 0
   previousCameraState: 0
 --- !u!1 &3208274665597491490
 GameObject:

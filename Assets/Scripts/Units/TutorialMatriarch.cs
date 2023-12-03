@@ -21,6 +21,8 @@ public class TutorialMatriarch : Unit
         behavior = this.gameObject.AddComponent<MatriarchBehaviorLV0>();
         summonables = TutorialSummons;
         IsHidden = true;
+        resistances = new DamageType[] { DamageType.STRIKE};
+        weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE, DamageType.COLD };
         BattleStarted += DoCharacterText;
         OnPlayerUnitDeath += Gloat;
     }
@@ -67,7 +69,7 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
         {
             case 0:
                 {
-                    Tools.SetupEnemyAction(baseUnit, turn);
+                    CombatTools.SetupEnemyAction(baseUnit, turn);
                     turn++;
                 }
                 break;
@@ -85,7 +87,7 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
                         //Kindle
                         move = 2;
                     }
-                    Tools.SetupEnemyAction(baseUnit, move);
+                    CombatTools.SetupEnemyAction(baseUnit, move);
                     turn++;
                 }
                 break;
@@ -129,7 +131,7 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
                             move = 2;
                         }
                     }
-                    Tools.SetupEnemyAction(baseUnit, move);
+                    CombatTools.SetupEnemyAction(baseUnit, move);
                     turn++;
                 }
                 break;
@@ -137,14 +139,14 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
             case 3:
                 {
                     baseUnit.BattlePhaseClose += PreDustyDeath;
-                    Tools.SetupEnemyAction(baseUnit, turn, Tools.CheckAndReturnNamedUnit("Dusty"));
+                    CombatTools.SetupEnemyAction(baseUnit, turn, CombatTools.CheckAndReturnNamedUnit("Dusty"));
                     turn++;
                 }
                 break;
             //Destroys Aurelia
             case 4:
                 {
-                    Tools.SetupEnemyAction(baseUnit, 3, Tools.CheckAndReturnNamedUnit("Aurelia"));
+                    CombatTools.SetupEnemyAction(baseUnit, 3, CombatTools.CheckAndReturnNamedUnit("Aurelia"));
                     turn = 1;
                 }
                 break;

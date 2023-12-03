@@ -5,6 +5,19 @@ using TMPro;
 using UnityEngine.Rendering;
 using System;
 
+public enum DamageType
+{
+    NULL,
+    //physical types
+    SLASH,
+    PIERCE,
+    STRIKE,
+    //elements
+    LIGHT,
+    DARK,
+    COLD,
+    HEAT
+};
 public abstract class Action : ScriptableObject
 {
 
@@ -36,21 +49,21 @@ public abstract class Action : ScriptableObject
 
     public enum TargetType { ENEMY, SELF, ALL_ENEMIES, ALLY };
     public enum ActionType { ATTACK, STATUS };
-
     public enum ActionStyle { STANDARD, LIGHT, HEAVY };
+  
 
     public TextMeshProUGUI text;
     public Unit unit;
     public TargetType targetType;
     public ActionType actionType;
+    public DamageType damageType;
     public Unit targets;
 
     void Start()
     {
         text.text = ActionName;
         damageText = damage.ToString();
-        actionStyle = ActionStyle.STANDARD;
-     
+        actionStyle = ActionStyle.STANDARD;   
     }
 
     public void ResetAction()

@@ -23,7 +23,7 @@ public class Stagger : EffectIcon
 
     public override IEnumerator End()
     {
-        Director.Instance.StartCoroutine(Tools.PlayVFX(owner.gameObject, "StatDownVFX", new Color(156, 14, 207), new Color(156, 14, 207), new Vector3(0, 15, 0), 1f, 0, false, 1f, 1));
+        Director.Instance.StartCoroutine(CombatTools.PlayVFX(owner.gameObject, "StatDownVFX", new Color(156, 14, 207), new Color(156, 14, 207), new Vector3(0, 15, 0), 1f, 0, false, 1f, 1));
         owner.ChangeUnitsLight(owner.spotLight, 150, 15, new Color(156, 14, 207), 0.04f, 0.1f);
         owner.statusEffects.Remove(owner.statusEffects.Where(obj => obj.iconName == iconName).SingleOrDefault());
         Destroy(gameObject);

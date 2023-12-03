@@ -23,6 +23,8 @@ public class TimeLine : MonoBehaviour
     public void Start()
     {
         slider.value = 0;
+      
+       
     }
 
 
@@ -69,6 +71,34 @@ public class TimeLine : MonoBehaviour
         return TL;
     }
 
+    public TimeLineChild ReturnTimelineChild(Unit unit)
+    {
+        var TimelineKid = new TimeLineChild();
+        foreach (TimeLineChild child in Director.Instance.timeline.children)
+        {
+            if (child.unit.unitName == unit.unitName)
+            {
+                TimelineKid = child;
+                break;
+            }
+        }
+        return TimelineKid;
+    }
+
+    public Action ReturnTimeChildAction(Unit unit)
+    {
+        Action Act = null;
+        foreach (var action in BattleSystem.Instance.ActionsToPerform)
+        {
+            if (action.unit.unitName == unit.unitName)
+            {
+                Act = action;
+                break;
+            }
+        }
+        return Act;
+    }
+
     public void RemoveTimelineChild(Unit unit)
     {
         foreach (TimeLineChild child in Director.Instance.timeline.children)
@@ -86,7 +116,7 @@ public class TimeLine : MonoBehaviour
             {
                 if(BattleSystem.Instance.state == BattleStates.DECISION_PHASE && action.actionStyle != Action.ActionStyle.STANDARD)
                 {
-                    Director.Instance.timeline.pipCounter.AddPip();
+                    CombatTools.ReturnPipCounter().AddPip();
                 }
                 foreach(var skill in action.unit.skillUIs)
                 {

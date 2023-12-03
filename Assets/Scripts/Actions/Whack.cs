@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static System.Collections.Specialized.BitVector32;
+
 [CreateAssetMenu(fileName = "Whack", menuName = "Assets/Actions/Whack")]
 public class Whack : Action
 {
@@ -24,6 +26,7 @@ public class Whack : Action
 
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
+        damageType = DamageType.STRIKE;
         damageText = damage.ToString();
         duration = 1;
     }
@@ -32,13 +35,13 @@ public class Whack : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + Tools.DetermineTrueActionValue(this)}</color> DMG.\nApplies <sprite name=\"STAGGER\"> for {duration} round.";
+            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> DMG.\nApplies <sprite name=\"STAGGER\"> for {duration} round.";
         }
         else
         {
-            if (Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat > 0)
+            if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat > 0)
             {
-                description = $"Deals <color=#FF0000>{Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat}</color> DMG.\nApplies <sprite name=\"STAGGER\"> for {duration} seconds";
+                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat}</color> DMG.\nApplies <sprite name=\"STAGGER\"> for {duration} seconds";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG. Applies <sprite name=\"STAGGER\"> for {duration} round";
@@ -50,13 +53,13 @@ public class Whack : Action
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
         AudioManager.Instance.Play("slash_001");
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Color(156, 14, 207), new Vector3(0, 0, -2f), 1f));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Slash", Color.yellow, new Color(156, 14, 207), new Vector3(0, 0, -2f), 1f));
         yield return new WaitForSeconds(0.01f);
-        targets.health.TakeDamage(Tools.DetermineTrueActionValue(this) + unit.attackStat, unit);
+        targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType);
         LabCamera.Instance.Shake(0.3f, 1.5f);
         BattleSystem.Instance.SetTempEffect(targets, "STAGGER", true, duration);
         yield return new WaitForSeconds(0.5f);
-        Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
+        CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 
   

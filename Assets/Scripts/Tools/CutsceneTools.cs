@@ -8,7 +8,7 @@ public class CutsceneTools : MonoBehaviour
     private IEnumerator vignetteIEnumerator;
     public static void ZoomOnUnit(string unitName)
     {
-        LabCamera.Instance.MoveToUnit(Tools.CheckAndReturnNamedUnit(unitName), Vector3.zero,0,8, -40, 0.5f, false);
+        LabCamera.Instance.MoveToUnit(CombatTools.CheckAndReturnNamedUnit(unitName), Vector3.zero,0,8, -40, 0.5f, false);
     }
 
     public static void ChangeTimeDelay(float time)
@@ -17,7 +17,7 @@ public class CutsceneTools : MonoBehaviour
     }
     public static void MoveToUnit(string unitName)
     {
-        LabCamera.Instance.MoveToUnit(Tools.CheckAndReturnNamedUnit(unitName), Vector3.zero, 0, 0, 0, 1, true);
+        LabCamera.Instance.MoveToUnit(CombatTools.CheckAndReturnNamedUnit(unitName), Vector3.zero, 0, 0, 0, 1, true);
     }
 
     public static void ResetCam()
@@ -32,7 +32,7 @@ public class CutsceneTools : MonoBehaviour
 
     public static void RevealUnit(string unitName)
     {
-        Tools.CheckAndReturnNamedUnit(unitName).IsHidden = false;
+        CombatTools.CheckAndReturnNamedUnit(unitName).IsHidden = false;
     }
     public void ChangeVignetteIntensity(float DesiredValue)
     {

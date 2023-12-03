@@ -24,7 +24,7 @@ public class ConfirmButton : MonoBehaviour
         OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
         Director.Instance.timeline.RefreshTimeline();
-        Director.Instance.timeline.pipCounter.ResetPips();
+        CombatTools.ReturnPipCounter().ResetPips();
         BattleLog.Instance.characterdialog.gameObject.SetActive(false);
         Director.Instance.blackScreen.gameObject.SetActive(false);
         foreach (var unit in Tools.GetAllUnits())

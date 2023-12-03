@@ -80,8 +80,10 @@
     <Compile Include="Assets\Scripts\Actions\Mend.cs" />
     <Compile Include="Assets\Scripts\Actions\Nothing.cs" />
     <Compile Include="Assets\Scripts\TargetLine.cs" />
+    <Compile Include="Assets\Scripts\Actions\Stab.cs" />
     <Compile Include="Assets\Scripts\Units\TutorialEnemy.cs" />
     <Compile Include="Assets\Scripts\Units\Husk.cs" />
+    <Compile Include="Assets\Scripts\Tools\CombatTools.cs" />
     <Compile Include="Assets\Scripts\Actions\WarCry.cs" />
     <Compile Include="Assets\Scripts\Actions\Glint.cs" />
     <Compile Include="Assets\Scripts\Tools\CutsceneTools.cs" />
@@ -146,6 +148,7 @@
     <Compile Include="Assets\Scripts\Main Menu\QuitButton.cs" />
     <Compile Include="Assets\Scripts\ItemText.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\Icons\Stalwart.cs" />
     <Compile Include="Assets\Scripts\BattleBar.cs" />
     <Compile Include="Assets\Scripts\Actions\Slow.cs" />
     <Compile Include="Assets\Scripts\Actions\Beacon.cs" />

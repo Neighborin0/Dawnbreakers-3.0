@@ -106,7 +106,7 @@ public class BattleSystem : MonoBehaviour
                 state = BattleStates.DEAD;
                 if (!StopUpdating)
                 {
-                    Tools.EndAllTempEffectTimers();
+                    CombatTools.EndAllTempEffectTimers();
                     StopUpdating = true;
                     if (battleCo != null)
                         StopCoroutine(battleCo);
@@ -121,7 +121,7 @@ public class BattleSystem : MonoBehaviour
                 state = BattleStates.WON;
                 if (!StopUpdating)
                 {
-                    Tools.EndAllTempEffectTimers();
+                    CombatTools.EndAllTempEffectTimers();
                     StopUpdating = true;
                     if (battleCo != null)
                         StopCoroutine(battleCo);
@@ -134,34 +134,9 @@ public class BattleSystem : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.U) && Director.Instance.DevMode)
         {
-            playerUnits[UnityEngine.Random.Range(0, playerUnits.Count - 1)].health.TakeDamage(99999, null);
+            playerUnits[UnityEngine.Random.Range(0, playerUnits.Count - 1)].health.TakeDamage(99999, null, DamageType.NULL ,true);
         }
 
-        /*if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            if(BattleSystem.Instance.state == BattleStates.IDLE)
-            {
-                if (Paused)
-                {
-                    if (!Tools.CheckIfAnyUnitIsDeciding())
-                    {
-                        Tools.UnpauseAllStaminaTimers();
-                        Paused = false;
-                        pauseText.gameObject.SetActive(false);
-                    }
-                }
-                else
-                {
-                    Tools.PauseAllStaminaTimers();
-                    Paused = true;
-                    pauseText.gameObject.SetActive(true);
-                }
-            }
-            else
-                pauseText.gameObject.SetActive(false);
-
-        }
-        */
     }
 
     public BattleStates state;
@@ -222,6 +197,14 @@ public class BattleSystem : MonoBehaviour
         {
             unit.statusEffects.Clear();
             SetupHUD(unit, unit.transform);
+        }
+        if (!Director.Instance.UnlockedPipSystem)
+        {
+            Director.Instance.timeline.pipCounter.gameObject.SetActive(false);
+        }
+        else
+        {
+            Director.Instance.timeline.pipCounter.gameObject.SetActive(true);
         }
         StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
@@ -300,7 +283,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
         if (OptionsManager.Instance.IntensityLevel == 0)
         {
-            Tools.PauseStaminaTimer();
+            CombatTools.PauseStaminaTimer();
             MapController.Instance.gameObject.transform.SetParent(this.transform);
             Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
             OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Prologue Ending"));
@@ -310,7 +293,7 @@ public class BattleSystem : MonoBehaviour
             //RunTracker.Instance.DisplayStats();
             Tools.ToggleUiBlocker(false, false);
             Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
-            Tools.PauseStaminaTimer();
+            CombatTools.PauseStaminaTimer();
         }
         yield break;
     }
@@ -345,7 +328,7 @@ public class BattleSystem : MonoBehaviour
                         unit.speedStat = i.SPD;
                     }
                 }
-                Tools.TurnOffCriticalUI(unit);
+                CombatTools.TurnOffCriticalUI(unit);
                 Director.Instance.party.Add(unit);
                 DontDestroyOnLoad(unit.gameObject);
             }
@@ -365,7 +348,7 @@ public class BattleSystem : MonoBehaviour
             foreach (var unit in Tools.GetAllUnits())
             {
                 Director.Instance.timeline.RefreshTimeline();
-                Director.Instance.timeline.pipCounter.ResetPips();
+                CombatTools.ReturnPipCounter().ResetPips();
                 unit.StaminaHighlightIsDisabled = true;
                 unit.gameObject.SetActive(false);
 
@@ -391,10 +374,10 @@ public class BattleSystem : MonoBehaviour
         else
             print(action.targets.unitName);
         unit.intentUI.textMesh.text = action.ActionName;
-        if (Tools.DetermineTrueActionValue(action) != 0)
-            unit.intentUI.damageNums.text = " <sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + unit.attackStat - action.targets.defenseStat).ToString();
+        if (CombatTools.DetermineTrueActionValue(action) != 0)
+            unit.intentUI.damageNums.text = " <sprite name=\"ATK\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
         unit.intentUI.action = action;
-        unit.intentUI.costNums.text = Tools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{Tools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
+        unit.intentUI.costNums.text = CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
         if (unit.intentUI.action.actionType == Action.ActionType.STATUS)
         {
             unit.intentUI.damageParent.SetActive(false);
@@ -566,11 +549,11 @@ public class BattleSystem : MonoBehaviour
     {
         if (AmountToRaise > 0)
         {
-            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatUpVFX", color, color, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), 1f, 0, false, 1));
+            StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", color, color, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), 1f, 0, false, 1));
         }
         else
         {
-            StartCoroutine(Tools.PlayVFX(target.gameObject, "StatDownVFX", color, color, new Vector3(0, 15, 0), 1f, 0, false, 1));
+            StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatDownVFX", color, color, new Vector3(0, 15, 0), 1f, 0, false, 1));
         }
     }
 
@@ -590,7 +573,7 @@ public class BattleSystem : MonoBehaviour
                     var actionContainer = unit.skillUIs[i].GetComponent<ActionContainer>();
                     if (actionContainer.action.actionStyle != Action.ActionStyle.STANDARD)
                     {
-                        Director.Instance.timeline.pipCounter.AddPip();
+                        CombatTools.ReturnPipCounter().AddPip();
                         actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
                     }
                 }
@@ -654,15 +637,13 @@ public class BattleSystem : MonoBehaviour
             assignedAction.button.enabled = true;
             assignedAction.action = newAction;
             assignedAction.action.actionStyle = Action.ActionStyle.STANDARD;
-            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (Tools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
+            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (CombatTools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
             assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (newAction.duration).ToString();
-            assignedAction.costNums.text = Tools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{Tools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
+            assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = newAction.ActionName;
 
-            assignedAction.lightButton.gameObject.SetActive(false);
-            assignedAction.heavyButton.gameObject.SetActive(false);
-            
+            assignedAction.SetActionStyleButtonsActive(false);           
 
             if (assignedAction.action.actionType == Action.ActionType.STATUS)
             {
@@ -690,7 +671,7 @@ public class BattleSystem : MonoBehaviour
             var newAction = Instantiate(action);
             //newAction.cost = Tools.DetermineTrueCost(action);
             ActionsToPerform.Add(action);
-            if (Tools.CheckIfAllUnitsAreReady())
+            if (CombatTools.CheckIfAllUnitsAreReady())
             {
                 actionCo = PerformAction();
                 StartCoroutine(actionCo);
@@ -706,12 +687,12 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PerformAction()
     {
-        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - Tools.DetermineTrueCost(x)).ToList();
+        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ToList();
         ActionsToPerform.Reverse();
         print(ActionsToPerform);
         Director.Instance.timeline.slider.value = 0;
         LabCamera.Instance.ResetPosition();
-        Tools.PauseStaminaTimer();
+        CombatTools.PauseStaminaTimer();
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         Director.Instance.timelinespeedDelay = 0.1f;
         foreach (TimeLineChild child in Director.Instance.timeline.children)
@@ -737,9 +718,9 @@ public class BattleSystem : MonoBehaviour
         print("Action should be performed");
         foreach (var action in ActionsToPerform)
         {
-            Tools.UnpauseStaminaTimer();
-            yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - Tools.DetermineTrueCost(action) * action.unit.actionCostMultiplier));
-            Tools.PauseStaminaTimer();
+            CombatTools.UnpauseStaminaTimer();
+            yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier));
+            CombatTools.PauseStaminaTimer();
             if (action.unit != null)
             {
                 if (action.targets == null)
@@ -747,10 +728,10 @@ public class BattleSystem : MonoBehaviour
                     switch (action.targetType)
                     {
                         case Action.TargetType.ENEMY:
-                            action.targets = Tools.GetRandomEnemy(action.unit);
+                            action.targets = CombatTools.GetRandomEnemy(action.unit);
                             break;
                         case Action.TargetType.ALLY:
-                            action.targets = Tools.GetRandomAlly(action.unit);
+                            action.targets = CombatTools.GetRandomAlly(action.unit);
                             break;
                     }
                 }
@@ -767,6 +748,9 @@ public class BattleSystem : MonoBehaviour
                     }
                 }
                 yield return new WaitUntil(() => action.Done);
+                ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ToList();
+                ActionsToPerform.Reverse();
+                action.ResetAction();
                 yield return new WaitForSeconds(1.4f);
                 foreach (var x in Tools.GetAllUnits())
                 {
@@ -782,7 +766,7 @@ public class BattleSystem : MonoBehaviour
             }
         }
         //All Actions Are Done
-        Tools.UnpauseStaminaTimer();
+        CombatTools.UnpauseStaminaTimer();
         yield return new WaitForSeconds(0.5f);
         ActionsToPerform = new List<Action>();
         foreach (TimeLineChild child in Director.Instance.timeline.children)
@@ -832,8 +816,8 @@ public class BattleSystem : MonoBehaviour
         {
             x.DoBattlePhaseClose();
         }
-        Director.Instance.timeline.pipCounter.AddPip();
-        Tools.TickAllEffectIcons();
+        CombatTools.ReturnPipCounter().AddPip();
+        CombatTools.TickAllEffectIcons();
         if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD && state != BattleStates.TALKING && enemyUnits.Count > 0 && playerUnits.Count > 0)
         {
             state = BattleStates.IDLE;
@@ -850,7 +834,7 @@ public class BattleSystem : MonoBehaviour
             StopBattle = true;
             if (!StopUpdating)
             {
-                Tools.EndAllTempEffectTimers();
+                CombatTools.EndAllTempEffectTimers();
                 StopUpdating = true;
                 if (battleCo != null)
                     StopCoroutine(battleCo);
@@ -866,7 +850,7 @@ public class BattleSystem : MonoBehaviour
             state = BattleStates.WON;
             if (!StopUpdating)
             {
-                Tools.EndAllTempEffectTimers();
+                CombatTools.EndAllTempEffectTimers();
                 StopUpdating = true;
                 if (battleCo != null)
                     StopCoroutine(battleCo);

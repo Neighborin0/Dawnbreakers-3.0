@@ -19,6 +19,7 @@ public class Slash : Action
 
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
+        damageType = DamageType.SLASH;
         damageText = damage.ToString();
     }
 
@@ -26,13 +27,13 @@ public class Slash : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + Tools.DetermineTrueActionValue(this)}</color> DMG.";
+            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> DMG.";
         }
         else
         {
-            if (Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat > 0)
+            if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat > 0)
             {
-                description = $"Deals <color=#FF0000>{Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat}</color> DMG.";
+                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat}</color> DMG.";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG.";
@@ -44,12 +45,12 @@ public class Slash : Action
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
         AudioManager.Instance.Play("slash_001");
-        BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow ,new Vector3(0, 0, -2f), 1f));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow ,new Vector3(0, 0, -2f), 1f));
         yield return new WaitForSeconds(0.01f);
-        targets.health.TakeDamage(Tools.DetermineTrueActionValue(this) + unit.attackStat, unit);
+        targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType);  
         LabCamera.Instance.Shake(0.2f, 1.5f);
         yield return new WaitForSeconds(0.5f);
-        Tools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
+        CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 
   

@@ -33,7 +33,7 @@ public class ControlBar : MonoBehaviour
             else
             {
                 //Decision Phase
-                if (Tools.CheckIfAnyUnitIsTargetting())
+                if (CombatTools.CheckIfAnyUnitIsTargetting())
                 {
                     Select.SetActive(true);
                     Continue.SetActive(false);

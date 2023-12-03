@@ -15,16 +15,17 @@ public class Dusty : Unit
         speedStat = 7;
         currentHP = maxHP;
         IsPlayerControlled = true;
+        resistances = new DamageType[] { DamageType.SLASH };
+        weaknesses = new DamageType[] { DamageType.STRIKE };
         Tools.AddItemToInventory(this, "Iron Shield");
-        /*if (!Director.Instance.DevMode)
+        if (!Director.Instance.DevMode)
         {
             actionList.Clear();
-            Tools.AddNewActionToUnit(this, "Slash", false);
+            Tools.AddNewActionToUnit(this, "Stab", false);
             Tools.AddNewActionToUnit(this, "Guard", false);
             Tools.AddNewActionToUnit(this, "War Cry", false);
             Tools.AddNewActionToUnit(this, "Whack", false);
         }
-        */
     }
 
 

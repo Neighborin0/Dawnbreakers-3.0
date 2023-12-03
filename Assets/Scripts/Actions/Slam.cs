@@ -20,6 +20,7 @@ public class Slam : Action
 
 
         targetType = TargetType.ALL_ENEMIES;
+        damageType = DamageType.STRIKE;
         damageText = damage.ToString();
         actionType = ActionType.ATTACK;
     }
@@ -28,13 +29,13 @@ public class Slam : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{unit.attackStat + Tools.DetermineTrueActionValue(this)}</color> DMG to ALL enemies..";
+            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> DMG to ALL enemies..";
         }
         else
         {
-            if (Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat > 0)
+            if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat > 0)
             {
-                description = $"Deals <color=#FF0000>{Tools.DetermineTrueActionValue(this) + unit.attackStat - targets.defenseStat}</color> DMG to ALL enemies.";
+                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> DMG to ALL enemies.";
             }
             else
                 description = $"Deals <color=#FF0000>0</color> DMG to ALL enemies.";
@@ -46,11 +47,11 @@ public class Slam : Action
         unit.PlayUnitAction("Attack", unit);
         yield return new WaitUntil(() => unit.Execute);
         LabCamera.Instance.Shake(0.3f, 1.5f);
-        foreach (var x in Tools.DetermineEnemies(unit))
+        foreach (var x in CombatTools.DetermineEnemies(unit))
         {
             AudioManager.Instance.Play("slash_001");
-            BattleSystem.Instance.StartCoroutine(Tools.PlayVFX(x.gameObject, "Slash", Color.yellow, Color.white, new Vector3(0, 0, -2f)));
-            x.health.TakeDamage(Tools.DetermineTrueActionValue(this) + unit.attackStat, unit);
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(x.gameObject, "Slash", Color.yellow, Color.white, new Vector3(0, 0, -2f)));
+            x.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType);
         }
         Director.Instance.StartCoroutine(Tools.StopTime(0.13f));
         this.Done = true;

@@ -10,13 +10,13 @@ public class Husk : Unit
     void Awake()
     {
         unitName = "Husk";
-        maxHP = UnityEngine.Random.Range(25, 30);
         defenseStat = 0;
         speedStat = UnityEngine.Random.Range(7, 9);
         //speedStat = 7;
         currentHP = maxHP;
         IsPlayerControlled = false;
-        Tools.ModifyAction(this, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0 , ActionVariance01.Length)]);
+        weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE };
+        CombatTools.ModifyAction(this, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0 , ActionVariance01.Length)]);
         if (BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
         {
             behavior = this.gameObject.AddComponent<TutorialHuskMatriarchBehavior>();
@@ -38,14 +38,14 @@ public class Husk : Unit
         public override void DoBehavior(Unit baseUnit)
         {
             int move = UnityEngine.Random.Range(0, baseUnit.actionList.Count);
-            Tools.ModifyAction(baseUnit, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0, ActionVariance01.Length)]);
-            if (Tools.CheckAndReturnNamedUnit("Dusty") != null)
+            CombatTools.ModifyAction(baseUnit, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0, ActionVariance01.Length)]);
+            if (CombatTools.CheckAndReturnNamedUnit("Dusty") != null)
             {
-                Tools.SetupEnemyAction(baseUnit, move, Tools.CheckAndReturnNamedUnit("Dusty"));
+                CombatTools.SetupEnemyAction(baseUnit, move, CombatTools.CheckAndReturnNamedUnit("Dusty"));
             }
             else
             {
-                Tools.SetupEnemyAction(baseUnit, move, null);
+                CombatTools.SetupEnemyAction(baseUnit, move, null);
             }
 
         }
