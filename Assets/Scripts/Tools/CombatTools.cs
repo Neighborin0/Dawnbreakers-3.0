@@ -512,8 +512,6 @@ public class CombatTools : MonoBehaviour
                 }
             }
         }
-        else
-            Debug.LogWarning("Target is null");
         return typeMultiplier;
     }
     public static PipCounter ReturnPipCounter()

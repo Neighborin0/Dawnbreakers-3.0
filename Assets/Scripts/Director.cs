@@ -56,7 +56,7 @@ public class Director : MonoBehaviour
     public float staminaSPDDivider;
     public float WeaknessMultiplier = 1.3f;
     public float ResistanceMultiplier = 0.3f;
-    public int TimelineReduction = 20;
+    public int TimelineReduction = 50;
     public int TimelineAddition = 10;
 
 

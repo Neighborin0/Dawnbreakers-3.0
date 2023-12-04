@@ -69,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bb73a0f3a25b5024a9c600469a9d0543, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3d2efdd7b5bd25b44bd917466249c8b9, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -96,7 +96,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 6750853031504878976}
           m_TargetAssemblyTypeName: EffectIcon, Assembly-CSharp
           m_MethodName: DisplayDescription
           m_Mode: 1
@@ -124,7 +124,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 6750853031504878976}
           m_TargetAssemblyTypeName: EffectIcon, Assembly-CSharp
           m_MethodName: RemoveDescription
           m_Mode: 1

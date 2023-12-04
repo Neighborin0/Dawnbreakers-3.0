@@ -20,7 +20,6 @@ public class TestDummy : Unit
         behavior = this.gameObject.AddComponent<RandomEnemyBehavior>();
         resistances = new DamageType[] { DamageType.STRIKE,};
         weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE };
-        CombatTools.ModifyAction(this, "Strike", 1, 100f);
     }
 
 }

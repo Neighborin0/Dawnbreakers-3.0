@@ -67,7 +67,7 @@ public class TimeLine : MonoBehaviour
         TL.unit = unit;
         unit.timelinechild = TL;
         TL.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        TL.value = slider.maxValue;
+        TL.value = 100;
         return TL;
     }
 

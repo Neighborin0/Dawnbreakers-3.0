@@ -586,6 +586,10 @@ public class BattleSystem : MonoBehaviour
                 var actionContainer = unit.skillUIs[i].GetComponent<ActionContainer>();
                 actionContainer.targetting = false;              
                 actionContainer.action.ResetAction();
+                if(!unit.IsPlayerControlled)
+                {
+                    unit.actionList[i].ResetAction();
+                }
                 i++;
             }
 
@@ -716,54 +720,66 @@ public class BattleSystem : MonoBehaviour
         state = BattleStates.BATTLE;
         yield return new WaitForSeconds(1f);
         print("Action should be performed");
-        foreach (var action in ActionsToPerform)
+        foreach (var action in ActionsToPerform.ToList())
         {
+         
             CombatTools.UnpauseStaminaTimer();
-            yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier));
-            CombatTools.PauseStaminaTimer();
-            if (action.unit != null)
+            if (ActionsToPerform.Count > 0)
             {
-                if (action.targets == null)
+                yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier) || Director.Instance.timeline.slider.value == 100);
+                if (Director.Instance.timeline.slider.value < 101)
                 {
-                    switch (action.targetType)
+                    CombatTools.PauseStaminaTimer();
+                    if (action.unit != null)
                     {
-                        case Action.TargetType.ENEMY:
-                            action.targets = CombatTools.GetRandomEnemy(action.unit);
-                            break;
-                        case Action.TargetType.ALLY:
-                            action.targets = CombatTools.GetRandomAlly(action.unit);
-                            break;
-                    }
-                }
-                action.unit.state = PlayerState.IDLE;
-                action.OnActivated();
-                if (action.limited)
-                {
-                    foreach (var act in action.unit.skillUIs)
-                    {
-                        if (action.ActionName == act.GetComponent<ActionContainer>().action.ActionName)
+                        if (action.targets == null)
                         {
-                            act.GetComponent<ActionContainer>().numberofUses--;
+                            switch (action.targetType)
+                            {
+                                case Action.TargetType.ENEMY:
+                                    action.targets = CombatTools.GetRandomEnemy(action.unit);
+                                    break;
+                                case Action.TargetType.ALLY:
+                                    action.targets = CombatTools.GetRandomAlly(action.unit);
+                                    break;
+                            }
                         }
+                        action.unit.state = PlayerState.IDLE;
+                        action.OnActivated();
+                        Director.Instance.timeline.RemoveTimelineChild(action.unit);
+                        if (action.limited)
+                        {
+                            foreach (var act in action.unit.skillUIs)
+                            {
+                                if (action.ActionName == act.GetComponent<ActionContainer>().action.ActionName)
+                                {
+                                    act.GetComponent<ActionContainer>().numberofUses--;
+                                }
+                            }
+                        }
+                        yield return new WaitUntil(() => action.Done);
+                        ActionsToPerform.Remove(action);
+                        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ToList();
+                        ActionsToPerform.Reverse();
+                        action.ResetAction();
+                        yield return new WaitForSeconds(1.4f);
+                        foreach (var x in Tools.GetAllUnits())
+                        {
+                            x.DoActionEnded();
+                        }
+                        if (CheckDeathState())
+                        {
+                            StopCoroutine(actionCo);
+                        }
+                        else
+                            yield return new WaitUntil(() => !BattlePhasePause);
+
                     }
                 }
-                yield return new WaitUntil(() => action.Done);
-                ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ToList();
-                ActionsToPerform.Reverse();
-                action.ResetAction();
-                yield return new WaitForSeconds(1.4f);
-                foreach (var x in Tools.GetAllUnits())
-                {
-                    x.DoActionEnded();
-                }
-                if (CheckDeathState())
-                {
-                    StopCoroutine(actionCo);
-                }
-                else
-                    yield return new WaitUntil(() => !BattlePhasePause);
-                
             }
+            else
+                break;
+          
         }
         //All Actions Are Done
         CombatTools.UnpauseStaminaTimer();
