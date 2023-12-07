@@ -272,29 +272,32 @@ public class ActionContainer : MonoBehaviour
     }
     public void SetDescription()
     {
-        AudioManager.Instance.Play("ButtonHover");
-        action.unit = baseUnit;
-        if (currentEffectPopup == null)
+        if (isActiveAndEnabled)
         {
-            var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
-            EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            currentEffectPopup = EP;
-        }
-        else
-        {
-            currentEffectPopup.SetActive(true);
-        }
-        currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x + 100, transform.position.y + 80, transform.position.z);
-        var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
-        //Description for Battle
-        if (limited)
-        {
-            EPtext.text = $"{action.GetDescription()}\nUses: {numberofUses}.";
-        }
-        else
-            EPtext.text = $"{action.GetDescription()}";
+            AudioManager.Instance.Play("ButtonHover");
+            action.unit = baseUnit;
+            if (currentEffectPopup == null)
+            {
+                var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
+                EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                currentEffectPopup = EP;
+            }
+            else
+            {
+                currentEffectPopup.SetActive(true);
+            }
+            currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x + 100, transform.position.y + 80, transform.position.z);
+            var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
+            //Description for Battle
+            if (limited)
+            {
+                EPtext.text = $"{action.GetDescription()}\nUses: {numberofUses}.";
+            }
+            else
+                EPtext.text = $"{action.GetDescription()}";
 
-        StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
+            Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
+        }
     }
    
 
@@ -438,12 +441,12 @@ public class ActionContainer : MonoBehaviour
                     TL.portrait.sprite = baseUnit.charPortraits[0];
                     Director.Instance.timeline.children.Add(TL);
                     TL.CanMove = false;
-                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0);
-                    TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * -11.89f, 0);
+                    TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
+                    TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * -11.89f, 50);
                     TL.staminaText.text = (100 - CombatTools.DetermineTrueCost(action)).ToString();
                     TL.CanClear = true;
                     TL.CanBeHighlighted = false;
-                    TL.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+                    TL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.5f);
                     TL.portrait.color = new Color(1, 1, 1, 0.5f);
                     targetting = true;
                     print("targetting");

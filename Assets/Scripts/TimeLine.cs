@@ -66,7 +66,12 @@ public class TimeLine : MonoBehaviour
         TL.portrait.sprite = unit.charPortraits[0];
         TL.unit = unit;
         unit.timelinechild = TL;
-        TL.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+        if(unit.IsPlayerControlled)
+            TL.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 50);
+        else
+            TL.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -50);
+
         TL.value = 100;
         return TL;
     }

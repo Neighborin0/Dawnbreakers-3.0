@@ -28,9 +28,9 @@ public class TimeLineChild : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
-        gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
-        gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
+        GetComponentInChildren<Image>().material = Instantiate<Material>(GetComponentInChildren<Image>().material);
+        gameObject.GetComponentInChildren<Image>().material.SetFloat("OutlineThickness", 0);
+        gameObject.GetComponentInChildren<Image>().material.SetColor("OutlineColor", Color.black);
 
         TimelineChildChild.GetComponent<Image>().material = Instantiate<Material>(TimelineChildChild.GetComponent<Image>().material);
         TimelineChildChild.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
@@ -43,7 +43,7 @@ public class TimeLineChild : MonoBehaviour
             rectTransform.anchoredPosition = Vector3.Lerp(rectTransform.anchoredPosition, new Vector3(value * -11.89f, rectTransform.anchoredPosition.y), Director.Instance.timelinespeedDelay);
             staminaText.text = Mathf.Round(value).ToString();
         }
-        TimelineChildChild.GetComponent<Image>().color = GetComponent<Image>().color;
+        TimelineChildChild.GetComponentInChildren<Image>().color = GetComponentInChildren<Image>().color;
 
     }
     public void MoveToNewPosition(Vector2 pos) 
@@ -57,8 +57,8 @@ public class TimeLineChild : MonoBehaviour
         if (gameObject != null )
         {
             transform.SetAsLastSibling();
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+            gameObject.GetComponentInChildren<Image>().material.SetFloat("OutlineThickness", 1f);
+            gameObject.GetComponentInChildren<Image>().material.SetColor("OutlineColor", Color.white);
 
             TimelineChildChild.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
             TimelineChildChild.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
@@ -69,8 +69,8 @@ public class TimeLineChild : MonoBehaviour
     {
         if(gameObject != null)
         {
-            gameObject.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
-            gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
+            gameObject.GetComponentInChildren<Image>().material.SetFloat("OutlineThickness", 0);
+            gameObject.GetComponentInChildren<Image>().material.SetColor("OutlineColor", Color.black);
 
             TimelineChildChild.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
             TimelineChildChild.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
