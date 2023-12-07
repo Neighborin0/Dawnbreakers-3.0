@@ -218,7 +218,7 @@ public class BattleLog : MonoBehaviour
         DisplayCharacterStats(unit);
     }
 
-    public void DoBattleText(string text)
+    /*public void DoBattleText(string text)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
         battlelog.ambientText.gameObject.SetActive(false);
@@ -227,6 +227,7 @@ public class BattleLog : MonoBehaviour
         itemText.gameObject.SetActive(true);
         itemText.text = text;
     }
+    */
 
     //Clears Item Text
     public void ClearBattleText()

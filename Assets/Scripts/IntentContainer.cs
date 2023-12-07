@@ -15,6 +15,7 @@ public class IntentContainer : MonoBehaviour
     public TextMeshProUGUI damageNums;
     public TextMeshProUGUI costNums;
     public Unit unit;
+    private GameObject currentEffectPopup;
 
 
     public void DisplayIntentInfo()
@@ -27,10 +28,29 @@ public class IntentContainer : MonoBehaviour
             this.unit.timelinechild.Shift(this.unit);
             var newAction = Instantiate(action);
             newAction.unit = unit;
-            BattleLog.Instance.DoBattleText($"{action.ActionName}\n{newAction.GetDescription()}");
-            BattleLog.Instance.DisplayEnemyIntentInfo($"{action.ActionName}\n{newAction.GetDescription()}", unit);
+            SetDescription();
         }
     }
+
+    public void SetDescription()
+    {
+        AudioManager.Instance.Play("ButtonHover");
+        if (currentEffectPopup == null)
+        {
+            var EP = Instantiate(Director.Instance.EffectPopUp, BattleSystem.Instance.canvasParent.transform);
+            EP.transform.localScale = new Vector3(0.025f, 0.03f, -25f);
+            currentEffectPopup = EP;
+        }
+        else
+        {
+            currentEffectPopup.SetActive(true);
+        }
+        currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x + 1f, transform.position.y - 1.5f, transform.position.z);
+        var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
+        EPtext.text = $"{action.GetDescription()}";
+        StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
+    }
+
     void Update()
     {
         if (textMesh != null && damageNums.IsActive() && unit != null && action != null && action.targets != null)
@@ -50,7 +70,8 @@ public class IntentContainer : MonoBehaviour
         action.targets.IsHighlighted = false;
         this.unit.timelinechild.Return();
         this.unit.timelinechild.HighlightedIsBeingOverwritten = false;
-        BattleLog.Instance.itemText.gameObject.SetActive(false);
+        if (currentEffectPopup != null)
+            currentEffectPopup.SetActive(false);
     }
 
     public void CheckTarget(Action action, Unit unit)

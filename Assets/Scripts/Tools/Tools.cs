@@ -424,6 +424,12 @@ public class Tools : MonoBehaviour
         yield break;
     }
 
+    public static IEnumerator UpdateParentLayoutGroup(GameObject gameObject)
+    {
+        yield return new WaitForSeconds(0.1f);
+        gameObject.SetActive(false);
+        gameObject.SetActive(true);
+    }
     public static float RandomExcept(float min, float max, float exceptMin, float exceptMax)
     {
         float random = UnityEngine.Random.Range(min, max);

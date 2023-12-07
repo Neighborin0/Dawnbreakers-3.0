@@ -121,20 +121,6 @@ public class Healthbar : MonoBehaviour
                 }
 
             }
-            else if (CombatTools.ReturnTypeMultiplier(unit, damageType) < 1) //resisted
-            {
-                if (TL.value >= 100 - Director.Instance.TimelineAddition)
-                {
-                    TL.value = 100;
-                    action.cost = 0;
-                }
-                else
-                {
-                    TL.value += Director.Instance.TimelineAddition;
-                    action.cost -= Director.Instance.TimelineAddition;
-                }
-
-            }
         }
         number.outlineColor = Color.black;
         number.color = Color.red;

@@ -177,6 +177,7 @@
     <Compile Include="Assets\Scripts\LabLine.cs" />
     <Compile Include="Assets\Scripts\Map\MapNode.cs" />
     <Compile Include="Assets\Scripts\Actions\Sweep.cs" />
+    <Compile Include="Assets\Scripts\Icons\EffectPopUp.cs" />
     <Compile Include="Assets\Scripts\Units\TestDummy.cs" />
     <Compile Include="Assets\Scripts\Map\CharacterNode.cs" />
     <Compile Include="Assets\Scripts\Main Menu\SettingsBackButton.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Assets\Scripts\Actions\Slam.cs" />
     <Compile Include="Assets\Scripts\Map\GridManager.cs" />
     <Compile Include="Assets\Scripts\Save\SaveTools.cs" />
+    <Compile Include="Assets\Scripts\Tools\LabLayoutGroup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />

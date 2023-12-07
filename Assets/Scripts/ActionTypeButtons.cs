@@ -30,7 +30,7 @@ public class ActionTypeButton : Button
                 {
                     var newAction = Instantiate(action);
                     CombatTools.ReturnPipCounter().TakePip();
-                    actionContainerParent.lightButton.gameObject.SetActive(false);
+                    actionContainerParent.lightButton.interactable = false;
                     actionContainerParent.heavyButton.state = ActionButtonState.DEFAULT;    
                     newAction.actionStyle = Action.ActionStyle.LIGHT;
                     actionContainerParent.action = newAction;
@@ -42,7 +42,7 @@ public class ActionTypeButton : Button
                     
                     var newAction = Instantiate(action);
                     CombatTools.ReturnPipCounter().TakePip();
-                    actionContainerParent.heavyButton.gameObject.SetActive(false);
+                    actionContainerParent.heavyButton.interactable = false;
                     actionContainerParent.lightButton.state = ActionButtonState.DEFAULT;
                     newAction.actionStyle = Action.ActionStyle.HEAVY;
                     actionContainerParent.action = newAction;

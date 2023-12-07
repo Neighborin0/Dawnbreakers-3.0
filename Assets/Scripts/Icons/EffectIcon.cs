@@ -11,8 +11,7 @@ public class EffectIcon : MonoBehaviour
 {
     public Image icon;
     public Unit owner;
-    //public TextMeshProUGUI timerText;
-    //public bool isPaused = true;
+    public TextMeshProUGUI timerText;
     public float duration;
     public bool ForceEnd = false;
     public bool DoFancyStatChanges;
@@ -30,10 +29,14 @@ public class EffectIcon : MonoBehaviour
         StartCoroutine(Pop());
     }
 
+    public void Start()
+    {
+       timerText = GetComponentInChildren<TextMeshProUGUI>();
+    }
     public void Initalize(Unit unit, bool dofancystatchanges, float duration = 0, float storedvalue = 0, float numberofStacks = 0)
     {
     
-        /*if(duration > 0)
+        if(duration > 0)
         {
             timerText.text = duration.ToString();
         }
@@ -45,36 +48,12 @@ public class EffectIcon : MonoBehaviour
         {
             timerText.text = string.Empty;
         }
-        */
-        //this.isPaused = true;
-        //var manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable = timerText.GetComponent<RectTransform>();
-        //manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable.sizeDelta = new Vector2(70.24f, 21.96f);    
+        var manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable = timerText.GetComponent<RectTransform>();
+        manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable.sizeDelta = new Vector2(70.24f, 21.96f);    
         storedValue = storedvalue;
         DoFancyStatChanges = dofancystatchanges;
-        /*if(duration > 0)
-        {
-            StartCoroutine(StartTimer(duration));
-        }
-        */
-
     }
 
-    /* public IEnumerator StartTimer(float duration) 
-     {
-         print($"Duration: {duration}");
-         var timer = duration;
-         timerText.text = duration.ToString();
-         yield return new WaitUntil(() => !isPaused);
-         while (timer > 0 && !ForceEnd)
-         {
-             yield return new WaitUntil(() => !isPaused);
-             timer--;
-             timerText.text = timer.ToString();
-             yield return new WaitForSeconds(1f * OptionsManager.Instance.UserTimelineSpeedDelay);
-         }
-         DestoryEffectIcon();
-     }
-    */
 
     public void Tick()
     {
@@ -89,6 +68,7 @@ public class EffectIcon : MonoBehaviour
                 duration -= 1;
                 DestoryEffectIcon();
             }
+            timerText.text = duration.ToString();
         }
     }
 
@@ -101,6 +81,7 @@ public class EffectIcon : MonoBehaviour
         scaler = Tools.SmoothScaleObj(transform, new Vector3(1, 1, 0), 0.001f);
         StartCoroutine(scaler);
     }
+
     public void DisplayDescription()
     {
         if (BattleSystem.Instance.state != BattleStates.BATTLE)
@@ -117,9 +98,11 @@ public class EffectIcon : MonoBehaviour
             currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             EPtext.text = this.GetDescription();
-            EPtext.fontSize = descriptionSize;
+            StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
         }
     }
+
+  
 
     public void RemoveDescription()
     {
@@ -136,24 +119,6 @@ public class EffectIcon : MonoBehaviour
 
     public void OnEnded() { Director.Instance.StartCoroutine(End()); }
     public virtual IEnumerator End() { yield break; }
-   /* public void Update()
-    {
-        if(TimedEffect && owner != null)
-        {
-            if (Director.Instance.timeline.Paused)
-            {
-                isPaused = true;
-            }
-            else
-            {
-                isPaused = false;
-            }
-        }
-       
-       
-       
-    }
-   */
-
+ 
 
 }

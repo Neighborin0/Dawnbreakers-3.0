@@ -1236,6 +1236,7 @@ MonoBehaviour:
   - {fileID: 227128461}
   - {fileID: 1842136817}
   hp: {fileID: 3132519987586639805, guid: b2bc9cb04262614468333aec6ee71c69, type: 3}
+  MainStaminaBar: {fileID: 0}
   staminaBar: {fileID: 6307565962475885773, guid: bd47ada0d86bc0f43a34da9f6aabbc39,
     type: 3}
   namePlate: {fileID: 6917702804629312046, guid: ab9d566d4c3ccfd479190381d9d5c2c4,
@@ -1247,10 +1248,7 @@ MonoBehaviour:
   BattlePhasePause: 0
   Paused: 0
   pauseText: {fileID: 465377551}
-  QueuedActions: []
-  speedlist: []
   ActionsToPerform: []
-  PriorityActions: []
   numOfUnits: []
   playerUnits: []
   enemiesToLoad: []
@@ -16038,12 +16036,12 @@ PrefabInstance:
     - target: {fileID: 3872146814038065709, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
         type: 3}
       propertyPath: m_RenderPostProcessing
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3872146814038065709, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
         type: 3}
       propertyPath: m_VolumeLayerMask.m_Bits
-      value: 511
+      value: 288
       objectReference: {fileID: 0}
     - target: {fileID: 3872146814038065709, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
         type: 3}

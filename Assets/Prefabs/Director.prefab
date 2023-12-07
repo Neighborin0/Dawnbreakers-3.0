@@ -1624,7 +1624,7 @@ GameObject:
   - component: {fileID: 392729441296980265}
   - component: {fileID: 392729441296980310}
   - component: {fileID: 392729441296980311}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: LevelDrop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1861,20 +1861,21 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
-    m_NormalColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: f1e813ce0c03b01479502ba67a8261fd,
+      type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 9aec9b75b5974ae46ba14804276357d1, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 2a4f741ed3cb87249a2aebaff1447fc8, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 2a4f741ed3cb87249a2aebaff1447fc8, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -2978,20 +2979,21 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: f1e813ce0c03b01479502ba67a8261fd,
+      type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 9aec9b75b5974ae46ba14804276357d1, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 2a4f741ed3cb87249a2aebaff1447fc8, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 2a4f741ed3cb87249a2aebaff1447fc8, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -4770,7 +4772,7 @@ MonoBehaviour:
   backButton: {fileID: 392729442206650620}
   LevelUpText: {fileID: 392729442282237862}
   chooseYourItemText: {fileID: 6593003078322277525}
-  EffectPopUp: {fileID: 2722881081763327465, guid: eb8d0c7c2fb7e724ca7adc6491082caa,
+  EffectPopUp: {fileID: 1119241826621744014, guid: cbde1b64237f7584188c08e2f854709a,
     type: 3}
   ConfirmButton: {fileID: 392729441734879390}
   CharacterSlotButtonprefab: {fileID: 1927223178346534066, guid: 4a09e02f49970824584bfb7414e65757,

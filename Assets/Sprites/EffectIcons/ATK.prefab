@@ -162,6 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 7742311054285998417}
   owner: {fileID: 0}
+  timerText: {fileID: 5881326393283092459}
   duration: 2
   ForceEnd: 0
   DoFancyStatChanges: 0

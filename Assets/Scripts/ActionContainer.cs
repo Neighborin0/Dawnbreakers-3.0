@@ -11,7 +11,7 @@ public class ActionContainer : MonoBehaviour
 {
 
     public ActionTypeButton lightButton;
-    public ActionTypeButton heavyButton;  
+    public ActionTypeButton heavyButton;
 
 
     public Action action;
@@ -29,7 +29,8 @@ public class ActionContainer : MonoBehaviour
     public bool Disabled = false;
     public int numberofUses;
     public bool limited = false;
-    private TimeLineChild TL; 
+    private TimeLineChild TL;
+    private GameObject currentEffectPopup;
 
     void Awake()
     {
@@ -80,7 +81,7 @@ public class ActionContainer : MonoBehaviour
 
         if (targetting && BattleSystem.Instance.state != BattleStates.WON)
         {
-          
+
 
 
             if (Input.GetMouseButtonUp(1))
@@ -104,7 +105,7 @@ public class ActionContainer : MonoBehaviour
             switch (action.targetType)
             {
                 case Action.TargetType.ENEMY:
-                   
+
                     foreach (var unit in Tools.GetAllUnits())
                     {
                         if (targetting)
@@ -145,7 +146,7 @@ public class ActionContainer : MonoBehaviour
                             LabCamera.Instance.ResetPosition();
                             BattleLog.Instance.ResetBattleLog();
                             LabCamera.Instance.ResetPosition();
-                           // actionStyle = ActionStyle.STANDARD;
+                            // actionStyle = ActionStyle.STANDARD;
                             SetActive();
                             if (TL != null)
                             {
@@ -243,7 +244,7 @@ public class ActionContainer : MonoBehaviour
                                 Director.Instance.timeline.children.Remove(TL);
                                 Destroy(TL.gameObject);
                             }
-                              
+
                         }
                     }
                     break;
@@ -271,47 +272,38 @@ public class ActionContainer : MonoBehaviour
     }
     public void SetDescription()
     {
-
         AudioManager.Instance.Play("ButtonHover");
         action.unit = baseUnit;
-        //Description for Battle
-        if (GameObject.FindAnyObjectByType<CharacterTab>() == null)
+        if (currentEffectPopup == null)
         {
-            if (limited)
-                BattleLog.Instance.DoBattleText($"{action.ActionName}\n{action.GetDescription()}\nUses: {numberofUses}.");
-            else
-                BattleLog.Instance.DoBattleText($"{action.ActionName}\n{action.GetDescription()}");
+            var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
+            EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            currentEffectPopup = EP;
         }
-        //Everywhere else
         else
         {
-            BattleLog.Instance.DisableCharacterDialog();
-            BattleLog.Instance.Portraitparent.gameObject.SetActive(false);
-            if (this.GetComponent<Button>().interactable)
-            {
-                BattleLog.Instance.itemText.gameObject.SetActive(false);
-                BattleLog.Instance.ambientText.gameObject.SetActive(true);
-                BattleLog.Instance.ambientText.text = $"{action.ActionName}\n{action.GetDescription()}";
-                if (limited)
-                    BattleLog.Instance.ambientText.text = $"{action.ActionName}\n{action.GetDescription()}\nUses: {numberofUses}.";
-                else
-                    BattleLog.Instance.ambientText.text = $"{action.ActionName}\n{action.GetDescription()}";
-                BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
-            }
-
+            currentEffectPopup.SetActive(true);
         }
+        currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x + 100, transform.position.y + 80, transform.position.z);
+        var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
+        //Description for Battle
+        if (limited)
+        {
+            EPtext.text = $"{action.GetDescription()}\nUses: {numberofUses}.";
+        }
+        else
+            EPtext.text = $"{action.GetDescription()}";
 
-
+        StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
     }
+   
 
+ 
 
     public void RemoveDescription()
     {
-        if (BattleSystem.Instance != null && targetting == false)
-        {
-            BattleLog.Instance.itemText.gameObject.SetActive(false);
-        }
-
+        if (currentEffectPopup != null)
+            currentEffectPopup.SetActive(false);
     }
 
 
@@ -320,7 +312,7 @@ public class ActionContainer : MonoBehaviour
         action.ResetAction();
         if (heavyButton.state == ActionTypeButton.ActionButtonState.DEFAULT || lightButton.state == ActionTypeButton.ActionButtonState.DEFAULT)
         {
-            CombatTools.ReturnPipCounter().AddPip();     
+            CombatTools.ReturnPipCounter().AddPip();
         }
         lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
         heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
@@ -330,20 +322,22 @@ public class ActionContainer : MonoBehaviour
 
     public void UpdateOnStyleSwitch()
     {
-        if(TL != null) 
+        if (TL != null)
         {
             TL.staminaText.text = (100 - CombatTools.DetermineTrueCost(action)).ToString();
             TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * -11.89f, 0);
         }
-        SetDescription();  
+        SetDescription();
     }
 
     public void SetActionStyleButtonsActive(bool SetActive)
     {
         if (Director.Instance.UnlockedPipSystem)
         {
-            lightButton.gameObject.SetActive(SetActive); 
+            lightButton.gameObject.SetActive(SetActive);
             heavyButton.gameObject.SetActive(SetActive);
+            lightButton.interactable = true;
+            heavyButton.interactable = true;
         }
         else
         {
@@ -362,7 +356,7 @@ public class ActionContainer : MonoBehaviour
                 {
                     targetting = false;
                     SetActionStyleButtonsActive(false);
-                    BattleLog.Instance.DoBattleText("");
+                    //BattleLog.Instance.DoBattleText("");
                     print("not targetting");
                     LabCamera.Instance.ResetPosition();
                     var button = GetComponent<Button>();
