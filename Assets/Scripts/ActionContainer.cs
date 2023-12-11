@@ -47,6 +47,7 @@ public class ActionContainer : MonoBehaviour
         }
         numberofUses = action.numberofUses;
         limited = action.limited;
+        GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
     }
 
     void Update()
@@ -102,6 +103,28 @@ public class ActionContainer : MonoBehaviour
                 }
             }
 
+            switch (action.actionStyle)
+            {
+                case Action.ActionStyle.STANDARD:
+                    {
+
+                        this.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
+                        this.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+                    }
+                    break;
+                case Action.ActionStyle.HEAVY:
+                    {
+                        this.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
+                        this.GetComponent<Image>().material.SetColor("OutlineColor", new Color(222, 74, 0));
+                    }
+                    break;
+                case Action.ActionStyle.LIGHT:
+                    {
+                        this.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
+                        this.GetComponent<Image>().material.SetColor("OutlineColor", new Color(0, 162, 191));
+                    }
+                    break;
+            }
             switch (action.targetType)
             {
                 case Action.TargetType.ENEMY:
@@ -299,9 +322,9 @@ public class ActionContainer : MonoBehaviour
             Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
         }
     }
-   
 
- 
+
+
 
     public void RemoveDescription()
     {
