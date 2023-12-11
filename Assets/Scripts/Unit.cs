@@ -115,7 +115,7 @@ public class Unit : MonoBehaviour
                 if (IsHighlighted)
                 {
                     sprite.material.SetFloat("_OutlineThickness", 1f);
-                    sprite.material.SetColor("_OutlineColor", Color.white);
+                    sprite.material.SetColor("_OutlineColor", Color.white * 2f);
                     sprite.material.SetColor("_CharacterEmission", new Color(0.01f, 0.01f, 0.01f));
 
                 }
@@ -129,7 +129,7 @@ public class Unit : MonoBehaviour
                 {
 
                     sprite.material.SetFloat("_OutlineThickness", 1f);
-                    sprite.material.SetColor("_OutlineColor", Color.yellow);
+                    sprite.material.SetColor("_OutlineColor", Color.yellow * 2f);
                     sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
 
                 }

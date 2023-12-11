@@ -17,7 +17,7 @@ scopes = {
 	"last_search.110DEAF1" = "probuilder"
 	"OpenInspectorPreview.110DEAF1" = "0"
 	"currentGroup.110DEAF1" = "all"
-	"last_search.E8DA15E5" = "effect"
+	"last_search.E8DA15E5" = "timeline"
 	"OpenInspectorPreview.E8DA15E5" = "0"
 	"currentGroup.E8DA15E5" = "all"
 }
@@ -76,6 +76,7 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
+	"timeline"
 	"effect"
 	"battle"
 	"probuilder"

@@ -13,13 +13,15 @@ public class TimeLineChild : MonoBehaviour
     public bool CanClear = false;
     public Vector2 PositionToMoveTo;
     public TextMeshProUGUI staminaText;
-    public GameObject TimelineChildChild;
+    public Image childImage;
+    //public GameObject TimelineChildChild;
    // public GameObject playerPoint;
     //public GameObject EnemyPoint;
     public bool UnitIsHighlighted;
     public bool HighlightedIsBeingOverwritten = false;
     public bool CanBeHighlighted = true;
     public float value;
+    public float offset = -12.13f;
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -28,22 +30,18 @@ public class TimeLineChild : MonoBehaviour
 
     private void Start()
     {
-        GetComponentInChildren<Image>().material = Instantiate<Material>(GetComponentInChildren<Image>().material);
-        gameObject.GetComponentInChildren<Image>().material.SetFloat("OutlineThickness", 0);
-        gameObject.GetComponentInChildren<Image>().material.SetColor("OutlineColor", Color.black);
+        childImage.material = Instantiate<Material>(childImage.material);
+        childImage.material.SetFloat("OutlineThickness", 0);
+        childImage.material.SetColor("OutlineColor", Color.black);
 
-        TimelineChildChild.GetComponent<Image>().material = Instantiate<Material>(TimelineChildChild.GetComponent<Image>().material);
-        TimelineChildChild.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
-        TimelineChildChild.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
     }
     void LateUpdate()
     {
         if(CanMove)
         {        
-            rectTransform.anchoredPosition = Vector3.Lerp(rectTransform.anchoredPosition, new Vector3(value * -11.89f, rectTransform.anchoredPosition.y), Director.Instance.timelinespeedDelay);
+            rectTransform.anchoredPosition = Vector3.Lerp(rectTransform.anchoredPosition, new Vector3(value * offset, rectTransform.anchoredPosition.y), Director.Instance.timelinespeedDelay);
             staminaText.text = Mathf.Round(value).ToString();
         }
-        TimelineChildChild.GetComponentInChildren<Image>().color = GetComponentInChildren<Image>().color;
 
     }
     public void MoveToNewPosition(Vector2 pos) 
@@ -57,11 +55,9 @@ public class TimeLineChild : MonoBehaviour
         if (gameObject != null )
         {
             transform.SetAsLastSibling();
-            gameObject.GetComponentInChildren<Image>().material.SetFloat("OutlineThickness", 1f);
-            gameObject.GetComponentInChildren<Image>().material.SetColor("OutlineColor", Color.white);
+            childImage.material.SetFloat("OutlineThickness", 1f);
+            childImage.material.SetColor("OutlineColor", Color.white);
 
-            TimelineChildChild.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
-            TimelineChildChild.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
         }
 
     }
@@ -69,11 +65,9 @@ public class TimeLineChild : MonoBehaviour
     {
         if(gameObject != null)
         {
-            gameObject.GetComponentInChildren<Image>().material.SetFloat("OutlineThickness", 0);
-            gameObject.GetComponentInChildren<Image>().material.SetColor("OutlineColor", Color.black);
+            childImage.material.SetFloat("OutlineThickness", 0);
+            childImage.material.SetColor("OutlineColor", Color.black);
 
-            TimelineChildChild.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
-            TimelineChildChild.GetComponent<Image>().material.SetColor("OutlineColor", Color.black);
         }
        
     }

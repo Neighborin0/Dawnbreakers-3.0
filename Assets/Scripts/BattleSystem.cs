@@ -727,7 +727,7 @@ public class BattleSystem : MonoBehaviour
             if (ActionsToPerform.Count > 0)
             {
                 yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier) || Director.Instance.timeline.slider.value == 100);
-                if (Director.Instance.timeline.slider.value < 101)
+                if (Director.Instance.timeline.slider.value < Director.Instance.timeline.slider.maxValue)
                 {
                     CombatTools.PauseStaminaTimer();
                     if (action.unit != null)

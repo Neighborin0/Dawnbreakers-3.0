@@ -8,7 +8,7 @@ using System;
 using UnityEngine.SceneManagement;
 
 using static UnityEngine.UI.CanvasScaler;
-
+using UnityEngine.Events;
 
 public class Director : MonoBehaviour
 {
@@ -66,7 +66,7 @@ public class Director : MonoBehaviour
     public bool UnlockedPipSystem = false;
 
     public LabCamera.CameraState previousCameraState;
-    public static Director Instance { get; private set;  }
+    public static Director Instance { get; private set; }
     void Awake()
     {
         if (Instance != null)
@@ -75,8 +75,8 @@ public class Director : MonoBehaviour
         }
         else
         {
-#if UNITY_EDITOR 
-            
+#if UNITY_EDITOR
+
 #else
              DevMode = false;
 #endif
@@ -91,29 +91,41 @@ public class Director : MonoBehaviour
                 party.Add(startingUnit);
                 //RunTracker.Instance.partyMembersCollected.Add(startingUnit);
                 startingUnit.gameObject.SetActive(false);
-                if(!DevMode)
-                startingUnit.currentHP -= 15;
-            }   
+                if (!DevMode)
+                    startingUnit.currentHP -= 15;
+            }
         }
 
     }
 
     private void Start()
     {
-        if(DevMode)
+        if (DevMode)
         {
             UnlockedPipSystem = true;
         }
+        SceneManager.sceneLoaded += CheckCams;
     }
 
-   
-
+    private void CheckCams(Scene scene, LoadSceneMode mode)
+    {
+        if (BattleSystem.Instance != null)
+        {
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            canvas.worldCamera = LabCamera.Instance.uicam;
+            canvas.planeDistance = 20;
+        }
+        else
+        {
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        }
+    }
 
     void Update()
     {
-        
+
         //Speed Up
-        if(Director.Instance.DevMode && SceneManager.GetActiveScene().name != "Main Menu")
+        if (Director.Instance.DevMode && SceneManager.GetActiveScene().name != "Main Menu")
         {
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
@@ -136,41 +148,41 @@ public class Director : MonoBehaviour
         //Put Character Slots Away
         if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf && SceneManager.GetActiveScene().name != "Main Menu")
         {
-            if(CharacterSlotsDisplayed)
-            DisplayCharacterTab(false);
-            else if(ItemTabGrid.transform.childCount == 0)
+            if (CharacterSlotsDisplayed)
+                DisplayCharacterTab(false);
+            else if (ItemTabGrid.transform.childCount == 0)
                 DisableCharacterTab();
         }
-       /* else if(Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance != null && BattleSystem.Instance.CheckPlayableState())
-        {
-            if (CharacterSlotsDisplayed)
-            {
-                DisplayCharacterTab(false);
-                if (!BattleSystem.Instance.Paused)
-                {
-                    Director.Instance.previousCameraState = LabCamera.Instance.state;
-                    LabCamera.Instance.state = LabCamera.CameraState.IDLE;
-                    Tools.PauseAllStaminaTimers();
-                }
-            }
-            else if (ItemTabGrid.transform.childCount == 0)
-            {
-                DisableCharacterTab(false);
-                if (!Tools.CheckIfAnyUnitIsDeciding() && !BattleSystem.Instance.Paused)
-                {
-                    Tools.UnpauseAllStaminaTimers();
-                }
-       
-            }
-       
-              
-        }
-       */
+        /* else if(Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance != null && BattleSystem.Instance.CheckPlayableState())
+         {
+             if (CharacterSlotsDisplayed)
+             {
+                 DisplayCharacterTab(false);
+                 if (!BattleSystem.Instance.Paused)
+                 {
+                     Director.Instance.previousCameraState = LabCamera.Instance.state;
+                     LabCamera.Instance.state = LabCamera.CameraState.IDLE;
+                     Tools.PauseAllStaminaTimers();
+                 }
+             }
+             else if (ItemTabGrid.transform.childCount == 0)
+             {
+                 DisableCharacterTab(false);
+                 if (!Tools.CheckIfAnyUnitIsDeciding() && !BattleSystem.Instance.Paused)
+                 {
+                     Tools.UnpauseAllStaminaTimers();
+                 }
 
-        
+             }
+
+
+         }
+        */
+
+
     }
 
-   
+
     public void CreateCharacterSlots(List<Unit> units)
     {
         int i = 0;
@@ -201,9 +213,9 @@ public class Director : MonoBehaviour
                     i++;
                 }
             }
-            
+
         }
-    }   
+    }
 
     public void CharacterSlotEnable(bool forceDisable = false)
     {
@@ -222,8 +234,8 @@ public class Director : MonoBehaviour
                 characterSlotpos.GetComponent<MoveableObject>().Move(true);
                 CharacterSlotsDisplayed = false;
                 if (MapController.Instance.mapControlBar != null)
-                    if(MapController.Instance.mapControlBar.activeInHierarchy)
-                    MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
+                    if (MapController.Instance.mapControlBar.activeInHierarchy)
+                        MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
             }
             else
             {
@@ -236,7 +248,7 @@ public class Director : MonoBehaviour
         }
     }
 
- 
+
     public static void AddUnitToParty(string unitName)
     {
         var unitToAdd = Instantiate(Director.Instance.characterdatabase.Where(obj => obj.name == unitName).SingleOrDefault());
@@ -268,8 +280,8 @@ public class Director : MonoBehaviour
                 if (!unit.IsSummon)
                 {
                     CharacterTab CT = Instantiate(characterTab);
-                    if(Interactable)
-                    { 
+                    if (Interactable)
+                    {
                         CT.GetComponent<Button>().interactable = true;
                     }
                     CT.gameObject.transform.SetParent(TabGrid.transform, false);
@@ -308,7 +320,7 @@ public class Director : MonoBehaviour
                         CT.inventoryDisplay.gameObject.SetActive(true);
                         CT.actionDisplay.gameObject.SetActive(true);
 
-                        
+
                         foreach (var item in unit.inventory)
                         {
                             var x = Instantiate(BattleLog.Instance.itemImage);
@@ -351,7 +363,7 @@ public class Director : MonoBehaviour
             assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = action.ActionName;
-            if(assignedAction.action.New)
+            if (assignedAction.action.New)
             {
                 assignedAction.GetComponent<Image>().material = Instantiate<Material>(assignedAction.GetComponent<Image>().material);
                 assignedAction.GetComponent<Image>().material.SetFloat("OutlineThickness", 2);
@@ -421,26 +433,26 @@ public class Director : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         foreach (Transform child in Director.Instance.TabGrid.transform)
         {
-            if(MoveBattleLog)
+            if (MoveBattleLog)
                 BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
 
             Destroy(child.gameObject);
         }
     }
-    
 
-        public void LevelUp(Unit unit, bool IncreasesLVL = true)
+
+    public void LevelUp(Unit unit, bool IncreasesLVL = true)
+    {
+        if (IncreasesLVL)
         {
-            if (IncreasesLVL)
-            {
-              LabyrinthLVL += 1;
-            }
-             unit.attackStat += 1;
-             unit.speedStat += 1;
-             unit.defenseStat += 1;
-             unit.maxHP += 2;
-             unit.currentHP += 2;
+            LabyrinthLVL += 1;
         }
+        unit.attackStat += 1;
+        unit.speedStat += 1;
+        unit.defenseStat += 1;
+        unit.maxHP += 2;
+        unit.currentHP += 2;
+    }
 
-  
+
 }

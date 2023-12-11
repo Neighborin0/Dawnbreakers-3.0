@@ -57,10 +57,13 @@ Material:
     m_Floats:
     - OutlineThickness: 0
     - _OutlineThickness: 1
+    - _QueueControl: 0
+    - _QueueOffset: 0
     m_Colors:
     - OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _CharacterEmission: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
-    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Tint: {r: 1, g: 0.089622594, b: 0.089622594, a: 0.682353}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Emission: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
+    - _Tint: {r: 1, g: 0.8632076, b: 0.8632076, a: 1}
   m_BuildTextureStacks: []

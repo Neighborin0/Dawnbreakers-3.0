@@ -28,7 +28,7 @@ public class TimeLine : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         if (!Paused)
         {

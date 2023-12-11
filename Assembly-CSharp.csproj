@@ -66,7 +66,6 @@
     <Compile Include="Assets\Scripts\Enemy Behaviors\EnemyBehavior.cs" />
     <Compile Include="Assets\Scripts\Actions\Grow.cs" />
     <Compile Include="Assets\Scripts\Healthbar.cs" />
-    <Compile Include="Assets\Shapes2D\Scripts\PolyMap.cs" />
     <Compile Include="Assets\Scripts\TimeLineChild.cs" />
     <Compile Include="Assets\Scripts\CharacterSlot.cs" />
     <Compile Include="Assets\Scripts\IntentContainer.cs" />
@@ -100,7 +99,6 @@
     <Compile Include="Assets\Scripts\Units\DustyEnemy.cs" />
     <Compile Include="Assets\Scripts\Tools\AutoExpandGridLayoutGroup.cs" />
     <Compile Include="Assets\Scripts\Actions\Screech.cs" />
-    <Compile Include="Assets\Shapes2D\Scripts\Shape.cs" />
     <Compile Include="Assets\Scripts\Icons\EffectIcon.cs" />
     <Compile Include="Assets\Scripts\Actions\Calm.cs" />
     <Compile Include="Assets\Scripts\ActionTypeButtons.cs" />
@@ -165,7 +163,6 @@
     <Compile Include="Assets\Scripts\MiniMapIcon.cs" />
     <Compile Include="Assets\Scripts\Action.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\WornGauntlet.cs" />
-    <Compile Include="Assets\Shapes2D\Scripts\Shapes2DPrefs.cs" />
     <Compile Include="Assets\Scripts\Icons\Stagger.cs" />
     <Compile Include="Assets\Scripts\FloatingObject.cs" />
     <Compile Include="Assets\Scripts\Actions\Guard.cs" />
@@ -196,13 +193,8 @@
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
-    <None Include="Assets\Shapes2D\Shaders\Triangle.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
-    <None Include="Assets\Shapes2D\Shaders\Common.cginc" />
-    <None Include="Assets\Shapes2D\Shaders\Ellipse.cginc" />
-    <None Include="Assets\Shapes2D\Shaders\Shape.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
-    <None Include="Assets\Shapes2D\Shaders\Rectangle.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
@@ -210,16 +202,12 @@
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\Shapes2D\Shaders\Polygon.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\Shapes2D\changelog.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
-    <None Include="Assets\Shapes2D\Shaders\Path.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
-    <None Include="Assets\Shapes2D\readme.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
   </ItemGroup>
   <ItemGroup>
