@@ -7,6 +7,7 @@ using System;
 using static UnityEngine.UI.CanvasScaler;
 
 
+
 public class ActionContainer : MonoBehaviour
 {
 
@@ -59,9 +60,9 @@ public class ActionContainer : MonoBehaviour
             var unit = hit.collider.gameObject.GetComponent<Unit>();
             unit.timelinechild.Shift(unit);
             damageNums.text = (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat > 0 ?
-                "<sprite name=\"ATK\">" +
+                $"<sprite name=\"{action.damageType}\">" +
                 ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat).ToString()
-                : "<sprite name=\"ATK\">" + "0";
+                : $"<sprite name=\"{action.damageType}\">" + "0";
 
             if ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat > (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) || CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1)
             {
@@ -74,7 +75,7 @@ public class ActionContainer : MonoBehaviour
         }
         else if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
         {
-            damageNums.text = "<sprite name=\"ATK\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
+            damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
             damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
         }
 
@@ -82,8 +83,6 @@ public class ActionContainer : MonoBehaviour
 
         if (targetting && BattleSystem.Instance.state != BattleStates.WON)
         {
-
-
 
             if (Input.GetMouseButtonUp(1))
             {
@@ -101,6 +100,7 @@ public class ActionContainer : MonoBehaviour
                     Director.Instance.timeline.children.Remove(TL);
                     Destroy(TL.gameObject);
                 }
+                Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
             }
 
             switch (action.actionStyle)
@@ -114,14 +114,18 @@ public class ActionContainer : MonoBehaviour
                     break;
                 case Action.ActionStyle.HEAVY:
                     {
+                        Color heavyColor = new Color(225, 1, 0);
                         this.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
-                        this.GetComponent<Image>().material.SetColor("OutlineColor", new Color(222, 74, 0));
+                        this.GetComponent<Image>().material.SetColor("OutlineColor", heavyColor);
+                        baseUnit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", heavyColor * 0.02f);
                     }
                     break;
                 case Action.ActionStyle.LIGHT:
                     {
+                        Color lightColor = new Color(0, 162, 191);
                         this.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
-                        this.GetComponent<Image>().material.SetColor("OutlineColor", new Color(0, 162, 191));
+                        this.GetComponent<Image>().material.SetColor("OutlineColor", lightColor);
+                        baseUnit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", lightColor * 0.02f);
                     }
                     break;
             }
@@ -158,6 +162,11 @@ public class ActionContainer : MonoBehaviour
                                 z.isDarkened = false;
                             }
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
+
+                            Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
+                            var Light = baseUnit.GetComponentInChildren<Light>();
+                            baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
+
                             action.targets = unit;
                             action.unit = baseUnit;
 
@@ -218,6 +227,10 @@ public class ActionContainer : MonoBehaviour
                                 unit.isDarkened = false;
                             }
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
+
+                            Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
+                            var Light = baseUnit.GetComponentInChildren<Light>();
+                            baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
                             //actionStyle = ActionStyle.STANDARD;
                         }
                     }
@@ -259,6 +272,10 @@ public class ActionContainer : MonoBehaviour
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
+
+                            Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
+                            var Light = baseUnit.GetComponentInChildren<Light>();
+                            baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
                             //actionStyle = ActionStyle.STANDARD;
                             SetActive();
                             LabCamera.Instance.ResetPosition();
@@ -309,7 +326,8 @@ public class ActionContainer : MonoBehaviour
             {
                 currentEffectPopup.SetActive(true);
             }
-            currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x + 100, transform.position.y + 80, transform.position.z);
+            var rectTrans = transform.GetComponent<RectTransform>(); 
+            currentEffectPopup.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x - 400, rectTrans.anchoredPosition.y -210, 0);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             //Description for Battle
             if (limited)
@@ -335,13 +353,21 @@ public class ActionContainer : MonoBehaviour
 
     public void ResetAll(bool turnOn = false)
     {
+        action.actionStyle = Action.ActionStyle.STANDARD;
         action.ResetAction();
+       if(lightButton.styleIEnumerator != null)
+            StopCoroutine(lightButton.styleIEnumerator);
+        if (heavyButton.styleIEnumerator != null)
+            StopCoroutine(heavyButton.styleIEnumerator);
+
+        var Light = baseUnit.GetComponentInChildren<Light>();
+        baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.04f, 0.001f);
         if (heavyButton.state == ActionTypeButton.ActionButtonState.DEFAULT || lightButton.state == ActionTypeButton.ActionButtonState.DEFAULT)
         {
             CombatTools.ReturnPipCounter().AddPip();
         }
         lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
-        heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
+        heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;      
         SetActionStyleButtonsActive(turnOn);
 
     }
@@ -362,6 +388,7 @@ public class ActionContainer : MonoBehaviour
         {
             lightButton.gameObject.SetActive(SetActive);
             heavyButton.gameObject.SetActive(SetActive);
+            Director.Instance.StartCoroutine(CombatTools.StopAndDestroyVFX(0.01f));
             lightButton.interactable = true;
             heavyButton.interactable = true;
         }

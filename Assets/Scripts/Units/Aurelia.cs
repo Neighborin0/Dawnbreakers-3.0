@@ -19,9 +19,6 @@ public class Aurelia : Unit
         attackStat = 7;
         defenseStat = 6;
         //defenseStat = -2000;
-        speedStat = 10;
-        //StartingStamina = UnityEngine.Random.Range(85, 95);
-        //speedStat = 100;
         resistances = new DamageType[] { DamageType.LIGHT};
         weaknesses = new DamageType[] { DamageType.DARK };
         currentHP = maxHP;

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 769681786456419573}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.28}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -318,9 +318,10 @@ MonoBehaviour:
   maxHP: 0
   attackStat: 0
   defenseStat: 0
-  speedStat: 0
   spotLight: {fileID: 8380202918096390495}
   actionCostMultiplier: 1
+  resistances: 
+  weaknesses: 
   actionList:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
   - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}

@@ -11,7 +11,7 @@ public class Husk : Unit
     {
         unitName = "Husk";
         defenseStat = 0;
-        speedStat = UnityEngine.Random.Range(7, 9);
+        //speedStat = UnityEngine.Random.Range(7, 9);
         //speedStat = 7;
         currentHP = maxHP;
         IsPlayerControlled = false;

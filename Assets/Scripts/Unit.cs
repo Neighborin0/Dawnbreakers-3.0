@@ -79,7 +79,7 @@ public class Unit : MonoBehaviour
     public int maxHP;
     public int attackStat;
     public int defenseStat;
-    public int speedStat;
+    //public int speedStat;
     public Light spotLight;
     public float actionCostMultiplier = 1;
     public DamageType[] resistances;

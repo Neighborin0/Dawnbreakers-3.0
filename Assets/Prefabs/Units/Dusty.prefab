@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8360094562929275949}
   - component: {fileID: 4101498702268122146}
+  - component: {fileID: 6647321142520728475}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 555347536762866235}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.28}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -94,6 +95,29 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &6647321142520728475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555347536762866235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &8706695988224241324
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,9 +275,10 @@ MonoBehaviour:
   maxHP: 0
   attackStat: 0
   defenseStat: 0
-  speedStat: 0
   spotLight: {fileID: 4101498702268122146}
   actionCostMultiplier: 1
+  resistances: 
+  weaknesses: 
   actionList:
   - {fileID: 11400000, guid: abf50d286d1dffc4ca1b7e3804c86162, type: 2}
   - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}

@@ -28,16 +28,17 @@ public class Sweep : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> DMG.\n<color=#FF0000>+2</color> DMG when <sprite name=\"STAGGER\">.";
+            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> " +
+                $"<sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.\n<color=#FF0000>+2</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG when <sprite name=\"STAGGER\">.";
         }
         else
         {
             if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat > 0)
             {
-                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat}</color> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
+                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat}</color>  <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
             }
             else
-                description = $"Deals <color=#FF0000>0</color> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
+                description = $"Deals <color=#FF0000>0</color>  <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
         }
         return description;
     }

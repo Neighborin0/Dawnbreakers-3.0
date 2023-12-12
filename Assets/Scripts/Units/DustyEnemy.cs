@@ -16,7 +16,7 @@ public class DustyEnemy : Unit
         maxHP = 40;
         attackStat = 5;
         defenseStat = 8;
-        speedStat = 9;
+        //speedStat = 9;
         actionCostMultiplier = 1f;
         currentHP = maxHP;
         IsPlayerControlled = false;

@@ -9,6 +9,8 @@ using UnityEngine.ProBuilder.Shapes;
 using UnityEditor;
 using UnityEngine.Rendering.Universal.Internal;
 using System.Diagnostics.Contracts;
+using UnityEngine.Rendering.PostProcessing;
+using static System.Collections.Specialized.BitVector32;
 
 public class BattleLog : MonoBehaviour
 {
@@ -126,7 +128,26 @@ public class BattleLog : MonoBehaviour
             Destroy(item.gameObject);
         }
         battlelog.STATtext.gameObject.SetActive(true);
-        battlelog.STATtext.text = $"<sprite name=\"ATK\">ATK: {unit.attackStat}\n<sprite name=\"DEF\">DEF: {unit.defenseStat}\n<sprite name=\"SPD\">SPD: {unit.speedStat}";
+
+        var resistanceText = new List<string>();
+        var weaknessText = new List<string>();
+
+
+        for (int i = 0; i < unit.resistances.Length; i++)
+        {
+            string stringToAdd = $"<sprite name=\"{unit.resistances[i]}_ALT\">";
+            resistanceText.Add(stringToAdd);
+        }
+        for (int i = 0; i < unit.weaknesses.Length; i++)
+        {
+            string stringToAdd = $"<sprite name=\"{unit.weaknesses[i]}_ALT\">";
+            weaknessText.Add(stringToAdd);
+        }
+
+
+        battlelog.STATtext.text = $"ATK: {unit.attackStat}\nDEF: {unit.defenseStat}\nRES:  {string.Join("", resistanceText.ToArray())}\nWEAK:  {string.Join("", weaknessText.ToArray())}";
+
+
         Tools.SetTextColorAlphaToZero(battlelog.STATtext);
         StartCoroutine(Tools.FadeText(battlelog.STATtext, 0.005f, true, false));
         battlelog.charPortrait.sprite = unit.charPortraits.Find(obj => obj.name == "neutral");
@@ -176,9 +197,25 @@ public class BattleLog : MonoBehaviour
 
     public void DisplayEnemyCharacterStats(Unit unit)
     {
+        var resistanceText = new List<string>();
+        var weaknessText = new List<string>();
+
+
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
         battlelog.enemySTATtext.gameObject.SetActive(true);
-        battlelog.enemySTATtext.text = $"<sprite name=\"ATK\">ATK: {unit.attackStat}\n<sprite name=\"DEF\">DEF: {unit.defenseStat}\n<sprite name=\"SPD\">SPD: {unit.speedStat}";
+        for (int i = 0; i < unit.resistances.Length; i++)
+        {
+            string stringToAdd = $"<sprite name=\"{unit.resistances[i]}_ALT\">";
+            resistanceText.Add(stringToAdd);
+        }
+        for (int i = 0; i < unit.weaknesses.Length; i++)
+        {
+            string stringToAdd = $"<sprite name=\"{unit.weaknesses[i]}_ALT\">";
+            weaknessText.Add(stringToAdd);
+        }
+
+
+        battlelog.enemySTATtext.text = $"ATK: {unit.attackStat}\nDEF: {unit.defenseStat}\nRES:  {string.Join("", resistanceText.ToArray())}\nWEAK:  {string.Join("", weaknessText.ToArray())}";
         battlelog.enemycharPortrait.sprite = unit.charPortraits.Find(obj => obj.name == "neutral");
         battlelog.enemyPortraitparent.gameObject.SetActive(true);
         battlelog.characterName.gameObject.SetActive(true);
@@ -218,16 +255,6 @@ public class BattleLog : MonoBehaviour
         DisplayCharacterStats(unit);
     }
 
-    /*public void DoBattleText(string text)
-    {
-        var battlelog = GameObject.FindObjectOfType<BattleLog>();
-        battlelog.ambientText.gameObject.SetActive(false);
-        Tools.SetTextColorAlphaToZero(battlelog.ambientText);
-        StartCoroutine(Tools.FadeText(battlelog.ambientText, 0.005f, true, false));
-        itemText.gameObject.SetActive(true);
-        itemText.text = text;
-    }
-    */
 
     //Clears Item Text
     public void ClearBattleText()

@@ -57,11 +57,11 @@ public class IntentContainer : MonoBehaviour
         {
             if ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat > 0)
             {
-                damageNums.text = "<sprite name=\"ATK\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
+                damageNums.text = $"<sprite name=\"{action.damageType}\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
                 action.damageText = ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
             }
             else
-                damageNums.text = "<sprite name=\"ATK\">" + "0";
+                damageNums.text = $"<sprite name=\"{action.damageType}\">0";
         }
       
     }

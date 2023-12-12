@@ -81,7 +81,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         skillHPText.text = $"HP:{unit.maxHP}";
         skillATKText.text = $"ATK:{unit.attackStat}";
         skillDEFText.text = $"DEF:{unit.defenseStat}";
-        skillSPDText.text = $"SPD:{unit.speedStat}";
+        //skillSPDText.text = $"SPD:{unit.speedStat}";
     }
 
     public void DoOnInteracted()
@@ -102,7 +102,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             CT.DEFText.text = $"DEF:{CT.unit.defenseStat}";
             CT.ATKtext.text = $"ATK: {CT.unit.attackStat}"; 
             CT.HPtext.text = $"HP: {CT.unit.maxHP}";
-            CT.SPDText.text = $"SPD: {CT.unit.speedStat}";
+            //CT.SPDText.text = $"SPD: {CT.unit.speedStat}";
             GetComponent<HighlightedObject>().disabled = false;
         }
         foreach (var CS in Director.Instance.characterSlotpos.transform.GetComponentsInChildren<CharacterSlot>())
@@ -112,7 +112,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         skillHPText.text = $"HP:{unit.maxHP}";
         skillATKText.text = $"ATK:{unit.attackStat}";
         skillDEFText.text = $"DEF:{unit.defenseStat}";
-        skillSPDText.text = $"SPD:{unit.speedStat}";
+       // skillSPDText.text = $"SPD:{unit.speedStat}";
 
     }
 
@@ -141,9 +141,9 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         }
         else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[3].gameObject)
         {
-            unit.speedStat += 1;
-            skillSPDText.text = $"SPD:<color=#00FF00>{unit.speedStat}</color>";
-            LevelDownbuttons[3].gameObject.SetActive(true);
+           // unit.speedStat += 1;
+            //skillSPDText.text = $"SPD:<color=#00FF00>{unit.speedStat}</color>";
+            //LevelDownbuttons[3].gameObject.SetActive(true);
         }
         foreach(var x in LevelUpButtons)
         {
@@ -195,8 +195,8 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         }
         else if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[3].gameObject)
         {
-            unit.speedStat -= 1;
-            skillSPDText.text = $"SPD:{unit.speedStat}";
+            //unit.speedStat -= 1;
+            //skillSPDText.text = $"SPD:{unit.speedStat}";
         }
         skillPointText.text = $"Stat Points:{skillPoints}";
         foreach (var x in LevelUpButtons)

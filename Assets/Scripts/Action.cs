@@ -12,6 +12,7 @@ public enum DamageType
     SLASH,
     PIERCE,
     STRIKE,
+    CLEAVE,
     //elements
     LIGHT,
     DARK,

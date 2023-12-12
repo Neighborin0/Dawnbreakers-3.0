@@ -12,7 +12,7 @@ public class Dusty : Unit
         attackStat = 5;
         //attackStat = 999;
         defenseStat = 8;
-        speedStat = 7;
+        //speedStat = 7;
         currentHP = maxHP;
         IsPlayerControlled = true;
         resistances = new DamageType[] { DamageType.SLASH };

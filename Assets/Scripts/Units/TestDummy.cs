@@ -14,7 +14,7 @@ public class TestDummy : Unit
         maxHP = 100;
         attackStat = 0;
         defenseStat = 0;
-        speedStat = 0;
+        //speedStat = 0;
         currentHP = maxHP;
         IsPlayerControlled = false;
         behavior = this.gameObject.AddComponent<RandomEnemyBehavior>();

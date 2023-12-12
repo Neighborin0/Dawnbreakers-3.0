@@ -15,7 +15,7 @@ public class TutorialMatriarch : Unit
         maxHP = 168;
         attackStat = 12;
         defenseStat = 0;
-        speedStat = 10;
+        //speedStat = 10;
         currentHP = maxHP;
         IsPlayerControlled = false;
         behavior = this.gameObject.AddComponent<MatriarchBehaviorLV0>();

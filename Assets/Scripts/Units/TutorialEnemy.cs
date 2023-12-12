@@ -16,7 +16,7 @@ public class TutorialEnemy : Unit
         maxHP = 30;
         attackStat = 5;
         defenseStat = 0;
-        speedStat = 0;
+        //speedStat = 0;
         currentHP = maxHP;
         IsPlayerControlled = false;
         CombatTools.ModifyAction(this, "Awaken", 0, 100f);

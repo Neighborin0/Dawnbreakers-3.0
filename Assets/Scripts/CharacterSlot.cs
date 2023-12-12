@@ -21,7 +21,7 @@ public class CharacterSlot : MonoBehaviour
     {
         ATKtext.text = $"<sprite name=\"ATK\">:{unit.attackStat}";
         DEFtext.text = $"<sprite name=\"DEF\">:{unit.defenseStat}";
-        SPDtext.text = $"<sprite name=\"SPD\">:{unit.speedStat}";
+        //SPDtext.text = $"<sprite name=\"SPD\">:{unit.speedStat}";
         healthNumbers.text = $"{unit.currentHP} / {unit.maxHP}";
     }
 

@@ -440,5 +440,29 @@ public class Tools : MonoBehaviour
         return random;
     }
 
+    public static string ReturnDamageTypeSpriteName(DamageType damageType)
+    {
+        string stringToReturn = "";
+       switch(damageType)
+        {
+            case DamageType.STRIKE:
+                {
+                    stringToReturn = "STRIKE2";
+                }
+            break;
+                case DamageType.PIERCE:
+                {
+                    stringToReturn = "PIERCE2";
+                }
+           break;
+                default:
+                {
+                    stringToReturn = damageType.ToString();
+                }
+                break;
+        }     
+        return stringToReturn;
+    }
+
 
 }

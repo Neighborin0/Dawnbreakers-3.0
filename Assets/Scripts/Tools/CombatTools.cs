@@ -265,7 +265,7 @@ public class CombatTools : MonoBehaviour
 
     }
 
-    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, float ExtraDelay = 0, float intensityMultiplier = 10)
+    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f)
     {
         print("INTENSITY: " + intensityMultiplier);
         var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).SingleOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, Quaternion.identity);
@@ -301,7 +301,7 @@ public class CombatTools : MonoBehaviour
             }
 
             if (ApplyChromaticAbberation)
-                Director.Instance.StartCoroutine(CombatTools.ApplyAndReduceChromaticAbberation());
+                Director.Instance.StartCoroutine(CombatTools.ApplyAndReduceChromaticAbberation(ChromaticDelay));
 
             if (VFX.GetComponent<Animator>() != null && VFX.GetComponent<Animator>().GetBool("Done"))
             {
@@ -334,7 +334,20 @@ public class CombatTools : MonoBehaviour
 
     }
 
-    public static IEnumerator ApplyAndReduceChromaticAbberation()
+    public static IEnumerator StopAndDestroyVFX(float delay)
+    {
+        var statUpObject = GameObject.Find("StatUpVFX(Clone)");
+        if (statUpObject != null)
+        {
+            statUpObject.GetComponent<ParticleSystem>().Stop();
+            yield return new WaitForSeconds(delay);
+            Destroy(statUpObject);
+        }
+        else
+            yield break;
+        
+    }
+    public static IEnumerator ApplyAndReduceChromaticAbberation(float delay = 0.0001f)
     {
         if (BattleSystem.Instance.effectsSetting.sharedProfile.TryGet<ChromaticAberration>(out var CA))
         {
@@ -342,7 +355,7 @@ public class CombatTools : MonoBehaviour
             while (CA.intensity.value != 0)
             {
                 CA.intensity.value -= 0.04f;
-                yield return new WaitForSeconds(0.0001f);
+                yield return new WaitForSeconds(delay);
             }
 
         }

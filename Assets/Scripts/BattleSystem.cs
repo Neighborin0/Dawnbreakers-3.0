@@ -165,7 +165,7 @@ public class BattleSystem : MonoBehaviour
                     HP = playerUnits[i].maxHP,
                     ATK = playerUnits[i].attackStat,
                     DEF = playerUnits[i].defenseStat,
-                    SPD = playerUnits[i].speedStat,
+                    //SPD = playerUnits[i].speedStat,
                 };
                 statStorers.Add(ss);
             }
@@ -325,7 +325,7 @@ public class BattleSystem : MonoBehaviour
                         unit.attackStat = i.ATK;
                         unit.maxHP = i.HP;
                         unit.defenseStat = i.DEF;
-                        unit.speedStat = i.SPD;
+                        //unit.speedStat = i.SPD;
                     }
                 }
                 CombatTools.TurnOffCriticalUI(unit);
@@ -375,7 +375,7 @@ public class BattleSystem : MonoBehaviour
             print(action.targets.unitName);
         unit.intentUI.textMesh.text = action.ActionName;
         if (CombatTools.DetermineTrueActionValue(action) != 0)
-            unit.intentUI.damageNums.text = " <sprite name=\"ATK\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
+            unit.intentUI.damageNums.text = $"<sprite name=\"{action.damageType}\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
         unit.intentUI.action = action;
         unit.intentUI.costNums.text = CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
         if (unit.intentUI.action.actionType == Action.ActionType.STATUS)
@@ -492,7 +492,7 @@ public class BattleSystem : MonoBehaviour
                 number.outlineColor = Color.blue;
                 DoStatVFX(AmountToRaise, Color.blue, target);
                 break;
-            case Stat.SPD:
+            /*case Stat.SPD:
                 if (!multiplicative)
                 {
                     target.speedStat += (int)Math.Ceiling(AmountToRaise);
@@ -509,6 +509,7 @@ public class BattleSystem : MonoBehaviour
                 number.outlineColor = Color.yellow;
                 DoStatVFX(AmountToRaise, Color.yellow, target);
                 break;
+            */
             case Stat.HP:
                 if (!multiplicative)
                 {
@@ -641,7 +642,7 @@ public class BattleSystem : MonoBehaviour
             assignedAction.button.enabled = true;
             assignedAction.action = newAction;
             assignedAction.action.actionStyle = Action.ActionStyle.STANDARD;
-            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (CombatTools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
+            assignedAction.damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
             assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (newAction.duration).ToString();
             assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;

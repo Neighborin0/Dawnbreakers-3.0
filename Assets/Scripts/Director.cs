@@ -298,7 +298,7 @@ public class Director : MonoBehaviour
                         CT.DEFText.text = $"DEF: {unit.defenseStat}";
                         CT.ATKtext.text = $"ATK: {unit.attackStat}";
                         CT.HPtext.text = $"HP: {unit.maxHP}";
-                        CT.SPDText.text = $"SPD: {unit.speedStat}";
+                        //CT.SPDText.text = $"SPD: {unit.speedStat}";
                         CT.actionDisplay.gameObject.SetActive(true);
                         SetUpActionList(unit, CT);
                         CT.actionDisplay.gameObject.SetActive(false);
@@ -316,7 +316,7 @@ public class Director : MonoBehaviour
                         CT.DEFText.text = $"DEF: {unit.defenseStat}";
                         CT.ATKtext.text = $"ATK: {unit.attackStat}";
                         CT.HPtext.text = $"HP: {unit.maxHP}";
-                        CT.SPDText.text = $"SPD: {unit.speedStat}";
+                        //CT.SPDText.text = $"SPD: {unit.speedStat}";
                         CT.inventoryDisplay.gameObject.SetActive(true);
                         CT.actionDisplay.gameObject.SetActive(true);
 
@@ -358,7 +358,7 @@ public class Director : MonoBehaviour
             assignedAction.button.interactable = true;
             assignedAction.button.enabled = true;
             assignedAction.action = action;
-            assignedAction.damageNums.text = "<sprite name=\"ATK\">" + (CombatTools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
+            assignedAction.damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
             assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (action.duration).ToString();
             assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
@@ -448,7 +448,7 @@ public class Director : MonoBehaviour
             LabyrinthLVL += 1;
         }
         unit.attackStat += 1;
-        unit.speedStat += 1;
+        //unit.speedStat += 1;
         unit.defenseStat += 1;
         unit.maxHP += 2;
         unit.currentHP += 2;

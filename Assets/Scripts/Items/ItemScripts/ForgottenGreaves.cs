@@ -15,11 +15,11 @@ public class ForgottenGreaves : Item
     }
     public override void OnPickup(Unit unit)
     {
-        unit.speedStat += 3;
+        //unit.speedStat += 3;
     }
 
     public override void OnRemoved(Unit unit)
     {
-        unit.speedStat -= 3;
+        //unit.speedStat -= 3;
     }
 }
