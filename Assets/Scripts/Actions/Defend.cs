@@ -20,6 +20,7 @@ public class Defend : Action
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
         duration = 1;
+        CanBeStyled = false;
     }
 
     public override string GetDescription()

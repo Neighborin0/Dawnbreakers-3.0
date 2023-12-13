@@ -33,6 +33,7 @@ public abstract class Action : ScriptableObject
     public bool New = false;
     public int numberofUses;
     public bool limited = false;
+    public bool CanBeStyled = true;
 
     public int damage;
     public int lightDamage;
@@ -79,7 +80,6 @@ public abstract class Action : ScriptableObject
             damage = newAction.damage;
         }
         cost = newAction.cost;
-
     }
     public void OnActivated(){ Director.Instance.StartCoroutine(ExecuteAction()); }
     public virtual IEnumerator ExecuteAction() { yield break; }

@@ -12,6 +12,7 @@ using System.Diagnostics.Contracts;
 using UnityEngine.Rendering.PostProcessing;
 using static System.Collections.Specialized.BitVector32;
 
+
 public class BattleLog : MonoBehaviour
 {
     public static BattleLog Instance { get; private set; }
@@ -261,12 +262,13 @@ public class BattleLog : MonoBehaviour
     {
         itemText.gameObject.SetActive(false);
     }
-
-    //Used for Clearing all text and creating new ambient text
+    ///<summary>
+    ///Used for Clearing all text and creating new ambient text
+    ///</summary>
     public void ResetBattleLog()
     {
         DisableCharacterStats();
-        SetRandomAmbientTextActive();
+        ambientText.gameObject.SetActive(false);
         CreateRandomAmbientText();
         ClearBattleText();
         foreach (var z in Tools.GetAllUnits())

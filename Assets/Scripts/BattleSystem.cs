@@ -576,16 +576,16 @@ public class BattleSystem : MonoBehaviour
                     {
                         CombatTools.ReturnPipCounter().AddPip();
                         actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
+                        actionContainer.SetActive(false);
                     }
                 }
             }
                 
-
             foreach (var skill in unit.skillUIs)
             {
                 unit.skillUIs[i].SetActive(false);
                 var actionContainer = unit.skillUIs[i].GetComponent<ActionContainer>();
-                actionContainer.targetting = false;              
+              
                 actionContainer.action.ResetAction();
                 if(!unit.IsPlayerControlled)
                 {
@@ -593,14 +593,8 @@ public class BattleSystem : MonoBehaviour
                 }
                 i++;
             }
-
-            foreach (var z in Tools.GetAllUnits())
-            {
-                z.IsHighlighted = false;
-                z.isDarkened = false;
-            }
         }
-
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.05f));
     }
 
 

@@ -18,9 +18,6 @@ public class ActionTypeButton : Button
     public float heavyCostModifier = 20;
     public float lightCostModifier = -20;
 
-    public IEnumerator styleIEnumerator;
-
-
     public ActionContainer actionContainerParent;
 
     public void ModifyAction()
@@ -37,7 +34,7 @@ public class ActionTypeButton : Button
                     newAction.actionStyle = Action.ActionStyle.LIGHT;
                     actionContainerParent.action = newAction;
                     actionContainerParent.UpdateOnStyleSwitch();
-                    Tools.StartAndCheckCoroutine(styleIEnumerator, CombatTools.TurnOffDirectionalLight(0.01f));
+                    actionContainerParent.SetStyleLight(false);
 
                     var target = actionContainerParent.baseUnit;
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
@@ -56,7 +53,7 @@ public class ActionTypeButton : Button
                     newAction.actionStyle = Action.ActionStyle.HEAVY;
                     actionContainerParent.action = newAction;
                     actionContainerParent.UpdateOnStyleSwitch();
-                    Tools.StartAndCheckCoroutine(styleIEnumerator, CombatTools.TurnOffDirectionalLight(0.01f));
+                    actionContainerParent.SetStyleLight(false);
 
                     var target = actionContainerParent.baseUnit;
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
@@ -76,8 +73,7 @@ public class ActionTypeButton : Button
                     action.actionStyle = Action.ActionStyle.STANDARD;
                     CombatTools.ReturnPipCounter().AddPip();
                     actionContainerParent.UpdateOnStyleSwitch();
-
-                    Tools.StartAndCheckCoroutine(styleIEnumerator, CombatTools.TurnOnDirectionalLight(0.01f));
+                    actionContainerParent.SetStyleLight(true);
 
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
                     actionContainerParent.baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);

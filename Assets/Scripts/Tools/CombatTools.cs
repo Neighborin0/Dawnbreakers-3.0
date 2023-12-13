@@ -347,6 +347,8 @@ public class CombatTools : MonoBehaviour
             yield break;
         
     }
+
+
     public static IEnumerator ApplyAndReduceChromaticAbberation(float delay = 0.0001f)
     {
         if (BattleSystem.Instance.effectsSetting.sharedProfile.TryGet<ChromaticAberration>(out var CA))
@@ -372,7 +374,7 @@ public class CombatTools : MonoBehaviour
     }
 
     public static IEnumerator TurnOffDirectionalLight(float delay = 0.0001f)
-    {
+    {      
         if (BattleSystem.Instance.mainLight != null)
         {
             while (BattleSystem.Instance.mainLight.intensity != 0)
@@ -383,17 +385,16 @@ public class CombatTools : MonoBehaviour
 
         }
     }
-
     public static IEnumerator TurnOnDirectionalLight(float delay = 0.0001f)
     {
         if (BattleSystem.Instance.mainLight != null)
         {
-            while (BattleSystem.Instance.mainLight.intensity <= BattleSystem.Instance.mainLightValue)
+            while (BattleSystem.Instance.mainLight.intensity < BattleSystem.Instance.mainLightValue)
             {
                 BattleSystem.Instance.mainLight.intensity += 0.01f;
-                yield return new WaitForSeconds(0.0001f);
+                yield return new WaitForSeconds(delay);
             }
-
+           
         }
     }
 

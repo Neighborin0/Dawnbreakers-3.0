@@ -55,59 +55,54 @@ public class ActionContainer : MonoBehaviour
     {
         var hit = Tools.GetMousePos();
 
-        if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null && hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK && hit.collider.gameObject.GetComponent<Unit>().IsHighlighted && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
-        {
-            var unit = hit.collider.gameObject.GetComponent<Unit>();
-            unit.timelinechild.Shift(unit);
-            damageNums.text = (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat > 0 ?
-                $"<sprite name=\"{action.damageType}\">" +
-                ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat).ToString()
-                : $"<sprite name=\"{action.damageType}\">" + "0";
-
-            if ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat > (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) || CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1)
-            {
-                damageNums.color = Color.red;
-            }
-            else if ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat < (int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) || CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1)
-            {
-                damageNums.color = Color.green;
-            }
-        }
-        else if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
-        {
-            damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
-            damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
-        }
-
-        costNums.text = CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier}%" : $"100%";
-
         if (targetting && BattleSystem.Instance.state != BattleStates.WON)
         {
+            //Checks if mouse is actually hovering over something
+            if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null && hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK && hit.collider.gameObject.GetComponent<Unit>().IsHighlighted && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
+            {
+                var unit = hit.collider.gameObject.GetComponent<Unit>();
+                unit.timelinechild.Shift(unit);
 
+                //If the user's attack is greater than zero, then string return is the true damage, otherwise the string is zero.
+
+                damageNums.text = (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat > 0 ?
+                    $"<sprite name=\"{action.damageType}\">" +
+                    ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat).ToString()
+                    : $"<sprite name=\"{action.damageType}\">" + "0";
+
+                //If the true damage is being reduced, then the text will turn red. The text also turns red when a resisted move appears
+
+                if ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat > (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) || CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1)
+                {
+                    damageNums.color = Color.red;
+                }
+
+                //If the true damage is being increased, then the text will turn green. The text also turns red when a effective move appears
+
+                else if ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat < (int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) || CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1)
+                {
+                    damageNums.color = Color.green;
+                }
+            }
+            else if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
+            {
+                damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
+                damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
+            }
+
+            costNums.text = CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier}%" : $"100%";
+
+            //Action Cancel
             if (Input.GetMouseButtonUp(1))
             {
                 LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), Vector3.zero);
-                RemoveDescription();
-                foreach (var z in Tools.GetAllUnits())
-                {
-                    z.isDarkened = false;
-                    z.IsHighlighted = false;
-                }
-                ResetAll();
-                SetActive();
-                if (TL != null)
-                {
-                    Director.Instance.timeline.children.Remove(TL);
-                    Destroy(TL.gameObject);
-                }
-                Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
+                SetActive(false);
             }
 
             switch (action.actionStyle)
             {
                 case Action.ActionStyle.STANDARD:
                     {
-
                         this.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
                         this.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
                     }
@@ -129,14 +124,13 @@ public class ActionContainer : MonoBehaviour
                     }
                     break;
             }
+
             switch (action.targetType)
             {
                 case Action.TargetType.ENEMY:
 
                     foreach (var unit in Tools.GetAllUnits())
                     {
-                        if (targetting)
-                        {
                             if (!unit.IsPlayerControlled)
                             {
                                 unit.IsHighlighted = true;
@@ -145,49 +139,26 @@ public class ActionContainer : MonoBehaviour
                             {
                                 unit.isDarkened = true;
                             }
-                        }
 
                     }
                     if (Input.GetMouseButtonUp(0))
                     {
-
                         if (hit.collider != null && hit.collider.gameObject != null && hit.collider != baseUnit.gameObject.GetComponent<BoxCollider>() && hit.collider.gameObject.GetComponent<Unit>() != null && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
                         {
                             baseUnit.state = PlayerState.READY;
                             var unit = hit.collider.GetComponent<Unit>();
-                            RemoveDescription();
-                            foreach (var z in Tools.GetAllUnits())
-                            {
-                                z.IsHighlighted = false;
-                                z.isDarkened = false;
-                            }
-                            Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
-
-                            Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
-                            var Light = baseUnit.GetComponentInChildren<Light>();
-                            baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
-
+                           
                             action.targets = unit;
                             action.unit = baseUnit;
-
 
                             baseUnit.Queue(action);
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
-                            this.targetting = false;
-                            LabCamera.Instance.ResetPosition();
+                            Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                             BattleLog.Instance.ResetBattleLog();
                             LabCamera.Instance.ResetPosition();
-                            // actionStyle = ActionStyle.STANDARD;
-                            SetActive();
-                            if (TL != null)
-                            {
-                                Director.Instance.timeline.children.Remove(TL);
-                                Destroy(TL.gameObject);
-                            }
+                            SetActive(false);  
                         }
-
-
                     }
                     break;
                 case Action.TargetType.SELF:
@@ -211,27 +182,12 @@ public class ActionContainer : MonoBehaviour
                             action.targets = baseUnit;
                             action.unit = baseUnit;
                             baseUnit.Queue(action);
-                            SetActive();
+                            SetActive(false);
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
-                            RemoveDescription();
                             LabCamera.Instance.ResetPosition();
-                            if (TL != null)
-                            {
-                                Director.Instance.timeline.children.Remove(TL);
-                                Destroy(TL.gameObject);
-                            }
-                            foreach (var unit in Tools.GetAllUnits())
-                            {
-                                unit.IsHighlighted = false;
-                                unit.isDarkened = false;
-                            }
-                            Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
-
-                            Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
-                            var Light = baseUnit.GetComponentInChildren<Light>();
-                            baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
-                            //actionStyle = ActionStyle.STANDARD;
+                            BattleLog.Instance.ResetBattleLog();
+                            Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit()); 
                         }
                     }
                     break;
@@ -249,7 +205,6 @@ public class ActionContainer : MonoBehaviour
                                 unit.IsHighlighted = true;
                             }
                         }
-
                     }
                     if (Input.GetMouseButtonUp(0))
                     {
@@ -259,32 +214,15 @@ public class ActionContainer : MonoBehaviour
                             BattleLog.Instance.ResetBattleLog();
                             this.targetting = false;
                             var unit = hit.collider.GetComponent<Unit>();
-                            foreach (var z in Tools.GetAllUnits())
-                            {
-                                z.IsHighlighted = false;
-                                z.isDarkened = false;
-                            }
                             action.targets = unit;
                             action.unit = baseUnit;
                             baseUnit.Queue(action);
-                            LabCamera.Instance.ResetPosition();
-                            RemoveDescription();
+
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
-
-                            Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
-                            var Light = baseUnit.GetComponentInChildren<Light>();
-                            baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
-                            //actionStyle = ActionStyle.STANDARD;
-                            SetActive();
+                            SetActive(false);
                             LabCamera.Instance.ResetPosition();
-                            if (TL != null)
-                            {
-                                Director.Instance.timeline.children.Remove(TL);
-                                Destroy(TL.gameObject);
-                            }
-
                         }
                     }
                     break;
@@ -294,6 +232,9 @@ public class ActionContainer : MonoBehaviour
         {
             if (damageNums != null)
                 damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
+
+            this.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
+            this.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
         }
 
     }
@@ -309,6 +250,28 @@ public class ActionContainer : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public IEnumerator lightCoroutine;
+    public void SetStyleLight(bool TurnOn)
+    {
+        if(TurnOn)
+        {
+            if (lightCoroutine != null)
+                StopCoroutine(lightCoroutine);
+
+            lightCoroutine = CombatTools.TurnOnDirectionalLight(0.01f);
+            StartCoroutine(lightCoroutine);
+
+        }  
+        else
+        {
+            if (lightCoroutine != null)
+                StopCoroutine(lightCoroutine);
+
+            lightCoroutine = CombatTools.TurnOffDirectionalLight(0.01f);
+            StartCoroutine(lightCoroutine);
+        }   
     }
     public void SetDescription()
     {
@@ -330,12 +293,18 @@ public class ActionContainer : MonoBehaviour
             currentEffectPopup.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x - 400, rectTrans.anchoredPosition.y -210, 0);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             //Description for Battle
+            EPtext.text = $"{action.GetDescription()}";
+
             if (limited)
             {
-                EPtext.text = $"{action.GetDescription()}\nUses: {numberofUses}.";
+                EPtext.text += $"\nUses: {numberofUses}.";
             }
-            else
-                EPtext.text = $"{action.GetDescription()}";
+            if(!action.CanBeStyled)
+            {
+                EPtext.text += "<color=#FF0000>\nCan't be styled.</color>";
+            }
+
+
 
             Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
         }
@@ -351,21 +320,13 @@ public class ActionContainer : MonoBehaviour
     }
 
 
-    public void ResetAll(bool turnOn = false)
+    public void ResetAllStyleButtons( bool turnOn = false)
     {
         action.actionStyle = Action.ActionStyle.STANDARD;
-        action.ResetAction();
-       if(lightButton.styleIEnumerator != null)
-            StopCoroutine(lightButton.styleIEnumerator);
-        if (heavyButton.styleIEnumerator != null)
-            StopCoroutine(heavyButton.styleIEnumerator);
+        //action.ResetAction();
 
         var Light = baseUnit.GetComponentInChildren<Light>();
         baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.04f, 0.001f);
-        if (heavyButton.state == ActionTypeButton.ActionButtonState.DEFAULT || lightButton.state == ActionTypeButton.ActionButtonState.DEFAULT)
-        {
-            CombatTools.ReturnPipCounter().AddPip();
-        }
         lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
         heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;      
         SetActionStyleButtonsActive(turnOn);
@@ -386,8 +347,11 @@ public class ActionContainer : MonoBehaviour
     {
         if (Director.Instance.UnlockedPipSystem)
         {
-            lightButton.gameObject.SetActive(SetActive);
-            heavyButton.gameObject.SetActive(SetActive);
+            if (action.CanBeStyled)
+            {
+                lightButton.gameObject.SetActive(SetActive);
+                heavyButton.gameObject.SetActive(SetActive);
+            }
             Director.Instance.StartCoroutine(CombatTools.StopAndDestroyVFX(0.01f));
             lightButton.interactable = true;
             heavyButton.interactable = true;
@@ -398,21 +362,34 @@ public class ActionContainer : MonoBehaviour
             heavyButton.gameObject.SetActive(false);
         }
     }
-    public void SetActive()
+    public void SetActive(bool TurnOn)
     {
         if (Director.Instance.timeline.gameObject.activeSelf)
         {
             damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
             if (BattleSystem.Instance != null)
             {
-                if (targetting == true)
+                //Turns Off
+                if (targetting == true || !TurnOn)
                 {
                     targetting = false;
                     SetActionStyleButtonsActive(false);
-                    //BattleLog.Instance.DoBattleText("");
-                    print("not targetting");
+                    var Light = baseUnit.GetComponentInChildren<Light>();
+                    baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
                     LabCamera.Instance.ResetPosition();
+                    RemoveDescription();
+                    ResetAllStyleButtons();
+                    SetStyleLight(true);
+
+                     if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
+                    {
+                        damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
+                        damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
+                    }
+                    costNums.text = CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier}%" : $"100%";
+
                     var button = GetComponent<Button>();
+
                     if (!Disabled)
                     {
                         if (limited)
@@ -429,15 +406,21 @@ public class ActionContainer : MonoBehaviour
                         else
                             button.interactable = true;
                     }
+                   
                     foreach (var z in Tools.GetAllUnits())
                     {
                         z.IsHighlighted = false;
                         z.isDarkened = false;
                     }
-                    ResetAll();
-                    Debug.LogWarning("this is being ran");
+                 
+                    if (TL != null)
+                    {
+                        Director.Instance.timeline.children.Remove(TL);
+                        Destroy(TL.gameObject);
+                    }
 
                 }
+                //Turn On
                 else
                 {
                     SetActionStyleButtonsActive(false);
@@ -446,8 +429,7 @@ public class ActionContainer : MonoBehaviour
                     {
                         if (x != this)
                         {
-                            x.action.ResetAction();
-                            x.ResetAll();
+                            x.SetActive(false);
                             var button = x.GetComponent<Button>();
                             if (!x.Disabled)
                             {
@@ -465,13 +447,6 @@ public class ActionContainer : MonoBehaviour
                                 else
                                     button.interactable = true;
                             }
-                            x.targetting = false;
-                            foreach (var z in Tools.GetAllUnits())
-                            {
-                                z.IsHighlighted = false;
-                                z.isDarkened = false;
-                            }
-
                         }
 
                     }

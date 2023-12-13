@@ -20,6 +20,10 @@ public class Guard : Action
         lightCost = 0;
         heavyCost = 40f;
 
+        statAmount = 5;
+        lightStatAmount = 3;
+        heavyStatAmount = 7; 
+
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.ALLY;
@@ -28,7 +32,7 @@ public class Guard : Action
 
     public override string GetDescription()
     {
-        description = $"Applies +{unit.defenseStat} <sprite name=\"FORTIFY\"> for {duration} round.";
+        description = $"Applies +{CombatTools.DetermineTrueActionValue(this) + unit.defenseStat} <sprite name=\"FORTIFY\"> for {duration} round.";
         return description;
     }
     public override IEnumerator ExecuteAction()
