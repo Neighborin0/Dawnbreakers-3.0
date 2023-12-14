@@ -83,9 +83,9 @@ public class TimeLineChild : MonoBehaviour
                 UnitIsHighlighted = true;
                 HighlightedIsBeingOverwritten = true;
                 if(unit.IsPlayerControlled && BattleSystem.Instance.state != BattleStates.DECISION_PHASE)
-                    BattleLog.Instance.DisplayCharacterStats(unit, true);
+                    BattleLog.Instance.DisplayCharacterStats(unit);
                 else if(!unit.IsPlayerControlled)
-                    BattleLog.Instance.DisplayCharacterStats(unit, true);
+                    BattleLog.Instance.DisplayCharacterStats(unit);
 
                 transform.SetAsLastSibling();
                 Shift(unit);

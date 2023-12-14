@@ -131,14 +131,14 @@ public class ActionContainer : MonoBehaviour
 
                     foreach (var unit in Tools.GetAllUnits())
                     {
-                            if (!unit.IsPlayerControlled)
-                            {
-                                unit.IsHighlighted = true;
-                            }
-                            else
-                            {
-                                unit.isDarkened = true;
-                            }
+                        if (!unit.IsPlayerControlled)
+                        {
+                            unit.IsHighlighted = true;
+                        }
+                        else
+                        {
+                            unit.isDarkened = true;
+                        }
 
                     }
                     if (Input.GetMouseButtonUp(0))
@@ -147,7 +147,7 @@ public class ActionContainer : MonoBehaviour
                         {
                             baseUnit.state = PlayerState.READY;
                             var unit = hit.collider.GetComponent<Unit>();
-                           
+
                             action.targets = unit;
                             action.unit = baseUnit;
 
@@ -157,7 +157,7 @@ public class ActionContainer : MonoBehaviour
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                             BattleLog.Instance.ResetBattleLog();
                             LabCamera.Instance.ResetPosition();
-                            SetActive(false);  
+                            SetActive(false);
                         }
                     }
                     break;
@@ -187,7 +187,7 @@ public class ActionContainer : MonoBehaviour
                             Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             LabCamera.Instance.ResetPosition();
                             BattleLog.Instance.ResetBattleLog();
-                            Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit()); 
+                            Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                         }
                     }
                     break;
@@ -255,7 +255,7 @@ public class ActionContainer : MonoBehaviour
     public IEnumerator lightCoroutine;
     public void SetStyleLight(bool TurnOn)
     {
-        if(TurnOn)
+        if (TurnOn)
         {
             if (lightCoroutine != null)
                 StopCoroutine(lightCoroutine);
@@ -263,7 +263,7 @@ public class ActionContainer : MonoBehaviour
             lightCoroutine = CombatTools.TurnOnDirectionalLight(0.01f);
             StartCoroutine(lightCoroutine);
 
-        }  
+        }
         else
         {
             if (lightCoroutine != null)
@@ -271,7 +271,7 @@ public class ActionContainer : MonoBehaviour
 
             lightCoroutine = CombatTools.TurnOffDirectionalLight(0.01f);
             StartCoroutine(lightCoroutine);
-        }   
+        }
     }
     public void SetDescription()
     {
@@ -289,8 +289,9 @@ public class ActionContainer : MonoBehaviour
             {
                 currentEffectPopup.SetActive(true);
             }
-            var rectTrans = transform.GetComponent<RectTransform>(); 
-            currentEffectPopup.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x - 400, rectTrans.anchoredPosition.y -210, 0);
+
+            var rectTrans = transform.GetComponent<RectTransform>();
+
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             //Description for Battle
             EPtext.text = $"{action.GetDescription()}";
@@ -299,12 +300,20 @@ public class ActionContainer : MonoBehaviour
             {
                 EPtext.text += $"\nUses: {numberofUses}.";
             }
-            if(!action.CanBeStyled)
+            if (!action.CanBeStyled)
             {
                 EPtext.text += "<color=#FF0000>\nCan't be styled.</color>";
             }
 
-
+            if (BattleSystem.Instance != null)
+            {
+                currentEffectPopup.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x - 400, rectTrans.anchoredPosition.y - 210, 0);
+            }
+            else
+            {
+                var rect = transform.GetComponent<RectTransform>().anchoredPosition3D;
+                currentEffectPopup.transform.GetComponent<RectTransform>().localPosition = new Vector3(rect.x * 5, rect.y -330);
+            }
 
             Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
         }
@@ -320,15 +329,18 @@ public class ActionContainer : MonoBehaviour
     }
 
 
-    public void ResetAllStyleButtons( bool turnOn = false)
+    public void ResetAllStyleButtons(bool turnOn = false)
     {
+        if (action.actionStyle != Action.ActionStyle.STANDARD && baseUnit.state == PlayerState.DECIDING)
+        {
+            CombatTools.ReturnPipCounter().AddPip();
+        }
         action.actionStyle = Action.ActionStyle.STANDARD;
         //action.ResetAction();
-
         var Light = baseUnit.GetComponentInChildren<Light>();
         baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.04f, 0.001f);
         lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
-        heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;      
+        heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
         SetActionStyleButtonsActive(turnOn);
 
     }
@@ -380,8 +392,7 @@ public class ActionContainer : MonoBehaviour
                     RemoveDescription();
                     ResetAllStyleButtons();
                     SetStyleLight(true);
-
-                     if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
+                    if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
                     {
                         damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
                         damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
@@ -406,13 +417,13 @@ public class ActionContainer : MonoBehaviour
                         else
                             button.interactable = true;
                     }
-                   
+
                     foreach (var z in Tools.GetAllUnits())
                     {
                         z.IsHighlighted = false;
                         z.isDarkened = false;
                     }
-                 
+
                     if (TL != null)
                     {
                         Director.Instance.timeline.children.Remove(TL);

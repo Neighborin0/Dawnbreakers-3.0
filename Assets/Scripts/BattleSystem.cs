@@ -132,11 +132,6 @@ public class BattleSystem : MonoBehaviour
             }
         }
         
-        if (Input.GetKeyDown(KeyCode.U) && Director.Instance.DevMode)
-        {
-            playerUnits[UnityEngine.Random.Range(0, playerUnits.Count - 1)].health.TakeDamage(99999, null, DamageType.NULL ,true);
-        }
-
     }
 
     public BattleStates state;
@@ -561,37 +556,38 @@ public class BattleSystem : MonoBehaviour
 
     public static void SetUIOff(Unit unit)
     {
-        int i = 0;
         if (unit.skillUIs != null && unit.IsPlayerControlled)
         {
             if (unit.state == PlayerState.DECIDING)
             {
-                unit.state = PlayerState.IDLE;
+                unit.state = PlayerState.IDLE;               
                 Director.Instance.timeline.RemoveTimelineChild(unit);
-
+                
                 foreach (var skill in unit.skillUIs)
                 {
-                    var actionContainer = unit.skillUIs[i].GetComponent<ActionContainer>();
-                    if (actionContainer.action.actionStyle != Action.ActionStyle.STANDARD)
+                    var actionContainer = skill.GetComponent<ActionContainer>();
+                    if (actionContainer.action.actionStyle != Action.ActionStyle.STANDARD && actionContainer.targetting)
                     {
                         CombatTools.ReturnPipCounter().AddPip();
                         actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
-                        actionContainer.SetActive(false);
                     }
+                    actionContainer.SetActive(false);
                 }
             }
                 
             foreach (var skill in unit.skillUIs)
             {
-                unit.skillUIs[i].SetActive(false);
-                var actionContainer = unit.skillUIs[i].GetComponent<ActionContainer>();
+                skill.SetActive(false);
+                var actionContainer = skill.GetComponent<ActionContainer>();
               
                 actionContainer.action.ResetAction();
                 if(!unit.IsPlayerControlled)
                 {
-                    unit.actionList[i].ResetAction();
+                    foreach (var action in unit.actionList)
+                    {
+                        action.ResetAction();
+                    }
                 }
-                i++;
             }
         }
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.05f));
@@ -611,8 +607,7 @@ public class BattleSystem : MonoBehaviour
         {
             unit.state = PlayerState.DECIDING;
             LabCamera.Instance.MoveToUnit(unit, Vector3.zero);
-            BattleLog.Instance.DisplayCharacterStats(unit, true);
-            BattleLog.Instance.inventoryDisplay.gameObject.SetActive(false);
+            BattleLog.Instance.DisplayCharacterStats(unit);
             unit.skillUIs[i].SetActive(true);
             var assignedAction = unit.skillUIs[i].GetComponent<ActionContainer>();
             assignedAction.targetting = false;
@@ -741,7 +736,13 @@ public class BattleSystem : MonoBehaviour
                         }
                         action.unit.state = PlayerState.IDLE;
                         action.OnActivated();
-                        Director.Instance.timeline.RemoveTimelineChild(action.unit);
+
+                        var TL = Director.Instance.timeline.ReturnTimelineChild(action.unit);
+                        TL.CanClear = true;
+                        TL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.5f);
+                        TL.portrait.color = new Color(1, 1, 1, 0.5f);
+
+
                         if (action.limited)
                         {
                             foreach (var act in action.unit.skillUIs)
@@ -753,11 +754,12 @@ public class BattleSystem : MonoBehaviour
                             }
                         }
                         yield return new WaitUntil(() => action.Done);
+                        yield return new WaitForSeconds(0.4f);
                         ActionsToPerform.Remove(action);
                         ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ToList();
                         ActionsToPerform.Reverse();
                         action.ResetAction();
-                        yield return new WaitForSeconds(1.4f);
+                        yield return new WaitForSeconds(1f);
                         foreach (var x in Tools.GetAllUnits())
                         {
                             x.DoActionEnded();

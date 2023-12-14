@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.AI;
+using static System.Collections.Specialized.BitVector32;
 
 
 public class ItemText : MonoBehaviour
@@ -13,6 +14,7 @@ public class ItemText : MonoBehaviour
     public TextMeshProUGUI textMesh;
     public bool isSelected = false;
     public Unit unit;
+    private GameObject currentEffectPopup;
 
 
     private void Start()
@@ -26,8 +28,21 @@ public class ItemText : MonoBehaviour
     {
         if (BattleSystem.Instance != null)
         {
-            BattleLog.Instance.itemText.text = "";
-            BattleLog.Instance.itemText.text = item.itemDescription;
+            if (currentEffectPopup == null)
+            {
+                var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
+                EP.transform.localScale = new Vector3(1.5f, 1.5f, -25f);
+                currentEffectPopup = EP;
+            }
+            else
+            {
+                currentEffectPopup.SetActive(true);
+            }
+            var rect = transform.GetComponent<RectTransform>().anchoredPosition3D;
+            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x, rect.y - 230);
+            var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
+            EPtext.text = $"{item.itemDescription}";
+            StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
         }
         else
         {
@@ -35,18 +50,34 @@ public class ItemText : MonoBehaviour
             {
                 itemText.isSelected = false;
             }
-            BattleLog.Instance.ambientText.gameObject.SetActive(true);
-            BattleLog.Instance.ambientText.text = "";
-            BattleLog.Instance.ambientText.text = $"{item.itemName}\n{item.itemDescription}";
-            if(!item.CanBeTransfered)
+            if (currentEffectPopup == null)
             {
-                BattleLog.Instance.ambientText.text += "\n<color=#FF0000>Can't be transferred.</color>";
+                var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
+                EP.transform.localScale = new Vector3(1.5f, 1.5f, -25f);
+                currentEffectPopup = EP;
             }
-            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+            else
+            {
+                currentEffectPopup.SetActive(true);
+            }
+            var rect = transform.GetComponent<RectTransform>().anchoredPosition3D;
+            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x, rect.y - 230);
+            var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
+            EPtext.text = $"{item.itemDescription}";
+            StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
+            if (!item.CanBeTransfered)
+            {
+                EPtext.text += "\n<color=#FF0000>Can't be transferred.</color>";
+            }
             isSelected = true;
         }
     }
 
+    public void RemoveDescription()
+    {
+        if (currentEffectPopup != null)
+            currentEffectPopup.SetActive(false);
+    }
 
 
 

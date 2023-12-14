@@ -172,12 +172,12 @@ public class Unit : MonoBehaviour
                 {
                     if (!this.IsPlayerControlled)
                     {
-                        BattleLog.Instance.DisplayCharacterStats(this, true);
+                        BattleLog.Instance.DisplayCharacterStats(this);
                     }
                 }
                 if (BattleSystem.Instance.state == BattleStates.IDLE)
                 {
-                    BattleLog.Instance.DisplayCharacterStats(this, true);
+                    BattleLog.Instance.DisplayCharacterStats(this);
                 }
                 if (BattleSystem.Instance.CheckPlayableState())
                 {
@@ -205,7 +205,7 @@ public class Unit : MonoBehaviour
                     if (!CombatTools.CheckIfAnyUnitIsTargetting())
                     {
                         BattleLog.Instance.itemText.text = "";
-                        BattleLog.Instance.DisplayCharacterStats(this, true);
+                        BattleLog.Instance.DisplayCharacterStats(this);
                         if (this.IsPlayerControlled)
                         {
                             foreach (var x in Tools.GetAllUnits())
@@ -224,9 +224,18 @@ public class Unit : MonoBehaviour
                     if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && this.IsPlayerControlled)
                     {
                         StopMovingToUnit = false;
-                        BattleLog.Instance.DisplayCharacterStats(this, true);
+                        BattleLog.Instance.DisplayCharacterStats(this);
                         if(state == PlayerState.READY)
                         {
+                            foreach (var skill in skillUIs)
+                            {
+                                var actionContainer = skill.GetComponent<ActionContainer>();
+                                if (actionContainer.action.actionStyle != Action.ActionStyle.STANDARD)
+                                {
+                                    CombatTools.ReturnPipCounter().AddPip();
+                                    actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
+                                }
+                            }
                             Director.Instance.timeline.RemoveTimelineChild(this);
                         }
                         StartDecision();

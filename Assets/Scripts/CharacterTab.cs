@@ -75,6 +75,10 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             }
             levelupDisplay.SetActive(true);
         }
+        else
+        {
+            DisplaySwitcher.image.sprite = itemIcon;
+        }
         if (OptionsManager.Instance != null)
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         Tools.ToggleUiBlocker(false, true);
@@ -212,7 +216,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
      public void SwitchDetailedStates()
     {
 
-        if (!levelupDisplay)
+        if (BattleSystem.Instance == null)
         {
             if (inventoryDisplay.isActiveAndEnabled)
             {

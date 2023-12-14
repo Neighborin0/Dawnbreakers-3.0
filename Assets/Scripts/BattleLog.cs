@@ -25,6 +25,7 @@ public class BattleLog : MonoBehaviour
     public TextMeshProUGUI enemySTATtext;
     public TextMeshProUGUI characterName;
     public TextMeshProUGUI enemyIntent;
+    public GameObject LineText;
 
 
     //character dialog
@@ -120,7 +121,7 @@ public class BattleLog : MonoBehaviour
         StartCoroutine(TypeText(text, 0.03f, ambientText, false));
     }
 
-    public void DisplayPlayerStats(Unit unit, bool TurnOffItemDisplay = false)
+    public void DisplayPlayerStats(Unit unit)
     {
         var battlelog = GameObject.FindObjectOfType<BattleLog>();
         battlelog.ambientText.gameObject.SetActive(false);
@@ -165,24 +166,29 @@ public class BattleLog : MonoBehaviour
         Tools.SetTextColorAlphaToZero(battlelog.itemText);
         StartCoroutine(Tools.FadeText(battlelog.itemText, 0.005f, true, false));
         battlelog.characterName.text = (unit.unitName);
+        battlelog.LineText.SetActive(true);
 
-        if(TurnOffItemDisplay)
+        /*if(TurnOffItemDisplay)
         {
             battlelog.inventoryDisplay.gameObject.SetActive(false);
         }
+        */
         foreach (var item in unit.inventory)
         {
             var x = Instantiate(battlelog.itemImage);  
             x.image.sprite = item.sprite;
             x.GetComponent<ItemText>().item = item;
-            x.transform.SetParent(battlelog.inventoryDisplay.transform);
+            var rect = x.transform.GetComponent<RectTransform>().anchoredPosition3D;
+            x.transform.GetComponent<RectTransform>().SetParent(battlelog.inventoryDisplay.transform.GetComponent<RectTransform>());
+            x.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(rect.x, rect.y, rect.z);
+            x.transform.rotation = Quaternion.identity;
         }
     }
-    public void DisplayCharacterStats(Unit unit, bool TurnOffItemDisplay = false)
+    public void DisplayCharacterStats(Unit unit)
     {
         if (unit.IsPlayerControlled)
         {
-            DisplayPlayerStats(unit, TurnOffItemDisplay);
+            DisplayPlayerStats(unit);
         }
         else
         {
@@ -240,6 +246,7 @@ public class BattleLog : MonoBehaviour
         Portraitparent.gameObject.SetActive(false);
         characterName.gameObject.SetActive(false);
         enemyPortraitparent.gameObject.SetActive(false);
+        LineText.gameObject.SetActive(false);   
 
         itemText.gameObject.SetActive(false);
         itemText.text = "";

@@ -64,7 +64,7 @@ public class Sweep : Action
             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), 1f));
         }
         LabCamera.Instance.Shake(0.2f, 1f);
-        targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat + AdditionalDMG) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType,false);
+        targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat + AdditionalDMG) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType,actionStyle, false);
         yield return new WaitForSeconds(0.5f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
