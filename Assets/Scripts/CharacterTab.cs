@@ -20,18 +20,18 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     public int skillPoints = 1;
     public TextMeshProUGUI skillPointText;
 
-    public TextMeshProUGUI skillHPText;
+    public TextMeshProUGUI skillWEAKText;
     public TextMeshProUGUI skillATKText;
     public TextMeshProUGUI skillDEFText;
-    public TextMeshProUGUI skillSPDText;
+    public TextMeshProUGUI skillRESText;
 
     //detailed display
     public GameObject detailedDisplay;
     public GameObject statText;
-    public TextMeshProUGUI HPtext;
+    public TextMeshProUGUI REStext;
     public TextMeshProUGUI ATKtext;
     public TextMeshProUGUI DEFText;
-    public TextMeshProUGUI SPDText;
+    public TextMeshProUGUI WEAKText;
     public Button DisplaySwitcher;
     public GameObject detailedAction;
     public GridLayoutGroup detailedstatDisplay;
@@ -43,6 +43,10 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     public Sprite LevelUpIcon;
     public Sprite itemIcon;
     public CharacterTabPopup popup;
+
+    public List<string> resistanceText;
+    public List<string> weaknessText;
+
 
     public event Action<CharacterTab> OnInteracted;
 
@@ -82,10 +86,23 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         if (OptionsManager.Instance != null)
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         Tools.ToggleUiBlocker(false, true);
-        skillHPText.text = $"HP:{unit.maxHP}";
+
+       
+        for (int i = 0; i < unit.resistances.Length; i++)
+        {
+            string stringToAdd = $"<sprite name=\"{unit.resistances[i]}\">";
+            resistanceText.Add(stringToAdd);
+        }
+        for (int i = 0; i < unit.weaknesses.Length; i++)
+        {
+            string stringToAdd = $"<sprite name=\"{unit.weaknesses[i]}\">";
+            weaknessText.Add(stringToAdd);
+        }
+
+        skillRESText.text = $"RES:  {string.Join("", resistanceText.ToArray())}";
         skillATKText.text = $"ATK:{unit.attackStat}";
         skillDEFText.text = $"DEF:{unit.defenseStat}";
-        //skillSPDText.text = $"SPD:{unit.speedStat}";
+        skillWEAKText.text = $"WEAK:   {string.Join("", weaknessText.ToArray())}";
     }
 
     public void DoOnInteracted()
@@ -104,19 +121,19 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         foreach (var CT in Director.Instance.TabGrid.transform.GetComponentsInChildren<CharacterTab>())
         {
             CT.DEFText.text = $"DEF:{CT.unit.defenseStat}";
-            CT.ATKtext.text = $"ATK: {CT.unit.attackStat}"; 
-            CT.HPtext.text = $"HP: {CT.unit.maxHP}";
-            //CT.SPDText.text = $"SPD: {CT.unit.speedStat}";
+            CT.ATKtext.text = $"ATK: {CT.unit.attackStat}";
+            CT.REStext.text = $"RES:  {string.Join("", CT.resistanceText.ToArray())}";
+            CT.WEAKText.text = $"WEAK:   {string.Join("", CT.weaknessText.ToArray())}";
             GetComponent<HighlightedObject>().disabled = false;
         }
         foreach (var CS in Director.Instance.characterSlotpos.transform.GetComponentsInChildren<CharacterSlot>())
         {
             CS.ResetStats();
         }
-        skillHPText.text = $"HP:{unit.maxHP}";
+        skillRESText.text = $"RES:  {string.Join("", resistanceText.ToArray())}";
         skillATKText.text = $"ATK:{unit.attackStat}";
         skillDEFText.text = $"DEF:{unit.defenseStat}";
-       // skillSPDText.text = $"SPD:{unit.speedStat}";
+        skillWEAKText.text = $"WEAK:   {string.Join("", weaknessText.ToArray())}";
 
     }
 
@@ -126,34 +143,21 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         skillPoints -= 1;
         if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[0].gameObject)
         {
-            unit.maxHP += 2;
-            unit.currentHP += 2;
-            skillHPText.text = $"HP:<color=#00FF00>{unit.maxHP}</color>";
+            unit.attackStat += 1;
+            skillATKText.text = $"ATK:<color=#00FF00>{unit.attackStat}</color>";
             LevelDownbuttons[0].gameObject.SetActive(true);
         }
         else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[1].gameObject)
         {
-            unit.attackStat += 1;
-            skillATKText.text = $"ATK:<color=#00FF00>{unit.attackStat}</color>";
-            LevelDownbuttons[1].gameObject.SetActive(true);
-        }
-        else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[2].gameObject)
-        {
             unit.defenseStat += 1;
             skillDEFText.text = $"DEF:<color=#00FF00>{unit.defenseStat}</color>";
-            LevelDownbuttons[2].gameObject.SetActive(true);
-        }
-        else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[3].gameObject)
-        {
-           // unit.speedStat += 1;
-            //skillSPDText.text = $"SPD:<color=#00FF00>{unit.speedStat}</color>";
-            //LevelDownbuttons[3].gameObject.SetActive(true);
+            LevelDownbuttons[1].gameObject.SetActive(true);
         }
         foreach(var x in LevelUpButtons)
         {
             x.gameObject.SetActive(false);
         }
-        skillPointText.text = $"Stat Points:{skillPoints}";
+        skillPointText.text = $"Stat Points: {skillPoints}";
         CheckNumberOfSkillPointsInAllTabs();
     }
 
@@ -183,26 +187,15 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         skillPoints += 1;
         if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[0].gameObject)
         {
-            unit.maxHP -= 2;
-            unit.currentHP -= 2;
-            skillHPText.text = $"HP:{unit.maxHP}";
-        }
-        else if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[1].gameObject)
-        {
             unit.attackStat -= 1;
             skillATKText.text = $"ATK:{unit.attackStat}";
         }
-        else if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[2].gameObject)
+        else if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[1].gameObject)
         {
             unit.defenseStat -= 1;
             skillDEFText.text = $"DEF:{unit.defenseStat}";
         }
-        else if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[3].gameObject)
-        {
-            //unit.speedStat -= 1;
-            //skillSPDText.text = $"SPD:{unit.speedStat}";
-        }
-        skillPointText.text = $"Stat Points:{skillPoints}";
+        skillPointText.text = $"Stat Points: {skillPoints}";
         foreach (var x in LevelUpButtons)
         {
             x.gameObject.SetActive(true);

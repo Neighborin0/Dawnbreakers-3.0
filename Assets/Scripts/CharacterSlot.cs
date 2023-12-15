@@ -13,7 +13,6 @@ public class CharacterSlot : MonoBehaviour
     public TextMeshProUGUI healthNumbers;
     public TextMeshProUGUI ATKtext;
     public TextMeshProUGUI DEFtext;
-    public TextMeshProUGUI SPDtext;
     public Slider slider;
     public Unit unit;
    

@@ -38,8 +38,8 @@ public class ItemText : MonoBehaviour
             {
                 currentEffectPopup.SetActive(true);
             }
-            var rect = transform.GetComponent<RectTransform>().anchoredPosition3D;
-            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x, rect.y - 230);
+            var rect = transform.position;
+            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x - 686, rect.y - 460);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             EPtext.text = $"{item.itemDescription}";
             StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
@@ -60,8 +60,8 @@ public class ItemText : MonoBehaviour
             {
                 currentEffectPopup.SetActive(true);
             }
-            var rect = transform.GetComponent<RectTransform>().anchoredPosition3D;
-            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x, rect.y - 230);
+            var rect = transform.position;
+            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x - 686, rect.y - 460);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             EPtext.text = $"{item.itemDescription}";
             StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));

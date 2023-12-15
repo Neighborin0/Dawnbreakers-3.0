@@ -778,6 +778,7 @@ GameObject:
   - component: {fileID: 9198294843271996988}
   - component: {fileID: 4080940303221578022}
   - component: {fileID: 8176656157871100302}
+  - component: {fileID: 1389599661357580660}
   m_Layer: 5
   m_Name: DetailedDisplayAction
   m_TagString: Untagged
@@ -829,7 +830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: e535f7e78067bcc4dbf26edaf8e67e5e, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -894,7 +895,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
@@ -907,8 +908,8 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 21300000, guid: f1e813ce0c03b01479502ba67a8261fd,
       type: 3}
     m_PressedSprite: {fileID: 21300000, guid: f1e813ce0c03b01479502ba67a8261fd, type: 3}
-    m_SelectedSprite: {fileID: 21300000, guid: 1797e6ad5ec9b36498de6a6ec3e4f7f8, type: 3}
-    m_DisabledSprite: {fileID: 21300000, guid: 0c6ca0e4b98a4364cb2a4eed5720035e, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: f1e813ce0c03b01479502ba67a8261fd, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: f1e813ce0c03b01479502ba67a8261fd, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -949,6 +950,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1389599661357580660}
+          m_TargetAssemblyTypeName: LabSpriteSwap, Assembly-CSharp
+          m_MethodName: Change
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -965,3 +978,30 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1389599661357580660}
+          m_TargetAssemblyTypeName: LabSpriteSwap, Assembly-CSharp
+          m_MethodName: Revert
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1389599661357580660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8303490373506145765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d8fb8f5da4557740ac13f05901d89db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 6020460277446074601}
+  originalSprite: {fileID: 21300000, guid: 0c6ca0e4b98a4364cb2a4eed5720035e, type: 3}
+  highlightedSprite: {fileID: 21300000, guid: f1e813ce0c03b01479502ba67a8261fd, type: 3}

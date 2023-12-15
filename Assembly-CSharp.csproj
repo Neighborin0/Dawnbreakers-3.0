@@ -179,6 +179,7 @@
     <Compile Include="Assets\Scripts\Actions\Sweep.cs" />
     <Compile Include="Assets\Scripts\Icons\EffectPopUp.cs" />
     <Compile Include="Assets\Scripts\Units\TestDummy.cs" />
+    <Compile Include="Assets\Scripts\LabSpriteSwap.cs" />
     <Compile Include="Assets\Scripts\Map\CharacterNode.cs" />
     <Compile Include="Assets\Scripts\Main Menu\SettingsBackButton.cs" />
     <Compile Include="Assets\Scripts\Map\RestNode.cs" />

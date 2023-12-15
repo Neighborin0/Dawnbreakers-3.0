@@ -297,8 +297,8 @@ public class Director : MonoBehaviour
                         CT.unit = unit;
                         CT.DEFText.text = $"DEF: {unit.defenseStat}";
                         CT.ATKtext.text = $"ATK: {unit.attackStat}";
-                        CT.HPtext.text = $"HP: {unit.maxHP}";
-                        //CT.SPDText.text = $"SPD: {unit.speedStat}";
+                        CT.REStext.text = $"RES:  {string.Join("", CT.resistanceText.ToArray())}";
+                        CT.WEAKText.text = $"WEAK:   {string.Join("", CT.weaknessText.ToArray())}";
                         CT.actionDisplay.gameObject.SetActive(true);
                         SetUpActionList(unit, CT);
                         CT.actionDisplay.gameObject.SetActive(false);
@@ -315,8 +315,8 @@ public class Director : MonoBehaviour
                         CT.unit = unit;
                         CT.DEFText.text = $"DEF: {unit.defenseStat}";
                         CT.ATKtext.text = $"ATK: {unit.attackStat}";
-                        CT.HPtext.text = $"HP: {unit.maxHP}";
-                        //CT.SPDText.text = $"SPD: {unit.speedStat}";
+                        CT.REStext.text = $"RES:  {string.Join("", CT.resistanceText.ToArray())}";
+                        CT.WEAKText.text = $"WEAK:   {string.Join("", CT.weaknessText.ToArray())}";
                         CT.inventoryDisplay.gameObject.SetActive(true);
                         CT.actionDisplay.gameObject.SetActive(true);
 
@@ -352,6 +352,16 @@ public class Director : MonoBehaviour
             var actionContainer = Instantiate(CT.detailedAction);
             actionContainer.transform.SetParent(CT.actionDisplay.transform);
             actionContainer.transform.localScale = new Vector3(1, 1, 1);
+
+            if(BattleSystem.Instance != null)
+            {
+                Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+                actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.x, actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
+                CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.x, CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
+            }
+               
+
             var assignedAction = actionContainer.GetComponent<ActionContainer>();
             assignedAction.targetting = false;
             assignedAction.baseUnit = unit;

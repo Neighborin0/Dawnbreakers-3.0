@@ -261,6 +261,7 @@ public class ActionContainer : MonoBehaviour
                 StopCoroutine(lightCoroutine);
 
             lightCoroutine = CombatTools.TurnOnDirectionalLight(0.01f);
+            if(this != null)
             StartCoroutine(lightCoroutine);
 
         }
@@ -270,7 +271,8 @@ public class ActionContainer : MonoBehaviour
                 StopCoroutine(lightCoroutine);
 
             lightCoroutine = CombatTools.TurnOffDirectionalLight(0.01f);
-            StartCoroutine(lightCoroutine);
+            if (this != null)
+                StartCoroutine(lightCoroutine);
         }
     }
     public void SetDescription()
@@ -311,8 +313,8 @@ public class ActionContainer : MonoBehaviour
             }
             else
             {
-                var rect = transform.GetComponent<RectTransform>().anchoredPosition3D;
-                currentEffectPopup.transform.GetComponent<RectTransform>().localPosition = new Vector3(rect.x * 5, rect.y -330);
+                var rect = transform.position;
+                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x - 706, rect.y - 465);
             }
 
             Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));

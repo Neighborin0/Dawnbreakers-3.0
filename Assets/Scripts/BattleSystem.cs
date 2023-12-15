@@ -662,8 +662,6 @@ public class BattleSystem : MonoBehaviour
         BattleLog.Instance.ClearAllBattleLogText();
         if (action.unit != null)
         {
-            var newAction = Instantiate(action);
-            //newAction.cost = Tools.DetermineTrueCost(action);
             ActionsToPerform.Add(action);
             if (CombatTools.CheckIfAllUnitsAreReady())
             {
@@ -890,7 +888,6 @@ public class BattleSystem : MonoBehaviour
                 var NP = Instantiate(namePlate, canvasParent.transform);
                 x.namePlate = NP;
                 NP.unit = x;
-                //NP.nameText.text = "";
                 NP.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + unit.offset.x, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;
                 x.GetComponent<SpriteRenderer>().flipX = false;
 
