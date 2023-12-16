@@ -370,7 +370,7 @@ public class BattleSystem : MonoBehaviour
             print(action.targets.unitName);
         unit.intentUI.textMesh.text = action.ActionName;
         if (CombatTools.DetermineTrueActionValue(action) != 0)
-            unit.intentUI.damageNums.text = $"<sprite name=\"{action.damageType}\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
+            unit.intentUI.damageNums.text = $"<sprite name=\"{action.damageType}\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType))).ToString();
         unit.intentUI.action = action;
         unit.intentUI.costNums.text = CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
         if (unit.intentUI.action.actionType == Action.ActionType.STATUS)
@@ -484,6 +484,24 @@ public class BattleSystem : MonoBehaviour
                         AmountToRaise = -target.defenseStat;
                 }
                 number.SetText(AmountToRaise.ToString() + " <sprite name=\"DEF BLUE\">");
+                number.outlineColor = Color.blue;
+                DoStatVFX(AmountToRaise, Color.blue, target);
+                break;
+            case Stat.ARMOR:
+                if (!multiplicative)
+                {
+                    target.armor += (int)Math.Ceiling(AmountToRaise);
+                }
+                else
+                {
+                    target.armor = (int)Math.Ceiling(target.armor * AmountToRaise);
+                    if (AmountToRaise > 1)
+                        AmountToRaise = target.armor / AmountToRaise;
+                    else
+                        AmountToRaise = -target.armor;
+                }
+                target.namePlate.UpdateArmor();
+                number.SetText(AmountToRaise.ToString() + " <sprite name=\"BLOCK\">");
                 number.outlineColor = Color.blue;
                 DoStatVFX(AmountToRaise, Color.blue, target);
                 break;
@@ -825,7 +843,10 @@ public class BattleSystem : MonoBehaviour
         Director.Instance.timelinespeedDelay = OptionsManager.Instance.UserTimelineSpeedDelay;
         foreach (var x in Tools.GetAllUnits())
         {
+            x.armor = 0;
+            x.namePlate.UpdateArmor();
             x.DoBattlePhaseClose();
+
         }
         CombatTools.ReturnPipCounter().AddPip();
         CombatTools.TickAllEffectIcons();
@@ -888,6 +909,7 @@ public class BattleSystem : MonoBehaviour
                 var NP = Instantiate(namePlate, canvasParent.transform);
                 x.namePlate = NP;
                 NP.unit = x;
+                NP.defText.text = "0";
                 NP.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + unit.offset.x, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;
                 x.GetComponent<SpriteRenderer>().flipX = false;
 

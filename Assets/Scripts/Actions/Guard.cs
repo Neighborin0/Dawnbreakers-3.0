@@ -43,8 +43,8 @@ public class Guard : Action
         yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;
-        BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, unit.defenseStat);
-        BattleSystem.Instance.SetStatChanges(Stat.DEF, unit.defenseStat, false, targets);
+        //BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, CombatTools.DetermineTrueActionValue(this) + unit.defenseStat);
+        BattleSystem.Instance.SetStatChanges(Stat.ARMOR, CombatTools.DetermineTrueActionValue(this) + unit.defenseStat, false, targets);
         yield return new WaitForSeconds(1.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();

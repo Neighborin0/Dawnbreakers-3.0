@@ -22,10 +22,10 @@ public class DefendEF : EffectIcon
         print($"ICON IS BEING DESTROYED");
         if (DoFancyStatChanges)
         {
-            BattleSystem.Instance.SetStatChanges(Stat.DEF, -storedValue, false, owner);
+            BattleSystem.Instance.SetStatChanges(Stat.ARMOR, -storedValue, false, owner);
         }
         else
-            owner.defenseStat -= (int)storedValue;
+            owner.armor -= (int)storedValue;
 
         owner.statusEffects.Remove(owner.statusEffects.Where(obj => obj.iconName == iconName).SingleOrDefault());
         Destroy(gameObject);

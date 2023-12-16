@@ -17,7 +17,7 @@ public class Aurelia : Unit
         unitName = "Aurelia";
         maxHP = 32;
         attackStat = 7;
-        defenseStat = 6;
+        defenseStat = 0;
         //defenseStat = -2000;
         resistances = new DamageType[] { DamageType.LIGHT};
         weaknesses = new DamageType[] { DamageType.DARK };

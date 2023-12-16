@@ -21,11 +21,13 @@ public class Defend : Action
         targetType = TargetType.SELF;
         duration = 1;
         CanBeStyled = false;
+
+        statAmount = 5;
     }
 
     public override string GetDescription()
     {
-        description = $"Applies +{(int)Math.Round(unit.defenseStat * 0.4f)} <sprite name=\"FORTIFY\"> for {duration} round.";
+        description = $"Applies +{statAmount + unit.defenseStat} <sprite name=\"FORTIFY\"> for {duration} round.";
         return description;
     }
     public override IEnumerator ExecuteAction()
@@ -36,8 +38,8 @@ public class Defend : Action
         yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;
-        BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, (int)Math.Round(unit.defenseStat * 0.4f));
-        BattleSystem.Instance.SetStatChanges(Stat.DEF, (int)Math.Round(unit.defenseStat * 0.4f), false, targets);
+        //BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, statAmount + unit.defenseStat);
+        BattleSystem.Instance.SetStatChanges(Stat.ARMOR, statAmount + unit.defenseStat, false, targets);
         yield return new WaitForSeconds(1.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();

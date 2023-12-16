@@ -55,10 +55,10 @@ public class IntentContainer : MonoBehaviour
     {
         if (textMesh != null && damageNums.IsActive() && unit != null && action != null && action.targets != null)
         {
-            if ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat > 0)
+            if ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType))> 0)
             {
-                damageNums.text = $"<sprite name=\"{action.damageType}\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
-                action.damageText = ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType)) - action.targets.defenseStat).ToString();
+                damageNums.text = $"<sprite name=\"{action.damageType}\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType))).ToString();
+                action.damageText = ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType))).ToString();
             }
             else
                 damageNums.text = $"<sprite name=\"{action.damageType}\">0";

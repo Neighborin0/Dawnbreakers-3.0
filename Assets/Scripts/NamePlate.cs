@@ -13,31 +13,25 @@ public class NamePlate : MonoBehaviour
     public TextMeshProUGUI defText;
     public Unit unit;
 
-     void Start()
+    public void Start()
     {
-        /*nameText.outlineWidth = 0.2f;
-        nameText.outlineColor = Color.black;
-        */
-        if (!unit.IsPlayerControlled)
+        if(unit.IsPlayerControlled)
         {
-            DEF_icon.gameObject.SetActive(true);
-            defText.text = $"{unit.defenseStat}";
+            DEF_icon.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(67.1f, DEF_icon.transform.GetComponent<RectTransform>().anchoredPosition.y);
         }
-        else
-        {
-            DEF_icon.gameObject.SetActive(false);
-        }
-
     }
-
-    void Update()
+    public void UpdateArmor()
     {
-        if (DEF_icon != null)
-          {
-               defText.text = $"{unit.defenseStat}";
-            defText.color = new Color(1, 0.8705882f, 0.7058824f);
+        if(!DEF_icon.activeSelf)
+        {
+            DEF_icon.SetActive(true);
         }
-            
+        defText.text = unit.armor.ToString();
+        if(unit.armor <= 0)
+        {
+            DEF_icon.SetActive(false);
+        }
     }
+   
 
 }

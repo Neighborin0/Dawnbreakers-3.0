@@ -18,13 +18,20 @@ public class Healthbar : MonoBehaviour
     public Slider backSlider;
     public bool DeathPaused = false;
     public float DamageModifier = 1;
+    [SerializeField]
+    private Image healthbarImageComponent;
+    [SerializeField]
+    private Sprite ArmorSprite;
+    [SerializeField]
+    private Sprite NormalSprite;
 
     void Start()
     {
          try
         {
             slider.maxValue = unit.maxHP;
-
+            unit.namePlate.DEF_icon.SetActive(false);
+            unit.armor = 0;
             backSlider.maxValue = slider.maxValue;
             slider.value = unit.currentHP;
             backSlider.value = unit.currentHP;
@@ -43,6 +50,14 @@ public class Healthbar : MonoBehaviour
         {
             slider.value = unit.currentHP;
             text.text = $"{unit.currentHP} / {unit.maxHP}";
+            if(unit.namePlate != null && unit.namePlate.DEF_icon.activeSelf)
+            {
+                healthbarImageComponent.sprite = ArmorSprite;
+            }
+            else
+            {
+                healthbarImageComponent.sprite = NormalSprite;
+            }
         }
     }
 
@@ -51,25 +66,29 @@ public class Healthbar : MonoBehaviour
         //RunTracker.Instance.slayer = DamageSource;
         if (unit != null)
         {
-            int truedamage = 0;
-            if(IgnoresDEF)
-                truedamage = damage;
-            else
-            {
-                truedamage = (int)Math.Round((damage - unit.defenseStat) * DamageModifier);
-            }
-               
-            if (truedamage < 1)
-            {
-                truedamage = 0;
-            }
-            print(truedamage);
+            int TrueDamage = 0;
             backSlider.value = slider.value;
-            unit.currentHP -= truedamage;
+
+            if(unit.armor < 0)
+            {
+                unit.armor = 0;
+            }
+
+            if (IgnoresDEF)
+                TrueDamage = damage;
+            else
+                TrueDamage = damage - unit.armor;
+
+            if (TrueDamage < 0)
+                TrueDamage = 0;
+
+            unit.currentHP -= TrueDamage;
+            unit.armor -= damage;
+            unit.namePlate.UpdateArmor();
             if (this != null)
             {
                 this.gameObject.SetActive(true);
-                StartCoroutine(DamagePopUp(truedamage, damageType, actionStyle));
+                StartCoroutine(DamagePopUp(TrueDamage, damageType, actionStyle));
                 StartCoroutine(HandleSlider());
             }
         }
@@ -94,7 +113,6 @@ public class Healthbar : MonoBehaviour
         {
             var TL = Director.Instance.timeline.ReturnTimelineChild(unit);
             var action = Director.Instance.timeline.ReturnTimeChildAction(unit);
-            Debug.LogWarning(actionStyle);
             if (!TL.CanClear)
             {
                 if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1 || actionStyle != Action.ActionStyle.STANDARD) //effective

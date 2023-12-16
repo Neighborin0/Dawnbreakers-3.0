@@ -35,11 +35,7 @@ public class Awaken : Action
         var Light = targets.spotLight;
         targets.ChangeUnitsLight(Light, 150, 15, Color.blue, 0.04f, 1.6f);
         LabCamera.Instance.Shake(1f, 0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.DEF, 2f, false, targets);
-        yield return new WaitForSeconds(1f);
-        Light.color = Color.yellow;
-        LabCamera.Instance.Shake(1f, 0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.SPD, 15f, false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.ARMOR, 2f, false, targets);
         yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();

@@ -65,21 +65,21 @@ public class ActionContainer : MonoBehaviour
 
                 //If the user's attack is greater than zero, then string return is the true damage, otherwise the string is zero.
 
-                damageNums.text = (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat > 0 ?
+                damageNums.text = (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) > 0 ?
                     $"<sprite name=\"{action.damageType}\">" +
-                    ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat).ToString()
+                    ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType))).ToString()
                     : $"<sprite name=\"{action.damageType}\">" + "0";
 
                 //If the true damage is being reduced, then the text will turn red. The text also turns red when a resisted move appears
 
-                if ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat > (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) || CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1)
+                if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1)
                 {
                     damageNums.color = Color.red;
                 }
 
-                //If the true damage is being increased, then the text will turn green. The text also turns red when a effective move appears
+                //If the true damage is being increased, then the text will turn green. The text also turns green when a effective move appears
 
-                else if ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) - unit.defenseStat < (int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) || CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1)
+                else if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1)
                 {
                     damageNums.color = Color.green;
                 }

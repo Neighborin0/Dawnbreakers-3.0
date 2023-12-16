@@ -27,6 +27,7 @@ public class Husk : Unit
         else
         {
             behavior = this.gameObject.AddComponent<RandomEnemyBehavior>();
+            maxHP = UnityEngine.Random.Range(17, 22);
             attackStat = UnityEngine.Random.Range(7, 12);
             print("using regular behavior");
         }

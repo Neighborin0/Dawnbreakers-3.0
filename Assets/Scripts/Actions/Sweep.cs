@@ -33,9 +33,9 @@ public class Sweep : Action
         }
         else
         {
-            if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat > 0)
+            if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) > 0)
             {
-                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) - targets.defenseStat}</color>  <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
+                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color>  <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
             }
             else
                 description = $"Deals <color=#FF0000>0</color>  <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";

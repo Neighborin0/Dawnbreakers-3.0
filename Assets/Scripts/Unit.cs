@@ -13,7 +13,7 @@ using UnityEngine.ProBuilder.Shapes;
 using System.Data.Common;
 
 public enum PlayerState { IDLE, DECIDING, READY, WAITING }
-public enum Stat { ATK, DEF, SPD, HP }
+public enum Stat { ATK, DEF, ARMOR, HP }
 public class Unit : MonoBehaviour
 {
     [NonSerialized]
@@ -79,7 +79,9 @@ public class Unit : MonoBehaviour
     public int maxHP;
     public int attackStat;
     public int defenseStat;
-    //public int speedStat;
+    public int armor = 0;
+
+
     public Light spotLight;
     public float actionCostMultiplier = 1;
     public DamageType[] resistances;
