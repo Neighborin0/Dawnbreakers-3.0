@@ -109,6 +109,21 @@ public class Healthbar : MonoBehaviour
     private void HandleTypeDamage(DamageType damageType, TextMeshProUGUI number, int damage, Action.ActionStyle actionStyle)
     {
         number.SetText(damage.ToString());
+
+        if (CombatTools.ReturnTypeMultiplier(unit, damageType) < 1)
+        {
+            number.color = new Color(255, 138, 129);
+            Debug.LogWarning("NOT EFFECTIVE");
+        }
+        else if (damage == 0 && unit.armor > 0)
+        {
+            number.color = new Color(11, 113, 139);
+        }
+        else
+        {
+            number.color = new Color(255, 93, 93);
+        }
+
         if (Director.Instance.timeline.ReturnTimelineChild(unit) != null)
         {
             var TL = Director.Instance.timeline.ReturnTimelineChild(unit);
@@ -134,7 +149,8 @@ public class Healthbar : MonoBehaviour
                         if (TL.value <= 0)
                         {
                             Director.Instance.timeline.RemoveTimelineChild(unit);
-                            //PlayVFX.Stun();
+                            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), Quaternion.identity, 15f, 0, true, 0, 2));
+                            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), new Quaternion(0, 180, Quaternion.identity.z, Quaternion.identity.w),15f, 0, true, 0, 2));
                             BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
                         }
                     }
@@ -150,12 +166,12 @@ public class Healthbar : MonoBehaviour
                         }
 
                     }
-
+                    number.color = Color.red;
                 }
             }
         }
-        number.outlineColor = Color.black;
-        number.color = Color.red;
+
+        number.outlineColor = Color.black; 
         number.outlineWidth = 0.2f;
     }
 
@@ -164,6 +180,7 @@ public class Healthbar : MonoBehaviour
         if (unit != null)
         {
             unit.DoOnDamaged();
+            //Death
             if (unit.currentHP < 1)
             {
                 var popup = Instantiate(damagePopUp, new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x, unit.GetComponent<SpriteRenderer>().bounds.center.y + 2, unit.transform.position.z), Quaternion.identity);
@@ -205,7 +222,7 @@ public class Healthbar : MonoBehaviour
                 unit.ChangeUnitsLight(unit.spotLight, 150, 15, Color.yellow, 0.04f, 0.1f);
                 yield return new WaitForSeconds(0.7f);
                 LabCamera.Instance.Shake(0.5f, 1f);
-                Director.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero, 10, 0, false));
+                Director.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero,  Quaternion.identity ,10, 0, false));
                 yield return new WaitForSeconds(0.03f);
                 if (popup != null)
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());

@@ -501,7 +501,7 @@ public class BattleSystem : MonoBehaviour
                         AmountToRaise = -target.armor;
                 }
                 target.namePlate.UpdateArmor();
-                number.SetText(AmountToRaise.ToString() + " <sprite name=\"BLOCK\">");
+                number.SetText(AmountToRaise.ToString() + " <sprite name=\"DEF BLUE\">");
                 number.outlineColor = Color.blue;
                 DoStatVFX(AmountToRaise, Color.blue, target);
                 break;
@@ -563,11 +563,11 @@ public class BattleSystem : MonoBehaviour
     {
         if (AmountToRaise > 0)
         {
-            StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", color, color, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), 1f, 0, false, 1));
+            StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", color, color, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, 1f, 0, false, 1));
         }
         else
         {
-            StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatDownVFX", color, color, new Vector3(0, 15, 0), 1f, 0, false, 1));
+            StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatDownVFX", color, color, new Vector3(0, 15, 0), Quaternion.identity, 1f, 0, false, 1));
         }
     }
 
@@ -698,6 +698,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator PerformAction()
     {
         ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ToList();
+        ActionsToPerform = ActionsToPerform.OrderBy(x => x.unit.IsPlayerControlled).ToList();
         ActionsToPerform.Reverse();
         print(ActionsToPerform);
         Director.Instance.timeline.slider.value = 0;
@@ -773,6 +774,7 @@ public class BattleSystem : MonoBehaviour
                         yield return new WaitForSeconds(0.4f);
                         ActionsToPerform.Remove(action);
                         ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ToList();
+                        ActionsToPerform = ActionsToPerform.OrderBy(x => x.unit.IsPlayerControlled).ToList();
                         ActionsToPerform.Reverse();
                         action.ResetAction();
                         yield return new WaitForSeconds(1f);

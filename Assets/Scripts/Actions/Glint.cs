@@ -28,7 +28,7 @@ public class Glint : Action
     {
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "StaggerParticles", new Color(156, 14, 207), new Color(156, 14, 207), new Vector3(0, 0, -2f), 1f));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "StaggerParticles", new Color(156, 14, 207), new Color(156, 14, 207), new Vector3(0, 0, -2f), Quaternion.identity, 1f));
         BattleSystem.Instance.SetTempEffect(targets, "STAGGER", true, duration);
         yield return new WaitForSeconds(0.5f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);

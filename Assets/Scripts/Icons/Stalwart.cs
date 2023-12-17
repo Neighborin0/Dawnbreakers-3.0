@@ -10,9 +10,10 @@ using System.Linq;
 public class Stalwart : EffectIcon
 {
    
-    void Start()
+    public void Start()
     {
-        iconName = "STALWART";   
+        iconName = "STALWART";
+        TimedEffect = false;
     }
     public override string GetDescription()
     {

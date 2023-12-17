@@ -27,18 +27,18 @@ public class Guard : Action
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.ALLY;
-        duration = 1;
+        //duration = 1;
     }
 
     public override string GetDescription()
     {
-        description = $"Applies +{CombatTools.DetermineTrueActionValue(this) + unit.defenseStat} <sprite name=\"FORTIFY\"> for {duration} round.";
+        description = $"Applies +{CombatTools.DetermineTrueActionValue(this) + unit.defenseStat} <sprite name=\"FORTIFY\"> to self or allies.";
         return description;
     }
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Defend_001", Color.blue, Color.white, new Vector3(0, 5, -2f), 2f, 0, true, 0, 10));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Defend_001", Color.blue, Color.white, new Vector3(0, 5, -2f), Quaternion.identity, 0.8f, 0, true, 0, 10));
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f);
         yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();

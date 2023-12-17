@@ -51,7 +51,7 @@ public class Incinerate : Action
         yield return new WaitForSeconds(0.3f);
         var Light = targets.spotLight;
         targets.ChangeUnitsLight(Light, 150, 15, new Color(191, 21, 0), 0.04f, 0.1f);
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "IncinerateParticles2", new Color32(191, 21, 0, 255), new Color32(191, 21, 0, 255), new Vector3(0, 0, -2f), 2.5f, 0, true, 6));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "IncinerateParticles2", new Color32(191, 21, 0, 255), new Color32(191, 21, 0, 255), new Vector3(0, 0, -2f), Quaternion.identity, 2.5f, 0, true, 6));
         yield return new WaitForSeconds(0.1f);
         targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle, true);
         LabCamera.Instance.Shake(1f, 1.3f);

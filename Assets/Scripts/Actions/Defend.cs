@@ -19,7 +19,7 @@ public class Defend : Action
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
-        duration = 1;
+        //duration = 1;
         CanBeStyled = false;
 
         statAmount = 5;
@@ -27,13 +27,13 @@ public class Defend : Action
 
     public override string GetDescription()
     {
-        description = $"Applies +{statAmount + unit.defenseStat} <sprite name=\"FORTIFY\"> for {duration} round.";
+        description = $"Applies +{statAmount + unit.defenseStat} <sprite name=\"FORTIFY\"> to self";
         return description;
     }
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "DefendSelf", Color.blue, Color.blue ,new Vector3(0, 1, -2f), 1f, 0, true, 0, 10)); 
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "DefendSelf", Color.blue, Color.blue ,new Vector3(0, 1, -2f), Quaternion.identity, 0.8f, 0, true, 0, 10)); 
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f);
         yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();

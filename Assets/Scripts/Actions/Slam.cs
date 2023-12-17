@@ -50,7 +50,7 @@ public class Slam : Action
         foreach (var x in CombatTools.DetermineEnemies(unit))
         {
             AudioManager.Instance.Play("slash_001");
-            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(x.gameObject, "Slash", Color.yellow, Color.white, new Vector3(0, 0, -2f)));
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(x.gameObject, "Slash", Color.yellow, Color.white, new Vector3(0, 0, -2f), Quaternion.identity));
             x.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle);
         }
         Director.Instance.StartCoroutine(Tools.StopTime(0.13f));

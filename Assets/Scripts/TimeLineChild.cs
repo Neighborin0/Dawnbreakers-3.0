@@ -14,9 +14,6 @@ public class TimeLineChild : MonoBehaviour
     public Vector2 PositionToMoveTo;
     public TextMeshProUGUI staminaText;
     public Image childImage;
-    //public GameObject TimelineChildChild;
-   // public GameObject playerPoint;
-    //public GameObject EnemyPoint;
     public bool UnitIsHighlighted;
     public bool HighlightedIsBeingOverwritten = false;
     public bool CanBeHighlighted = true;
@@ -72,6 +69,21 @@ public class TimeLineChild : MonoBehaviour
        
     }
 
+    public IEnumerator FadeOut()
+    {
+        if (gameObject != null)
+        {
+            while (childImage.color.a > 0 && gameObject != null)
+            {
+                childImage.color = new Color(childImage.color.r, childImage.color.g, childImage.color.b, childImage.color.a - 0.1f);
+                portrait.color = new Color(portrait.color.r, portrait.color.g, portrait.color.b, portrait.color.a - 0.1f);
+                staminaText.color = new Color(staminaText.color.r, staminaText.color.g, staminaText.color.b, staminaText.color.a - 0.1f);
+                yield return new WaitForSeconds(0);
+            }  
+        }
+        yield return new WaitUntil(() => childImage.color.a <= 0);
+        Destroy(gameObject);
+    }
 
     public void ToggleHightlightOnUnit()
     {

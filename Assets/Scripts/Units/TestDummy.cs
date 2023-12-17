@@ -11,7 +11,7 @@ public class TestDummy : Unit
     void Awake()
     {
         unitName = "TestDummy";
-        maxHP = 100;
+        maxHP = 1000;
         attackStat = 0;
         defenseStat = 0;
         //speedStat = 0;

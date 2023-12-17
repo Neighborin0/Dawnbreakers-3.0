@@ -81,14 +81,19 @@ public class Tools : MonoBehaviour
     {
         for (int i = 0; i < 100; i++)
         {
-            if (fadeOut)
+            if (image != null)
             {
-                image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a - i);
+                if (fadeOut)
+                {
+                    image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a - i);
+                }
+                else
+                {
+                    image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a + i);
+                }
             }
             else
-            {
-                image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a + i);
-            }
+                break;
         }
     }
 
@@ -100,7 +105,7 @@ public class Tools : MonoBehaviour
         }
         if (gameObject != null && !FadeIn)
         {
-            while (gameObject.color.a > 0)
+            while (gameObject.color.a > 0 && gameObject != null)
             {
                 gameObject.color = new Color(gameObject.color.r, gameObject.color.g, gameObject.color.b, gameObject.color.a - 0.01f);
                 yield return new WaitForSeconds(delay);
@@ -112,7 +117,7 @@ public class Tools : MonoBehaviour
         }
         else if (gameObject != null)
         {
-            while (gameObject.color.a < 1)
+            while (gameObject.color.a < 1 && gameObject != null)
             {
                 gameObject.color = new Color(gameObject.color.r, gameObject.color.g, gameObject.color.b, gameObject.color.a + 0.01f);
                 yield return new WaitForSeconds(delay);
@@ -125,7 +130,7 @@ public class Tools : MonoBehaviour
     {
         if (gameObject != null && !FadeIn)
         {
-            while (gameObject.color.a > 0)
+            while (gameObject.color.a > 0 && gameObject != null)
             {
                 gameObject.color = new Color(gameObject.color.r, gameObject.color.g, gameObject.color.b, gameObject.color.a - 0.01f);
                 yield return new WaitForSeconds(delay);

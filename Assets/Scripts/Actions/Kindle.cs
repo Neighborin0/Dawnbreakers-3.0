@@ -32,9 +32,9 @@ public class Kindle : Action
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, Color.green, 0.04f, 0.1f);
 
 
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLine", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), 1f, 0, true, 0, 8));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconCircle", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), 1f, 0, true, 0, 8));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Beacon2", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), 1f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLine", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconCircle", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Beacon2", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
 
         yield return new WaitForSeconds(1f);
         foreach (var x in CombatTools.DetermineAllies(unit))

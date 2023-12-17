@@ -111,7 +111,7 @@ public class TimeLine : MonoBehaviour
             if (child.unit.unitName == unit.unitName)
             {
                 Director.Instance.timeline.children.Remove(child);
-                Destroy(child.gameObject);
+                Director.Instance.StartCoroutine(child.FadeOut());
                 break;
             }
         }

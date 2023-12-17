@@ -262,7 +262,7 @@ public class ActionContainer : MonoBehaviour
 
             lightCoroutine = CombatTools.TurnOnDirectionalLight(0.01f);
             if(this != null)
-            StartCoroutine(lightCoroutine);
+           Director.Instance.StartCoroutine(lightCoroutine);
 
         }
         else
@@ -272,7 +272,7 @@ public class ActionContainer : MonoBehaviour
 
             lightCoroutine = CombatTools.TurnOffDirectionalLight(0.01f);
             if (this != null)
-                StartCoroutine(lightCoroutine);
+                Director.Instance.StartCoroutine(lightCoroutine);
         }
     }
     public void SetDescription()

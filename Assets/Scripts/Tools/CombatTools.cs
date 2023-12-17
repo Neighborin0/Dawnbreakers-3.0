@@ -265,10 +265,10 @@ public class CombatTools : MonoBehaviour
 
     }
 
-    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f)
+    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, Quaternion rotation, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f)
     {
         print("INTENSITY: " + intensityMultiplier);
-        var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).SingleOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, Quaternion.identity);
+        var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).SingleOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, rotation);
         VFX.transform.parent = null;
         if (VFX != null)
         {
