@@ -78,7 +78,6 @@ public class TimeLineChild : MonoBehaviour
                 childImage.color = new Color(childImage.color.r, childImage.color.g, childImage.color.b, childImage.color.a - 0.1f);
                 portrait.color = new Color(portrait.color.r, portrait.color.g, portrait.color.b, portrait.color.a - 0.1f);
                 staminaText.color = new Color(staminaText.color.r, staminaText.color.g, staminaText.color.b, staminaText.color.a - 0.1f);
-                yield return new WaitForSeconds(0);
             }  
         }
         yield return new WaitUntil(() => childImage.color.a <= 0);

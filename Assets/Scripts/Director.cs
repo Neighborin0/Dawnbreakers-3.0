@@ -109,6 +109,7 @@ public class Director : MonoBehaviour
 
     private void CheckCams(Scene scene, LoadSceneMode mode)
     {
+        Tools.ClearAllEffectPopup();
         if (BattleSystem.Instance != null)
         {
             canvas.renderMode = RenderMode.ScreenSpaceCamera;

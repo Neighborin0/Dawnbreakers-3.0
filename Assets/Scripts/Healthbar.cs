@@ -8,6 +8,7 @@ using System;
 using static System.Collections.Specialized.BitVector32;
 using static UnityEngine.UI.CanvasScaler;
 using System.Buffers;
+using UnityEditor.Rendering;
 
 public class Healthbar : MonoBehaviour
 {
@@ -112,17 +113,24 @@ public class Healthbar : MonoBehaviour
 
         if (CombatTools.ReturnTypeMultiplier(unit, damageType) < 1)
         {
-            number.color = new Color(255, 138, 129);
+            number.faceColor = new Color(0.5754717f, 0.4533197f, 0.4533197f);
+            Debug.LogWarning(number.color.ToString());
             Debug.LogWarning("NOT EFFECTIVE");
         }
         else if (damage == 0 && unit.armor > 0)
         {
-            number.color = new Color(11, 113, 139);
+            number.color = new Color(0.04313726f, 0.4431373f, 0.5450981f);
+            Debug.LogWarning(number.color.ToString());
+            Debug.LogWarning("ARMOR");
         }
         else
         {
-            number.color = new Color(255, 93, 93);
+            number.color = new Color(1, 0.3647059f, 0.3647059f);
+            Debug.LogWarning("NORMAL");
+
         }
+        number.outlineColor = Color.black;
+        number.outlineWidth = 0.2f;
 
         if (Director.Instance.timeline.ReturnTimelineChild(unit) != null)
         {
@@ -138,12 +146,21 @@ public class Healthbar : MonoBehaviour
                         {
                             TL.value -= Director.Instance.TimelineReduction;
                             action.cost += Director.Instance.TimelineReduction;
+                            number.color = Color.red;
                         }
 
                         if (actionStyle != Action.ActionStyle.STANDARD)
                         {
                             TL.value -= 10;
                             action.cost += 10;
+                            if(actionStyle == Action.ActionStyle.LIGHT)
+                            {
+                                number.outlineColor = new Color(0, 0.635f, 0.749f);
+                            }
+                            else if (actionStyle == Action.ActionStyle.HEAVY)
+                            {
+                                number.outlineColor = new Color(1, 0.011f, 0);
+                            }
                         }
 
                         if (TL.value <= 0)
@@ -166,13 +183,10 @@ public class Healthbar : MonoBehaviour
                         }
 
                     }
-                    number.color = Color.red;
                 }
             }
         }
-
-        number.outlineColor = Color.black; 
-        number.outlineWidth = 0.2f;
+       
     }
 
     private IEnumerator DamagePopUp(int damage,DamageType damageType, Action.ActionStyle actionStyle)

@@ -155,6 +155,15 @@ public class Tools : MonoBehaviour
 
     }
 
+    public static void ClearAllEffectPopup()
+    {
+        foreach (var slot in FindObjectsOfType<EffectPopUp>())
+        {
+            Destroy(slot.gameObject);
+        }
+
+    }
+
     public static void ClearAllCharacterSlots()
     {
         foreach (var slot in FindObjectsOfType<CharacterSlot>())

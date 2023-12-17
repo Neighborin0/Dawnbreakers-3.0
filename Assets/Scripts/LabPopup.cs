@@ -49,7 +49,7 @@ public class LabPopup : MonoBehaviour
         {
             if (number != null)
             {
-                number.color -= new Color(0, 0, 0, 0.1f);
+                number.color -= new Color(number.color.r, number.color.g, number.color.b, 0.1f);
                 yield return new WaitForSeconds(0.01f);
             }
         }

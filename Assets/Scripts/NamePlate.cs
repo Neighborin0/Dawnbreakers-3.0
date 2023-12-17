@@ -24,12 +24,43 @@ public class NamePlate : MonoBehaviour
     {
         if(!DEF_icon.activeSelf)
         {
-            DEF_icon.SetActive(true);
+            Director.Instance.StartCoroutine(Fade(true));
         }
         defText.text = unit.armor.ToString();
         if(unit.armor <= 0)
         {
-            DEF_icon.SetActive(false);
+            Director.Instance.StartCoroutine(Fade(false));
+        }
+    }
+
+    public IEnumerator Fade(bool FadeIn)
+    {
+        var DEfImage = DEF_icon.GetComponent<Image>();
+        if (FadeIn)
+        {
+            if (gameObject != null)
+            {
+                while (DEfImage.color.a > 0 && gameObject != null)
+                {
+                    DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, DEfImage.color.a - 0.1f);
+                    defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a - 0.1f);
+                }
+                yield return new WaitUntil(() => DEfImage.color.a <= 0);
+                DEF_icon.SetActive(false);
+            }
+        } 
+        else 
+        {
+            if (gameObject != null)
+            {
+                DEF_icon.SetActive(true);
+                while (DEfImage.color.a > 0 && gameObject != null)
+                {
+                    DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, DEfImage.color.a + 0.1f);
+                    defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a + 0.1f);
+                }
+                yield return new WaitUntil(() => DEfImage.color.a >= 1);   
+            }
         }
     }
    

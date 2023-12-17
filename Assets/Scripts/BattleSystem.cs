@@ -697,8 +697,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PerformAction()
     {
-        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ToList();
-        ActionsToPerform = ActionsToPerform.OrderBy(x => x.unit.IsPlayerControlled).ToList();
+        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ToList();
         ActionsToPerform.Reverse();
         print(ActionsToPerform);
         Director.Instance.timeline.slider.value = 0;
@@ -773,8 +772,7 @@ public class BattleSystem : MonoBehaviour
                         yield return new WaitUntil(() => action.Done);
                         yield return new WaitForSeconds(0.4f);
                         ActionsToPerform.Remove(action);
-                        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ToList();
-                        ActionsToPerform = ActionsToPerform.OrderBy(x => x.unit.IsPlayerControlled).ToList();
+                        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ToList();
                         ActionsToPerform.Reverse();
                         action.ResetAction();
                         yield return new WaitForSeconds(1f);

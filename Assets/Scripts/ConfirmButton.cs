@@ -27,6 +27,7 @@ public class ConfirmButton : MonoBehaviour
         CombatTools.ReturnPipCounter().ResetPips();
         BattleLog.Instance.characterdialog.gameObject.SetActive(false);
         Director.Instance.blackScreen.gameObject.SetActive(false);
+        Tools.ClearAllEffectPopup();
         foreach (var unit in Tools.GetAllUnits())
         {
             unit.StaminaHighlightIsDisabled = true;

@@ -297,6 +297,7 @@ public class ActionContainer : MonoBehaviour
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             //Description for Battle
             EPtext.text = $"{action.GetDescription()}";
+            currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();
 
             if (limited)
             {
