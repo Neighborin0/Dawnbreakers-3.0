@@ -296,6 +296,7 @@ MonoBehaviour:
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
   health: {fileID: 0}
+  IsHighlighted: 0
   Dying: 0
   charPortraits:
   - {fileID: 21300000, guid: 3e449902b5ccbab42907ae257ab9d358, type: 3}
@@ -318,13 +319,11 @@ MonoBehaviour:
   maxHP: 0
   attackStat: 0
   defenseStat: 0
+  armor: 0
   spotLight: {fileID: 8380202918096390495}
   actionCostMultiplier: 1
   resistances: 
   weaknesses: 
   actionList:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
-  - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
-  - {fileID: 11400000, guid: 8626ced7933e1d04eb4f6721e66a6f6f, type: 2}
-  - {fileID: 11400000, guid: 37c52802e2be6714281a597a68b5e13f, type: 2}
   summonables: []

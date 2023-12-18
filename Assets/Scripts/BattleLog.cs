@@ -230,7 +230,7 @@ public class BattleLog : MonoBehaviour
         battlelog.characterName.text = (unit.unitName);
         battlelog.ambientText.gameObject.SetActive(false);
         Tools.SetTextColorAlphaToZero(battlelog.enemySTATtext);
-        StartCoroutine(Tools.FadeText(battlelog.enemySTATtext, 0.005f, true, false));
+        StartCoroutine(Tools.FadeText(battlelog.enemySTATtext, 0.005f, true, false) );
         Tools.SetImageColorAlphaToZero(battlelog.enemycharPortrait);
         StartCoroutine(Tools.FadeObject(battlelog.enemycharPortrait, 0.005f, true, false));
         Tools.SetImageColorAlphaToZero(battlelog.enemyPortraitparent);

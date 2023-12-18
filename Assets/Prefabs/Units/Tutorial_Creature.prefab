@@ -5108,6 +5108,7 @@ MonoBehaviour:
   IsPlayerControlled: 0
   skillUIs: []
   health: {fileID: 0}
+  IsHighlighted: 0
   Dying: 0
   charPortraits:
   - {fileID: 21300000, guid: be4f62dc1130f434f96218bb39ab00ef, type: 3}
@@ -5126,6 +5127,7 @@ MonoBehaviour:
   maxHP: 0
   attackStat: 0
   defenseStat: 0
+  armor: 0
   spotLight: {fileID: 3885788287744756741}
   actionCostMultiplier: 1
   resistances: 

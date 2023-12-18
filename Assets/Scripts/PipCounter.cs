@@ -17,6 +17,7 @@ public class PipCounter : MonoBehaviour
         if (pipCount < maxPips)
         {
             pipCount++;
+            if(Director.Instance.UnlockedPipSystem)
             Instantiate(pipPrefab, pipGrid.transform);
         }
 
@@ -39,11 +40,15 @@ public class PipCounter : MonoBehaviour
     public void ResetPips()
     {
         pipCount = 1;
-        foreach (Transform pip in pipGrid.transform)
+        if (Director.Instance.UnlockedPipSystem)
         {
-            Destroy(pip.gameObject);
+            foreach (Transform pip in pipGrid.transform)
+            {
+                Destroy(pip.gameObject);
+            }
+            Instantiate(pipPrefab, pipGrid.transform);
         }
-        Instantiate(pipPrefab, pipGrid.transform);
+          
     }
 
 

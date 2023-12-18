@@ -43,6 +43,7 @@ public class Defend : Action
         yield return new WaitForSeconds(1.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
+        yield return new WaitForSeconds(0.6f);
         this.Done = true;
         yield break;
     }

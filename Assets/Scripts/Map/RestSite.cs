@@ -57,7 +57,7 @@ public class RestSite : MonoBehaviour
             button.gameObject.SetActive(true);
         }
         yield return new WaitForSeconds(1f);
-        StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
+        Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false);
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         LabCamera.Instance.ReadjustCam();

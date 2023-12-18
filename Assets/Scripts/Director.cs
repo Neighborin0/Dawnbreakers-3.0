@@ -110,13 +110,13 @@ public class Director : MonoBehaviour
     private void CheckCams(Scene scene, LoadSceneMode mode)
     {
         Tools.ClearAllEffectPopup();
-        if (BattleSystem.Instance != null)
+        if (BattleSystem.Instance != null && canvas != null)
         {
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.worldCamera = LabCamera.Instance.uicam;
             canvas.planeDistance = 20;
         }
-        else
+        else if(canvas != null)
         {
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         }

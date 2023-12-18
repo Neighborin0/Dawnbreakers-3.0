@@ -400,7 +400,7 @@ public class CombatTools : MonoBehaviour
     public static void CheckIfActionWasFatalAndResetCam(Action action, int targetHP)
     {
         action.Done = true;
-        if (targetHP >= 0)
+        if (targetHP > 0)
         {
             LabCamera.Instance.ResetPosition();
         }

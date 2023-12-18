@@ -42,6 +42,10 @@ public class TimeLine : MonoBehaviour
     public IEnumerator ResetTimeline()
     {
         Resetting = true;
+
+        foreach(var x in Tools.GetAllUnits())
+            Director.Instance.timeline.RemoveTimelineChild(x);
+
         yield return new WaitUntil(() => slider.value <= 0);
         Resetting = false;
         Paused = true;

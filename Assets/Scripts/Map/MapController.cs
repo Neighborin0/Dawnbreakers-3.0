@@ -339,7 +339,7 @@ public class MapController : MonoBehaviour
     {
         if (setup)
         {
-            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
+            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));   
             LabCamera.Instance.followDisplacement = new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f);
             LabCamera.Instance.cam.fieldOfView = defaultZoom;
             yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));

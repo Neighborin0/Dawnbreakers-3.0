@@ -732,7 +732,7 @@ public class BattleSystem : MonoBehaviour
             CombatTools.UnpauseStaminaTimer();
             if (ActionsToPerform.Count > 0)
             {
-                yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier) || Director.Instance.timeline.slider.value == 100);
+                yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier) || Director.Instance.timeline.slider.value == Director.Instance.timeline.slider.maxValue);
                 if (Director.Instance.timeline.slider.value < Director.Instance.timeline.slider.maxValue)
                 {
                     CombatTools.PauseStaminaTimer();
@@ -798,12 +798,9 @@ public class BattleSystem : MonoBehaviour
         CombatTools.UnpauseStaminaTimer();
         yield return new WaitForSeconds(0.5f);
         ActionsToPerform = new List<Action>();
-        foreach (TimeLineChild child in Director.Instance.timeline.children)
-        {
-            Destroy(child.gameObject);
-        }
-        Director.Instance.timeline.children.Clear();
         yield return new WaitForSeconds(0.5f);
+        StartCoroutine(Director.Instance.timeline.ResetTimeline());
+        yield return new WaitUntil(() => Director.Instance.timeline.slider.value <= 0);
         foreach (var x in Tools.GetAllUnits())
         {
             foreach (var skill in x.skillUIs)
@@ -827,7 +824,6 @@ public class BattleSystem : MonoBehaviour
            
             x.DoBattlePhaseEnd();
         }
-        StartCoroutine(Director.Instance.timeline.ResetTimeline());
         //State just before player gets control
         BattleLog.Instance.ResetBattleLog();
         if (enemyUnits.Count != 0 && playerUnits.Count != 0)
@@ -843,7 +839,11 @@ public class BattleSystem : MonoBehaviour
         Director.Instance.timelinespeedDelay = OptionsManager.Instance.UserTimelineSpeedDelay;
         foreach (var x in Tools.GetAllUnits())
         {
-            x.armor = 0;
+            if(!x.DoesntLoseArmorAtStartOfRound)
+             x.armor = 0;
+            else
+                x.DoesntLoseArmorAtStartOfRound = false;
+
             x.namePlate.UpdateArmor();
             x.DoBattlePhaseClose();
 

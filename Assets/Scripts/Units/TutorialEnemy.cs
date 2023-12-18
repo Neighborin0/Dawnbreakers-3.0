@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 public class TutorialEnemy : Unit
 {
@@ -13,14 +14,12 @@ public class TutorialEnemy : Unit
     void Awake()
     {
         unitName = "Husk";
-        maxHP = 30;
-        attackStat = 5;
+        maxHP = 24;
+        attackStat = 0;
         defenseStat = 0;
         //speedStat = 0;
         currentHP = maxHP;
         IsPlayerControlled = false;
-        CombatTools.ModifyAction(this, "Awaken", 0, 100f);
-        CombatTools.ModifyAction(this, "Strike", 1, 100f);
     }
     void Start()
     {
@@ -68,21 +67,34 @@ public class TutorialEnemy : Unit
             }
             else
             {
-
-                Aurelia.skillUIs[0].GetComponent<ActionContainer>().Disabled = false;
+                foreach (var skill in Aurelia.skillUIs)
+                {
+                    var actionContainer = skill.GetComponent<ActionContainer>();
+                    actionContainer.button.interactable = true;
+                }
+                //Aurelia.skillUIs[0].GetComponent<ActionContainer>().Disabled = false;
                 if (turn == 1)
                 {
                     if (!Aurelia.actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault()))
                     {
+                       
                         Aurelia.actionList.Add(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault());
                         battlesystem.SetupHUD(Aurelia, null);
-                        Aurelia.skillUIs[0].GetComponent<ActionContainer>().Disabled = true;
                         if (Director.Instance.DevMode != true)
                         {
                             Tools.ToggleUiBlocker(false, true);
                             var tutorialIcon = Instantiate(TutorialIcon2, Director.Instance.canvas.transform);
                             tutorialIcon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-5000, 0, 0f);
                             tutorialIcon.GetComponent<MoveableObject>().Move(true);
+                        }
+                        foreach (var skill in Aurelia.skillUIs)
+                        {
+                            var actionContainer = skill.GetComponent<ActionContainer>();
+                            if (actionContainer.action.ActionName == "Slash")
+                            {
+                                actionContainer.Disabled = true;
+                                actionContainer.button.interactable = false;
+                            }
                         }
                     }
                 }

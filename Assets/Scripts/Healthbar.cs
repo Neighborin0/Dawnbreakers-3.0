@@ -84,7 +84,10 @@ public class Healthbar : MonoBehaviour
                 TrueDamage = 0;
 
             unit.currentHP -= TrueDamage;
+
+            if (unit.armor > 0)
             unit.armor -= damage;
+
             unit.namePlate.UpdateArmor();
             if (this != null)
             {

@@ -19,12 +19,12 @@ public class Awaken : Action
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
-        description = "Massively raises both <sprite name=\"DEF BLUE\"> and <sprite name=\"SPD YLW\">.";
+        description = "Applies +12 <sprite name=\"FORTIFY\"> to self.";
     }
 
     public override string GetDescription()
     {
-        description = "Massively raises both <sprite name=\"DEF BLUE\"> and <sprite name=\"SPD YLW\">.";
+        description = "Applies +12 <sprite name=\"FORTIFY\"> to self.";
         return description;
     }
     public override IEnumerator ExecuteAction()
@@ -32,13 +32,13 @@ public class Awaken : Action
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
-        var Light = targets.spotLight;
-        targets.ChangeUnitsLight(Light, 150, 15, Color.blue, 0.04f, 1.6f);
         LabCamera.Instance.Shake(1f, 0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.ARMOR, 2f, false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.ARMOR, 12f, false, targets);
+        targets.DoesntLoseArmorAtStartOfRound = true;
         yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
+        yield return new WaitForSeconds(0.5f);
         this.Done = true;
     }
 

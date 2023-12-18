@@ -36,11 +36,11 @@ public class NamePlate : MonoBehaviour
     public IEnumerator Fade(bool FadeIn)
     {
         var DEfImage = DEF_icon.GetComponent<Image>();
-        if (FadeIn)
+        if (!FadeIn)
         {
             if (gameObject != null)
             {
-                while (DEfImage.color.a > 0 && gameObject != null)
+                while (DEfImage.color.a > 0 && DEF_icon != null)
                 {
                     DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, DEfImage.color.a - 0.1f);
                     defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a - 0.1f);
@@ -54,7 +54,7 @@ public class NamePlate : MonoBehaviour
             if (gameObject != null)
             {
                 DEF_icon.SetActive(true);
-                while (DEfImage.color.a > 0 && gameObject != null)
+                while (DEfImage.color.a < 1 && DEF_icon != null)
                 {
                     DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, DEfImage.color.a + 0.1f);
                     defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a + 0.1f);
@@ -64,5 +64,5 @@ public class NamePlate : MonoBehaviour
         }
     }
    
-
+     
 }

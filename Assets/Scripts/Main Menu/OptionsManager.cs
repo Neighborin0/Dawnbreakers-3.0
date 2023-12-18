@@ -45,7 +45,7 @@ public class OptionsManager : MonoBehaviour
     public Canvas canvas;
     public int IntensityLevel = 0;
     //public int bloomMultiplier;
-    public float UserTimelineSpeedDelay = 0.5f;
+    public float UserTimelineSpeedDelay = 100f;
     public float mapSensitivityMultiplier = 1;
     public float textSpeedMultiplier = 1;
     public bool CanPause = true;
@@ -116,7 +116,7 @@ public class OptionsManager : MonoBehaviour
         MapSensitivitySlider.value = 1;
         TextSpeedslider.value = 1;
         //BloomDropDown.value = 1;
-        WaitTimeMultiplier.value = 0.5f;
+        WaitTimeMultiplier.value = 100f;
         //bloomValue.text = Math.Round(BloomSlider.value, 1).ToString();
         mapSensValue.text = Math.Round(MapSensitivitySlider.value, 1).ToString();
         TextSpeedvalue.text = Math.Round(MapSensitivitySlider.value, 1).ToString();

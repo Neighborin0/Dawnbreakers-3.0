@@ -50,6 +50,7 @@ public class Unit : MonoBehaviour
     public TimeLineChild timelinechild;
     [NonSerialized]
     public bool StopMovingToUnit = false;
+    public bool DoesntLoseArmorAtStartOfRound = false;
     IEnumerator lightCoroutine;
     IEnumerator fadeCoroutine;
     public bool IsHidden;
