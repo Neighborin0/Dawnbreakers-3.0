@@ -52,7 +52,7 @@ public class Sweep : Action
         yield return new WaitForSeconds(0.3f);
         AudioManager.Instance.Play("slash_001");
         LabCamera.Instance.Shake(0.3f, 1f);
-        if(targets.statusEffects.Contains(targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault()))
+        /*if(targets.statusEffects.Contains(targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault()))
         {
             var Stagger = targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault();
             Stagger.DestoryEffectIcon();
@@ -63,6 +63,8 @@ public class Sweep : Action
         {
             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), Quaternion.identity, 1f));
         }
+        */
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), Quaternion.identity, 1f));
         LabCamera.Instance.Shake(0.2f, 1f);
         targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat + AdditionalDMG) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType,actionStyle, false);
         yield return new WaitForSeconds(0.5f);

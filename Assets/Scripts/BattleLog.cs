@@ -335,6 +335,7 @@ public class BattleLog : MonoBehaviour
                     }
                 }
                 LabCamera.Instance.uicam.gameObject.SetActive(false);
+                Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                 Director.Instance.timeline.GetComponent<MoveableObject>().Move(false);
                 //Tools.PauseStaminaTimer();
                 print("BATTLE SHOULD BE PAUSED");
@@ -409,6 +410,8 @@ public class BattleLog : MonoBehaviour
                     BattleSystem.Instance.playerUnits[0].StartDecision();
                     if(TurnOffUiAfter)
                         LabCamera.Instance.uicam.gameObject.SetActive(true);
+
+                    Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
                 }
             }
             if (RestSite.Instance != null)

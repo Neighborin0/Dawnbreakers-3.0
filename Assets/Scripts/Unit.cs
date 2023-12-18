@@ -27,7 +27,7 @@ public class Unit : MonoBehaviour
     public Healthbar health;
     [NonSerialized]
     public NamePlate namePlate;
-    [NonSerialized]
+    //[NonSerialized]
     public bool IsHighlighted;
     [NonSerialized]
     public bool isDarkened;

@@ -11,7 +11,7 @@ using static System.Collections.Specialized.BitVector32;
 
 public class EffectPopUp : MonoBehaviour
 {
-    private TextMeshProUGUI text;
+   /* private TextMeshProUGUI text;
     public GameObject childeffectPopUp;
     bool ISchildEP = false;
     public bool AlreadyAssignedPosition = false;
@@ -103,4 +103,5 @@ public class EffectPopUp : MonoBehaviour
 
         }
     }
+   */
 }

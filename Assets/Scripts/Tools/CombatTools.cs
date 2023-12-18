@@ -373,6 +373,7 @@ public class CombatTools : MonoBehaviour
         Director.print(Time.timeScale);
     }
 
+
     public static IEnumerator TurnOffDirectionalLight(float delay = 0.0001f)
     {      
         if (BattleSystem.Instance.mainLight != null)
@@ -382,7 +383,6 @@ public class CombatTools : MonoBehaviour
                 BattleSystem.Instance.mainLight.intensity -= 0.01f;
                 yield return new WaitForSeconds(delay);
             }
-
         }
     }
     public static IEnumerator TurnOnDirectionalLight(float delay = 0.0001f)
@@ -394,7 +394,6 @@ public class CombatTools : MonoBehaviour
                 BattleSystem.Instance.mainLight.intensity += 0.01f;
                 yield return new WaitForSeconds(delay);
             }
-           
         }
     }
 

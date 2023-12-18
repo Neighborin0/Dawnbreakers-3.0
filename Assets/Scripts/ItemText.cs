@@ -42,7 +42,7 @@ public class ItemText : MonoBehaviour
             currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x + 230, rect.y - 250);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             EPtext.text = $"{item.itemDescription}";
-            currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();
+            //currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();
             StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
         }
         else
@@ -56,7 +56,7 @@ public class ItemText : MonoBehaviour
                 var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
                 EP.transform.localScale = new Vector3(1.5f, 1.5f, -25f);
                 currentEffectPopup = EP;
-                currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();
+                //currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();
             }
             else
             {
@@ -69,7 +69,7 @@ public class ItemText : MonoBehaviour
            
            
 
-            if (currentEffectPopup.GetComponent<EffectPopUp>().childeffectPopUp != null)
+            /*if (currentEffectPopup.GetComponent<EffectPopUp>().childeffectPopUp != null)
             {
                 if (!currentEffectPopup.GetComponent<EffectPopUp>().AlreadyAssignedPosition)
                 {
@@ -82,6 +82,9 @@ public class ItemText : MonoBehaviour
             {
                 currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x - 686, rect.y - 460);
             }
+            */
+
+            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x - 686, rect.y - 460);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             EPtext.text = $"{item.itemDescription}";
             StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));

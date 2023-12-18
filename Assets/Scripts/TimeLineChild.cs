@@ -81,7 +81,8 @@ public class TimeLineChild : MonoBehaviour
             }  
         }
         yield return new WaitUntil(() => childImage.color.a <= 0);
-        Destroy(gameObject);
+        if (gameObject != null)
+            Destroy(gameObject);
     }
 
     public void ToggleHightlightOnUnit()

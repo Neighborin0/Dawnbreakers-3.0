@@ -20,6 +20,7 @@ public class ActionTypeButton : Button
 
     public ActionContainer actionContainerParent;
 
+   
     public void ModifyAction()
     {
         var action = actionContainerParent.action;
@@ -74,10 +75,8 @@ public class ActionTypeButton : Button
                     CombatTools.ReturnPipCounter().AddPip();
                     actionContainerParent.UpdateOnStyleSwitch();
                     actionContainerParent.SetStyleLight(true);
-
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
                     actionContainerParent.baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
-
                     Director.Instance.StartCoroutine(CombatTools.StopAndDestroyVFX(0.01f));
                 }
                 break;
