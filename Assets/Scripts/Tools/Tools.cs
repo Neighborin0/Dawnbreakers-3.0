@@ -155,6 +155,32 @@ public class Tools : MonoBehaviour
 
     }
 
+    public static Material ReturnMaterialCopy(GameObject obj)
+    {
+        Material matToReturn = null;
+
+        if (obj.GetComponent<Renderer>() != null)
+        {
+            obj.GetComponent<Renderer>().material = Instantiate<Material>(obj.GetComponent<Renderer>().material);
+            matToReturn = obj.GetComponent<Renderer>().material;
+        }
+        
+        else if(obj.GetComponent<SpriteRenderer>() != null)
+        {
+            obj.GetComponent<SpriteRenderer>().material = matToReturn;
+            matToReturn = obj.GetComponent<SpriteRenderer>().material;
+        }
+       
+        else if(obj.GetComponent<Image>() != null)
+        {
+            obj.GetComponent<Image>().material = matToReturn;
+            matToReturn = obj.GetComponent<Image>().material;
+        }
+     
+
+        return matToReturn;
+    }
+
     public static void ClearAllEffectPopup()
     {
         foreach (var slot in FindObjectsOfType<EffectPopUp>())

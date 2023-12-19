@@ -48,7 +48,6 @@ public class Director : MonoBehaviour
     public GameObject EffectPopUp;
     public GameObject ConfirmButton;
     public GameObject CharacterSlotButtonprefab;
-    public Image LevelDropText;
 
     //Timeline stuff
     public TimeLine timeline;

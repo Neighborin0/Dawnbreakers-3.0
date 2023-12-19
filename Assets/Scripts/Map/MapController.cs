@@ -32,6 +32,7 @@ public class MapController : MonoBehaviour
     [SerializeField]
     public Grid grid;
 
+    public bool DoneOpening = false;
     public Collider mapCollider;
 
 
@@ -59,8 +60,8 @@ public class MapController : MonoBehaviour
         {
             Instance = this;
             if (SceneManager.GetActiveScene().name == "MAP2")
-             StartCoroutine(LoadSlots());
-            if(OptionsManager.Instance != null)
+                StartCoroutine(LoadSlots());
+            if (OptionsManager.Instance != null)
             {
                 if (OptionsManager.Instance.blackScreen.color.a > 0)
                     StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
@@ -73,17 +74,17 @@ public class MapController : MonoBehaviour
     void Start()
     {
 
-        if(Director.Instance.DevMode)
+        if (Director.Instance.DevMode)
         {
             GenerateNodesFromFlow(MapFlow.DevFlow);
         }
-         else
+        else
         {
             GenerateNodesFromFlow(MapFlow.TutorialFlow);
         }
         SceneManager.sceneLoaded += SaveSceneData;
-       
-       
+
+
     }
 
     private void SaveSceneData(Scene scene, LoadSceneMode mode)
@@ -139,7 +140,7 @@ public class MapController : MonoBehaviour
         */
         if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name == "MAP2")
         {
-            if(enableMapControls)
+            if (enableMapControls)
             {
                 enableMapControls = false;
                 mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
@@ -153,7 +154,7 @@ public class MapController : MonoBehaviour
 
             }
         }
-        
+
     }
     public IEnumerator DoPlayerJump(float force)
     {
@@ -176,7 +177,7 @@ public class MapController : MonoBehaviour
 
         for (int i = 0; i < UnityEngine.Random.Range(200, 300); i++)
         {
-            var decor = Instantiate(mapObjects[UnityEngine.Random.Range(0, mapObjects.Count)], Vector3.zero, Quaternion.identity, grid.transform);        
+            var decor = Instantiate(mapObjects[UnityEngine.Random.Range(0, mapObjects.Count)], Vector3.zero, Quaternion.identity, grid.transform);
             if (decor.GetComponent<SpriteRenderer>() != null)
             {
                 decor.transform.localScale = new Vector3(UnityEngine.Random.Range(180, 240), UnityEngine.Random.Range(280, 320), UnityEngine.Random.Range(180, 240));
@@ -193,11 +194,11 @@ public class MapController : MonoBehaviour
         int i = 0;
         foreach (var unit in Director.Instance.party)
         {
-            var MM = Instantiate(miniMePrefab, new Vector3(position.x - (i * 1.3f), position.y + 1f - (i * 0.4f), position.z - 1.5f)  , Quaternion.identity , grid.transform);
+            var MM = Instantiate(miniMePrefab, new Vector3(position.x - (i * 1.3f), position.y + 1f - (i * 0.4f), position.z - 1.5f), Quaternion.identity, grid.transform);
             var rigidbody = MM.GetComponent<Rigidbody2D>();
             rigidbody.simulated = false;
-            
-            
+
+
             MM.unit = unit;
             MM.mapIcon.sprite = MM.unit.MiniMapIcons[0];
             MM.transform.localRotation = new Quaternion(175, Quaternion.identity.y, Quaternion.identity.z, Quaternion.identity.w);
@@ -207,8 +208,8 @@ public class MapController : MonoBehaviour
             }
             MM.mapIcon.material.SetFloat("OutlineThickness", 1f);
             MM.mapIcon.material.SetColor("OutlineColor", Color.black);
-            if(i == 0 && LabCamera.Instance != null)
-             LabCamera.Instance.MoveAndFollowGameObject(MM.gameObject, new Vector3(0, MinZoom, -MinZoom * 3.4f));
+            if (i == 0 && LabCamera.Instance != null)
+                LabCamera.Instance.MoveAndFollowGameObject(MM.gameObject, new Vector3(0, MinZoom, -MinZoom * 3.4f));
 
             i++;
         }
@@ -219,7 +220,7 @@ public class MapController : MonoBehaviour
     {
         int i = 0;
 
-       
+
         foreach (var node in mapFlow)
         {
             foreach (var prefab in nodePrefabs)
@@ -228,7 +229,7 @@ public class MapController : MonoBehaviour
                 {
                     var newNode = Instantiate(prefab, new Vector3(0, 1, 0), Quaternion.identity, mapCanvas.transform);
                     var rectTransform = newNode.GetComponent<RectTransform>();
-                    rectTransform.localPosition = grid.CellToWorld(new Vector3Int((i + 1) - 5 , 0, -2));
+                    rectTransform.localPosition = grid.CellToWorld(new Vector3Int((i + 1) - 5, 0, -2));
                     newNode.transform.rotation = new Quaternion(0, 0, 0, 0);
                     if (!StartingPositionHasBeenSet)
                     {
@@ -248,7 +249,7 @@ public class MapController : MonoBehaviour
                             combatNode.enemies.Add(Director.Instance.Unitdatabase.Where(obj => obj.name == enemy).FirstOrDefault());
                         }
                     }
-                    if(node.RoomType == MapFlow.RoomType.BOSS)
+                    if (node.RoomType == MapFlow.RoomType.BOSS)
                     {
                         var bossNode = newNode.GetComponent<BossNode>();
                         foreach (var enemy in node.enemies)
@@ -269,11 +270,11 @@ public class MapController : MonoBehaviour
                     {
                         newNode.gameObject.SetActive(false);
                     }
-                    if(!Director.Instance.DevMode)
+                    if (!Director.Instance.DevMode)
                     {
                         enableMapControls = true;
                     }
-                  
+
                     break;
                 }
 
@@ -288,23 +289,23 @@ public class MapController : MonoBehaviour
 
     private IEnumerator DoLevelDrop()
     {
-        
-            OptionsManager.Instance.CanPause = false;
-            Tools.ToggleUiBlocker(false, true);
-            yield return new WaitForSeconds(0.5f);
-            StartCoroutine(Tools.FadeObject(Director.Instance.LevelDropText, 0.001f, true, false));
-            yield return new WaitForSeconds(3f);
-            StartCoroutine(Tools.FadeObject(Director.Instance.LevelDropText, 0.05f, false, true));
-            Tools.ToggleUiBlocker(true, true);
-            OptionsManager.Instance.CanPause = true;
-        
+
+        OptionsManager.Instance.CanPause = false;
+        Tools.ToggleUiBlocker(false, true);
+        var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
+        levelDropObj.gameObject.SetActive(true);
+        yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 0));
+        Director.Instance.StartCoroutine(levelDropObj.DoOpening());
+        yield return new WaitUntil(() => levelDropObj.Done);
+        Tools.ToggleUiBlocker(true, true);
+        OptionsManager.Instance.CanPause = true;
     }
 
     private IEnumerator DrawLine(Vector3 pointToDrawTo, GameObject node)
     {
         var MM = LabCamera.Instance.followTarget;
         node.transform.localScale = new Vector3(0, 0, 0);
-      
+
         LabCamera.Instance.state = LabCamera.CameraState.IDLE;
         LabCamera.Instance.MoveToGameObject(node);
         float compressor = 2.1f;
@@ -339,7 +340,7 @@ public class MapController : MonoBehaviour
     {
         if (setup)
         {
-            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));   
+            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
             LabCamera.Instance.followDisplacement = new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f);
             LabCamera.Instance.cam.fieldOfView = defaultZoom;
             yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
@@ -354,12 +355,16 @@ public class MapController : MonoBehaviour
             }
         }
         completedNodeCount++;
+
+        if (!DoneOpening)
+            yield return new WaitUntil(() => DoneOpening);
+
         StartCoroutine(DrawLine(currentNodes[completedNodeCount].transform.position, currentNodes[completedNodeCount].gameObject));
         yield return new WaitForSeconds(1.2f);
         Tools.ToggleUiBlocker(true, true, true);
         Director.Instance.CharacterSlotEnable();
-        if(enableMapControls)
-        {           
+        if (enableMapControls)
+        {
             mapControlBar.SetActive(true);
             mapControlBar.GetComponent<MoveableObject>().Move(true);
         }

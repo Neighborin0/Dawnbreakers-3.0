@@ -109,6 +109,7 @@
     <Compile Include="Assets\Scripts\ActionContainer.cs" />
     <Compile Include="Assets\Scripts\Icons\Vigor.cs" />
     <Compile Include="Assets\Scripts\DisplaySwitcher.cs" />
+    <Compile Include="Assets\Scripts\Map\LevelDrop.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\CrackedShield.cs" />
     <Compile Include="Assets\Scripts\Icons\Block.cs" />
     <Compile Include="Assets\Scripts\VFXEffect.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Assets\Scripts\Map\TutorialEncounterNode.cs" />
     <Compile Include="Assets\Scripts\DraggableObject.cs" />
     <Compile Include="Assets\Scripts\Tools\Tools.cs" />
+    <Compile Include="Assets\Scripts\MaterialAlphaSlider.cs" />
     <Compile Include="Assets\Scripts\Actions\Hasten.cs" />
     <Compile Include="Assets\Scripts\InventoryDisplay.cs" />
     <Compile Include="Assets\Scripts\Actions\Defend.cs" />
