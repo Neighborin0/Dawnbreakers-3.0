@@ -44,6 +44,7 @@ public class NamePlate : MonoBehaviour
                 {
                     DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, DEfImage.color.a - 0.1f);
                     defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a - 0.1f);
+                    yield return new WaitForSeconds(0.001f);
                 }
                 yield return new WaitUntil(() => DEfImage.color.a <= 0);
                 DEF_icon.SetActive(false);
@@ -58,6 +59,7 @@ public class NamePlate : MonoBehaviour
                 {
                     DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, DEfImage.color.a + 0.1f);
                     defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a + 0.1f);
+                    yield return new WaitForSeconds(0.001f);
                 }
                 yield return new WaitUntil(() => DEfImage.color.a >= 1);   
             }

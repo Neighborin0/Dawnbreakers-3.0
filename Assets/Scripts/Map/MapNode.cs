@@ -50,11 +50,14 @@ public class MapNode : MonoBehaviour
             LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
         if(ApplyDelays)
             yield return new WaitForSeconds(0.3f);
-        foreach (var MM in MapController.Instance.mapCanvas.GetComponentsInChildren<MiniMapIcon>())
+
+        foreach (var MM in FindObjectsOfType<MiniMapIcon>())
         {
+            Debug.LogWarning("Mini Map Icons Should Be Moving");
             StartCoroutine(MM.Move(this.transform.position.x - i * 2, transform.position.y + 1f, transform.position.z));
             i++;
         }
+
         MapController.Instance.StartingPosition = this.transform.position;
         if (MapController.Instance.mapControlBar.activeSelf)
             MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
@@ -63,6 +66,8 @@ public class MapNode : MonoBehaviour
         if (scaler != null)
         {
             StopCoroutine(scaler);
+            scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), oldScaleSize, 0.01f);
+            StartCoroutine(scaler);
         }
         if(mapline != null) 
         {
@@ -73,7 +78,7 @@ public class MapNode : MonoBehaviour
         if (ApplyDelays)
         {
           yield return new WaitUntil(() => MapController.Instance.grid.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
-          yield return new WaitForSeconds(0.8f);
+          yield return new WaitForSeconds(1f);
         }
         this.OnInteracted();
     }

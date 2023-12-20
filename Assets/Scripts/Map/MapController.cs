@@ -282,23 +282,35 @@ public class MapController : MonoBehaviour
         }
         if (enableMapControls && SceneManager.GetActiveScene().name == "MAP2")
             mapControlBar.SetActive(true);
+
         if (!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2")
-            StartCoroutine(DoLevelDrop());
+            Director.Instance.StartCoroutine(DoLevelDrop());
+        else if(SceneManager.GetActiveScene().name == "MAP2")
+        {
+            var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
+            levelDropObj.gameObject.SetActive(false);
+            DoneOpening = true;
+        }
+
         SpawnDecorations();
     }
 
     private IEnumerator DoLevelDrop()
     {
-
+        Debug.LogWarning("Coronus Should Be Popping Up");
         OptionsManager.Instance.CanPause = false;
         Tools.ToggleUiBlocker(false, true);
         var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
         levelDropObj.gameObject.SetActive(true);
-        yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 0));
+        levelDropObj.bar.gameObject.SetActive(true);
+        yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 0) || !OptionsManager.Instance.blackScreen.gameObject.activeSelf);
+        Debug.LogWarning("Level Drop Starting?");
         Director.Instance.StartCoroutine(levelDropObj.DoOpening());
         yield return new WaitUntil(() => levelDropObj.Done);
+        levelDropObj.gameObject.SetActive(false);
         Tools.ToggleUiBlocker(true, true);
         OptionsManager.Instance.CanPause = true;
+        DoneOpening = true;
     }
 
     private IEnumerator DrawLine(Vector3 pointToDrawTo, GameObject node)
@@ -310,6 +322,7 @@ public class MapController : MonoBehaviour
         LabCamera.Instance.MoveToGameObject(node);
         float compressor = 2.1f;
         var lineInstance = Instantiate(linePrefab, mapCanvas.transform);
+        lineInstance.gameObject.SetActive(true);
         lineInstance.SetPosition(0, new Vector3(storedTransform.x + compressor, storedTransform.y, storedTransform.z));
         lineInstance.SetPosition(1, storedTransform);
         lineCoroutine = Tools.SmoothMoveLine(lineInstance, new Vector3(pointToDrawTo.x - compressor, pointToDrawTo.y, pointToDrawTo.z), 0.01f);
@@ -357,8 +370,11 @@ public class MapController : MonoBehaviour
         completedNodeCount++;
 
         if (!DoneOpening)
-            yield return new WaitUntil(() => DoneOpening);
-
+        {
+            Director.Instance.StartCoroutine(DoLevelDrop());
+        }
+        yield return new WaitUntil(() => DoneOpening);
+        Debug.LogWarning("Line Should Be Rendering");
         StartCoroutine(DrawLine(currentNodes[completedNodeCount].transform.position, currentNodes[completedNodeCount].gameObject));
         yield return new WaitForSeconds(1.2f);
         Tools.ToggleUiBlocker(true, true, true);

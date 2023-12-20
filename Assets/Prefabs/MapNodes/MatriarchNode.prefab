@@ -378,7 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeName: Boss
-  newScaleSize: {x: 3, y: 3, z: 3}
+  newScaleSize: {x: 2.2, y: 2.2, z: 2.2}
   oldScaleSize: {x: 2, y: 2, z: 2}
   enemies: []
   playerUnits: []

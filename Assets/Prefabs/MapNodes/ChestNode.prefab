@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeName: Chest
-  newScaleSize: {x: 2, y: 1, z: 2}
+  newScaleSize: {x: 1.2, y: 1.2, z: 1.2}
   oldScaleSize: {x: 1, y: 1, z: 1}
   itemDisplayPrefab: {fileID: 448137344890289466, guid: 457b38a4e3738a24c9bc85b3257f0a99,
     type: 3}

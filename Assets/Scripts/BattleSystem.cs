@@ -836,7 +836,6 @@ public class BattleSystem : MonoBehaviour
             }
             BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         }
-        Director.Instance.timelinespeedDelay = OptionsManager.Instance.UserTimelineSpeedDelay;
         foreach (var x in Tools.GetAllUnits())
         {
             if(!x.DoesntLoseArmorAtStartOfRound)

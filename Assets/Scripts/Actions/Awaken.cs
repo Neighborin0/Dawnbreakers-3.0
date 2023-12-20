@@ -35,7 +35,7 @@ public class Awaken : Action
         LabCamera.Instance.Shake(1f, 0.3f);
         BattleSystem.Instance.SetStatChanges(Stat.ARMOR, 12f, false, targets);
         targets.DoesntLoseArmorAtStartOfRound = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
         yield return new WaitForSeconds(0.5f);
