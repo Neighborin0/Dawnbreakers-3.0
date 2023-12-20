@@ -23,6 +23,8 @@ public class Slam : Action
         damageType = DamageType.STRIKE;
         damageText = damage.ToString();
         actionType = ActionType.ATTACK;
+
+        Done = false;
     }
 
     public override string GetDescription()

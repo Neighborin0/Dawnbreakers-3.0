@@ -21,6 +21,8 @@ public class Stab : Action
         actionType = ActionType.ATTACK;
         damageType = DamageType.PIERCE;
         damageText = damage.ToString();
+
+        Done = false;
     }
 
     public override string GetDescription()   

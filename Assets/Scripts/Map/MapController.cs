@@ -121,6 +121,18 @@ public class MapController : MonoBehaviour
                         }
                     }
                 }
+                if (!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2" && !DoneOpening)
+                {
+                    var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
+                    levelDropObj.bar.color = new Color(0, 0, 0, 1);
+                }
+                else if(!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2" && DoneOpening)
+                {
+                    var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
+                    levelDropObj.gameObject.SetActive(false);
+                }
+
+                 
                 Loaded = true;
                 OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
                 StartCoroutine(LoadSlots());
@@ -177,7 +189,7 @@ public class MapController : MonoBehaviour
 
         for (int i = 0; i < UnityEngine.Random.Range(200, 300); i++)
         {
-            var decor = Instantiate(mapObjects[UnityEngine.Random.Range(0, mapObjects.Count)], Vector3.zero, Quaternion.identity, grid.transform);
+            var decor = Instantiate(mapObjects[UnityEngine.Random.Range(0, mapObjects.Count)], Vector3.zero, new Quaternion(0, 0, 0, 0), grid.transform);
             if (decor.GetComponent<SpriteRenderer>() != null)
             {
                 decor.transform.localScale = new Vector3(UnityEngine.Random.Range(180, 240), UnityEngine.Random.Range(280, 320), UnityEngine.Random.Range(180, 240));
@@ -185,7 +197,7 @@ public class MapController : MonoBehaviour
             else
             {
                 decor.transform.localPosition = new Vector3(UnityEngine.Random.Range(-3f, 3), 0, Tools.RandomExcept(-4f, 4, -1f, 0.5f));
-                decor.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                decor.transform.localScale = new Vector3(0.05f, 0.1f, 0.1f) * UnityEngine.Random.Range(0.8f, 1.2f);
             }
         }
     }
@@ -301,10 +313,12 @@ public class MapController : MonoBehaviour
         OptionsManager.Instance.CanPause = false;
         Tools.ToggleUiBlocker(false, true);
         var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
+        levelDropObj.bar.color = new Color(0, 0, 0, 1);
         levelDropObj.gameObject.SetActive(true);
-        levelDropObj.bar.gameObject.SetActive(true);
+        levelDropObj.bar.gameObject.SetActive(true);      
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 0) || !OptionsManager.Instance.blackScreen.gameObject.activeSelf);
         Debug.LogWarning("Level Drop Starting?");
+        yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(levelDropObj.DoOpening());
         yield return new WaitUntil(() => levelDropObj.Done);
         levelDropObj.gameObject.SetActive(false);
@@ -374,6 +388,7 @@ public class MapController : MonoBehaviour
             Director.Instance.StartCoroutine(DoLevelDrop());
         }
         yield return new WaitUntil(() => DoneOpening);
+        yield return new WaitForSeconds(0.3f);
         Debug.LogWarning("Line Should Be Rendering");
         StartCoroutine(DrawLine(currentNodes[completedNodeCount].transform.position, currentNodes[completedNodeCount].gameObject));
         yield return new WaitForSeconds(1.2f);

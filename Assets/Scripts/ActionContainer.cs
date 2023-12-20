@@ -26,7 +26,6 @@ public class ActionContainer : MonoBehaviour
     public GameObject damageParent;
     public GameObject costParent;
     public GameObject durationParent;
-    private float newTimeLineSpeedDelay = 0.1f;
     public bool Disabled = false;
     public int numberofUses;
     public bool limited = false;
@@ -145,7 +144,6 @@ public class ActionContainer : MonoBehaviour
 
                             baseUnit.Queue(action);
                             baseUnit.timelinechild.CanMove = true;
-                            Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                             BattleLog.Instance.ResetBattleLog();
                             LabCamera.Instance.ResetPosition();
@@ -176,7 +174,6 @@ public class ActionContainer : MonoBehaviour
                             baseUnit.Queue(action);
                             SetActive(false);
                             baseUnit.timelinechild.CanMove = true;
-                            Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             LabCamera.Instance.ResetPosition();
                             BattleLog.Instance.ResetBattleLog();
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
@@ -211,7 +208,6 @@ public class ActionContainer : MonoBehaviour
                             baseUnit.Queue(action);
 
                             baseUnit.timelinechild.CanMove = true;
-                            Director.Instance.timelinespeedDelay = newTimeLineSpeedDelay;
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                             SetActive(false);
                             LabCamera.Instance.ResetPosition();

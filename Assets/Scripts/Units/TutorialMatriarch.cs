@@ -22,7 +22,7 @@ public class TutorialMatriarch : Unit
         summonables = TutorialSummons;
         IsHidden = true;
         resistances = new DamageType[] { DamageType.STRIKE};
-        weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE, DamageType.COLD };
+        weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE,};
         BattleStarted += DoCharacterText;
         OnPlayerUnitDeath += Gloat;
     }

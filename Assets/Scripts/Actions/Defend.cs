@@ -23,6 +23,8 @@ public class Defend : Action
         CanBeStyled = false;
 
         statAmount = 5;
+
+        Done = false;
     }
 
     public override string GetDescription()

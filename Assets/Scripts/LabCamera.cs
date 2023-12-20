@@ -57,7 +57,6 @@ public class LabCamera : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name == "MAP2")
         {
-            print("This has been ran");
             this.GetComponent<CinemachineConfiner>().m_BoundingVolume = MapController.Instance.mapCollider;
         }
     }
@@ -215,8 +214,6 @@ public class LabCamera : MonoBehaviour
                     followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier, followDisplacement.z);
                     followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y, followDisplacement.z - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier);
                 }
-                print(bounds.max.y);
-                print(camTransform.position.y);
             }
             if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
             {

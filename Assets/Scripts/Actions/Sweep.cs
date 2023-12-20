@@ -22,6 +22,8 @@ public class Sweep : Action
         actionType = ActionType.ATTACK;
         damageType = DamageType.STRIKE;
         damageText = damage.ToString();
+
+        Done = false;
     }
 
     public override string GetDescription()

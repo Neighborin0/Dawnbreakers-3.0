@@ -25,6 +25,7 @@ public class WarCry : Action
         lightStatAmount = 2;
         heavyStatAmount = 4;
         damageText = damage.ToString();
+        Done = false;
     }
 
     public override string GetDescription()
@@ -57,6 +58,7 @@ public class WarCry : Action
         yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
+        yield return new WaitForSeconds(0.5f);
         this.Done = true;
         yield break;
     }

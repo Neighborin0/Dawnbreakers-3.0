@@ -12,18 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 335375a7555d72943883e66303a0e425, type: 3}
   m_Name: Awaken
   m_EditorClassIdentifier: 
+  actionStyle: 0
   ActionName: Awaken
-  damage: 0
-  accuracy: 0
-  description: The user is granted a sudden burst in power. Raising both SPD and
-    DEF.
-  speed: 0
-  PriorityMove: 0
-  cost: 50
+  description: Applies +12 <sprite name="FORTIFY"> to self.
   duration: 0
+  damageText: 0
   Done: 0
+  New: 0
+  numberofUses: 0
+  limited: 0
+  CanBeStyled: 1
+  damage: 0
+  lightDamage: 0
+  heavyDamage: 0
+  statAmount: 0
+  lightStatAmount: 0
+  heavyStatAmount: 0
+  cost: 100
+  lightCost: 80
+  heavyCost: 100
   text: {fileID: 0}
   unit: {fileID: 0}
   targetType: 1
   actionType: 1
-  target: {fileID: 0}
+  damageType: 0
+  targets: {fileID: 0}

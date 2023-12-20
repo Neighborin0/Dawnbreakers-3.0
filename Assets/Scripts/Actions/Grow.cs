@@ -25,6 +25,8 @@ public class Grow : Action
         damageText = damage.ToString();
         targetType = TargetType.SELF;
         actionType = ActionType.STATUS;
+
+        Done = false;
     }
 
     public override string GetDescription()

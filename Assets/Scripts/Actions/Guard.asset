@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionStyle: 0
   ActionName: Guard
-  description: Applies +8 <sprite name="FORTIFY"> for 5 seconds.
+  description: Applies +14 <sprite name="FORTIFY"> to self or allies.
   duration: 0
   damageText: 0
   Done: 0

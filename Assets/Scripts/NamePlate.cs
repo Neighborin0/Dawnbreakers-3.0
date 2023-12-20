@@ -13,6 +13,8 @@ public class NamePlate : MonoBehaviour
     public TextMeshProUGUI defText;
     public Unit unit;
 
+    public IEnumerator fadeCoroutine;
+
     public void Start()
     {
         if(unit.IsPlayerControlled)
@@ -20,22 +22,49 @@ public class NamePlate : MonoBehaviour
             DEF_icon.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(67.1f, DEF_icon.transform.GetComponent<RectTransform>().anchoredPosition.y);
         }
     }
-    public void UpdateArmor()
+    public void UpdateArmor(float ArmorAdded)
     {
-        if(!DEF_icon.activeSelf)
-        {
-            Director.Instance.StartCoroutine(Fade(true));
-        }
+        Debug.LogWarning($"{ArmorAdded}");
+        Debug.LogWarning($"{ArmorAdded > 0}");
+
+            if(ArmorAdded > 0)
+            {
+                Debug.LogWarning($"{ArmorAdded > 0}");
+                var DEfImage = DEF_icon.GetComponent<Image>();
+                DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, 0);
+                defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, 0);
+               
+
+                if (fadeCoroutine != null)
+                {
+                    StopCoroutine(fadeCoroutine);
+                }
+                
+
+                fadeCoroutine = Fade(true);
+
+                Director.Instance.StartCoroutine(fadeCoroutine);
+            }
+         
+        
         defText.text = unit.armor.ToString();
         if(unit.armor <= 0)
         {
-            Director.Instance.StartCoroutine(Fade(false));
+            if (fadeCoroutine != null)
+            {
+                StopCoroutine(fadeCoroutine);
+            }
+                
+            fadeCoroutine = Fade(false);
+
+            Director.Instance.StartCoroutine(fadeCoroutine);
         }
     }
 
     public IEnumerator Fade(bool FadeIn)
     {
         var DEfImage = DEF_icon.GetComponent<Image>();
+        Debug.LogWarning("IS THIS SHIT EVEN WORKING????????");
         if (!FadeIn)
         {
             if (gameObject != null)
@@ -44,7 +73,7 @@ public class NamePlate : MonoBehaviour
                 {
                     DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, DEfImage.color.a - 0.1f);
                     defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a - 0.1f);
-                    yield return new WaitForSeconds(0.001f);
+                    yield return new WaitForSeconds(0.05f);
                 }
                 yield return new WaitUntil(() => DEfImage.color.a <= 0);
                 DEF_icon.SetActive(false);
@@ -59,7 +88,7 @@ public class NamePlate : MonoBehaviour
                 {
                     DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, DEfImage.color.a + 0.1f);
                     defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a + 0.1f);
-                    yield return new WaitForSeconds(0.001f);
+                    yield return new WaitForSeconds(0.05f);
                 }
                 yield return new WaitUntil(() => DEfImage.color.a >= 1);   
             }

@@ -26,6 +26,8 @@ public class Bash : Action
         targetType = TargetType.ENEMY;
         damageType = DamageType.STRIKE;
         actionType = ActionType.ATTACK;
+
+        Done = false;
     }
     public override string GetDescription()
     {

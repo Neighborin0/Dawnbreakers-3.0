@@ -18,6 +18,8 @@ public class Mend : Action
         lightStatAmount = 3;
         heavyStatAmount = 7;
 
+        Done = false;
+
 
         targetType = TargetType.ALLY;
         actionType = ActionType.STATUS;

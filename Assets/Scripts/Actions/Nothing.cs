@@ -12,6 +12,8 @@ public class Nothing : Action
         actionType = ActionType.STATUS;
         damageText = damage.ToString();
         targetType = TargetType.SELF;
+
+        Done = false;
     }
 
     public override string GetDescription()

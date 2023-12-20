@@ -21,6 +21,8 @@ public class Slash : Action
         actionType = ActionType.ATTACK;
         damageType = DamageType.SLASH;
         damageText = damage.ToString();
+
+        Done = false;
     }
 
     public override string GetDescription()   

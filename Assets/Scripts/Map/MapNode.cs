@@ -53,7 +53,6 @@ public class MapNode : MonoBehaviour
 
         foreach (var MM in FindObjectsOfType<MiniMapIcon>())
         {
-            Debug.LogWarning("Mini Map Icons Should Be Moving");
             StartCoroutine(MM.Move(this.transform.position.x - i * 2, transform.position.y + 1f, transform.position.z));
             i++;
         }

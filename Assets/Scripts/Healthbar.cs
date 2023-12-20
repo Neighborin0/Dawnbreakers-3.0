@@ -51,7 +51,7 @@ public class Healthbar : MonoBehaviour
         {
             slider.value = unit.currentHP;
             text.text = $"{unit.currentHP} / {unit.maxHP}";
-            if(unit.namePlate != null && unit.namePlate.DEF_icon.activeSelf)
+            if(unit.namePlate != null && unit.armor > 0)
             {
                 healthbarImageComponent.sprite = ArmorSprite;
             }
@@ -88,7 +88,7 @@ public class Healthbar : MonoBehaviour
             if (unit.armor > 0)
             unit.armor -= damage;
 
-            unit.namePlate.UpdateArmor();
+            unit.namePlate.UpdateArmor(unit.armor);
             if (this != null)
             {
                 this.gameObject.SetActive(true);

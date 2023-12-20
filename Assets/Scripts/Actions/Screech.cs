@@ -18,6 +18,8 @@ public class Screech : Action
         statAmount = 2;
         lightStatAmount = 1;
         heavyStatAmount = 3;
+
+        Done = false;
     }
 
     public override string GetDescription()

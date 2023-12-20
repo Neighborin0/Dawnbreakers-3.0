@@ -12,17 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fd7ac6255f7a2e4d83943ef175869b0, type: 3}
   m_Name: Bash
   m_EditorClassIdentifier: 
+  actionStyle: 0
   ActionName: Bash
-  damage: 20
-  accuracy: 1
   description: Deals 20 base damage.
-  speed: 0
-  PriorityMove: 0
-  cost: 50
   duration: 0
+  damageText: 5
   Done: 0
+  New: 0
+  numberofUses: 0
+  limited: 0
+  CanBeStyled: 1
+  damage: 5
+  lightDamage: 3
+  heavyDamage: 7
+  statAmount: 0
+  lightStatAmount: 0
+  heavyStatAmount: 0
+  cost: 40
+  lightCost: 20
+  heavyCost: 60
   text: {fileID: 0}
   unit: {fileID: 0}
   targetType: 0
   actionType: 0
+  damageType: 3
   targets: {fileID: 0}

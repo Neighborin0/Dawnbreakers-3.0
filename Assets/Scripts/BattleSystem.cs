@@ -500,7 +500,7 @@ public class BattleSystem : MonoBehaviour
                     else
                         AmountToRaise = -target.armor;
                 }
-                target.namePlate.UpdateArmor();
+                target.namePlate.UpdateArmor(target.armor);
                 number.SetText(AmountToRaise.ToString() + " <sprite name=\"DEF BLUE\">");
                 number.outlineColor = Color.blue;
                 DoStatVFX(AmountToRaise, Color.blue, target);
@@ -704,7 +704,6 @@ public class BattleSystem : MonoBehaviour
         LabCamera.Instance.ResetPosition();
         CombatTools.PauseStaminaTimer();
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
-        Director.Instance.timelinespeedDelay = 0.1f;
         foreach (TimeLineChild child in Director.Instance.timeline.children)
         {
             child.Return();
@@ -770,12 +769,11 @@ public class BattleSystem : MonoBehaviour
                             }
                         }
                         yield return new WaitUntil(() => action.Done);
-                        yield return new WaitForSeconds(0.4f);
                         ActionsToPerform.Remove(action);
                         ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ToList();
                         ActionsToPerform.Reverse();
                         action.ResetAction();
-                        yield return new WaitForSeconds(1f);
+                        yield return new WaitForSeconds(0.5f);
                         foreach (var x in Tools.GetAllUnits())
                         {
                             x.DoActionEnded();
@@ -839,11 +837,15 @@ public class BattleSystem : MonoBehaviour
         foreach (var x in Tools.GetAllUnits())
         {
             if(!x.DoesntLoseArmorAtStartOfRound)
-             x.armor = 0;
+            {
+                x.armor = 0;
+                x.namePlate.UpdateArmor(x.armor);
+            }
+           
             else
                 x.DoesntLoseArmorAtStartOfRound = false;
 
-            x.namePlate.UpdateArmor();
+           
             x.DoBattlePhaseClose();
 
         }

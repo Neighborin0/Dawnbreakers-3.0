@@ -18,6 +18,8 @@ public class Kindle : Action
         heavyCost = 60;
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
+
+        Done = false;
     }
 
     public override string GetDescription()

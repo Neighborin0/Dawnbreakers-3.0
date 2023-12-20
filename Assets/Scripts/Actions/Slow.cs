@@ -14,6 +14,8 @@ public class Slow : Action
         targetType = TargetType.ENEMY;
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
+
+        Done = false;
     }
 
     public override string GetDescription()

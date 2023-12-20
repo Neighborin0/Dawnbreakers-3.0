@@ -22,6 +22,8 @@ public class Calm : Action
        
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
+
+        Done = false;
     }
 
     public override string GetDescription()

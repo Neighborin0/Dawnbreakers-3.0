@@ -29,6 +29,7 @@ public class Whack : Action
         damageType = DamageType.STRIKE;
         damageText = damage.ToString();
         duration = 1;
+        Done = false;
     }
 
     public override string GetDescription()   

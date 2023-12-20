@@ -188,7 +188,6 @@ public class OptionsManager : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
         //Application.targetFrameRate = fpsLimitIndex;
-        print("Fps index is:" + fpsLimitIndex);
         if (fpsLimitIndex == 0)
         {
             Application.targetFrameRate = -1;

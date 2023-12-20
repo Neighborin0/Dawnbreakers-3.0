@@ -20,6 +20,8 @@ public class Awaken : Action
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
         description = "Applies +12 <sprite name=\"FORTIFY\"> to self.";
+
+        Done = false;
     }
 
     public override string GetDescription()

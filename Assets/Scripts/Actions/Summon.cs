@@ -15,6 +15,8 @@ public class Summon : Action
         targetType = TargetType.SELF;
         actionType = ActionType.STATUS;
         damageText = damage.ToString();
+
+        Done = false;
     }
 
     public override string GetDescription()

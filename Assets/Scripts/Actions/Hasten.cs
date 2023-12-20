@@ -21,6 +21,8 @@ public class Hasten : Action
         heavyStatAmount = 3;
 
         actionType = ActionType.STATUS;
+
+        Done = false;
     }
 
     public override string GetDescription()

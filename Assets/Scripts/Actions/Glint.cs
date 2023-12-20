@@ -17,6 +17,8 @@ public class Glint : Action
         actionType = ActionType.STATUS;
         damageText = damage.ToString();
         duration = 1;
+
+        Done = false;
     }
 
     public override string GetDescription()   

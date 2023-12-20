@@ -27,7 +27,8 @@ public class Guard : Action
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
         targetType = TargetType.ALLY;
-        //duration = 1;
+
+        Done = false;
     }
 
     public override string GetDescription()
@@ -48,6 +49,7 @@ public class Guard : Action
         yield return new WaitForSeconds(1.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
+        yield return new WaitForSeconds(0.5f);
         this.Done = true;
         yield break;
     }

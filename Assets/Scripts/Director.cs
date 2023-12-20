@@ -51,7 +51,6 @@ public class Director : MonoBehaviour
 
     //Timeline stuff
     public TimeLine timeline;
-    public float timelinespeedDelay;
     public float staminaSPDDivider;
     public float WeaknessMultiplier = 1.3f;
     public float ResistanceMultiplier = 0.3f;

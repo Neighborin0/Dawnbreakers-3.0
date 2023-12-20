@@ -47,17 +47,18 @@ public class RestSite : MonoBehaviour
                 Director.Instance.party[i].anim.Play("Resting");
             }
         }
-        StartCoroutine(Transition());
+        Director.Instance.StartCoroutine(Transition());
     }
 
     IEnumerator Transition()
     {
+        Debug.LogWarning("Where rest site");
         foreach (var button in buttons)
         {
             button.gameObject.SetActive(true);
         }
         yield return new WaitForSeconds(1f);
-        Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false);
+        StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         LabCamera.Instance.ReadjustCam();

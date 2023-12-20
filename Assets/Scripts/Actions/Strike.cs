@@ -22,6 +22,8 @@ public class Strike : Action
         actionType = ActionType.ATTACK;
         targetType = TargetType.ENEMY;
         damageType = DamageType.STRIKE;
+
+        Done = false;
     }
 
     public override string GetDescription()
