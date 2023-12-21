@@ -764,7 +764,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.54509807, b: 0, a: 1}
-  m_Intensity: 1000
+  m_Intensity: 900
   m_Range: 120
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -3532,7 +3532,7 @@ PrefabInstance:
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
       propertyPath: party.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
@@ -3543,7 +3543,7 @@ PrefabInstance:
         type: 3}
       propertyPath: party.Array.data[0]
       value: 
-      objectReference: {fileID: 7201352204941650085, guid: f830cff71f0f12444ba1edc5593d0fdd,
+      objectReference: {fileID: 8438103007488650918, guid: 7961aa52f479600439fca57c241b5cb9,
         type: 3}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
@@ -3875,7 +3875,7 @@ Camera:
   far clip plane: 5000
   field of view: 23
   orthographic: 0
-  orthographic size: 0.9
+  orthographic size: 10
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
@@ -4280,6 +4280,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3155269628047574190, guid: 015bd4d7d34a9ac45a0e3c82fb7df725,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3155269628047574190, guid: 015bd4d7d34a9ac45a0e3c82fb7df725,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3155269628047574190, guid: 015bd4d7d34a9ac45a0e3c82fb7df725,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3298047495929357329, guid: 015bd4d7d34a9ac45a0e3c82fb7df725,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4531,6 +4546,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8239030286397521010, guid: 015bd4d7d34a9ac45a0e3c82fb7df725,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8423893590590889806, guid: 015bd4d7d34a9ac45a0e3c82fb7df725,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8423893590590889806, guid: 015bd4d7d34a9ac45a0e3c82fb7df725,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

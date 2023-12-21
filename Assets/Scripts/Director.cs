@@ -148,37 +148,22 @@ public class Director : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf && SceneManager.GetActiveScene().name != "Main Menu")
         {
             if (CharacterSlotsDisplayed)
-                DisplayCharacterTab(false);
+            {
+                if (RestSite.Instance != null)
+                {
+                    if(RestSite.Instance.state != RestSiteStates.TALKING)
+                        DisplayCharacterTab(false);
+                }
+                else
+                    DisplayCharacterTab(false);
+            }
             else if (ItemTabGrid.transform.childCount == 0)
+            {              
                 DisableCharacterTab();
+            }
+              
         }
-        /* else if(Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance != null && BattleSystem.Instance.CheckPlayableState())
-         {
-             if (CharacterSlotsDisplayed)
-             {
-                 DisplayCharacterTab(false);
-                 if (!BattleSystem.Instance.Paused)
-                 {
-                     Director.Instance.previousCameraState = LabCamera.Instance.state;
-                     LabCamera.Instance.state = LabCamera.CameraState.IDLE;
-                     Tools.PauseAllStaminaTimers();
-                 }
-             }
-             else if (ItemTabGrid.transform.childCount == 0)
-             {
-                 DisableCharacterTab(false);
-                 if (!Tools.CheckIfAnyUnitIsDeciding() && !BattleSystem.Instance.Paused)
-                 {
-                     Tools.UnpauseAllStaminaTimers();
-                 }
-
-             }
-
-
-         }
-        */
-
-
+      
     }
 
 
@@ -217,34 +202,64 @@ public class Director : MonoBehaviour
     }
 
     public void CharacterSlotEnable(bool forceDisable = false)
-    {
-        if (forceDisable)
-        {
-            characterSlotpos.GetComponent<MoveableObject>().Move(true);
-            CharacterSlotsDisplayed = false;
-            if (MapController.Instance.mapControlBar != null)
-                if (MapController.Instance.mapControlBar.activeInHierarchy)
-                    MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
-        }
-        else
-        {
-            if (CharacterSlotsDisplayed)
+    {       
+            if (forceDisable)
             {
                 characterSlotpos.GetComponent<MoveableObject>().Move(true);
                 CharacterSlotsDisplayed = false;
                 if (MapController.Instance.mapControlBar != null)
                     if (MapController.Instance.mapControlBar.activeInHierarchy)
-                        MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
+                        MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
+
+
+                if (RestSite.Instance != null)
+                {
+                    foreach (var button in RestSite.Instance.buttons)
+                    {
+                        button.GetComponent<MoveableObject>().Move(false);
+                        button.interactable = false;
+                    }
+                }
             }
             else
             {
-                characterSlotpos.GetComponent<MoveableObject>().Move(false);
-                CharacterSlotsDisplayed = true;
-                if (MapController.Instance.mapControlBar != null)
-                    if (MapController.Instance.mapControlBar.activeInHierarchy)
-                        MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
-            }
-        }
+                if (CharacterSlotsDisplayed)
+                {
+                    characterSlotpos.GetComponent<MoveableObject>().Move(true);
+                    CharacterSlotsDisplayed = false;
+                    if (MapController.Instance.mapControlBar != null)
+                        if (MapController.Instance.mapControlBar.activeInHierarchy)
+                            MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
+
+
+                    if (RestSite.Instance != null)
+                    {
+                        foreach (var button in RestSite.Instance.buttons)
+                        {
+                            button.GetComponent<MoveableObject>().Move(false);
+                            button.interactable = false;
+                        }
+                    }
+                }
+                else
+                {
+                    characterSlotpos.GetComponent<MoveableObject>().Move(false);
+                    CharacterSlotsDisplayed = true;
+                    if (MapController.Instance.mapControlBar != null)
+                        if (MapController.Instance.mapControlBar.activeInHierarchy)
+                            MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
+
+
+                    if (RestSite.Instance != null)
+                    {
+                        foreach (var button in RestSite.Instance.buttons)
+                        {
+                            button.GetComponent<MoveableObject>().Move(false);
+                            button.interactable = false;
+                        }
+                    }
+                }
+            }  
     }
 
 
@@ -418,6 +433,21 @@ public class Director : MonoBehaviour
     public void DisableCharacterTab(bool MoveBattleLog = true)
     {
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(false);
+
+        if (MapController.Instance.mapControlBar != null)
+            if (MapController.Instance.mapControlBar.activeInHierarchy)
+                MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
+
+        if(RestSite.Instance != null)
+        {
+            foreach (var button in RestSite.Instance.buttons)
+            {
+                button.GetComponent<MoveableObject>().Move(true);
+                button.interactable = true;
+            }
+        }
+          
+
         foreach (var CT in FindObjectsOfType<CharacterTab>())
         {
             foreach (var actionDisplays in CT.actionDisplay.transform.GetComponentsInChildren<Button>())

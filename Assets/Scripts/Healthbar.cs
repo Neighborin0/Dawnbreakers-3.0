@@ -75,6 +75,9 @@ public class Healthbar : MonoBehaviour
                 unit.armor = 0;
             }
 
+            damage = (int)(damage * unit.health.DamageModifier);
+
+
             if (IgnoresDEF)
                 TrueDamage = damage;
             else

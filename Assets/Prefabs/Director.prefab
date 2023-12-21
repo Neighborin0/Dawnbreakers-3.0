@@ -1532,7 +1532,7 @@ MonoBehaviour:
   PositionUpX: 765.8381
   PositionUpY: 864
   PositionDownX: 765.8381
-  PositionDownY: 360
+  PositionDownY: 489
   moved: 0
 --- !u!114 &392729441734879388
 MonoBehaviour:
@@ -4183,7 +4183,6 @@ MonoBehaviour:
   CharacterSlotButtonprefab: {fileID: 1927223178346534066, guid: 4a09e02f49970824584bfb7414e65757,
     type: 3}
   timeline: {fileID: 6650513377061637855}
-  timelinespeedDelay: 5
   staminaSPDDivider: 2
   WeaknessMultiplier: 1.3
   ResistanceMultiplier: 0.3
