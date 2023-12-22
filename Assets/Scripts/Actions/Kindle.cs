@@ -24,26 +24,23 @@ public class Kindle : Action
 
     public override string GetDescription()
     {
-        description = $"Heals allies by 5 <sprite name=\"HP\">.\nIncreases allies <sprite name=\"ATK RED2\"> by 2.";
+        description = $"Increases allies <sprite name=\"ATK RED2\"> by 2.";
         return description;
     }
     public override IEnumerator ExecuteAction()
     {
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
-        unit.ChangeUnitsLight(unit.spotLight, 150, 15, Color.green, 0.04f, 0.1f);
-
-
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLine", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconCircle", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Beacon2", Color.green, Color.white, new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLine", Color.red, Color.white, new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconCircle", Color.red, Color.white, new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Beacon2", Color.red, Color.white, new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
 
         yield return new WaitForSeconds(1f);
         foreach (var x in CombatTools.DetermineAllies(unit))
         {
             Director.Instance.StartCoroutine(ActuallyDoFastStatChangesUnlikePokemon(x));
         }   
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         this.Done = true;
         LabCamera.Instance.ResetPosition();
@@ -54,6 +51,5 @@ public class Kindle : Action
     {
         BattleSystem.Instance.SetStatChanges(Stat.ATK, 2f, false, x);
         yield return new WaitForSeconds(1f);
-        BattleSystem.Instance.SetStatChanges(Stat.HP, 5f, false, x);
     }
 }

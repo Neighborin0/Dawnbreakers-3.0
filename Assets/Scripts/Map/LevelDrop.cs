@@ -1,4 +1,4 @@
-using Autodesk.Fbx;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,15 +25,15 @@ public class LevelDrop : MonoBehaviour
             var LevelDropMat = LevelDropImage.material;
             while (LevelDropMat.GetColor("_BaseColor").a < 1)
             {
-                LevelDropMat.SetColor("_BaseColor", new Color(LevelDropMat.GetColor("_BaseColor").r, LevelDropMat.GetColor("_BaseColor").g, LevelDropMat.GetColor("_BaseColor").b, LevelDropMat.GetColor("_BaseColor").a + 0.1f));
-                yield return new WaitForSeconds(0.1f);
+                LevelDropMat.SetColor("_BaseColor", new Color(LevelDropMat.GetColor("_BaseColor").r, LevelDropMat.GetColor("_BaseColor").g, LevelDropMat.GetColor("_BaseColor").b, LevelDropMat.GetColor("_BaseColor").a + 0.05f));
+                yield return new WaitForSeconds(0.05f);
             }
             yield return new WaitUntil(() => LevelDropMat.GetColor("_BaseColor").a >= 1);
             yield return new WaitForSeconds(0.5f);
             while (SubText.color.a < 1)
             {
-                SubText.color = new Color(SubText.color.r, SubText.color.g, SubText.color.b, SubText.color.a + 0.1f);
-                yield return new WaitForSeconds(0.1f);
+                SubText.color = new Color(SubText.color.r, SubText.color.g, SubText.color.b, SubText.color.a + 0.05f);
+                yield return new WaitForSeconds(0.05f);
             }
             yield return new WaitUntil(() => SubText.color.a >= 1);
 
@@ -41,9 +41,9 @@ public class LevelDrop : MonoBehaviour
             //Fade Out
             while (LevelDropMat.GetColor("_BaseColor").a > 0)
             {
-                LevelDropMat.SetColor("_BaseColor", new Color(LevelDropMat.GetColor("_BaseColor").r, LevelDropMat.GetColor("_BaseColor").g, LevelDropMat.GetColor("_BaseColor").b, LevelDropMat.GetColor("_BaseColor").a - 0.1f));
-                SubText.color = new Color(SubText.color.r, SubText.color.g, SubText.color.b, SubText.color.a - 0.1f);
-                yield return new WaitForSeconds(0.1f);
+                LevelDropMat.SetColor("_BaseColor", new Color(LevelDropMat.GetColor("_BaseColor").r, LevelDropMat.GetColor("_BaseColor").g, LevelDropMat.GetColor("_BaseColor").b, LevelDropMat.GetColor("_BaseColor").a - 0.05f));
+                SubText.color = new Color(SubText.color.r, SubText.color.g, SubText.color.b, SubText.color.a - 0.05f);
+                yield return new WaitForSeconds(0.05f);
             }
             yield return new WaitUntil(() => LevelDropMat.GetColor("_BaseColor").a <= 1);
 

@@ -146,7 +146,7 @@ public class Healthbar : MonoBehaviour
             {
                 if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1 || actionStyle != Action.ActionStyle.STANDARD) //effective
                 {
-                    if (!unit.statusEffects.Contains(unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault()) && Director.Instance.timeline.ReturnTimelineChild(unit) != null) //Applies Stun
+                    if (CombatTools.ReturnIconStatus(unit, "STALWART") && CombatTools.ReturnIconStatus(unit, "INDOMITABLE") && Director.Instance.timeline.ReturnTimelineChild(unit) != null) //Applies Stun
                     {
                         if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1)
                         {
@@ -159,7 +159,7 @@ public class Healthbar : MonoBehaviour
                         {
                             TL.value -= 10;
                             action.cost += 10;
-                            if(actionStyle == Action.ActionStyle.LIGHT)
+                            if (actionStyle == Action.ActionStyle.LIGHT)
                             {
                                 number.outlineColor = new Color(0, 0.635f, 0.749f);
                             }
@@ -173,11 +173,23 @@ public class Healthbar : MonoBehaviour
                         {
                             Director.Instance.timeline.RemoveTimelineChild(unit);
                             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), Quaternion.identity, 15f, 0, true, 0, 2));
-                            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), new Quaternion(0, 180, Quaternion.identity.z, Quaternion.identity.w),15f, 0, true, 0, 2));
+                            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), new Quaternion(0, 180, Quaternion.identity.z, Quaternion.identity.w), 15f, 0, true, 0, 2));
                             BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
+                            if (!unit.IsPlayerControlled)
+                            {
+                                unit.behavior.turn--;
+                            }
                         }
                     }
-                    else if (unit.statusEffects.Contains(unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault())) //Removes Stalwart
+                    else if (CombatTools.ReturnIconStatus(unit, "INDOMITABLE"))
+                    {
+                        if (TL.value <= Director.Instance.TimelineReduction)
+                        {
+                            TL.value = 0;
+                            action.cost = 100;
+                        }
+                    }
+                    else if (CombatTools.ReturnIconStatus(unit, "STALWART")) //Removes Stalwart
                     {
                         if (TL.value <= Director.Instance.TimelineReduction)
                         {
@@ -216,11 +228,11 @@ public class Healthbar : MonoBehaviour
                 }
                 StartCoroutine(popup.Pop());
                 unit.Dying = true;
+                BattleSystem.Instance.BattlePhasePause = true;
                 if (unit.IsPlayerControlled)
                 {
                     DeathPaused = true;
                     LabCamera.Instance.state = LabCamera.CameraState.IDLE;
-                    BattleSystem.Instance.BattlePhasePause = true;
                     yield return new WaitForSeconds(1f);
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
                     unit.DoDeathQuote();
@@ -232,14 +244,25 @@ public class Healthbar : MonoBehaviour
                     LabCamera.Instance.MoveToUnit(unit, Vector3.zero,0,8, -40, 0.5f);
                 }
                 unit.DoOnPreDeath();
+
                 if(unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
-                 LabCamera.Instance.uicam.gameObject.SetActive(false);
+                {
+                    BattleSystem.Instance.DustyIsDead = true;
+                    LabCamera.Instance.uicam.gameObject.SetActive(false);
+                }
+                 
+
                 yield return new WaitUntil(() => !DeathPaused);
+
                 if (unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
                     LabCamera.Instance.uicam.gameObject.SetActive(false);
+
                 yield return new WaitForSeconds(0.5f);
+
                 Director.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMaxIntensity(unit.gameObject, Color.yellow, 0.07f));
+
                 unit.ChangeUnitsLight(unit.spotLight, 150, 15, Color.yellow, 0.04f, 0.1f);
+
                 yield return new WaitForSeconds(0.7f);
                 LabCamera.Instance.Shake(0.5f, 1f);
                 Director.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero,  Quaternion.identity ,10, 0, false));
@@ -290,7 +313,6 @@ public class Healthbar : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(() => BattleLog.Instance.characterdialog.IsActive());
             yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
-            LabCamera.Instance.ResetPosition(true);
             print("Player should be dead");
         }
         else
@@ -300,10 +322,22 @@ public class Healthbar : MonoBehaviour
         }
         BattleSystem.Instance.numOfUnits.Remove(unit);
         Destroy(unit.ActionLayout);
-        Destroy(unit.gameObject);
+        yield return new WaitForSeconds(0.2f);
+        /*if(PlayerControlled)
+        {
+            Debug.LogWarning("Oh my god they kill Wulfric");
+            BattleSystem.Instance.DustyIsDead = false;
+            //BattleSystem.Instance.BattlePhasePause = false;
+        }
+        */
+       // else
+        //{
+            BattleSystem.Instance.BattlePhasePause = false;
+            Director.Instance.StartCoroutine(Tools.LateUnpause());
+       // }
+           
         CombatTools.TurnOffCriticalUI(unit);
-        BattleSystem.Instance.BattlePhasePause = false;
-        Director.Instance.StartCoroutine(Tools.LateUnpause());
+        Destroy(unit.gameObject);
     }
 
 

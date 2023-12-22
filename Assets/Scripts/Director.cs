@@ -114,7 +114,7 @@ public class Director : MonoBehaviour
             canvas.worldCamera = LabCamera.Instance.uicam;
             canvas.planeDistance = 20;
         }
-        else if(canvas != null)
+        else if (canvas != null)
         {
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         }
@@ -149,21 +149,17 @@ public class Director : MonoBehaviour
         {
             if (CharacterSlotsDisplayed)
             {
-                if (RestSite.Instance != null)
-                {
-                    if(RestSite.Instance.state != RestSiteStates.TALKING)
+                if (BattleLog.Instance != null)
+                    if(BattleLog.Instance.state != BattleLogStates.TALKING)
                         DisplayCharacterTab(false);
-                }
-                else
-                    DisplayCharacterTab(false);
             }
             else if (ItemTabGrid.transform.childCount == 0)
-            {              
+            {
                 DisableCharacterTab();
             }
-              
+
         }
-      
+
     }
 
 
@@ -202,11 +198,49 @@ public class Director : MonoBehaviour
     }
 
     public void CharacterSlotEnable(bool forceDisable = false)
-    {       
-            if (forceDisable)
+    {
+        if (forceDisable)
+        {
+            characterSlotpos.GetComponent<MoveableObject>().Move(true);
+            CharacterSlotsDisplayed = false;
+            if (MapController.Instance.mapControlBar != null)
+                if (MapController.Instance.mapControlBar.activeInHierarchy)
+                    MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
+
+
+            if (RestSite.Instance != null)
+            {
+                foreach (var button in RestSite.Instance.buttons)
+                {
+                    button.GetComponent<MoveableObject>().Move(false);
+                    button.interactable = false;
+                }
+            }
+        }
+        else
+        {
+            if (CharacterSlotsDisplayed)
             {
                 characterSlotpos.GetComponent<MoveableObject>().Move(true);
                 CharacterSlotsDisplayed = false;
+                if (MapController.Instance.mapControlBar != null)
+                    if (MapController.Instance.mapControlBar.activeInHierarchy)
+                        MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
+
+
+                if (RestSite.Instance != null)
+                {
+                    foreach (var button in RestSite.Instance.buttons)
+                    {
+                        button.GetComponent<MoveableObject>().Move(false);
+                        button.interactable = false;
+                    }
+                }
+            }
+            else
+            {
+                characterSlotpos.GetComponent<MoveableObject>().Move(false);
+                CharacterSlotsDisplayed = true;
                 if (MapController.Instance.mapControlBar != null)
                     if (MapController.Instance.mapControlBar.activeInHierarchy)
                         MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
@@ -221,45 +255,7 @@ public class Director : MonoBehaviour
                     }
                 }
             }
-            else
-            {
-                if (CharacterSlotsDisplayed)
-                {
-                    characterSlotpos.GetComponent<MoveableObject>().Move(true);
-                    CharacterSlotsDisplayed = false;
-                    if (MapController.Instance.mapControlBar != null)
-                        if (MapController.Instance.mapControlBar.activeInHierarchy)
-                            MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
-
-
-                    if (RestSite.Instance != null)
-                    {
-                        foreach (var button in RestSite.Instance.buttons)
-                        {
-                            button.GetComponent<MoveableObject>().Move(false);
-                            button.interactable = false;
-                        }
-                    }
-                }
-                else
-                {
-                    characterSlotpos.GetComponent<MoveableObject>().Move(false);
-                    CharacterSlotsDisplayed = true;
-                    if (MapController.Instance.mapControlBar != null)
-                        if (MapController.Instance.mapControlBar.activeInHierarchy)
-                            MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
-
-
-                    if (RestSite.Instance != null)
-                    {
-                        foreach (var button in RestSite.Instance.buttons)
-                        {
-                            button.GetComponent<MoveableObject>().Move(false);
-                            button.interactable = false;
-                        }
-                    }
-                }
-            }  
+        }
     }
 
 
@@ -367,14 +363,14 @@ public class Director : MonoBehaviour
             actionContainer.transform.SetParent(CT.actionDisplay.transform);
             actionContainer.transform.localScale = new Vector3(1, 1, 1);
 
-            if(BattleSystem.Instance != null)
+            if (BattleSystem.Instance != null)
             {
                 Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
 
                 actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.x, actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
                 CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.x, CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
             }
-               
+
 
             var assignedAction = actionContainer.GetComponent<ActionContainer>();
             assignedAction.targetting = false;
@@ -438,7 +434,7 @@ public class Director : MonoBehaviour
             if (MapController.Instance.mapControlBar.activeInHierarchy)
                 MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
 
-        if(RestSite.Instance != null)
+        if (RestSite.Instance != null)
         {
             foreach (var button in RestSite.Instance.buttons)
             {
@@ -446,7 +442,7 @@ public class Director : MonoBehaviour
                 button.interactable = true;
             }
         }
-          
+
 
         foreach (var CT in FindObjectsOfType<CharacterTab>())
         {

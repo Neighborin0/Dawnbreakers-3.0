@@ -742,6 +742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ambientText: {fileID: 330815494504696744}
+  state: 0
   STATtext: {fileID: 316301309819331127}
   enemySTATtext: {fileID: 6386976875222124540}
   characterName: {fileID: 330815495240198892}
@@ -4157,6 +4158,7 @@ MonoBehaviour:
   - {fileID: 8961935493380475670, guid: 121d4c5ac5ace6648b640381d41bae42, type: 3}
   - {fileID: 2046753031281608770, guid: c67ed76d2ec83074c855f2d21e116d63, type: 3}
   - {fileID: 4023095660993884064, guid: ba6657fb2072c0a4595c3aa5d77d384a, type: 3}
+  - {fileID: 2416463982262945572, guid: dee03d0c6476dcf43b7e72ddeabcf74f, type: 3}
   characterTab: {fileID: 813109552512736325, guid: 66ccc73082801ac4ea3ae58a7496e68a,
     type: 3}
   directorInfo: {fileID: 0}

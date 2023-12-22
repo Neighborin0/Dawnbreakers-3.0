@@ -57,9 +57,9 @@ public class Incinerate : Action
         yield return new WaitForSeconds(0.1f);
         targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle, true);
         LabCamera.Instance.Shake(1f, 1.3f);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
-        CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
+        //CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 
   

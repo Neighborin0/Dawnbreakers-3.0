@@ -45,6 +45,7 @@ public class ActionContainer : MonoBehaviour
                 unit.isDarkened = false;
             }
         }
+        Disabled = false;
         numberofUses = action.numberofUses;
         limited = action.limited;
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
@@ -227,7 +228,7 @@ public class ActionContainer : MonoBehaviour
                     {
                         Color heavyColor = new Color(225, 1, 0);
                         this.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
-                        this.GetComponent<Image>().material.SetColor("OutlineColor", heavyColor);
+                        this.GetComponent<Image>().material.SetColor("OutlineColor", heavyColor * 10);
                         baseUnit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", heavyColor * 0.02f);
                     }
                     break;
@@ -235,7 +236,7 @@ public class ActionContainer : MonoBehaviour
                     {
                         Color lightColor = new Color(0, 162, 191);
                         this.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
-                        this.GetComponent<Image>().material.SetColor("OutlineColor", lightColor);
+                        this.GetComponent<Image>().material.SetColor("OutlineColor", lightColor * 10);
                         baseUnit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", lightColor * 0.02f);
                     }
                     break;

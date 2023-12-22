@@ -40,7 +40,6 @@ public class Awaken : Action
         yield return new WaitForSeconds(1.5f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();
-        yield return new WaitForSeconds(0.5f);
         this.Done = true;
     }
 

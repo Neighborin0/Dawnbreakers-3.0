@@ -12,12 +12,13 @@ using System.Diagnostics.Contracts;
 using UnityEngine.Rendering.PostProcessing;
 using static System.Collections.Specialized.BitVector32;
 
-
+public enum BattleLogStates { IDLE, TALKING }
 public class BattleLog : MonoBehaviour
 {
     public static BattleLog Instance { get; private set; }
     public TextMeshProUGUI ambientText;
     private Unit displayingEnemyStatsFor;
+    public BattleLogStates state;
 
     int index;
     //character stat text
@@ -56,8 +57,14 @@ public class BattleLog : MonoBehaviour
         else
         {
             Instance = this;
+            state = BattleLogStates.IDLE;
         }
 
+    }
+
+    public void Start()
+    {
+        
     }
 
     private static string[] ambience = new string[]
@@ -97,7 +104,7 @@ public class BattleLog : MonoBehaviour
         }
         else
             AmbientCharacterText(dialog, characterdialog);
-       
+
     }
 
     public void DisableCharacterDialog()
@@ -107,7 +114,7 @@ public class BattleLog : MonoBehaviour
 
     public void SetRandomAmbientTextActive()
     {
-       ambientText.gameObject.SetActive(true);
+        ambientText.gameObject.SetActive(true);
     }
 
     public void SetRandomAmbientTextOff()
@@ -175,7 +182,7 @@ public class BattleLog : MonoBehaviour
         */
         foreach (var item in unit.inventory)
         {
-            var x = Instantiate(battlelog.itemImage);  
+            var x = Instantiate(battlelog.itemImage);
             x.image.sprite = item.sprite;
             x.GetComponent<ItemText>().item = item;
             var rect = x.transform.GetComponent<RectTransform>().anchoredPosition3D;
@@ -192,8 +199,8 @@ public class BattleLog : MonoBehaviour
         }
         else
         {
-           
-            if(displayingEnemyStatsFor != unit)
+
+            if (displayingEnemyStatsFor != unit)
             {
                 DisplayEnemyCharacterStats(unit);
                 displayingEnemyStatsFor = unit;
@@ -230,7 +237,7 @@ public class BattleLog : MonoBehaviour
         battlelog.characterName.text = (unit.unitName);
         battlelog.ambientText.gameObject.SetActive(false);
         Tools.SetTextColorAlphaToZero(battlelog.enemySTATtext);
-        StartCoroutine(Tools.FadeText(battlelog.enemySTATtext, 0.005f, true, false) );
+        StartCoroutine(Tools.FadeText(battlelog.enemySTATtext, 0.005f, true, false));
         Tools.SetImageColorAlphaToZero(battlelog.enemycharPortrait);
         StartCoroutine(Tools.FadeObject(battlelog.enemycharPortrait, 0.005f, true, false));
         Tools.SetImageColorAlphaToZero(battlelog.enemyPortraitparent);
@@ -246,7 +253,7 @@ public class BattleLog : MonoBehaviour
         Portraitparent.gameObject.SetActive(false);
         characterName.gameObject.SetActive(false);
         enemyPortraitparent.gameObject.SetActive(false);
-        LineText.gameObject.SetActive(false);   
+        LineText.gameObject.SetActive(false);
 
         itemText.gameObject.SetActive(false);
         itemText.text = "";
@@ -297,9 +304,15 @@ public class BattleLog : MonoBehaviour
 
     public void DoRandomLevelUpScreenDialogue()
     {
-       var unit = BattleSystem.Instance.playerUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.playerUnits.Count)];
-            if(unit.levelUpScreenQuotes.Count > 0)
-            CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(unit.levelUpScreenQuotes[UnityEngine.Random.Range(0, unit.levelUpScreenQuotes.Count)].name), false, false, true); 
+        var unit = BattleSystem.Instance.playerUnits[0];
+        if (unit.levelUpScreenQuotes.Count > 0)
+        {
+            if (BattleSystem.Instance.TutorialNode)
+                CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(unit.levelUpScreenQuotes[0].name), false, false, true);
+            else
+                CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(unit.levelUpScreenQuotes[1].name), false, false, true);
+        }
+
     }
     public void DoPostBattleDialouge(MapController MC)
     {
@@ -318,7 +331,8 @@ public class BattleLog : MonoBehaviour
     private IEnumerator TypeMultiText(List<LabLine> text, TMP_Text x, bool disableAfter, bool Pauses = false, bool EndBattle = false, bool TurnOffUiAfter = true)
     {
         BattleStates previousState = BattleStates.IDLE;
-        GetComponent<MoveableObject>().Move(true);      
+        BattleLog.Instance.state = BattleLogStates.TALKING;
+        GetComponent<MoveableObject>().Move(true);
         if (Pauses)
         {
             if (BattleSystem.Instance != null)
@@ -329,7 +343,7 @@ public class BattleLog : MonoBehaviour
                     unit.state = PlayerState.DECIDING;
                     unit.StaminaHighlightIsDisabled = true;
                     unit.ExitDecision();
-                    if(!unit.IsPlayerControlled)
+                    if (!unit.IsPlayerControlled)
                     {
                         unit.intentUI.gameObject.SetActive(false);
                     }
@@ -351,7 +365,7 @@ public class BattleLog : MonoBehaviour
             Tools.ToggleUiBlocker(false, true, true);
             if (text[i].PositionToMoveTo != Vector3.zero)
             {
-                LabCamera.Instance.MoveToPosition((text[i].PositionToMoveTo));  
+                LabCamera.Instance.MoveToPosition((text[i].PositionToMoveTo));
             }
             if (text[i].CameraRotation != Vector3.zero)
             {
@@ -359,23 +373,23 @@ public class BattleLog : MonoBehaviour
             }
             foreach (var unit in Tools.GetAllUnits())
             {
-                if(!unit.IsPlayerControlled)
-                unit.intentUI.gameObject.SetActive(false);
+                if (!unit.IsPlayerControlled)
+                    unit.intentUI.gameObject.SetActive(false);
             }
-                text[i].OnLineStarted.Invoke();
+            text[i].OnLineStarted.Invoke();
 
 
             if (Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression) != null)
-                 charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression);
+                charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression);
             else
                 charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == "neutral");
 
             textSpeed = text[i].textSpeed;
             foreach (char letter in text[i].text.ToCharArray())
             {
-                 Portraitparent.gameObject.SetActive(true);
-                 x.text += letter;
-                 yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2f);
+                Portraitparent.gameObject.SetActive(true);
+                x.text += letter;
+                yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2f);
             }
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
             characterdialog.text = "";
@@ -399,16 +413,16 @@ public class BattleLog : MonoBehaviour
                         else
                             unit.state = PlayerState.IDLE;
 
-                        if(unit.IsPlayerControlled)
-                        unit.StaminaHighlightIsDisabled = true;
+                        if (unit.IsPlayerControlled)
+                            unit.StaminaHighlightIsDisabled = true;
                         if (unit.health != null)
                             unit.health.DeathPaused = false;
-                       
+
                         if (!unit.IsPlayerControlled)
-                            unit.intentUI.gameObject.SetActive(true);  
+                            unit.intentUI.gameObject.SetActive(true);
                     }
                     BattleSystem.Instance.playerUnits[0].StartDecision();
-                    if(TurnOffUiAfter)
+                    if (TurnOffUiAfter)
                         LabCamera.Instance.uicam.gameObject.SetActive(true);
 
                     Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
@@ -432,6 +446,7 @@ public class BattleLog : MonoBehaviour
             characterdialog.gameObject.SetActive(false);
             GetComponent<MoveableObject>().Move(false);
         }
+        BattleLog.Instance.state = BattleLogStates.IDLE;
     }
 
     private void AmbientCharacterText(List<LabLine> text, TMP_Text x)

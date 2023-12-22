@@ -31,16 +31,16 @@ public class Sweep : Action
         if (unit.IsPlayerControlled)
         {
             description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> " +
-                $"<sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.\n<color=#FF0000>+2</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG when <sprite name=\"STAGGER\">.";
+                $"<sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.";
         }
         else
         {
             if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) > 0)
             {
-                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color>  <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
+                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color>  <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.";
             }
             else
-                description = $"Deals <color=#FF0000>0</color>  <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. Deals an additional <color=#FF0000>+2</color> when <sprite name=\"STAGGER\">";
+                description = $"Deals <color=#FF0000>0</color>  <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.";
         }
         return description;
     }
@@ -53,7 +53,6 @@ public class Sweep : Action
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
         AudioManager.Instance.Play("slash_001");
-        LabCamera.Instance.Shake(0.3f, 1f);
         /*if(targets.statusEffects.Contains(targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault()))
         {
             var Stagger = targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault();
@@ -67,7 +66,7 @@ public class Sweep : Action
         }
         */
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), Quaternion.identity, 1f));
-        LabCamera.Instance.Shake(0.2f, 1f);
+        LabCamera.Instance.Shake(0.5f, 1.2f);
         targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat + AdditionalDMG) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType,actionStyle, false);
         yield return new WaitForSeconds(0.5f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);

@@ -282,6 +282,10 @@ public class OptionsManager : MonoBehaviour
             Tools.ToggleUiBlocker(false);
             SettingsMenuDisabled = false;
             canvas.sortingOrder = 10;
+            if (BattleSystem.Instance != null && BattleSystem.Instance.state == BattleStates.BATTLE)
+            {
+                CombatTools.PauseStaminaTimer();
+            }
         }
         else
         {
@@ -293,6 +297,10 @@ public class OptionsManager : MonoBehaviour
             Tools.ToggleUiBlocker(true);
             SettingsMenuDisabled = true;
             canvas.sortingOrder = 2;
+            if(BattleSystem.Instance != null && BattleSystem.Instance.state == BattleStates.BATTLE)
+            {
+                CombatTools.UnpauseStaminaTimer();
+            }
         }
 
     }

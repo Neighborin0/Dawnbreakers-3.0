@@ -392,13 +392,16 @@ public class Tools : MonoBehaviour
     {
         var sprite = gameObjectToChange.GetComponent<SpriteRenderer>();
         float alpha = 1;
-        while (sprite.material.color.a > 0)
+        if (gameObjectToChange != null)
         {
-            alpha = 0.1f;
-            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
-            yield return new WaitForSeconds(delay);
+            while (sprite.material.color.a > 0 && gameObjectToChange != null)
+            {
+                alpha = 0.1f;
+                sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
+                yield return new WaitForSeconds(delay);
+            }
+            Destroy(gameObjectToChange);
         }
-        Destroy(gameObjectToChange);
     }
     public IEnumerator ChangeLightIntensity(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0)
     {

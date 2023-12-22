@@ -68,6 +68,18 @@ public class CombatTools : MonoBehaviour
 
     }
 
+    public static bool CheckIfAnyUnitsAreDying()
+    {
+        bool result = false;
+        foreach (var unit in Tools.GetAllUnits())
+        {
+            if (unit.Dying)
+                result = true;
+        }
+        return result;
+
+    }
+
     public static bool CheckIfAllUnitsAreReady()
     {
         bool result = true;
@@ -404,6 +416,16 @@ public class CombatTools : MonoBehaviour
         {
             LabCamera.Instance.ResetPosition();
         }
+    }
+
+    public static bool ReturnIconStatus(Unit unit, string IconName)
+    {
+        var boolToReturn = false;
+        if (!unit.statusEffects.Contains(unit.statusEffects.Where(obj => obj.iconName == IconName).SingleOrDefault()))
+        {
+            boolToReturn = true;
+        }
+        return boolToReturn;
     }
 
     public static Unit CheckAndReturnNamedUnit(string unitName)

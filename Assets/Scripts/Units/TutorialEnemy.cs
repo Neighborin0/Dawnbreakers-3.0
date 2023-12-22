@@ -51,7 +51,6 @@ public class TutorialEnemy : Unit
 
     public class TutorialEnemyBehavior : EnemyBehavior
     {
-        private int turn;
         [SerializeField]
         public GameObject TutorialIcon2;
         bool DisabledAction = false;
@@ -77,7 +76,7 @@ public class TutorialEnemy : Unit
                 {
                     if (!Aurelia.actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault()))
                     {
-                       
+
                         Aurelia.actionList.Add(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault());
                         battlesystem.SetupHUD(Aurelia, null);
                         if (Director.Instance.DevMode != true)
@@ -95,6 +94,18 @@ public class TutorialEnemy : Unit
                                 actionContainer.Disabled = true;
                                 actionContainer.button.interactable = false;
                             }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var skill in Aurelia.skillUIs)
+                    {
+                        var actionContainer = skill.GetComponent<ActionContainer>();
+                        if (actionContainer.action.ActionName == "Defend")
+                        {
+                            actionContainer.Disabled = true;
+                            actionContainer.button.interactable = false;
                         }
                     }
                 }

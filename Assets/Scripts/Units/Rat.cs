@@ -45,7 +45,6 @@ public class Rat : Unit
         private int[] ActionVariance01 = { 40, 45, 50, 55, 60 };
         private int[] ActionVariance02 = { 20, 25, 30, 35, 40 };
         private Action lastAction = null;
-        private int turn = 0;
         public override void DoBehavior(Unit baseUnit)
         {
             var battlesystem = BattleSystem.Instance;

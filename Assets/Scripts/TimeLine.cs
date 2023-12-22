@@ -34,9 +34,10 @@ public class TimeLine : MonoBehaviour
         {
             if (slider.value < slider.maxValue && !Resetting)
                 slider.value += Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay;
-            else if(slider.value > 0 && Resetting)
-                slider.value -= Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay * 2f;
         }
+        
+        if (slider.value > 0 && Resetting)
+            slider.value -= Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay * 2f;
     }
     //In Battle
     public IEnumerator ResetTimeline()

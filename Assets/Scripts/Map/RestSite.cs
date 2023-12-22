@@ -7,14 +7,12 @@ using System;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 
-public enum RestSiteStates { IDLE, TALKING }
 public class RestSite : MonoBehaviour
 {
     public List<GameObject> restPoints;
 
 
     public Vector3 camPos;
-    public RestSiteStates state;
     void Awake()
     {
         if (Instance != null)
@@ -24,7 +22,6 @@ public class RestSite : MonoBehaviour
         else
         {
             Instance = this;
-            state = RestSiteStates.IDLE;
 
         }
     }
@@ -109,10 +106,8 @@ public class RestSite : MonoBehaviour
         if (!Director.Instance.DevMode)
         {
             BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaRestMeeting"), true, true);
-            state = RestSiteStates.TALKING;
         }
         yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
-        state = RestSiteStates.IDLE;
         for (int i = 0; i <= Director.Instance.party.Count - 1; i++)
         {
             DontDestroyOnLoad(Director.Instance.party[i].gameObject);

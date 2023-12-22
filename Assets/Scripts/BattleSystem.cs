@@ -76,6 +76,8 @@ public class BattleSystem : MonoBehaviour
     public Vector3 bossNodeCamPos;
     [NonSerialized]
     public bool DoPostBattleDialogue = true;
+
+    public bool DustyIsDead = false;
     void Awake()
     {
         if (Instance != null)
@@ -330,10 +332,7 @@ public class BattleSystem : MonoBehaviour
         }
         if (LevelUpScreen)
         {
-            Director.Instance.DisplayCharacterTab(true);
-            LabCamera.Instance.MoveToUnit(playerUnits[0], Vector3.zero, 0, 8, -40, 0.5f);
-            if (DoPostBattleDialogue)
-                BattleLog.Instance.DoRandomLevelUpScreenDialogue();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -351,6 +350,14 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    public IEnumerator EndBattle()
+    {
+        LabCamera.Instance.MoveToUnit(playerUnits[0], Vector3.zero, 0, 9f, -50, 0.8f);
+        yield return new WaitForSeconds(0.4f);
+        Director.Instance.DisplayCharacterTab(true);
+        if (DoPostBattleDialogue)
+            BattleLog.Instance.DoRandomLevelUpScreenDialogue();
+    }
     public bool CheckPlayableState()
     {
         bool check = false;
@@ -697,9 +704,6 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PerformAction()
     {
-        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ToList();
-        ActionsToPerform.Reverse();
-        print(ActionsToPerform);
         Director.Instance.timeline.slider.value = 0;
         LabCamera.Instance.ResetPosition();
         CombatTools.PauseStaminaTimer();
@@ -725,9 +729,10 @@ public class BattleSystem : MonoBehaviour
         state = BattleStates.BATTLE;
         yield return new WaitForSeconds(1f);
         print("Action should be performed");
-        foreach (var action in ActionsToPerform.ToList())
+        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.ActionName).Reverse().ToList();
+        for (int i = 0; i < ActionsToPerform.Count; i++)
         {
-         
+            var action = ActionsToPerform[i];;
             CombatTools.UnpauseStaminaTimer();
             if (ActionsToPerform.Count > 0)
             {
@@ -749,13 +754,14 @@ public class BattleSystem : MonoBehaviour
                                     break;
                             }
                         }
+                        action.Done = false;
                         action.unit.state = PlayerState.IDLE;
                         action.OnActivated();
 
                         var TL = Director.Instance.timeline.ReturnTimelineChild(action.unit);
                         TL.CanClear = true;
-                        TL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.5f);
-                        TL.portrait.color = new Color(1, 1, 1, 0.5f);
+                        TL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.2f);
+                        TL.portrait.color = new Color(1, 1, 1, 0.2f);
 
 
                         if (action.limited)
@@ -769,11 +775,10 @@ public class BattleSystem : MonoBehaviour
                             }
                         }
                         yield return new WaitUntil(() => action.Done);
-                        ActionsToPerform.Remove(action);
-                        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ToList();
-                        ActionsToPerform.Reverse();
+                        yield return new WaitForSeconds(0.2f);
+                        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.ActionName).Reverse().ToList();
                         action.ResetAction();
-                        yield return new WaitForSeconds(0.5f);
+                        yield return new WaitForSeconds(0.2f);
                         foreach (var x in Tools.GetAllUnits())
                         {
                             x.DoActionEnded();
@@ -783,8 +788,10 @@ public class BattleSystem : MonoBehaviour
                             StopCoroutine(actionCo);
                         }
                         else
+                        {
                             yield return new WaitUntil(() => !BattlePhasePause);
-
+                            yield return new WaitForSeconds(0.5f);
+                        }
                     }
                 }
             }
@@ -792,6 +799,8 @@ public class BattleSystem : MonoBehaviour
                 break;
           
         }
+        yield return new WaitUntil(() => !DustyIsDead);
+        yield return new WaitUntil(() => !BattlePhasePause);
         //All Actions Are Done
         CombatTools.UnpauseStaminaTimer();
         yield return new WaitForSeconds(0.5f);
@@ -826,13 +835,16 @@ public class BattleSystem : MonoBehaviour
         BattleLog.Instance.ResetBattleLog();
         if (enemyUnits.Count != 0 && playerUnits.Count != 0)
         {
-            foreach (var x in playerUnits)
+            state = BattleStates.DECISION_PHASE;
+            for (int i = 0; i < playerUnits.Count; i++)
             {
-                state = BattleStates.DECISION_PHASE;
-                x.StartDecision();
-                break;
+                playerUnits[i].state = PlayerState.IDLE;
+                if(i == 0)
+                {
+                    playerUnits[i].StartDecision();
+                }
             }
-            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+             BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         }
         foreach (var x in Tools.GetAllUnits())
         {

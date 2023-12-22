@@ -26,6 +26,7 @@ public class TutorialMatriarch : Unit
         BattleStarted += DoCharacterText;
         OnPlayerUnitDeath += Gloat;
     }
+
     private void DoCharacterText(Unit obj)
     {
         BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("MatriarchIntro"), true, false);
@@ -33,6 +34,7 @@ public class TutorialMatriarch : Unit
         {
             unit.StaminaHighlightIsDisabled = true;
         }
+        BattleSystem.Instance.SetTempEffect(this, "INDOMITABLE", false, 0, 0, 0);
         BattlePostStarted -= DoCharacterText;
     }
 
@@ -55,7 +57,6 @@ public class TutorialMatriarch : Unit
 }
 public class MatriarchBehaviorLV0 : EnemyBehavior
 {
-    private int turn = 0;
     private BattleSystem battlesystem;
     private Unit BaseUnit;
     int move = 0;
@@ -163,6 +164,11 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
     {
         BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("MatriarchPreIncinerate"), true, false);
         yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
+        foreach(var player in BattleSystem.Instance.playerUnits)
+        {
+            if (player.state != PlayerState.DECIDING)
+                player.state = PlayerState.IDLE;
+        }
         Director.Instance.timeline.ResetTimeline();
 
     }

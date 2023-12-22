@@ -314,6 +314,7 @@ MonoBehaviour:
   inventory: []
   levelUpScreenQuotes:
   - {fileID: 11400000, guid: c4e582adbabf2a143bf47acc91437f57, type: 2}
+  - {fileID: 11400000, guid: 5ec4cccc94d4b8e439a3af3e019481fa, type: 2}
   deathQuotes:
   - {fileID: 11400000, guid: 4d180b95c82f52c45aa2b9e86ba9ee69, type: 2}
   state: 0

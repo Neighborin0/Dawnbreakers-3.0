@@ -27,6 +27,17 @@ public class DustyEnemy : Unit
             BattleStarted += DoCharacterText;
         IsHidden = true;
     }
+
+    public void Start()
+    {
+        var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+        foreach (var skill in Aurelia.skillUIs)
+        {
+            var actionContainer = skill.GetComponent<ActionContainer>();        
+            actionContainer.Disabled = false;
+            actionContainer.button.interactable = true;
+        }
+    }
     private void DoCharacterText(Unit obj)
     {
         BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaMeeting(1)"), true, false);
@@ -39,7 +50,6 @@ public class DustyEnemy : Unit
 
     public class DustyBehavior : EnemyBehavior
     {
-        private int turn;
         private Unit BaseUnit;
 
         public override void DoBehavior(Unit baseUnit)
@@ -51,7 +61,27 @@ public class DustyEnemy : Unit
                 {
                     Director.Instance.UnlockedPipSystem = true;
                     Director.Instance.timeline.pipCounter.gameObject.SetActive(true);
-                    CombatTools.ReturnPipCounter().pipCount = 0;
+                    CombatTools.ReturnPipCounter().ResetPips();
+                }
+
+                if (turn == 2)
+                {
+                    var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+                    if (!Aurelia.actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Sweep").SingleOrDefault()))
+                    {
+
+                        Aurelia.actionList.Add(Director.Instance.actionDatabase.Where(obj => obj.name == "Sweep").SingleOrDefault());
+                        BattleSystem.Instance.SetupHUD(Aurelia, null);
+                        foreach (var skill in Aurelia.skillUIs)
+                        {
+                            var actionContainer = skill.GetComponent<ActionContainer>();
+                            if (actionContainer.action.ActionName != "Sweep")
+                            {
+                                actionContainer.Disabled = true;
+                                actionContainer.button.interactable = false;
+                            }
+                        }
+                    }
                 }
                 CombatTools.SetupEnemyAction(baseUnit, turn);
                 turn++;
@@ -75,7 +105,6 @@ public class DustyEnemy : Unit
             StartCoroutine(BattleSystem.Instance.TransitionToMap(true));
             LabCamera.Instance.uicam.gameObject.SetActive(false);
             BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
-            Tools.AddNewActionToUnit(BattleSystem.Instance.playerUnits[0], "Sweep");
             MapController.Instance.ReEnteredMap += BattleLog.Instance.DoPostBattleDialouge;
             SceneManager.sceneLoaded += AddDusty;
             //Tools.PauseStaminaTimer();
