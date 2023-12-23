@@ -560,6 +560,7 @@ MonoBehaviour:
   defaultZoom: 23
   currentNodes: []
   grid: {fileID: 2005220890282553925}
+  DoneOpening: 0
   mapCollider: {fileID: 7643733760867108436}
   MaxZoom: 35
   MinZoom: 20

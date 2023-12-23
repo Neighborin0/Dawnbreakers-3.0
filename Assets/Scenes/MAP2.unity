@@ -696,6 +696,17 @@ PrefabInstance:
       propertyPath: decorRange.z
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3289449407358177987, guid: 58829d9d711a2f542881db5c8e086a95,
+        type: 3}
+      propertyPath: mapObjects.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3289449407358177987, guid: 58829d9d711a2f542881db5c8e086a95,
+        type: 3}
+      propertyPath: mapObjects.Array.data[6]
+      value: 
+      objectReference: {fileID: 7904452640970303553, guid: a3361448f9fb3f5409d633ea41728cef,
+        type: 3}
     - target: {fileID: 3289449407358177990, guid: 58829d9d711a2f542881db5c8e086a95,
         type: 3}
       propertyPath: m_Name
@@ -764,8 +775,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.54509807, b: 0, a: 1}
-  m_Intensity: 900
-  m_Range: 120
+  m_Intensity: 1000
+  m_Range: 90
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -914,7 +925,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287942911
+    rgba: 9752831
   m_fontColor: {r: 1, g: 0.815283, b: 0.5801887, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1032,7 +1043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2295,7 +2306,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1569773604
 MonoBehaviour:
   m_ObjectHideFlags: 0
