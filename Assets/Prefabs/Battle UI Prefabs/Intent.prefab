@@ -280,10 +280,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7590451516179068037}
   - component: {fileID: 7034775355100524255}
-  - component: {fileID: 4063907676022876103}
   - component: {fileID: 3723422302123183770}
   - component: {fileID: 3380532232128214217}
   - component: {fileID: 6138345084545213312}
+  - component: {fileID: -4850656807288012143}
   m_Layer: 5
   m_Name: Intent
   m_TagString: Untagged
@@ -321,63 +321,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3745113024426729838}
   m_CullTransparentMesh: 0
---- !u!114 &4063907676022876103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3745113024426729838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
-  m_Colors:
-    m_NormalColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
-    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: f1e813ce0c03b01479502ba67a8261fd,
-      type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: 9aec9b75b5974ae46ba14804276357d1, type: 3}
-    m_SelectedSprite: {fileID: 21300000, guid: 2a4f741ed3cb87249a2aebaff1447fc8, type: 3}
-    m_DisabledSprite: {fileID: 21300000, guid: 2a4f741ed3cb87249a2aebaff1447fc8, type: 3}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 3380532232128214217}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3723422302123183770}
-        m_TargetAssemblyTypeName: IntentContainer, Assembly-CSharp
-        m_MethodName: DisplayIntentInfo
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &3723422302123183770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,6 +398,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: -4850656807288012143}
+          m_TargetAssemblyTypeName: LabSpriteSwap, Assembly-CSharp
+          m_MethodName: Change
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -471,6 +426,33 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: -4850656807288012143}
+          m_TargetAssemblyTypeName: LabSpriteSwap, Assembly-CSharp
+          m_MethodName: Revert
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &-4850656807288012143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3745113024426729838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d8fb8f5da4557740ac13f05901d89db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 3380532232128214217}
+  originalSprite: {fileID: 21300000, guid: 0c6ca0e4b98a4364cb2a4eed5720035e, type: 3}
+  highlightedSprite: {fileID: 21300000, guid: f1e813ce0c03b01479502ba67a8261fd, type: 3}
 --- !u!1 &5328723169639799106
 GameObject:
   m_ObjectHideFlags: 0

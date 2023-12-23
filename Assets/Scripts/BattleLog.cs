@@ -333,6 +333,7 @@ public class BattleLog : MonoBehaviour
         BattleStates previousState = BattleStates.IDLE;
         BattleLog.Instance.state = BattleLogStates.TALKING;
         GetComponent<MoveableObject>().Move(true);
+        bool WasPaused = false;
         if (Pauses)
         {
             if (BattleSystem.Instance != null)
@@ -403,15 +404,12 @@ public class BattleLog : MonoBehaviour
                 DisableCharacterDialog();
                 if (!EndBattle)
                 {
+                    BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
                     BattleSystem.Instance.state = previousState;
-                    Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
                     ResetBattleLog();
                     foreach (var unit in Tools.GetAllUnits())
                     {
-                        if (unit.IsPlayerControlled)
-                            unit.state = PlayerState.WAITING;
-                        else
-                            unit.state = PlayerState.IDLE;
+                       unit.state = PlayerState.IDLE;
 
                         if (unit.IsPlayerControlled)
                             unit.StaminaHighlightIsDisabled = true;
@@ -421,7 +419,27 @@ public class BattleLog : MonoBehaviour
                         if (!unit.IsPlayerControlled)
                             unit.intentUI.gameObject.SetActive(true);
                     }
-                    BattleSystem.Instance.playerUnits[0].StartDecision();
+
+                    if (!BattleSystem.Instance.BattlePhasePause)
+                        WasPaused = true;
+
+                  yield return new WaitUntil(() => !BattleSystem.Instance.BattlePhasePause);
+                    {
+                        Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
+                        BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+
+                        if (previousState != BattleStates.BATTLE)
+                            BattleSystem.Instance.playerUnits[0].StartDecision();
+                        else if(WasPaused)
+                        {
+                           Director.Instance.StartCoroutine(BattleSystem.Instance.ForcePerformActionClose());
+                        }
+                        else
+                            CombatTools.UnpauseStaminaTimer();
+                      
+                    }
+                  
+
                     if (TurnOffUiAfter)
                         LabCamera.Instance.uicam.gameObject.SetActive(true);
 

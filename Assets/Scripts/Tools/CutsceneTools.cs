@@ -34,6 +34,16 @@ public class CutsceneTools : MonoBehaviour
     {
         CombatTools.CheckAndReturnNamedUnit(unitName).IsHidden = false;
     }
+
+    public static void SelectFirstUnit()
+    {
+        BattleSystem.Instance.playerUnits[0].StartDecision();
+    }
+
+    public static void EndBattlePhasePause()
+    {
+       BattleSystem.Instance.BattlePhasePause = false;
+    }
     public void ChangeVignetteIntensity(float DesiredValue)
     {
         Tools.StartAndCheckCoroutine(vignetteIEnumerator, ChangeVignetteIntensityCoroutine(DesiredValue));

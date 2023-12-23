@@ -394,13 +394,12 @@ public class Tools : MonoBehaviour
         float alpha = 1;
         if (gameObjectToChange != null)
         {
-            while (sprite.material.color.a > 0 && gameObjectToChange != null)
-            {
-                alpha = 0.1f;
-                sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
-                yield return new WaitForSeconds(delay);
-            }
-            Destroy(gameObjectToChange);
+                while (sprite.material.color.a > 0 && sprite != null)
+                {
+                    alpha = 0.1f;
+                    sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
+                    yield return new WaitForSeconds(delay);
+                }
         }
     }
     public IEnumerator ChangeLightIntensity(Light light, float desiredIntensity, float amountToRaiseBy, float delay = 0)
@@ -498,7 +497,12 @@ public class Tools : MonoBehaviour
                     stringToReturn = "PIERCE2";
                 }
            break;
-                default:
+            case DamageType.HEAT:
+                {
+                    stringToReturn = "HEAT2";
+                }
+                break;
+            default:
                 {
                     stringToReturn = damageType.ToString();
                 }

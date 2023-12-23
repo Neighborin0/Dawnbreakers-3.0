@@ -729,7 +729,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleStates.BATTLE;
         yield return new WaitForSeconds(1f);
         print("Action should be performed");
-        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.ActionName).Reverse().ToList();
+        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.unit.unitName).Reverse().ToList();
         for (int i = 0; i < ActionsToPerform.Count; i++)
         {
             var action = ActionsToPerform[i];;
@@ -776,7 +776,7 @@ public class BattleSystem : MonoBehaviour
                         }
                         yield return new WaitUntil(() => action.Done);
                         yield return new WaitForSeconds(0.2f);
-                        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.ActionName).Reverse().ToList();
+                        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.unit.unitName).Reverse().ToList();
                         action.ResetAction();
                         yield return new WaitForSeconds(0.2f);
                         foreach (var x in Tools.GetAllUnits())
@@ -785,6 +785,7 @@ public class BattleSystem : MonoBehaviour
                         }
                         if (CheckDeathState())
                         {
+                            BattlePhasePause = true;
                             StopCoroutine(actionCo);
                         }
                         else
@@ -799,73 +800,78 @@ public class BattleSystem : MonoBehaviour
                 break;
           
         }
-        yield return new WaitUntil(() => !DustyIsDead);
         yield return new WaitUntil(() => !BattlePhasePause);
+        yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
         //All Actions Are Done
+        StartCoroutine(ForcePerformActionClose());
+    }
+
+    public IEnumerator ForcePerformActionClose()
+    {
         CombatTools.UnpauseStaminaTimer();
         yield return new WaitForSeconds(0.5f);
-        ActionsToPerform = new List<Action>();
+        BattleSystem.Instance.ActionsToPerform = new List<Action>();
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(Director.Instance.timeline.ResetTimeline());
         yield return new WaitUntil(() => Director.Instance.timeline.slider.value <= 0);
-        foreach (var x in Tools.GetAllUnits())
+        foreach (var y in Tools.GetAllUnits())
         {
-            foreach (var skill in x.skillUIs)
+            foreach (var skill in y.skillUIs)
             {
                 var actionContainer = skill.GetComponent<ActionContainer>();
                 actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
                 actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
                 actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
             }
-                if (!x.IsPlayerControlled)
+            if (!y.IsPlayerControlled)
             {
-                x.behavior.DoBehavior(x);
-                if (x.intentUI != null)
+                y.behavior.DoBehavior(y);
+                if (y.intentUI != null)
                 {
                     yield return new WaitForSeconds(0.1f);
-                    x.intentUI.gameObject.SetActive(true);
-                    x.FadeIntent(false);
+                    y.intentUI.gameObject.SetActive(true);
+                    y.FadeIntent(false);
                 }
-                
+
             }
-           
-            x.DoBattlePhaseEnd();
+
+            y.DoBattlePhaseEnd();
         }
         //State just before player gets control
         BattleLog.Instance.ResetBattleLog();
-        if (enemyUnits.Count != 0 && playerUnits.Count != 0)
+        if (BattleSystem.Instance.enemyUnits.Count != 0 && BattleSystem.Instance.playerUnits.Count != 0)
         {
-            state = BattleStates.DECISION_PHASE;
-            for (int i = 0; i < playerUnits.Count; i++)
+            BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
+            for (int i = 0; i < BattleSystem.Instance.playerUnits.Count; i++)
             {
-                playerUnits[i].state = PlayerState.IDLE;
-                if(i == 0)
+                BattleSystem.Instance.playerUnits[i].state = PlayerState.IDLE;
+                if (i == 0)
                 {
-                    playerUnits[i].StartDecision();
+                    BattleSystem.Instance.playerUnits[i].StartDecision();
                 }
             }
-             BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         }
-        foreach (var x in Tools.GetAllUnits())
+        foreach (var y in Tools.GetAllUnits())
         {
-            if(!x.DoesntLoseArmorAtStartOfRound)
+            if (!y.DoesntLoseArmorAtStartOfRound)
             {
-                x.armor = 0;
-                x.namePlate.UpdateArmor(x.armor);
+                y.armor = 0;
+                y.namePlate.UpdateArmor(y.armor);
             }
-           
-            else
-                x.DoesntLoseArmorAtStartOfRound = false;
 
-           
-            x.DoBattlePhaseClose();
+            else
+                y.DoesntLoseArmorAtStartOfRound = false;
+
+
+            y.DoBattlePhaseClose();
 
         }
         CombatTools.ReturnPipCounter().AddPip();
         CombatTools.TickAllEffectIcons();
-        if (state != BattleStates.DECISION_PHASE && state != BattleStates.WON && state != BattleStates.DEAD && state != BattleStates.TALKING && enemyUnits.Count > 0 && playerUnits.Count > 0)
+        if (BattleSystem.Instance.state != BattleStates.DECISION_PHASE && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD && BattleSystem.Instance.state != BattleStates.TALKING && BattleSystem.Instance.enemyUnits.Count > 0 && BattleSystem.Instance.playerUnits.Count > 0)
         {
-            state = BattleStates.IDLE;
+            BattleSystem.Instance.state = BattleStates.IDLE;
         }
         yield break;
     }

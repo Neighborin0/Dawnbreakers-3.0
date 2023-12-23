@@ -28,7 +28,7 @@ public class Healthbar : MonoBehaviour
 
     void Start()
     {
-         try
+        try
         {
             slider.maxValue = unit.maxHP;
             unit.namePlate.DEF_icon.SetActive(false);
@@ -42,7 +42,7 @@ public class Healthbar : MonoBehaviour
         {
 
         }
-       
+
 
     }
     void Update()
@@ -51,7 +51,7 @@ public class Healthbar : MonoBehaviour
         {
             slider.value = unit.currentHP;
             text.text = $"{unit.currentHP} / {unit.maxHP}";
-            if(unit.namePlate != null && unit.armor > 0)
+            if (unit.namePlate != null && unit.armor > 0)
             {
                 healthbarImageComponent.sprite = ArmorSprite;
             }
@@ -62,7 +62,7 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage, Unit DamageSource, DamageType damageType, Action.ActionStyle actionStyle,bool IgnoresDEF = false)
+    public void TakeDamage(int damage, Unit DamageSource, DamageType damageType, Action.ActionStyle actionStyle, bool IgnoresDEF = false)
     {
         //RunTracker.Instance.slayer = DamageSource;
         if (unit != null)
@@ -70,7 +70,7 @@ public class Healthbar : MonoBehaviour
             int TrueDamage = 0;
             backSlider.value = slider.value;
 
-            if(unit.armor < 0)
+            if (unit.armor < 0)
             {
                 unit.armor = 0;
             }
@@ -89,7 +89,7 @@ public class Healthbar : MonoBehaviour
             unit.currentHP -= TrueDamage;
 
             if (unit.armor > 0)
-            unit.armor -= damage;
+                unit.armor -= damage;
 
             unit.namePlate.UpdateArmor(unit.armor);
             if (this != null)
@@ -204,10 +204,10 @@ public class Healthbar : MonoBehaviour
                 }
             }
         }
-       
+
     }
 
-    private IEnumerator DamagePopUp(int damage,DamageType damageType, Action.ActionStyle actionStyle)
+    private IEnumerator DamagePopUp(int damage, DamageType damageType, Action.ActionStyle actionStyle)
     {
         if (unit != null)
         {
@@ -236,21 +236,21 @@ public class Healthbar : MonoBehaviour
                     yield return new WaitForSeconds(1f);
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
                     unit.DoDeathQuote();
-                    LabCamera.Instance.MoveToUnit(unit, Vector3.zero,0,8, -40, 0.5f);
+                    LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 8, -40, 0.5f);
                 }
                 else
                 {
                     LabCamera.Instance.state = LabCamera.CameraState.IDLE;
-                    LabCamera.Instance.MoveToUnit(unit, Vector3.zero,0,8, -40, 0.5f);
+                    LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 8, -40, 0.5f);
                 }
                 unit.DoOnPreDeath();
 
-                if(unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
+                if (unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
                 {
                     BattleSystem.Instance.DustyIsDead = true;
                     LabCamera.Instance.uicam.gameObject.SetActive(false);
                 }
-                 
+
 
                 yield return new WaitUntil(() => !DeathPaused);
 
@@ -265,7 +265,7 @@ public class Healthbar : MonoBehaviour
 
                 yield return new WaitForSeconds(0.7f);
                 LabCamera.Instance.Shake(0.5f, 1f);
-                Director.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero,  Quaternion.identity ,10, 0, false));
+                Director.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero, Quaternion.identity, 10, 0, false));
                 yield return new WaitForSeconds(0.03f);
                 if (popup != null)
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
@@ -322,21 +322,13 @@ public class Healthbar : MonoBehaviour
         }
         BattleSystem.Instance.numOfUnits.Remove(unit);
         Destroy(unit.ActionLayout);
-        yield return new WaitForSeconds(0.2f);
-        /*if(PlayerControlled)
-        {
-            Debug.LogWarning("Oh my god they kill Wulfric");
-            BattleSystem.Instance.DustyIsDead = false;
-            //BattleSystem.Instance.BattlePhasePause = false;
-        }
-        */
-       // else
-        //{
-            BattleSystem.Instance.BattlePhasePause = false;
-            Director.Instance.StartCoroutine(Tools.LateUnpause());
-       // }
-           
         CombatTools.TurnOffCriticalUI(unit);
+        yield return new WaitForSeconds(0.2f);
+
+        if(unit.unitName != "Dusty")
+            BattleSystem.Instance.BattlePhasePause = false;
+
+        Director.Instance.StartCoroutine(Tools.LateUnpause());
         Destroy(unit.gameObject);
     }
 

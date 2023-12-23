@@ -88,12 +88,12 @@ public class OptionsManager : MonoBehaviour
                 height = Screen.resolutions[i].height,
                 refreshRate = Screen.resolutions[i].refreshRate
             };
-            if (fr.refreshRate == Screen.currentResolution.refreshRateRatio.value)
+            if (fr.refreshRate == Screen.currentResolution.refreshRate)
             {
                 string option = fr.width + " x " + fr.height;
                 filteredResolutions.Add(fr);
                 resoultionparams.Add(option);
-                if (fr.width == Screen.width && fr.refreshRate == Screen.currentResolution.refreshRateRatio.value)
+                if (fr.width == Screen.width && fr.refreshRate == Screen.currentResolution.refreshRate)
                 {
                     currentResIndex = i;
                 }
