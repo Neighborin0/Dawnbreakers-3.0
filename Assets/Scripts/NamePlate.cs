@@ -64,7 +64,6 @@ public class NamePlate : MonoBehaviour
     public IEnumerator Fade(bool FadeIn)
     {
         var DEfImage = DEF_icon.GetComponent<Image>();
-        Debug.LogWarning("IS THIS SHIT EVEN WORKING????????");
         if (!FadeIn)
         {
             if (gameObject != null)

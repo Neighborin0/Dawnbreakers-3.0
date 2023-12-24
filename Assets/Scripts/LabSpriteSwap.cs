@@ -15,6 +15,7 @@ public class LabSpriteSwap : MonoBehaviour
     public Image image;
     public Sprite originalSprite;
     public Sprite highlightedSprite;
+    public bool interactable = true;
  
    public void Revert()
     {
@@ -23,7 +24,10 @@ public class LabSpriteSwap : MonoBehaviour
 
     public void Change()
     {
+        if(interactable)
         image.sprite = highlightedSprite;
+        else
+            Revert();
     }
 
 }

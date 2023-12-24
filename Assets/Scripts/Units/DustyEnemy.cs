@@ -75,7 +75,7 @@ public class DustyEnemy : Unit
                         foreach (var skill in Aurelia.skillUIs)
                         {
                             var actionContainer = skill.GetComponent<ActionContainer>();
-                            if (actionContainer.action.ActionName != "Sweep")
+                            if (actionContainer.action != null && actionContainer.action.ActionName != "Sweep")
                             {
                                 actionContainer.Disabled = true;
                                 actionContainer.button.interactable = false;

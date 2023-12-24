@@ -233,7 +233,7 @@ public class Unit : MonoBehaviour
                             foreach (var skill in skillUIs)
                             {
                                 var actionContainer = skill.GetComponent<ActionContainer>();
-                                if (actionContainer.action.actionStyle != Action.ActionStyle.STANDARD)
+                                if (actionContainer.action != null && actionContainer.action.actionStyle != Action.ActionStyle.STANDARD)
                                 {
                                     CombatTools.ReturnPipCounter().AddPip();
                                     actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
@@ -397,26 +397,51 @@ public class Unit : MonoBehaviour
     {
         Tools.StartAndCheckCoroutine(fadeCoroutine, FadeIntentsCoroutine(FadeOut));
     }
-    private IEnumerator FadeIntentsCoroutine( bool FadeOut)
+
+    private bool FadingOutIntent;
+    private IEnumerator FadeIntentsCoroutine(bool FadeOut)
     {
         if (FadeOut)
         {
-            intentUI.GetComponent<UnityEngine.UI.Button>().interactable = false;
-            StartCoroutine(Tools.FadeObject(intentUI.GetComponent<Image>(), 0.005f, false, false));
-            StartCoroutine(Tools.FadeText(intentUI.textMesh, 0.005f, false, false));
-            StartCoroutine(Tools.FadeText(intentUI.damageNums, 0.005f, false, false));
-            StartCoroutine(Tools.FadeText(intentUI.costNums, 0.005f, false, false));
-            yield return new WaitForSeconds(1f);
-            intentUI.gameObject.SetActive(false);
+            FadingOutIntent = true;
+            if (intentUI != null) 
+            {
+                var intentImage = intentUI.GetComponent<Image>();
+                intentUI.GetComponent<LabSpriteSwap>().interactable = false;
+                intentUI.GetComponent<LabSpriteSwap>().Revert();
+                while (intentUI.GetComponent<Image>().color.a > 0 && intentUI.gameObject != null && FadingOutIntent)
+                {
+                    intentUI.GetComponent<Image>().color = new Color(intentImage.color.r, intentImage.color.g, intentImage.color.b, intentImage.color.a - 0.1f);
+                    intentUI.textMesh.color = new Color(intentUI.textMesh.color.r, intentUI.textMesh.color.g, intentUI.textMesh.color.b, intentUI.textMesh.color.a - 0.1f);
+                    intentUI.damageNums.color = new Color(intentUI.damageNums.color.r, intentUI.damageNums.color.g, intentUI.damageNums.color.b, intentUI.damageNums.color.a - 0.1f);
+                    intentUI.costNums.color = new Color(intentUI.costNums.color.r, intentUI.costNums.color.g, intentUI.costNums.color.b, intentUI.costNums.color.a - 0.1f);
+                    yield return new WaitForSeconds(0.01f);
+                }
+                if (!FadingOutIntent)
+                    yield return new WaitUntil(() => intentImage.color.a <= 0);
+                if(FadingOutIntent)
+                intentUI.gameObject.SetActive(false);
+            }
+           
         }
         else
         {
+            FadingOutIntent = false;
             Tools.SetImageColorAlphaToZero(intentUI.GetComponent<Image>());
-            intentUI.GetComponent<UnityEngine.UI.Button>().interactable = true;
-            StartCoroutine(Tools.FadeObject(intentUI.GetComponent<Image>(), 0.005f, true, false));
-            StartCoroutine(Tools.FadeText(intentUI.textMesh, 0.005f, true, false));
-            StartCoroutine(Tools.FadeText(intentUI.damageNums, 0.005f, true, false));
-            StartCoroutine(Tools.FadeText(intentUI.costNums, 0.005f, true, false));
+            intentUI.GetComponent<LabSpriteSwap>().interactable = true;
+            var intentImage = intentUI.GetComponent<Image>();
+            while (intentUI.GetComponent<Image>().color.a > 0 && intentUI.gameObject != null && !FadingOutIntent)
+            {
+                intentUI.GetComponent<Image>().color = new Color(intentImage.color.r, intentImage.color.g, intentImage.color.b, intentImage.color.a + 0.1f);
+                intentUI.textMesh.color = new Color(intentUI.textMesh.color.r, intentUI.textMesh.color.g, intentUI.textMesh.color.b, intentUI.textMesh.color.a + 0.1f);
+                intentUI.damageNums.color = new Color(intentUI.damageNums.color.r, intentUI.damageNums.color.g, intentUI.damageNums.color.b, intentUI.damageNums.color.a + 0.1f);
+                intentUI.costNums.color = new Color(intentUI.costNums.color.r, intentUI.costNums.color.g, intentUI.costNums.color.b, intentUI.costNums.color.a + 0.1f);
+                yield return new WaitForSeconds(0.01f);
+            }
+            if (!FadingOutIntent)
+                yield return new WaitUntil(() => intentImage.color.a >= 1);
+            if (!FadingOutIntent)
+                intentUI.gameObject.SetActive(true);
         }
 
     }

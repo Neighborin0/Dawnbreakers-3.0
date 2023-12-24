@@ -1267,6 +1267,7 @@ MonoBehaviour:
   cameraPos2Units: {x: 0, y: 15, z: -100}
   cameraPos3Units: {x: 0, y: 15, z: -100}
   bossNodeCamPos: {x: 0, y: 17, z: -105}
+  DustyIsDead: 0
   state: 0
 --- !u!4 &96890658
 Transform:
@@ -21068,7 +21069,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 1
+    scalar: 100
     minScalar: 0
     maxCurve:
       serializedVersion: 2

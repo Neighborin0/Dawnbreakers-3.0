@@ -222,14 +222,14 @@ public class BattleSystem : MonoBehaviour
             LabCamera.Instance.GetComponent<MoveableObject>().Move(false, 0.01f, 100);
             yield return new WaitUntil(() => LabCamera.Instance.transform.position.y <= BattleSystem.Instance.cameraPos1Units.y + 0.01f);
             LabCamera.Instance.GetComponent<MoveableObject>().Stop();
-
-
         }
         LabCamera.Instance.ReadjustCam();
 
         if (!TutorialNode)
             yield return new WaitForSeconds(1.5f);
 
+        if(TutorialNode)
+            yield return new WaitForSeconds(0.5f);
         BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
         BattleLog.Instance.ResetBattleLog();
@@ -591,7 +591,7 @@ public class BattleSystem : MonoBehaviour
                 foreach (var skill in unit.skillUIs)
                 {
                     var actionContainer = skill.GetComponent<ActionContainer>();
-                    if (actionContainer.action.actionStyle != Action.ActionStyle.STANDARD && actionContainer.targetting)
+                    if (actionContainer.action != null && actionContainer.action.actionStyle != Action.ActionStyle.STANDARD && actionContainer.targetting)
                     {
                         CombatTools.ReturnPipCounter().AddPip();
                         actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
@@ -603,14 +603,17 @@ public class BattleSystem : MonoBehaviour
             foreach (var skill in unit.skillUIs)
             {
                 skill.SetActive(false);
-                var actionContainer = skill.GetComponent<ActionContainer>();
-              
-                actionContainer.action.ResetAction();
-                if(!unit.IsPlayerControlled)
+                if (skill.GetComponent<ActionContainer>() != null && skill.GetComponent<ActionContainer>().action != null)
                 {
-                    foreach (var action in unit.actionList)
+                    var actionContainer = skill.GetComponent<ActionContainer>();
+
+                    actionContainer.action.ResetAction();
+                    if (!unit.IsPlayerControlled)
                     {
-                        action.ResetAction();
+                        foreach (var action in unit.actionList)
+                        {
+                            action.ResetAction();
+                        }
                     }
                 }
             }
@@ -682,6 +685,9 @@ public class BattleSystem : MonoBehaviour
 
     }
 
+    IEnumerator battleCo;
+    IEnumerator actionCo;
+
     public void AddAction(Action action)
     {
         BattleLog.Instance.ClearAllBattleLogText();
@@ -696,8 +702,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    IEnumerator battleCo;
-    IEnumerator actionCo;
+   
 
 
 
@@ -803,7 +808,8 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitUntil(() => !BattlePhasePause);
         yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
         //All Actions Are Done
-        StartCoroutine(ForcePerformActionClose());
+        actionCo = ForcePerformActionClose();
+        Director.Instance.StartCoroutine(actionCo);
     }
 
     public IEnumerator ForcePerformActionClose()
@@ -819,9 +825,13 @@ public class BattleSystem : MonoBehaviour
             foreach (var skill in y.skillUIs)
             {
                 var actionContainer = skill.GetComponent<ActionContainer>();
-                actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
-                actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
-                actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
+                if (actionContainer.action != null)
+                {
+                    actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
+                    actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
+                    actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
+                }
+               
             }
             if (!y.IsPlayerControlled)
             {

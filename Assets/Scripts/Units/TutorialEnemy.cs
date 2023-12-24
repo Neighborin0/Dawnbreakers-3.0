@@ -66,11 +66,6 @@ public class TutorialEnemy : Unit
             }
             else
             {
-                foreach (var skill in Aurelia.skillUIs)
-                {
-                    var actionContainer = skill.GetComponent<ActionContainer>();
-                    actionContainer.button.interactable = true;
-                }
                 //Aurelia.skillUIs[0].GetComponent<ActionContainer>().Disabled = false;
                 if (turn == 1)
                 {
@@ -89,12 +84,13 @@ public class TutorialEnemy : Unit
                         foreach (var skill in Aurelia.skillUIs)
                         {
                             var actionContainer = skill.GetComponent<ActionContainer>();
-                            if (actionContainer.action.ActionName == "Slash")
+                            if (actionContainer.action != null && actionContainer.action.ActionName == "Slash")
                             {
                                 actionContainer.Disabled = true;
                                 actionContainer.button.interactable = false;
                             }
                         }
+
                     }
                 }
                 else
@@ -102,11 +98,12 @@ public class TutorialEnemy : Unit
                     foreach (var skill in Aurelia.skillUIs)
                     {
                         var actionContainer = skill.GetComponent<ActionContainer>();
-                        if (actionContainer.action.ActionName == "Defend")
+                        if (actionContainer.action != null && actionContainer.action.ActionName == "Defend")
                         {
                             actionContainer.Disabled = true;
                             actionContainer.button.interactable = false;
                         }
+
                     }
                 }
                 CombatTools.SetupEnemyAction(baseUnit, turn);

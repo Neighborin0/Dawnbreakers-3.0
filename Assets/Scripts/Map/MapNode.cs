@@ -53,7 +53,7 @@ public class MapNode : MonoBehaviour
 
         foreach (var MM in FindObjectsOfType<MiniMapIcon>())
         {
-            StartCoroutine(MM.Move(this.transform.position.x - i * 2, transform.position.y + 1f, transform.position.z));
+            StartCoroutine(MM.Move(this.transform.position.x - i * 2, transform.position.y + 1f - (i * 0.4f), transform.position.z - 1.5f));
             i++;
         }
 

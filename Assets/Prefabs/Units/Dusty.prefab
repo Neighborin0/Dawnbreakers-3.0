@@ -251,6 +251,7 @@ MonoBehaviour:
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
   - {fileID: 7484641724800909116, guid: eda5997d712fb004ab1d580ee8bab62f, type: 3}
   health: {fileID: 0}
+  IsHighlighted: 0
   Dying: 0
   charPortraits:
   - {fileID: 21300000, guid: 34355069512a9454487a6a6d8e02c199, type: 3}
@@ -265,6 +266,7 @@ MonoBehaviour:
   statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 0, z: 0}
+  DoesntLoseArmorAtStartOfRound: 0
   IsHidden: 0
   introText: []
   inventory: []
@@ -275,6 +277,7 @@ MonoBehaviour:
   maxHP: 0
   attackStat: 0
   defenseStat: 0
+  armor: 0
   spotLight: {fileID: 4101498702268122146}
   actionCostMultiplier: 1
   resistances: 
