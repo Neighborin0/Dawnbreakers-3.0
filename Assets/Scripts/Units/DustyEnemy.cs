@@ -61,7 +61,11 @@ public class DustyEnemy : Unit
                 {
                     Director.Instance.UnlockedPipSystem = true;
                     Director.Instance.timeline.pipCounter.gameObject.SetActive(true);
-                    CombatTools.ReturnPipCounter().ResetPips();
+                    CombatTools.ReturnPipCounter().pipCount = 0;
+                    foreach(Transform pip in CombatTools.ReturnPipCounter().gameObject.transform)
+                    {
+                        Destroy(pip.gameObject);
+                    }
                 }
 
                 if (turn == 2)
@@ -72,15 +76,7 @@ public class DustyEnemy : Unit
 
                         Aurelia.actionList.Add(Director.Instance.actionDatabase.Where(obj => obj.name == "Sweep").SingleOrDefault());
                         BattleSystem.Instance.SetupHUD(Aurelia, null);
-                        foreach (var skill in Aurelia.skillUIs)
-                        {
-                            var actionContainer = skill.GetComponent<ActionContainer>();
-                            if (actionContainer.action != null && actionContainer.action.ActionName != "Sweep")
-                            {
-                                actionContainer.Disabled = true;
-                                actionContainer.button.interactable = false;
-                            }
-                        }
+                        Director.Instance.StartCoroutine(LateDisable());
                     }
                 }
                 CombatTools.SetupEnemyAction(baseUnit, turn);
@@ -89,6 +85,22 @@ public class DustyEnemy : Unit
             else
             {
                 baseUnit.BattlePhaseClose += EndThisMF;
+            }
+        }
+
+        private static IEnumerator LateDisable()
+        {
+            yield return new WaitForSeconds(0.2f);
+            var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+            foreach (var skill in Aurelia.skillUIs)
+            {
+                var actionContainer = skill.GetComponent<ActionContainer>();
+                if (actionContainer.action != null && actionContainer.action.ActionName != "Sweep")
+                {
+                    actionContainer.Disabled = true;
+                    actionContainer.button.interactable = false;
+                    break;
+                }
             }
         }
 

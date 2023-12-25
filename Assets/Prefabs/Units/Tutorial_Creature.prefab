@@ -5118,6 +5118,7 @@ MonoBehaviour:
   statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
+  DoesntLoseArmorAtStartOfRound: 0
   IsHidden: 0
   introText: []
   inventory: []
@@ -5134,7 +5135,7 @@ MonoBehaviour:
   weaknesses: 
   actionList:
   - {fileID: 11400000, guid: a367c5a61075e5d439a7f2eea9211cd5, type: 2}
-  - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
+  - {fileID: 11400000, guid: d92930017a77bc245bebc1281cd25a05, type: 2}
   - {fileID: 11400000, guid: a4d8a7ac53a1c3e488204ae9b11b8fd3, type: 2}
   summonables: []
   TutorialIcon1: {fileID: 338629660966762150, guid: 5118e747ef6dafa48982a502d1d4a55e,

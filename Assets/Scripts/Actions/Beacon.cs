@@ -104,6 +104,7 @@ public class Beacon : Action
                         summon.ChangeUnitsLight(summon.spotLight, 150, 15, new Color(1, 0.5409836f, 0, 1), 0.04f, 0.1f);
                         yield return new WaitForSeconds(0.5f);
                         BattleSystem.Instance.SetupHUD(summon, BSP);
+                        summon.unitName = CombatTools.CheckNames(summon);
                         yield return new WaitForSeconds(0.5f);
                         break;
                     }

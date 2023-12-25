@@ -17,7 +17,7 @@ public class Husk : Unit
         IsPlayerControlled = false;
         weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE };
         CombatTools.ModifyAction(this, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0 , ActionVariance01.Length)]);
-        if (BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
+        if (BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName.Contains("Matriarch")).SingleOrDefault())
         {
             behavior = this.gameObject.AddComponent<TutorialHuskMatriarchBehavior>();
             maxHP = UnityEngine.Random.Range(17, 22);

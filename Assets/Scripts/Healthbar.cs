@@ -245,7 +245,7 @@ public class Healthbar : MonoBehaviour
                 }
                 unit.DoOnPreDeath();
 
-                if (unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
+                if (unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName.Contains("Matriarch")).SingleOrDefault())
                 {
                     BattleSystem.Instance.DustyIsDead = true;
                     LabCamera.Instance.uicam.gameObject.SetActive(false);
@@ -254,7 +254,7 @@ public class Healthbar : MonoBehaviour
 
                 yield return new WaitUntil(() => !DeathPaused);
 
-                if (unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName == "Matriarch").SingleOrDefault())
+                if (unit.unitName == "Dusty" && BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName.Contains("Matriarch")).SingleOrDefault())
                     LabCamera.Instance.uicam.gameObject.SetActive(false);
 
                 yield return new WaitForSeconds(0.5f);

@@ -82,6 +82,10 @@ public class MapController : MonoBehaviour
         {
             GenerateNodesFromFlow(MapFlow.TutorialFlow);
         }
+        if (!Director.Instance.DevMode)
+        {
+            enableMapControls = true;
+        }
         SceneManager.sceneLoaded += SaveSceneData;
 
 
@@ -282,10 +286,6 @@ public class MapController : MonoBehaviour
                     {
                         newNode.gameObject.SetActive(false);
                     }
-                    if (!Director.Instance.DevMode)
-                    {
-                        enableMapControls = true;
-                    }
 
                     break;
                 }
@@ -293,7 +293,10 @@ public class MapController : MonoBehaviour
             }
         }
         if (enableMapControls && SceneManager.GetActiveScene().name == "MAP2")
-            mapControlBar.SetActive(true);
+        {
+            Director.Instance.StartCoroutine(MapControlsIntro());
+        }
+           
 
         if (!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2")
             Director.Instance.StartCoroutine(DoLevelDrop());
@@ -305,6 +308,13 @@ public class MapController : MonoBehaviour
         }
 
         SpawnDecorations();
+    }
+
+    private IEnumerator MapControlsIntro()
+    {
+        mapControlBar.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        mapControlBar.GetComponent<MoveableObject>().Move(true);
     }
 
     private IEnumerator DoLevelDrop()

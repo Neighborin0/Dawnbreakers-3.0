@@ -159,11 +159,11 @@ public class CombatTools : MonoBehaviour
     public static string CheckNames(Unit unit)
     {
         string nameToReturn = "";
-        for (int i = 0; i <= BattleSystem.Instance.enemyUnits.Count - 1; i++)
+        for (int i = 0; i < BattleSystem.Instance.enemyUnits.Count; i++)
         {
             if (BattleSystem.Instance.enemyUnits[i].unitName == unit.unitName)
             {
-                nameToReturn = $"{(i + 2)}";
+                nameToReturn = $"{unit.unitName}({i + 1})";
             }
         }
         return nameToReturn;
@@ -433,7 +433,7 @@ public class CombatTools : MonoBehaviour
         var unit = new Unit();
         foreach (var x in Tools.GetAllUnits())
         {
-            if (x.unitName == unitName)
+            if (x.unitName.Contains(unitName))
             {
                 unit = x;
                 break;

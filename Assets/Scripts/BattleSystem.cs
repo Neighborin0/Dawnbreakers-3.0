@@ -17,6 +17,7 @@ using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 using static System.Collections.Specialized.BitVector32;
 
+
 public enum BattleStates { START, DECISION_PHASE, BATTLE, WON, DEAD, IDLE, TALKING }
 public class BattleSystem : MonoBehaviour
 {
@@ -92,6 +93,11 @@ public class BattleSystem : MonoBehaviour
         {
             CA.intensity.value = 0f;
         }
+        if (BattleSystem.Instance.effectsSetting.sharedProfile.TryGet<Vignette>(out var vignette))
+        {
+            vignette.intensity.value = 0.13f;
+        }
+
     }
     void Start()
     {
@@ -276,20 +282,19 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator TransitionToDeath()
     {
+        yield return new WaitForSeconds(0.5f);
         LabCamera.Instance.ResetPosition();
         yield return new WaitForSeconds(1f);
         if (OptionsManager.Instance.IntensityLevel == 0)
         {
             CombatTools.PauseStaminaTimer();
             MapController.Instance.gameObject.transform.SetParent(this.transform);
-            Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
             OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Prologue Ending"));
         }
         else
         {
             //RunTracker.Instance.DisplayStats();
             Tools.ToggleUiBlocker(false, false);
-            Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
             CombatTools.PauseStaminaTimer();
         }
         yield break;
@@ -737,7 +742,13 @@ public class BattleSystem : MonoBehaviour
         ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.unit.unitName).Reverse().ToList();
         for (int i = 0; i < ActionsToPerform.Count; i++)
         {
-            var action = ActionsToPerform[i];;
+            var action = ActionsToPerform[i];
+            if (action.unit == null)
+            {
+                ActionsToPerform.RemoveAt(i);
+                i--;
+                continue;
+            }
             CombatTools.UnpauseStaminaTimer();
             if (ActionsToPerform.Count > 0)
             {
@@ -780,8 +791,8 @@ public class BattleSystem : MonoBehaviour
                             }
                         }
                         yield return new WaitUntil(() => action.Done);
+                        yield return new WaitUntil(() => !BattlePhasePause);
                         yield return new WaitForSeconds(0.2f);
-                        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.unit.unitName).Reverse().ToList();
                         action.ResetAction();
                         yield return new WaitForSeconds(0.2f);
                         foreach (var x in Tools.GetAllUnits())
@@ -791,13 +802,17 @@ public class BattleSystem : MonoBehaviour
                         if (CheckDeathState())
                         {
                             BattlePhasePause = true;
+                            CombatTools.PauseStaminaTimer();
                             StopCoroutine(actionCo);
+                            yield break;
+                          
                         }
                         else
                         {
                             yield return new WaitUntil(() => !BattlePhasePause);
-                            yield return new WaitForSeconds(0.5f);
+                            yield return new WaitForSeconds(0.3f);
                         }
+                        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.unit.unitName).Reverse().ToList();
                     }
                 }
             }
@@ -808,16 +823,16 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitUntil(() => !BattlePhasePause);
         yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
         //All Actions Are Done
+        yield return new WaitUntil(() => !CheckDeathState());
         actionCo = ForcePerformActionClose();
         Director.Instance.StartCoroutine(actionCo);
     }
 
     public IEnumerator ForcePerformActionClose()
     {
+        yield return new WaitForSeconds(0.2f);
         CombatTools.UnpauseStaminaTimer();
-        yield return new WaitForSeconds(0.5f);
         BattleSystem.Instance.ActionsToPerform = new List<Action>();
-        yield return new WaitForSeconds(0.5f);
         StartCoroutine(Director.Instance.timeline.ResetTimeline());
         yield return new WaitUntil(() => Director.Instance.timeline.slider.value <= 0);
         foreach (var y in Tools.GetAllUnits())
@@ -838,7 +853,7 @@ public class BattleSystem : MonoBehaviour
                 y.behavior.DoBehavior(y);
                 if (y.intentUI != null)
                 {
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(0.01f);
                     y.intentUI.gameObject.SetActive(true);
                     y.FadeIntent(false);
                 }
@@ -953,6 +968,7 @@ public class BattleSystem : MonoBehaviour
                 x.namePlate.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x - 1.8f, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;
                 x.namePlate.IconGrid.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x, x.namePlate.IconGrid.transform.position.y, x.transform.position.z) / canvas.scaleFactor;
                 x.GetComponent<SpriteRenderer>().flipX = true;
+                x.unitName = CombatTools.CheckNames(x);
             }
         }
         if (unit.IsPlayerControlled && !unit.IsSummon)

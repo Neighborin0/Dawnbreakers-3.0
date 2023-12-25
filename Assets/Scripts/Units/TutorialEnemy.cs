@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using static UnityEngine.UI.CanvasScaler;
 
 public class TutorialEnemy : Unit
@@ -44,6 +45,8 @@ public class TutorialEnemy : Unit
             var tutorialIcon = Instantiate(TutorialIcon1, Director.Instance.canvas.transform);
             tutorialIcon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-5000, 0, 0f);
             tutorialIcon.GetComponent<MoveableObject>().Move(true);
+            Director.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
+            Director.Instance.blackScreen.gameObject.SetActive(true);
         }
         //BattleSystem.Instance.SetTempEffect(this, "revitalize", false, 0, 0, 0);
         BattleStarted -= CreateTutorialIcon;
@@ -66,7 +69,6 @@ public class TutorialEnemy : Unit
             }
             else
             {
-                //Aurelia.skillUIs[0].GetComponent<ActionContainer>().Disabled = false;
                 if (turn == 1)
                 {
                     if (!Aurelia.actionList.Contains(Director.Instance.actionDatabase.Where(obj => obj.name == "Defend").SingleOrDefault()))
@@ -80,18 +82,11 @@ public class TutorialEnemy : Unit
                             var tutorialIcon = Instantiate(TutorialIcon2, Director.Instance.canvas.transform);
                             tutorialIcon.GetComponent<RectTransform>().anchoredPosition = new Vector3(-5000, 0, 0f);
                             tutorialIcon.GetComponent<MoveableObject>().Move(true);
-                        }
-                        foreach (var skill in Aurelia.skillUIs)
-                        {
-                            var actionContainer = skill.GetComponent<ActionContainer>();
-                            if (actionContainer.action != null && actionContainer.action.ActionName == "Slash")
-                            {
-                                actionContainer.Disabled = true;
-                                actionContainer.button.interactable = false;
-                            }
-                        }
-
+                        }                       
                     }
+
+                    Director.Instance.StartCoroutine(LateDisable());
+
                 }
                 else
                 {
@@ -102,6 +97,11 @@ public class TutorialEnemy : Unit
                         {
                             actionContainer.Disabled = true;
                             actionContainer.button.interactable = false;
+                        }
+                        else
+                        {
+                            actionContainer.Disabled = false;
+                            actionContainer.button.interactable = true;
                         }
 
                     }
@@ -117,6 +117,24 @@ public class TutorialEnemy : Unit
                 }
             }
         }
+
+    }
+
+    private static IEnumerator LateDisable()
+    {
+        yield return new WaitForSeconds(0.2f);
+        var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+        foreach (var skill in Aurelia.skillUIs)
+        {
+            var actionContainer = skill.GetComponent<ActionContainer>();
+            if (actionContainer.action != null && actionContainer.action.ActionName != "Defend")
+            {
+                actionContainer.Disabled = true;
+                actionContainer.button.interactable = false;
+                break;
+            }
+        }
+
 
     }
 }

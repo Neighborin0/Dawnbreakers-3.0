@@ -53,7 +53,7 @@ public class MapNode : MonoBehaviour
 
         foreach (var MM in FindObjectsOfType<MiniMapIcon>())
         {
-            StartCoroutine(MM.Move(this.transform.position.x - i * 2, transform.position.y + 1f - (i * 0.4f), transform.position.z - 1.5f));
+            StartCoroutine(MM.Move((this.transform.position.x + 0.7f) - (i * 1.3f), transform.position.y + 1f - (i * 0.4f), transform.position.z - 1.5f));
             i++;
         }
 
@@ -96,8 +96,16 @@ public class MapNode : MonoBehaviour
                 }
 
                 scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), newScaleSize, 0.01f);
-                if(gameObject.activeSelf)
-                    StartCoroutine(scaler);
+                try
+                {
+                    if (gameObject.activeSelf)
+                        StartCoroutine(scaler);
+                }
+                catch(Exception e)
+                {
+
+                }
+             
                 IsHighlighted = false;
             }
             else

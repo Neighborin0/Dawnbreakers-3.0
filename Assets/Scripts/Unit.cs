@@ -16,7 +16,7 @@ public enum PlayerState { IDLE, DECIDING, READY, WAITING }
 public enum Stat { ATK, DEF, ARMOR, HP }
 public class Unit : MonoBehaviour
 {
-    [NonSerialized]
+    
     public string unitName;
 
     public int currentHP;
@@ -41,6 +41,7 @@ public class Unit : MonoBehaviour
     public EnemyBehavior behavior;
     public List<UnityEngine.Sprite> charPortraits;
     public Animator anim;
+    [NonSerialized]
     public bool Execute = false;
     public List<UnityEngine.Sprite> MiniMapIcons;
     public List<EffectIcon> statusEffects;
@@ -50,9 +51,11 @@ public class Unit : MonoBehaviour
     public TimeLineChild timelinechild;
     [NonSerialized]
     public bool StopMovingToUnit = false;
+    [NonSerialized]
     public bool DoesntLoseArmorAtStartOfRound = false;
     IEnumerator lightCoroutine;
     IEnumerator fadeCoroutine;
+    [NonSerialized]
     public bool IsHidden;
 
     //text stuff
@@ -350,7 +353,14 @@ public class Unit : MonoBehaviour
     public void DoDeathQuote()
     {
         BattleLog.Instance.ClearAllBattleLogText();
-        BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(deathQuotes[UnityEngine.Random.Range(0, deathQuotes.Count)].name), true, true, false);     
+        if(BattleSystem.Instance.playerUnits.Count != 1 ) 
+        {
+            BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(deathQuotes[UnityEngine.Random.Range(0, deathQuotes.Count)].name), true, true, false);
+        }
+        else
+        {
+            BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(deathQuotes[UnityEngine.Random.Range(0, deathQuotes.Count)].name), true, true, false, false, false);
+        }
         BattleSystem.Instance.BattlePhasePause = true;
     }
 

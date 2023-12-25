@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 using static UnityEngine.Rendering.DebugUI;
 using static UnityEngine.UI.CanvasScaler;
 
@@ -135,6 +136,7 @@ public class TimeLine : MonoBehaviour
                     actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
                 }
                 BattleSystem.Instance.ActionsToPerform.Remove(action);
+
                 break;
             }
         }
