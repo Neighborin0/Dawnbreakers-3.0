@@ -3608,6 +3608,7 @@ MonoBehaviour:
   - {fileID: 6760745442384073143, guid: 0304f7be3abc0e84286192334630e0c6, type: 3}
   - {fileID: 3662341035935897584, guid: a543255f7c45ba64898763fedf14ff12, type: 3}
   - {fileID: 3635664619567766556, guid: 07f5486f1639ab3479a8c03a2bfb5103, type: 3}
+  - {fileID: 4067105235387327259, guid: 61bd2f674e364fe40b7d6ec0e43d8807, type: 3}
   - {fileID: 4768930110413117568, guid: 17a0cbb94ab8d6041839a864c3bf5158, type: 3}
   actionDatabase:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}

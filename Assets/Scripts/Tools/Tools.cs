@@ -278,6 +278,24 @@ public class Tools : MonoBehaviour
         yield break;
 
     }
+
+    public static IEnumerator SmoothMoveObjectVertically(Transform transform, float distanceToMove, float moveSpeed)
+    {
+        float initialY = transform.position.y;
+        float targetY = initialY + distanceToMove;
+        float SmoothTime = 0f;
+
+        while (transform.position.y < targetY)
+        {
+            float newY = transform.position.y + moveSpeed * Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, targetY, transform.position.z), SmoothTime);
+            SmoothTime += Time.deltaTime * moveSpeed;
+            yield return null; // Wait for the next frame
+        }
+
+        // Ensure the object reaches the exact target position
+        transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
+    }
     public static IEnumerator SmoothMoveUI(RectTransform obj, float transformPointX, float transformPointY, float delay)
     {
         float SmoothTime = 0f;
