@@ -116,7 +116,7 @@ public class OptionsManager : MonoBehaviour
         MapSensitivitySlider.value = 1;
         TextSpeedslider.value = 1;
         //BloomDropDown.value = 1;
-        WaitTimeMultiplier.value = 100f;
+        WaitTimeMultiplier.value = 1;
         //bloomValue.text = Math.Round(BloomSlider.value, 1).ToString();
         mapSensValue.text = Math.Round(MapSensitivitySlider.value, 1).ToString();
         TextSpeedvalue.text = Math.Round(MapSensitivitySlider.value, 1).ToString();
@@ -260,7 +260,7 @@ public class OptionsManager : MonoBehaviour
     public void SetWaitTime()
     {
         waitTimeValue.text = Math.Round(WaitTimeMultiplier.value, 1).ToString();
-        UserTimelineSpeedDelay = (float)Math.Round(WaitTimeMultiplier.value, 1);
+        UserTimelineSpeedDelay = 100 * (float)Math.Round(WaitTimeMultiplier.value, 1);
     }
 
     public void SetTextSpeed()

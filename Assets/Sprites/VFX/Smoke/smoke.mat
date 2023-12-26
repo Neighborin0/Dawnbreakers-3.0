@@ -99,8 +99,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Alpha_Clip: 0
-    - MainTexPower: 1.2
+    - Alpha_Clip: 0.52
+    - MainTexPower: 0.5
     - _AlphaClip: 1
     - _Blend: 0
     - _BumpScale: 1

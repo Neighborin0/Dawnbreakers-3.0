@@ -117,7 +117,7 @@ public class Tools : MonoBehaviour
         }
         else if (gameObject != null)
         {
-            while (gameObject.color.a < 1 && gameObject != null)
+            while (gameObject.color.a <= 1 && gameObject != null)
             {
                 gameObject.color = new Color(gameObject.color.r, gameObject.color.g, gameObject.color.b, gameObject.color.a + 0.01f);
                 yield return new WaitForSeconds(delay);
@@ -392,12 +392,13 @@ public class Tools : MonoBehaviour
     {
         var sprite = gameObjectToChange.GetComponent<SpriteRenderer>();
         float alpha = 1;
+        float subtract = 0.01f;
         if (gameObjectToChange != null)
         {
-                while (sprite.material.color.a > 0 && sprite != null)
+                while (sprite.material.GetColor("_CharacterEmission").r > 0 && sprite != null && sprite.material.GetColor("_CharacterEmission").g > 0 && sprite.material.GetColor("_CharacterEmission").b > 0)
                 {
-                    alpha = 0.1f;
-                    sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
+                    Debug.LogError("Is this even running?");
+                    sprite.material.SetColor("_CharacterEmission", new Color(sprite.color.r - subtract, sprite.color.g - subtract, sprite.color.b - subtract));
                     yield return new WaitForSeconds(delay);
                 }
         }

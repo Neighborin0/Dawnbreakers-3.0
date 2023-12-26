@@ -288,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daed55c9820c6014f92e0fc28b90b0dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: 
   currentHP: 0
   IsPlayerControlled: 0
   skillUIs:
@@ -301,15 +302,12 @@ MonoBehaviour:
   charPortraits:
   - {fileID: 21300000, guid: 3e449902b5ccbab42907ae257ab9d358, type: 3}
   anim: {fileID: 2642224846084036885}
-  Execute: 0
   MiniMapIcons:
   - {fileID: 21300000, guid: 99ca25e0c43390b4aa017d062af2fbed, type: 3}
   - {fileID: 21300000, guid: d1a4026457431634e94612e79ca206af, type: 3}
   statusEffects: []
   offset: {x: -7, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 0, z: 0}
-  DoesntLoseArmorAtStartOfRound: 0
-  IsHidden: 0
   introText: []
   inventory: []
   levelUpScreenQuotes:
@@ -330,4 +328,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
   - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
   - {fileID: 11400000, guid: 8626ced7933e1d04eb4f6721e66a6f6f, type: 2}
+  - {fileID: 11400000, guid: 4d0d659b93e6dae44812aad6890a3116, type: 2}
   summonables: []

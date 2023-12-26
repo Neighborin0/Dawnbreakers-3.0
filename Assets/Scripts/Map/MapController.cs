@@ -201,7 +201,7 @@ public class MapController : MonoBehaviour
             else
             {
                 decor.transform.localPosition = new Vector3(UnityEngine.Random.Range(-3f, 3), 0, Tools.RandomExcept(-4f, 4, -1f, 0.5f));
-                decor.transform.localScale = new Vector3(0.05f, 0.1f, 0.1f) * UnityEngine.Random.Range(0.8f, 1.2f);
+                decor.transform.localScale = new Vector3(0.05f, 0.1f, 0.1f) * UnityEngine.Random.Range(0.8f, 1.6f);
             }
         }
     }

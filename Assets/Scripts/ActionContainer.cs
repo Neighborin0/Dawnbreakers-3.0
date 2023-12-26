@@ -51,6 +51,10 @@ public class ActionContainer : MonoBehaviour
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
     }
 
+    private void OnEnable()
+    {
+        damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
+    }
     void Update()
     {
         var hit = Tools.GetMousePos();

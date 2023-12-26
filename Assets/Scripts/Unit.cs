@@ -58,6 +58,8 @@ public class Unit : MonoBehaviour
     [NonSerialized]
     public bool IsHidden;
 
+    public bool OverrideEmission = false;
+
     //text stuff
     public List<DialogueHandler> introText;
     public List<Item> inventory;
@@ -115,7 +117,7 @@ public class Unit : MonoBehaviour
         var sprite = this.gameObject.GetComponent<SpriteRenderer>();
         if (BattleSystem.Instance != null)
         {
-            if (!Dying)
+            if (!Dying && !OverrideEmission)
             {
                 
                 if (IsHighlighted)

@@ -67,7 +67,7 @@ public class BattleSystem : MonoBehaviour
 
     //Tutorial Stuff
     public bool TutorialNode = false;
-    public TextMeshProUGUI TutorialText;
+    public List<TextMeshProUGUI> TutorialText;
     //public Image TutorialButton;
     public GameObject TutorialParent;
 
@@ -214,20 +214,32 @@ public class BattleSystem : MonoBehaviour
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         if (TutorialNode)
         {
-            IEnumerator fadeCoroutineText;
             LabCamera.Instance.state = LabCamera.CameraState.IDLE;
             TutorialParent.gameObject.SetActive(true);
             LabCamera.Instance.transform.position = new Vector3(0, 10000, -93);
-            fadeCoroutineText = Tools.FadeText(TutorialText, 0.04f, true, false);
-            StartCoroutine(fadeCoroutineText);
-            yield return new WaitForSeconds(10f);
-            StopCoroutine(fadeCoroutineText);
-            StartCoroutine(Tools.FadeText(TutorialText, 0.01f, false, false));
+            for (int i = 0; i < TutorialText.Count; i++)
+            {
+                StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, true, false));
+                yield return new WaitForSeconds(2f); 
+
+            }
+            yield return new WaitForSeconds(2f);
+            for (int i = 0; i < TutorialText.Count; i++)
+            {
+                StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, false, false));
+            }
             yield return new WaitForSeconds(2f);
             TutorialParent.gameObject.SetActive(false);
             LabCamera.Instance.GetComponent<MoveableObject>().Move(false, 0.01f, 100);
             yield return new WaitUntil(() => LabCamera.Instance.transform.position.y <= BattleSystem.Instance.cameraPos1Units.y + 0.01f);
             LabCamera.Instance.GetComponent<MoveableObject>().Stop();
+        }
+        else
+        {
+            for (int i = 0; i < TutorialText.Count; i++)
+            {
+                TutorialText[i].gameObject.SetActive(false);
+            }
         }
         LabCamera.Instance.ReadjustCam();
 
@@ -432,21 +444,20 @@ public class BattleSystem : MonoBehaviour
 
     public void SetTempEffect(Unit unit, string Icon, bool DoFancyStatChanges, float duration = 0, float storedValue = 0, float numberofStacks = 0)
     {
+        var icon = Instantiate(Director.Instance.iconDatabase.Where(obj => obj.name == Icon).SingleOrDefault(), unit.namePlate.IconGrid.transform);
+        var i = icon.GetComponent<EffectIcon>();
+
         foreach (Transform x in unit.namePlate.IconGrid.transform)
         {
             var EI = x.gameObject.GetComponent<EffectIcon>();
-            print(EI.iconName);
-            print(Icon);
-            if (EI.iconName == Icon)
+            if (EI.iconName.Contains(i.iconName))
             {
                 unit.statusEffects.Remove(EI);
                 EI.DoFancyStatChanges = false;
                 EI.DestoryEffectIcon();
                 break;
-            }
-        }
-        var icon = Instantiate(Director.Instance.iconDatabase.Where(obj => obj.name == Icon).SingleOrDefault(), unit.namePlate.IconGrid.transform);
-        var i = icon.GetComponent<EffectIcon>();
+            }  
+        }      
         i.duration = duration;
         unit.statusEffects.Add(i);
         if (unit == null)
@@ -864,6 +875,7 @@ public class BattleSystem : MonoBehaviour
         }
         //State just before player gets control
         BattleLog.Instance.ResetBattleLog();
+        CombatTools.TickAllEffectIcons();
         if (BattleSystem.Instance.enemyUnits.Count != 0 && BattleSystem.Instance.playerUnits.Count != 0)
         {
             BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
@@ -893,7 +905,7 @@ public class BattleSystem : MonoBehaviour
 
         }
         CombatTools.ReturnPipCounter().AddPip();
-        CombatTools.TickAllEffectIcons();
+      
         if (BattleSystem.Instance.state != BattleStates.DECISION_PHASE && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD && BattleSystem.Instance.state != BattleStates.TALKING && BattleSystem.Instance.enemyUnits.Count > 0 && BattleSystem.Instance.playerUnits.Count > 0)
         {
             BattleSystem.Instance.state = BattleStates.IDLE;

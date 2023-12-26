@@ -41,9 +41,9 @@ public class Beacon : Action
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
         LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0f, 10, -55, 0.5f);
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, new Color(1, 0.5409836f, 0, 1), 0.04f, 0.1f);
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLine", new Color(1, 0.5409836f, 0, 0), new Color(1, 0.5409836f, 0, 0), new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconCircle", new Color(1, 0.5409836f, 0, 0), new Color(1, 0.5409836f, 0, 0), new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Beacon2", new Color(1, 0.5409836f, 0, 0), new Color(1, 0.5409836f, 0, 0), new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLine", new Color(1, 0.5409836f, 0, 1), new Color(1, 0.5409836f, 0, 1), new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconCircle", new Color(1, 0.5409836f, 0, 1), new Color(1, 0.5409836f, 0, 1), new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Beacon2", new Color(1, 0.5409836f, 0, 1), new Color(1, 0.5409836f, 0, 1), new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
         
       
         yield return new WaitForSeconds(1f);
@@ -52,8 +52,9 @@ public class Beacon : Action
             unit.summonables ??= fallbackSummons;
 
             var summon = Instantiate(Director.Instance.Unitdatabase.Where(obj => obj.name == unit.summonables[UnityEngine.Random.Range(0, unit.summonables.Length)]).SingleOrDefault());
-            summon.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", Color.yellow * 10);
-
+            //summon.OverrideEmission = true;
+            //summon.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", Color.yellow * 10);
+           
             summon.IsSummon = true;
             if (unit.IsPlayerControlled)
             {
@@ -72,11 +73,14 @@ public class Beacon : Action
                         BattlePoint.unit = summon;
                         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(summon.gameObject, "Summon", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), Quaternion.identity, 10f));
                         LabCamera.Instance.MoveToUnit(summon, Vector3.zero ,0f, 15, -55, 0.5f);
+                        Director.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMinIntensity(summon.gameObject, 0.01f));
                         summon.ChangeUnitsLight(summon.spotLight, 150, 15, new Color(1, 0.5409836f, 0, 1), 0.04f, 0.1f);
                         yield return new WaitForSeconds(0.5f);
                         BattleSystem.Instance.SetupHUD(summon, BSP);
                         yield return new WaitForSeconds(0.5f);
+                        summon.OverrideEmission = false;
                         break;
+
                     }
 
                 }
@@ -100,12 +104,11 @@ public class Beacon : Action
                         
                         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(summon.gameObject, "Summon", Color.yellow, Color.yellow,  new Vector3(0, 0, -2f), Quaternion.identity, 10f));
                         LabCamera.Instance.MoveToUnit(summon, Vector3.zero, 0f, 15, -55, 0.5f);
-                        BattleSystem.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMinIntensity(summon.gameObject, 0.01f));
                         summon.ChangeUnitsLight(summon.spotLight, 150, 15, new Color(1, 0.5409836f, 0, 1), 0.04f, 0.1f);
                         yield return new WaitForSeconds(0.5f);
                         BattleSystem.Instance.SetupHUD(summon, BSP);
                         summon.unitName = CombatTools.CheckNames(summon);
-                        yield return new WaitForSeconds(0.5f);
+                        //BattleSystem.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMinIntensity(summon.gameObject, 0.1f));
                         break;
                     }
 
