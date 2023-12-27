@@ -33,6 +33,8 @@ public class Awaken : Action
     {
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "KindleLight", Color.red, Color.red, new Vector3(-2.95f, 5.02f, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
+        yield return new WaitForSeconds(0.1f);
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
         var Light = targets.spotLight;
         targets.ChangeUnitsLight(Light, 150, 15, Color.red, 0.04f, 1.6f);

@@ -3610,6 +3610,8 @@ MonoBehaviour:
   - {fileID: 3635664619567766556, guid: 07f5486f1639ab3479a8c03a2bfb5103, type: 3}
   - {fileID: 4067105235387327259, guid: 61bd2f674e364fe40b7d6ec0e43d8807, type: 3}
   - {fileID: 4768930110413117568, guid: 17a0cbb94ab8d6041839a864c3bf5158, type: 3}
+  - {fileID: 1089663617552866284, guid: a3ea5e0474b46964889c8b90b295d4f2, type: 3}
+  - {fileID: 3242412438195376062, guid: 5cd520cc210fb574da33f1f29ef8d89b, type: 3}
   actionDatabase:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   - {fileID: 11400000, guid: ece061d3fe4a82a4697d93c8013e8133, type: 2}

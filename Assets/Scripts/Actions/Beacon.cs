@@ -42,9 +42,8 @@ public class Beacon : Action
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
         LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0f, 10, -55, 0.5f);
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, new Color(1, 0.86f, 0.55f), 0.04f, 0.1f);
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLine", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconCircle", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Beacon2", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(-3.21f, 5.7f, 0f), Quaternion.identity, 1f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLight", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(-2.95f, 5.02f, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
+
         
       
         yield return new WaitForSeconds(1f);
