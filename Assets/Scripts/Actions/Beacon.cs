@@ -98,12 +98,13 @@ public class Beacon : Action
                     summon.GetComponent<Rigidbody>().useGravity = false;
                     summon.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
                     summon.GetComponent<SpriteRenderer>().flipX = true;
+                    LabCamera.Instance.MoveToUnit(summon, Vector3.zero, 0, 15, -40, 0.5f);
                     if (!BattlePoint.Occupied)
                     {
-                        LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 12, -70, 0.5f);
                         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(BSP.gameObject, "SummonVFX", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(0, -1.82f, 0), Quaternion.identity, 10f));
                         var UnitLight = summon.spotLight;
                         UnitLight.transform.position = new Vector3(BSP.position.x, BSP.position.y, BSP.position.z - 0.28f);
+                        LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 12, -70, 0.5f);
                         summon.ChangeUnitsLight(UnitLight, 150, 15, new Color(1, 0.86f, 0.55f), 0.04f, 2.4f);
                         yield return new WaitForSeconds(1f);
                         Director.Instance.StartCoroutine(Tools.SmoothMoveObjectVertically(summon.gameObject.transform, 7.8f, 0.1f));

@@ -130,6 +130,7 @@
     <Compile Include="Assets\Scripts\Actions\Kindle.cs" />
     <Compile Include="Assets\Scripts\Main Menu\MainMenuController.cs" />
     <Compile Include="Assets\Scripts\Icons\DefendEF.cs" />
+    <Compile Include="Assets\Scripts\Actions\ShieldBash.cs" />
     <Compile Include="Assets\Scripts\ControlBar.cs" />
     <Compile Include="Assets\Scripts\DialogueHandler.cs" />
     <Compile Include="Assets\Scripts\PipCounter.cs" />

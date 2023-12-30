@@ -4,26 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using static System.Collections.Specialized.BitVector32;
 
-[CreateAssetMenu(fileName = "Whack", menuName = "Assets/Actions/Whack")]
-public class Whack : Action
+[CreateAssetMenu(fileName = "ShieldBash", menuName = "Assets/Actions/ShieldBash")]
+public class ShieldBash : Action
 {
     private void OnEnable()
     {
-        ActionName = "Whack";
+        ActionName = "ShieldBash";
 
-
-        cost = 40f;
-
-        damage = 2;
-        lightDamage = 0;
-        heavyDamage = 4;
+        damage = 0;
+        lightDamage = -2;
+        heavyDamage = 2;
 
 
         cost = 30f;
         lightCost = 10f;
         heavyCost = 50f;
 
-      
+        statAmount = 2;
+        lightStatAmount = 1;
+        heavyStatAmount = 3;
+
 
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
@@ -37,16 +37,16 @@ public class Whack : Action
     {
         if (unit.IsPlayerControlled)
         {
-            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.";
+            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.\nApplies +{statAmount + unit.defenseStat} <sprite name=\"FORTIFY\"> to self";
         }
         else
         {
             if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) > 0)
             {
-                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.";
+                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.\nApplies +{statAmount + unit.defenseStat} <sprite name=\"FORTIFY\"> to self";
             }
             else
-                description = $"Deals <color=#FF0000>0</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.";
+                description = $"Deals <color=#FF0000>0</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.\nApplies +{statAmount + unit.defenseStat} <sprite name=\"FORTIFY\"> to self";
         }
         return description;
     }

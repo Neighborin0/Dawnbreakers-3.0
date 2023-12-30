@@ -329,5 +329,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
   - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
   - {fileID: 11400000, guid: 8626ced7933e1d04eb4f6721e66a6f6f, type: 2}
-  - {fileID: 11400000, guid: 2286e3232ce0a514389455649b743e8e, type: 2}
   summonables: []
