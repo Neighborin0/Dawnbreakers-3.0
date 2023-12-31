@@ -49,6 +49,10 @@ public class ActionContainer : MonoBehaviour
         numberofUses = action.numberofUses;
         limited = action.limited;
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
+        var ScaleComponent = GetComponent<ScalableObject>();
+        var OldScaleVector = ScaleComponent.oldScaleSize;
+        OldScaleVector = this.transform.localScale;
+        ScaleComponent.newScaleSize = new Vector3(OldScaleVector.x * 1.05f, OldScaleVector.y * 1.05f, OldScaleVector.z * 1.05f);
     }
 
     private void OnEnable()
@@ -539,6 +543,7 @@ public class ActionContainer : MonoBehaviour
                     print("targetting");
                     SetDescription();
                     button.interactable = false;
+                    transform.localScale = this.GetComponent<ScalableObject>().oldScaleSize;
                     if (CombatTools.ReturnPipCounter().pipCount > 0)
                     {
                         SetActionStyleButtonsActive(true);

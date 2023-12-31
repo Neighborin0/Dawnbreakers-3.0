@@ -64,7 +64,7 @@ MonoBehaviour:
     PositionToMoveTo: {x: -10.75, y: 8.25, z: -66.36}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: Well, more lost souls...Worry not now, for you are safe under my light.
-    expression: neutral
+    expression: darkened
     unit: Matriarch
     textSpeed: 0.05
     OnLineStarted:
@@ -127,7 +127,7 @@ MonoBehaviour:
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: 'So, you were the one who shunned my light? Ah, but you have returned to
       me!  '
-    expression: neutral
+    expression: darkened
     unit: Matriarch
     textSpeed: 0.05
     OnLineStarted:

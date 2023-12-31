@@ -17,7 +17,13 @@ public class IntentContainer : MonoBehaviour
     public Unit unit;
     private GameObject currentEffectPopup;
 
-
+     void Start()
+    {
+        var ScaleComponent = GetComponent<ScalableObject>();
+        var OldScaleVector = ScaleComponent.oldScaleSize;
+        OldScaleVector = this.transform.localScale;
+        ScaleComponent.newScaleSize = new Vector3(OldScaleVector.x * 1.05f, OldScaleVector.y * 1.05f, OldScaleVector.z * 1.05f);
+    }
     public void DisplayIntentInfo()
     {
         if (BattleSystem.Instance.state != BattleStates.BATTLE)

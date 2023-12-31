@@ -5028,6 +5028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb6ea14db3b53a489550f68b35c5045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: 
   currentHP: 0
   IsPlayerControlled: 0
   skillUIs: []
@@ -5036,14 +5037,13 @@ MonoBehaviour:
   Dying: 0
   charPortraits:
   - {fileID: 21300000, guid: 0764ef8394073de488f5de17cb6afbe1, type: 3}
+  - {fileID: 21300000, guid: 7991c403726d36340a52ca7e3c4ed48d, type: 3}
   anim: {fileID: 0}
-  Execute: 0
   MiniMapIcons: []
   statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: -3, z: 0}
-  DoesntLoseArmorAtStartOfRound: 0
-  IsHidden: 0
+  OverrideEmission: 0
   introText: []
   inventory: []
   levelUpScreenQuotes: []

@@ -408,6 +408,7 @@ public class Unit : MonoBehaviour
     public void FadeIntent(bool FadeOut)
     {
         Tools.StartAndCheckCoroutine(fadeCoroutine, FadeIntentsCoroutine(FadeOut));
+        intentUI.GetComponent<ScalableObject>().DisableScale(0);
     }
 
     private bool FadingOutIntent;

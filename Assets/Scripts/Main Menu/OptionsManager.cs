@@ -131,7 +131,7 @@ public class OptionsManager : MonoBehaviour
             FPSCounterEnable();
         }
        
-        if (Input.GetKeyDown(KeyCode.Tab) && SceneManager.GetActiveScene().name != "Main Menu" && CanPause)
+        if (Input.GetKeyDown(KeyCode.Tab) && CanPause)
         {
             if (BattleSystem.Instance != null && Director.Instance != null && BattleSystem.Instance.CheckPlayableState())
             {
