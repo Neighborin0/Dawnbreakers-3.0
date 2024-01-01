@@ -29,7 +29,8 @@ public class Vigor : EffectIcon
         }
         else
         {
-            owner.attackStat -= (int)storedValue;
+            if(owner != null)
+                owner.attackStat -= (int)storedValue;
         }
        
         owner.statusEffects.Remove(owner.statusEffects.Where(obj => obj.iconName == iconName).SingleOrDefault());

@@ -24,7 +24,7 @@ public class Kindle : Action
 
     public override string GetDescription()
     {
-        description = $"Increases allies <sprite name=\"ATK RED2\"> by 2.";
+        description = $"Increases self and allies <sprite name=\"ATK RED2\"> by 2.";
         return description;
     }
     public override IEnumerator ExecuteAction()

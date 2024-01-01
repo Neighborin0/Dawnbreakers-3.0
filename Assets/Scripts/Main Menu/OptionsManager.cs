@@ -223,7 +223,7 @@ public class OptionsManager : MonoBehaviour
     public void SetQualitySettings(int qualityindex)
     {
         QualitySettings.SetQualityLevel(qualityindex);
-        print(QualitySettings.GetQualityLevel());
+        print(QualitySettings.GetQualityLevel().ToString());
     }
     public void SetFullScreen(int fsIndex)
     {

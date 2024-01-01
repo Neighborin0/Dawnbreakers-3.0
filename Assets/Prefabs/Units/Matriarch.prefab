@@ -5043,6 +5043,7 @@ MonoBehaviour:
   statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: -3, z: 0}
+  camOffset: {x: 0, y: 0, z: -5}
   OverrideEmission: 0
   introText: []
   inventory: []

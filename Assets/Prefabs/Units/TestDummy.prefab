@@ -5164,6 +5164,5 @@ MonoBehaviour:
   resistances: 
   weaknesses: 01000000
   actionList:
-  - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   - {fileID: 11400000, guid: 7e885f14f56b74242800e9ce493cba94, type: 2}
   summonables: []

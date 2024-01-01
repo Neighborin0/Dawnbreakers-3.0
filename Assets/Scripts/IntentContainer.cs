@@ -22,7 +22,7 @@ public class IntentContainer : MonoBehaviour
         var ScaleComponent = GetComponent<ScalableObject>();
         var OldScaleVector = ScaleComponent.oldScaleSize;
         OldScaleVector = this.transform.localScale;
-        ScaleComponent.newScaleSize = new Vector3(OldScaleVector.x * 1.05f, OldScaleVector.y * 1.05f, OldScaleVector.z * 1.05f);
+        ScaleComponent.newScaleSize = new Vector3(OldScaleVector.x * 1.02f, OldScaleVector.y * 1.02f, OldScaleVector.z * 1.02f);
     }
     public void DisplayIntentInfo()
     {

@@ -259,11 +259,11 @@ public class Healthbar : MonoBehaviour
 
                 yield return new WaitForSeconds(0.5f);
 
-                Director.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMaxIntensity(unit.gameObject, Color.yellow, 0.07f));
+                Director.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMaxIntensity(unit.gameObject, Color.yellow, 0.02f));
 
                 unit.ChangeUnitsLight(unit.spotLight, 150, 15, Color.yellow, 0.04f, 0.1f);
 
-                yield return new WaitForSeconds(0.7f);
+                yield return new WaitForSeconds(0.8f);
                 LabCamera.Instance.Shake(0.5f, 1f);
                 Director.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero, Quaternion.identity, 10, 0, false));
                 yield return new WaitForSeconds(0.03f);

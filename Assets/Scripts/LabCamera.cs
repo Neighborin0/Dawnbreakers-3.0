@@ -237,36 +237,31 @@ public class LabCamera : MonoBehaviour
         if (overrideYPos.y != 0)
         {
             PositonToMoveTo.x = sprite.bounds.center.x / 5f;
-            PositonToMoveTo.y  = originalPos.y;
-            PositonToMoveTo.z = originalPos.z;
+            PositonToMoveTo.y  = originalPos.y + unit.camOffset.y;
+            PositonToMoveTo.z = originalPos.z + unit.camOffset.z;
         }
         else if(UsesDefaultOffset)
         {
             PositonToMoveTo.x = sprite.bounds.center.x / 5f;
             if (camTransform.position.y > originalPos.y)
-            PositonToMoveTo.y = camTransform.position.y;
+            PositonToMoveTo.y = camTransform.position.y + unit.camOffset.y;
             else
-                PositonToMoveTo.y = originalPos.y;
-            PositonToMoveTo.z = originalPos.z;
+                PositonToMoveTo.y = originalPos.y + unit.camOffset.y;
+            PositonToMoveTo.z = originalPos.z + unit.camOffset.z;
         }
         else if (xOffset == 0 && yOffset == 0 && zOffset == 0)
         {
-            PositonToMoveTo.y = BattleSystem.Instance.cameraPos1Units.y;
-            PositonToMoveTo.z = BattleSystem.Instance.cameraPos1Units.z;
+            PositonToMoveTo.y = BattleSystem.Instance.cameraPos1Units.y + unit.camOffset.y;
+            PositonToMoveTo.z = BattleSystem.Instance.cameraPos1Units.z + unit.camOffset.z;
         }
         else
         {
             if (unit.IsPlayerControlled)
                 xOffset *= -1;
 
-            PositonToMoveTo.x = sprite.bounds.center.x + xOffset;
-            PositonToMoveTo.y = sprite.bounds.center.y + yOffset;
-            PositonToMoveTo.z = unit.transform.position.z + zOffset;
-            print("POSITION Z: " + unit.transform.position.z);
-            print("POSITION Y: " + sprite.bounds.center.y);
-            print("Y OFFSET: " + yOffset);
-            print("Z OFFSET: " + zOffset);
-            print(PositonToMoveTo);
+            PositonToMoveTo.x = sprite.bounds.center.x + xOffset + unit.camOffset.x;
+            PositonToMoveTo.y = sprite.bounds.center.y + yOffset + unit.camOffset.y;
+            PositonToMoveTo.z = unit.transform.position.z + zOffset + unit.camOffset.z;
         }
 
     }

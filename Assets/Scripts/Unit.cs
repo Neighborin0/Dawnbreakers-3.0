@@ -47,6 +47,7 @@ public class Unit : MonoBehaviour
     public List<EffectIcon> statusEffects;
     public Vector3 offset;
     public Vector3 enemyintentOffset;
+    public Vector3 camOffset = Vector3.zero;
     [NonSerialized]
     public TimeLineChild timelinechild;
     [NonSerialized]

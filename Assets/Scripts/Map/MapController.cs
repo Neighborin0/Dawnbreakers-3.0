@@ -91,10 +91,12 @@ public class MapController : MonoBehaviour
 
     }
 
+
     private void SaveSceneData(Scene scene, LoadSceneMode mode)
     {
         if (this != null)
         {
+            CheckCams(scene, mode);
             if (Loaded)
             {
                 foreach (var minimapIcon in GameObject.FindObjectsOfType<MiniMapIcon>())
@@ -115,7 +117,6 @@ public class MapController : MonoBehaviour
                 foreach (Transform child in transform)
                 {
                     child.gameObject.SetActive(true);
-                    //StartingPosition = child.position;
                     if (child.GetComponent<MapNode>() != null)
                     {
                         var MN = child.GetComponent<MapNode>();
@@ -143,6 +144,14 @@ public class MapController : MonoBehaviour
                 StartCoroutine(DoReEnteredMap());
                 this.GetComponent<ParticleSystem>().Play();
             }
+        }
+    }
+
+    private void CheckCams(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.Contains("MAP"))
+        {
+            mapCanvas.worldCamera = Camera.main;
         }
     }
 
@@ -397,6 +406,7 @@ public class MapController : MonoBehaviour
         {
             Director.Instance.StartCoroutine(DoLevelDrop());
         }
+        Tools.ToggleUiBlocker(false, true, true);
         yield return new WaitUntil(() => DoneOpening);
         yield return new WaitForSeconds(0.3f);
         Debug.LogWarning("Line Should Be Rendering");

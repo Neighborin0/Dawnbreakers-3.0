@@ -148,8 +148,10 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
             case 4:
                 {
                     CombatTools.SetupEnemyAction(baseUnit, 3, CombatTools.CheckAndReturnNamedUnit("Aurelia"));
-                    turn = 1;
                 }
+                break;
+            default:
+                CombatTools.SetupEnemyAction(baseUnit, UnityEngine.Random.Range(0, 1));
                 break;
 
         }

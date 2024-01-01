@@ -450,7 +450,7 @@ public class BattleSystem : MonoBehaviour
         foreach (Transform x in unit.namePlate.IconGrid.transform)
         {
             var EI = x.gameObject.GetComponent<EffectIcon>();
-            if (EI.iconName.Contains(i.iconName))
+            if (EI.iconName.Contains(i.iconName) && EI != i)
             {
                 unit.statusEffects.Remove(EI);
                 EI.DoFancyStatChanges = false;

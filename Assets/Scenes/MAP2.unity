@@ -1449,6 +1449,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 333017523283285963, guid: 27fc45e474975bf4da59da7751ab29bd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
       propertyPath: DevMode
@@ -1457,8 +1462,14 @@ PrefabInstance:
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
       propertyPath: party.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
+        type: 3}
+      propertyPath: party.Array.data[0]
+      value: 
+      objectReference: {fileID: 7201352204941650085, guid: f830cff71f0f12444ba1edc5593d0fdd,
+        type: 3}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
       propertyPath: party.Array.data[1]

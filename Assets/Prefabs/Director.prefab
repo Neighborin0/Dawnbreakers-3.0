@@ -818,7 +818,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.6, y: 32.1}
+  m_AnchoredPosition: {x: 18.1, y: -15.9}
   m_SizeDelta: {x: 100, y: 41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8502657867255642803
@@ -3612,7 +3612,8 @@ MonoBehaviour:
   - {fileID: 1089663617552866284, guid: a3ea5e0474b46964889c8b90b295d4f2, type: 3}
   - {fileID: 3242412438195376062, guid: 5cd520cc210fb574da33f1f29ef8d89b, type: 3}
   - {fileID: 3547474473646665300, guid: fa391da371431a6409e7bfd61e6315f2, type: 3}
-  - {fileID: 3515635092972122302, guid: dddb3b8a6b834c54fa21d6aed7adc1c0, type: 3}
+  - {fileID: 7072038689116451146, guid: dddb3b8a6b834c54fa21d6aed7adc1c0, type: 3}
+  - {fileID: 3658677186438796677, guid: 3133fded8b60b034fa19f272dafffba1, type: 3}
   actionDatabase:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   - {fileID: 11400000, guid: ece061d3fe4a82a4697d93c8013e8133, type: 2}
@@ -3660,7 +3661,7 @@ MonoBehaviour:
     type: 3}
   canvas: {fileID: 330815495098542717}
   CharacterSlotsDisplayed: 1
-  DevMode: 1
+  DevMode: 0
   blackScreen: {fileID: 392729441767316513}
   backButton: {fileID: 392729442206650620}
   LevelUpText: {fileID: 7054321469477111965}
@@ -3711,7 +3712,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 3.25}
+  m_AnchoredPosition: {x: 7, y: 53}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3460534727125802735

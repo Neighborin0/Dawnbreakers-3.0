@@ -58,7 +58,7 @@ public class Incinerate : Action
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "IncinerateTornado", new Color(255, 74, 0), new Color(255, 74, 0), new Vector3(0, -3, -0),new Quaternion(0, -90, 0, 0), 8f, 0, true, 6));
         yield return new WaitForSeconds(1.5f);
         LabCamera.Instance.Shake(3.2f, 1f);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2.8f);
         targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle, true);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         targets.ChangeUnitsLight(Light, 0, 15, new Color(255, 74, 0) * 0.01f, 0.04f, 0.001f);

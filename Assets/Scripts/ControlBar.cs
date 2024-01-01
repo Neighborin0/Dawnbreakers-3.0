@@ -13,7 +13,6 @@ public class ControlBar : MonoBehaviour
     public GameObject Cancel;
     public GameObject Continue;
     public GameObject Pause;
-    //public GameObject CharacterTab;
 
     public void Update()
     {
@@ -54,27 +53,17 @@ public class ControlBar : MonoBehaviour
                 {
                     Pause.SetActive(false);
                 }
-                //Character Tab
-                /*if(BattleSystem.Instance.CheckPlayableState())
-                {
-                    CharacterTab.SetActive(true);
-                }
-                else
-                {
-                    CharacterTab.SetActive(false);
-                }
-                */
+             
             }
             
         }
         //Outside Battle
-        else if(BattleLog.Instance.characterdialog.gameObject.activeSelf)
+        else if(BattleLog.Instance.state == BattleLogStates.TALKING)
         {
             this.GetComponent<Image>().enabled = true;
             Continue.SetActive(true);
             Select.SetActive(false);
             Cancel.SetActive(false);
-            //CharacterTab.SetActive(false);
             Pause.SetActive(false);
         }
         else
@@ -83,7 +72,6 @@ public class ControlBar : MonoBehaviour
             Select.SetActive(false);
             Continue.SetActive(false);
             Cancel.SetActive(false);
-            //CharacterTab.SetActive(false);
             Pause.SetActive(false);
         }
     }

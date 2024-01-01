@@ -38,8 +38,8 @@ public class WarCry : Action
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry2", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 0, -2f), Quaternion.identity, 2.5f));
-        yield return new WaitForSeconds(2.5f);
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry2", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 2f, -2f), Quaternion.identity, 1.5f));
+        yield return new WaitForSeconds(1.5f);
         foreach (var x in CombatTools.DetermineAllies(unit))
         {
             var Light = x.spotLight;

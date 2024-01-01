@@ -103,6 +103,7 @@ public class RestSite : MonoBehaviour
 
     public IEnumerator TransitionToMap()
     {
+        Director.Instance.CharacterSlotEnable(true);
         if (!Director.Instance.DevMode)
         {
             BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaRestMeeting"), true, true);

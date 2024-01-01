@@ -52,12 +52,20 @@ public class ActionContainer : MonoBehaviour
         var ScaleComponent = GetComponent<ScalableObject>();
         var OldScaleVector = ScaleComponent.oldScaleSize;
         OldScaleVector = this.transform.localScale;
-        ScaleComponent.newScaleSize = new Vector3(OldScaleVector.x * 1.05f, OldScaleVector.y * 1.05f, OldScaleVector.z * 1.05f);
+        ScaleComponent.newScaleSize = new Vector3(OldScaleVector.x * 1.02f, OldScaleVector.y * 1.02f, OldScaleVector.z * 1.02f);
     }
 
     private void OnEnable()
     {
-        damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
+        try
+        {
+            if (BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
+                damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
+        }
+        catch
+        {
+
+        }
     }
     void Update()
     {
@@ -353,7 +361,7 @@ public class ActionContainer : MonoBehaviour
                 EPtext.text += "<color=#FF0000>\nCan't be styled.</color>";
             }
 
-            if (BattleSystem.Instance != null)
+            if (BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
             {
                 currentEffectPopup.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x - 400, rectTrans.anchoredPosition.y - 210, 0);
             }
