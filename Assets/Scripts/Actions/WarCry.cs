@@ -20,8 +20,12 @@ public class WarCry : Action
         heavyCost = 40f;
         actionType = ActionType.STATUS;
         targetType = TargetType.SELF;
-        duration = 2;
+
+
+        duration = 3;
+        
         statAmount = 3;
+
         lightStatAmount = 2;
         heavyStatAmount = 4;
         damageText = damage.ToString();

@@ -348,16 +348,13 @@ public class CombatTools : MonoBehaviour
 
     public static IEnumerator StopAndDestroyVFX(float delay)
     {
-        var statUpObject = GameObject.Find("StatUpVFX(Clone)");
-        if (statUpObject != null)
+        var statUpObject = GameObject.FindGameObjectsWithTag("StatUp");
+        for (int i = 0; i < statUpObject.Count(); i++)
         {
-            statUpObject.GetComponent<ParticleSystem>().Stop();
+            statUpObject[i].GetComponent<ParticleSystem>().Stop();
             yield return new WaitForSeconds(delay);
-            Destroy(statUpObject);
-        }
-        else
-            yield break;
-        
+            Destroy(statUpObject[i]);
+        }              
     }
 
 

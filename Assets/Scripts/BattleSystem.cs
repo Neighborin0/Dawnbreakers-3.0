@@ -805,7 +805,7 @@ public class BattleSystem : MonoBehaviour
                         yield return new WaitUntil(() => !BattlePhasePause);
                         yield return new WaitForSeconds(0.2f);
                         action.ResetAction();
-                        yield return new WaitForSeconds(0.2f);
+                        yield return new WaitForSeconds(0.01f);
                         foreach (var x in Tools.GetAllUnits())
                         {
                             x.DoActionEnded();
@@ -821,7 +821,7 @@ public class BattleSystem : MonoBehaviour
                         else
                         {
                             yield return new WaitUntil(() => !BattlePhasePause);
-                            yield return new WaitForSeconds(0.3f);
+                            yield return new WaitForSeconds(0.1f);
                         }
                         ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.unit.unitName).Reverse().ToList();
                     }
@@ -876,14 +876,16 @@ public class BattleSystem : MonoBehaviour
         //State just before player gets control
         BattleLog.Instance.ResetBattleLog();
         CombatTools.TickAllEffectIcons();
+        yield return new WaitUntil(() => !BattlePhasePause);
         if (BattleSystem.Instance.enemyUnits.Count != 0 && BattleSystem.Instance.playerUnits.Count != 0)
-        {
+        {          
             BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
             for (int i = 0; i < BattleSystem.Instance.playerUnits.Count; i++)
             {
                 BattleSystem.Instance.playerUnits[i].state = PlayerState.IDLE;
                 if (i == 0)
                 {
+                    yield return new WaitUntil(() => !BattlePhasePause);
                     BattleSystem.Instance.playerUnits[i].StartDecision();
                 }
             }

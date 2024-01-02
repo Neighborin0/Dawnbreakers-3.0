@@ -92,14 +92,14 @@ public class MapNode : MonoBehaviour
                 gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
                 if (scaler != null)
                 {
-                    StopCoroutine(scaler);
+                    Director.Instance.StopCoroutine(scaler);
                 }
 
                 scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), newScaleSize, 0.01f);
                 try
                 {
                     if (gameObject.activeSelf)
-                        StartCoroutine(scaler);
+                        Director.Instance.StartCoroutine(scaler);
                 }
                 catch(Exception e)
                 {
@@ -114,10 +114,10 @@ public class MapNode : MonoBehaviour
                 gameObject.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
                 if (scaler != null)
                 {
-                    StopCoroutine(scaler);
+                    Director.Instance.StopCoroutine(scaler);
                 }
                 scaler = Tools.SmoothScale(gameObject.GetComponent<RectTransform>(), oldScaleSize, 0.01f);
-                StartCoroutine(scaler);
+                Director.Instance.StartCoroutine(scaler);
                 IsHighlighted = true;
             }
         }

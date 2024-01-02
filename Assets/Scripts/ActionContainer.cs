@@ -5,8 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using static UnityEngine.UI.CanvasScaler;
-
-
+using System.Linq;
 
 public class ActionContainer : MonoBehaviour
 {
@@ -111,7 +110,6 @@ public class ActionContainer : MonoBehaviour
             //Action Cancel
             if (Input.GetMouseButtonUp(1))
             {
-
                 LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), Vector3.zero);
                 SetActive(false);
             }
@@ -417,7 +415,7 @@ public class ActionContainer : MonoBehaviour
 
     public void SetActionStyleButtonsActive(bool SetActive)
     {
-        if (Director.Instance.UnlockedPipSystem)
+        if (Director.Instance.UnlockedPipSystem && !BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName.Contains("Dusty")).SingleOrDefault())
         {
             if (action.CanBeStyled)
             {
@@ -562,6 +560,8 @@ public class ActionContainer : MonoBehaviour
                     }
                     if (action.targetType == Action.TargetType.ENEMY)
                         LabCamera.Instance.MoveToPosition(new Vector3(1, LabCamera.Instance.transform.position.y, LabCamera.Instance.transform.position.z), 1f);
+
+                    baseUnit.DoOnActionSelected(this);
 
                 }
             }

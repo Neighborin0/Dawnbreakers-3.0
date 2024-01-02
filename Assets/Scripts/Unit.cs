@@ -59,6 +59,7 @@ public class Unit : MonoBehaviour
     [NonSerialized]
     public bool IsHidden;
 
+
     public bool OverrideEmission = false;
 
     //text stuff
@@ -78,6 +79,7 @@ public class Unit : MonoBehaviour
     public event Action<Unit> EnteredMap;
     public event Action<Unit> OnPreDeath;
     public event Action<Unit> OnPlayerUnitDeath;
+    public event Action<Unit, ActionContainer> OnActionSelected;
 
     //player states
     public PlayerState state;
@@ -91,6 +93,7 @@ public class Unit : MonoBehaviour
 
     public Light spotLight;
     public float actionCostMultiplier = 1;
+    public float knockbackModifider = 0;
     public DamageType[] resistances;
     public DamageType[] weaknesses;
 
@@ -512,6 +515,11 @@ public class Unit : MonoBehaviour
     public void DoOnPlayerUnitDeath()
     {
         OnPlayerUnitDeath?.Invoke(this);
+    }
+
+    public void DoOnActionSelected(ActionContainer actionContainer)
+    {
+        OnActionSelected?.Invoke(this, actionContainer);
     }
 
 

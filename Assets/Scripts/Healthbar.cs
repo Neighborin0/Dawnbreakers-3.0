@@ -150,15 +150,15 @@ public class Healthbar : MonoBehaviour
                     {
                         if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1)
                         {
-                            TL.value -= Director.Instance.TimelineReduction;
-                            action.cost += Director.Instance.TimelineReduction;
+                            TL.value -= Director.Instance.TimelineReduction + unit.knockbackModifider;
+                            action.cost += Director.Instance.TimelineReduction + unit.knockbackModifider;
                             number.color = Color.red;
                         }
 
                         if (actionStyle != Action.ActionStyle.STANDARD)
                         {
-                            TL.value -= 10;
-                            action.cost += 10;
+                            TL.value -= 10 + unit.knockbackModifider;
+                            action.cost += 10 + unit.knockbackModifider;
                             if (actionStyle == Action.ActionStyle.LIGHT)
                             {
                                 number.outlineColor = new Color(0, 0.635f, 0.749f);

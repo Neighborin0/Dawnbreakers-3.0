@@ -93,14 +93,14 @@ public class BattleLog : MonoBehaviour
         ambientText.text = "";
     }
 
-    public void CharacterDialog(List<LabLine> dialog, bool PausesBattle = false, bool disableAfter = true, bool ambientText = false, bool EndBattle = false, bool TurnOffUiAfter = true)
+    public void CharacterDialog(List<LabLine> dialog, bool PausesBattle = false, bool disableAfter = true, bool ambientText = false, bool EndBattle = false, bool TurnOffUiAfter = true, bool CheckForPause = true)
     {
         ClearAllBattleLogText();
         Portraitparent.gameObject.SetActive(true);
         characterdialog.gameObject.SetActive(true);
         if (!ambientText)
         {
-            StartCoroutine(TypeMultiText(dialog, characterdialog, disableAfter, PausesBattle, EndBattle, TurnOffUiAfter));
+            StartCoroutine(TypeMultiText(dialog, characterdialog, disableAfter, PausesBattle, EndBattle, TurnOffUiAfter, CheckForPause));
         }
         else
             AmbientCharacterText(dialog, characterdialog);
@@ -328,7 +328,7 @@ public class BattleLog : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeMultiText(List<LabLine> text, TMP_Text x, bool disableAfter, bool Pauses = false, bool EndBattle = false, bool TurnOffUiAfter = true)
+    private IEnumerator TypeMultiText(List<LabLine> text, TMP_Text x, bool disableAfter, bool Pauses = false, bool EndBattle = false, bool TurnOffUiAfter = true, bool CheckForPause = true)
     {
         BattleStates previousState = BattleStates.IDLE;
         BattleLog.Instance.state = BattleLogStates.TALKING;
@@ -420,23 +420,30 @@ public class BattleLog : MonoBehaviour
                             unit.intentUI.gameObject.SetActive(true);
                     }
 
-                    if (!BattleSystem.Instance.BattlePhasePause)
-                        WasPaused = true;
-
-                  yield return new WaitUntil(() => !BattleSystem.Instance.BattlePhasePause);
+                    if (CheckForPause)
                     {
-                        Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
-                        BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+                        if (!BattleSystem.Instance.BattlePhasePause)
+                            WasPaused = true;
 
-                        if (previousState != BattleStates.BATTLE)
-                            BattleSystem.Instance.playerUnits[0].StartDecision();
-                        else if(WasPaused)
+                        yield return new WaitUntil(() => !BattleSystem.Instance.BattlePhasePause);
                         {
-                           Director.Instance.StartCoroutine(BattleSystem.Instance.ForcePerformActionClose());
+                            Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
+                            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+
+                            if (previousState != BattleStates.BATTLE)
+                                BattleSystem.Instance.playerUnits[0].StartDecision();
+                            else if (WasPaused)
+                            {
+                                Director.Instance.StartCoroutine(BattleSystem.Instance.ForcePerformActionClose());
+                            }
+                            else
+                                CombatTools.UnpauseStaminaTimer();
+
                         }
-                        else
-                            CombatTools.UnpauseStaminaTimer();
-                      
+                    }
+                    else
+                    {
+                        BattleLog.Instance.state = BattleLogStates.IDLE;
                     }
                   
 

@@ -221,6 +221,7 @@ public class Tools : MonoBehaviour
         {
             img.gameObject.SetActive(false);
             img = Director.Instance.blackScreen;
+            Director.Instance.blackScreen.transform.SetAsFirstSibling();
         }
 
 
