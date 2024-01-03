@@ -12,8 +12,8 @@ public class Rat : Unit
     void Awake()
     {
         unitName = "Vermin";
-        maxHP = UnityEngine.Random.Range(26, 30);
-        attackStat = UnityEngine.Random.Range(6, 11);
+        maxHP = 30;
+        attackStat = UnityEngine.Random.Range(0, 2);
         defenseStat = UnityEngine.Random.Range(0, 2);
         //speedStat = UnityEngine.Random.Range(9, 11);
         currentHP = maxHP;

@@ -11,10 +11,10 @@ public class Sweep : Action
         ActionName = "Sweep";
         damage = -1;
         lightDamage = -3;
-        heavyDamage = 1;
+        heavyDamage = 2;
 
-        cost = 20f;
-        lightCost = 0;
+        cost = 25f;
+        lightCost = 5;
         heavyCost = 40;
 
 

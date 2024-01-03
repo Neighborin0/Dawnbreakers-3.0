@@ -20,9 +20,9 @@ public class Guard : Action
         lightCost = 0;
         heavyCost = 40f;
 
-        statAmount = 5;
-        lightStatAmount = 3;
-        heavyStatAmount = 7; 
+        statAmount = 6;
+        lightStatAmount = 4;
+        heavyStatAmount = 9; 
 
         damageText = damage.ToString();
         actionType = ActionType.STATUS;

@@ -3676,7 +3676,7 @@ MonoBehaviour:
   timeline: {fileID: 6650513377061637855}
   staminaSPDDivider: 2
   WeaknessMultiplier: 1.3
-  ResistanceMultiplier: 0.3
+  ResistanceMultiplier: 0.7
   TimelineReduction: 20
   TimelineAddition: 10
   UnlockedPipSystem: 0

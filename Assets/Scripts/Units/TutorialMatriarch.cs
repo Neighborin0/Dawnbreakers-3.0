@@ -12,8 +12,8 @@ public class TutorialMatriarch : Unit
     void Awake()
     {
         unitName = "Matriarch";
-        maxHP = 168;
-        attackStat = 12;
+        maxHP = 200;
+        attackStat = 10;
         defenseStat = 0;
         //speedStat = 10;
         currentHP = maxHP;
@@ -80,8 +80,8 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
                     float prob = 0.7f;
                     if (UnityEngine.Random.Range(0f, 1f) < prob)
                     {
-                        //Bash
-                        move = 1;
+                        //Kindle
+                        move = 2;
                     }
                     else
                     {

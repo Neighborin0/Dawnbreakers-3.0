@@ -11,7 +11,7 @@ public class Stab : Action
 
         damage = 5;
         lightDamage = 3;
-        heavyDamage = 7;
+        heavyDamage = 8;
 
         cost = 40f;
         heavyCost = 60;

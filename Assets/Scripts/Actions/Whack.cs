@@ -16,7 +16,7 @@ public class Whack : Action
 
         damage = 2;
         lightDamage = 0;
-        heavyDamage = 4;
+        heavyDamage = 5;
 
 
         cost = 30f;

@@ -9,10 +9,8 @@ public class Dusty : Unit
     {
         unitName = "Dusty";
         maxHP = 40;
-        attackStat = 5;
-        //attackStat = 999;
-        defenseStat = 8;
-        //speedStat = 7;
+        attackStat = 3;
+        defenseStat = 4;
         currentHP = maxHP;
         IsPlayerControlled = true;
         resistances = new DamageType[] { DamageType.SLASH };

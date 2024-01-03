@@ -15,10 +15,11 @@ public class Aurelia : Unit
     void Awake()
     {
         unitName = "Aurelia";
+
         maxHP = 32;
         attackStat = 7;
-        defenseStat = 0;
-        //defenseStat = -2000;
+        defenseStat = 2;
+
         resistances = new DamageType[] { DamageType.LIGHT};
         weaknesses = new DamageType[] { DamageType.DARK };
         currentHP = maxHP;
