@@ -10,6 +10,7 @@ TagManager:
   - Director
   - Line
   - Unit
+  - StatUp
   layers:
   - Default
   - TransparentFX

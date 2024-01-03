@@ -1483,7 +1483,7 @@ GameObject:
   - component: {fileID: 392729441767316512}
   - component: {fileID: 392729441767316526}
   - component: {fileID: 392729441767316513}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Blackness
   m_TagString: Untagged
   m_Icon: {fileID: 0}

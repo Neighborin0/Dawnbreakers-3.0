@@ -308,6 +308,7 @@ MonoBehaviour:
   statusEffects: []
   offset: {x: -7, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 0, z: 0}
+  camOffset: {x: 0, y: 0, z: 0}
   OverrideEmission: 0
   introText: []
   inventory: []
@@ -323,11 +324,10 @@ MonoBehaviour:
   armor: 0
   spotLight: {fileID: 8380202918096390495}
   actionCostMultiplier: 1
+  knockbackModifider: 0
   resistances: 
   weaknesses: 
   actionList:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
   - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
-  - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
-  - {fileID: 11400000, guid: a367c5a61075e5d439a7f2eea9211cd5, type: 2}
   summonables: []

@@ -150,15 +150,15 @@ public class Healthbar : MonoBehaviour
                     {
                         if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1)
                         {
-                            TL.value -= Director.Instance.TimelineReduction + unit.knockbackModifider;
-                            action.cost += Director.Instance.TimelineReduction + unit.knockbackModifider;
+                            TL.value -= Director.Instance.TimelineReduction;
+                            action.cost += Director.Instance.TimelineReduction;
                             number.color = Color.red;
                         }
 
                         if (actionStyle != Action.ActionStyle.STANDARD)
                         {
-                            TL.value -= 10 + unit.knockbackModifider;
-                            action.cost += 10 + unit.knockbackModifider;
+                            TL.value -= 10;
+                            action.cost += 10;
                             if (actionStyle == Action.ActionStyle.LIGHT)
                             {
                                 number.outlineColor = new Color(0, 0.635f, 0.749f);
@@ -169,9 +169,15 @@ public class Healthbar : MonoBehaviour
                             }
                         }
 
+                        if(unit.knockbackModifider != 0)
+                        {
+                            TL.value -= unit.knockbackModifider;
+                            action.cost += unit.knockbackModifider;
+                        }
+
                         if (TL.value <= 0)
                         {
-                            Director.Instance.timeline.RemoveTimelineChild(unit);
+                            TL.CanClear = true;
                             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), Quaternion.identity, 15f, 0, true, 0, 2));
                             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), new Quaternion(0, 180, Quaternion.identity.z, Quaternion.identity.w), 15f, 0, true, 0, 2));
                             BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
@@ -179,6 +185,7 @@ public class Healthbar : MonoBehaviour
                             {
                                 unit.behavior.turn--;
                             }
+                            Director.Instance.StartCoroutine(LateRemove());
                         }
                     }
                     else if (CombatTools.ReturnIconStatus(unit, "INDOMITABLE"))
@@ -205,6 +212,16 @@ public class Healthbar : MonoBehaviour
             }
         }
 
+    }
+
+    private IEnumerator LateRemove()
+    {
+        if(unit != null)
+        {
+            yield return new WaitForSeconds(0.2f);
+            Director.Instance.timeline.RemoveTimelineChild(unit);
+        }
+        yield break;
     }
 
     private IEnumerator DamagePopUp(int damage, DamageType damageType, Action.ActionStyle actionStyle)

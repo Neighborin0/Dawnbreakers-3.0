@@ -428,6 +428,7 @@ public class ActionContainer : MonoBehaviour
         }
         else
         {
+            Director.Instance.StartCoroutine(CombatTools.StopAndDestroyVFX(0.01f));
             lightButton.gameObject.SetActive(false);
             heavyButton.gameObject.SetActive(false);
         }
@@ -560,8 +561,8 @@ public class ActionContainer : MonoBehaviour
                     }
                     if (action.targetType == Action.TargetType.ENEMY)
                         LabCamera.Instance.MoveToPosition(new Vector3(1, LabCamera.Instance.transform.position.y, LabCamera.Instance.transform.position.z), 1f);
-
                     baseUnit.DoOnActionSelected(this);
+
 
                 }
             }
