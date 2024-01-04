@@ -332,10 +332,6 @@ public class Unit : MonoBehaviour
 
     public void ExitDecision()
     {
-        /*if (state != PlayerState.WAITING)
-            state = PlayerState.IDLE;
-        */
-
         BattleSystem.SetUIOff(this);
         foreach (TimeLineChild child in Director.Instance.timeline.children)
         {

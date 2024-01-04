@@ -750,7 +750,11 @@ public class BattleSystem : MonoBehaviour
         state = BattleStates.BATTLE;
         yield return new WaitForSeconds(1f);
         print("Action should be performed");
-        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.unit.unitName).Reverse().ToList();
+        foreach (var x in Tools.GetAllUnits())
+        {
+            x.state = PlayerState.WAITING;
+        }
+            ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.unit.unitName).Reverse().ToList();
         for (int i = 0; i < ActionsToPerform.Count; i++)
         {
             var action = ActionsToPerform[i];
@@ -848,6 +852,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitUntil(() => Director.Instance.timeline.slider.value <= 0);
         foreach (var y in Tools.GetAllUnits())
         {
+          
             foreach (var skill in y.skillUIs)
             {
                 var actionContainer = skill.GetComponent<ActionContainer>();

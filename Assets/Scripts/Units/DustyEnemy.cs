@@ -17,9 +17,8 @@ public class DustyEnemy : Unit
     {
         unitName = "Dusty";
         maxHP = 40;
-        attackStat = 5;
+        attackStat = 3;
         defenseStat = 8;
-        //speedStat = 9;
         actionCostMultiplier = 1f;
         currentHP = maxHP;
         IsPlayerControlled = false;
@@ -191,7 +190,8 @@ public class DustyEnemy : Unit
 
         private IEnumerator DelayedLightChange(Unit unit)
         {
-            yield return new WaitForSeconds(0.15f);
+            unit.spotLight.intensity = 1;
+            yield return new WaitForSeconds(0.1f);
             unit.spotLight.intensity = 1;
         }
          

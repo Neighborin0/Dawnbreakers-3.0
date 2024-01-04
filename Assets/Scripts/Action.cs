@@ -34,6 +34,7 @@ public abstract class Action : ScriptableObject
     public int numberofUses;
     public bool limited = false;
     public bool CanBeStyled = true;
+    public bool AppliesStun = false;
 
     public int damage;
     public int lightDamage;

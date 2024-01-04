@@ -62,7 +62,7 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage, Unit DamageSource, DamageType damageType, Action.ActionStyle actionStyle, bool IgnoresDEF = false)
+    public void TakeDamage(int damage, Unit DamageSource, DamageType damageType, Action.ActionStyle actionStyle, bool IgnoresDEF = false, bool AppliesStun = false)
     {
         //RunTracker.Instance.slayer = DamageSource;
         if (unit != null)
@@ -95,7 +95,7 @@ public class Healthbar : MonoBehaviour
             if (this != null)
             {
                 this.gameObject.SetActive(true);
-                StartCoroutine(DamagePopUp(TrueDamage, damageType, actionStyle));
+                StartCoroutine(DamagePopUp(TrueDamage, damageType, actionStyle, AppliesStun));
                 StartCoroutine(HandleSlider());
             }
         }
@@ -113,7 +113,7 @@ public class Healthbar : MonoBehaviour
         yield break;
     }
 
-    private void HandleTypeDamage(DamageType damageType, TextMeshProUGUI number, int damage, Action.ActionStyle actionStyle)
+    private void HandleTypeDamage(DamageType damageType, TextMeshProUGUI number, int damage, Action.ActionStyle actionStyle, bool AppliesStun = false)
     {
         number.SetText(damage.ToString());
 
@@ -142,9 +142,10 @@ public class Healthbar : MonoBehaviour
         {
             var TL = Director.Instance.timeline.ReturnTimelineChild(unit);
             var action = Director.Instance.timeline.ReturnTimeChildAction(unit);
+            var prevModifier = unit.knockbackModifider;
             if (!TL.CanClear)
             {
-                if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1 || actionStyle != Action.ActionStyle.STANDARD) //effective
+                if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1 || actionStyle != Action.ActionStyle.STANDARD || AppliesStun) //effective
                 {
                     if (CombatTools.ReturnIconStatus(unit, "STALWART") && CombatTools.ReturnIconStatus(unit, "INDOMITABLE") && Director.Instance.timeline.ReturnTimelineChild(unit) != null) //Applies Stun
                     {
@@ -169,6 +170,13 @@ public class Healthbar : MonoBehaviour
                             }
                         }
 
+                      
+                        if (AppliesStun)
+                        {
+                            unit.knockbackModifider = 100;
+                        }
+
+
                         if(unit.knockbackModifider != 0)
                         {
                             TL.value -= unit.knockbackModifider;
@@ -178,14 +186,14 @@ public class Healthbar : MonoBehaviour
                         if (TL.value <= 0)
                         {
                             TL.CanClear = true;
+                            BattleSystem.Instance.StartCoroutine(LateRemove());
                             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), Quaternion.identity, 15f, 0, true, 0, 2));
                             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), new Quaternion(0, 180, Quaternion.identity.z, Quaternion.identity.w), 15f, 0, true, 0, 2));
-                            BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
+                            BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);  
                             if (!unit.IsPlayerControlled)
                             {
                                 unit.behavior.turn--;
                             }
-                            Director.Instance.StartCoroutine(LateRemove());
                         }
                     }
                     else if (CombatTools.ReturnIconStatus(unit, "INDOMITABLE"))
@@ -210,13 +218,18 @@ public class Healthbar : MonoBehaviour
                     }
                 }
             }
+
+            if (AppliesStun)
+            {
+                unit.knockbackModifider = prevModifier;
+            }
         }
 
     }
 
     private IEnumerator LateRemove()
     {
-        if(unit != null)
+        if (unit != null)
         {
             yield return new WaitForSeconds(0.2f);
             Director.Instance.timeline.RemoveTimelineChild(unit);
@@ -224,7 +237,7 @@ public class Healthbar : MonoBehaviour
         yield break;
     }
 
-    private IEnumerator DamagePopUp(int damage, DamageType damageType, Action.ActionStyle actionStyle)
+    private IEnumerator DamagePopUp(int damage, DamageType damageType, Action.ActionStyle actionStyle, bool AppliesStun = false)
     {
         if (unit != null)
         {
@@ -236,7 +249,7 @@ public class Healthbar : MonoBehaviour
                 var number = popup.GetComponentInChildren<TextMeshProUGUI>();
                 try
                 {
-                    HandleTypeDamage(damageType, number, damage, actionStyle);
+                    HandleTypeDamage(damageType, number, damage, actionStyle, AppliesStun);
 
                 }
                 catch
@@ -297,7 +310,7 @@ public class Healthbar : MonoBehaviour
                 var number = popup.GetComponentInChildren<TextMeshProUGUI>();
                 try
                 {
-                    HandleTypeDamage(damageType, number, damage, actionStyle);
+                    HandleTypeDamage(damageType, number, damage, actionStyle, AppliesStun);
 
                 }
                 catch

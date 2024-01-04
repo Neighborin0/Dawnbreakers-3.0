@@ -5056,11 +5056,12 @@ MonoBehaviour:
   armor: 0
   spotLight: {fileID: 6006733522569477460}
   actionCostMultiplier: 1
+  knockbackModifider: 0
   resistances: 
   weaknesses: 
   actionList:
   - {fileID: 11400000, guid: 4d0d659b93e6dae44812aad6890a3116, type: 2}
-  - {fileID: 11400000, guid: 10f4714b8376b234c9d3857803d3c02a, type: 2}
+  - {fileID: 11400000, guid: 2286e3232ce0a514389455649b743e8e, type: 2}
   - {fileID: 11400000, guid: 2286e3232ce0a514389455649b743e8e, type: 2}
   - {fileID: 11400000, guid: 6932bd23da6b1f3478b0f7a9b429a994, type: 2}
   - {fileID: 11400000, guid: 4d0d659b93e6dae44812aad6890a3116, type: 2}

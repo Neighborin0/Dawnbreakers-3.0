@@ -104,20 +104,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394ae795396016d4f9aff3f26ddbccb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitName: 
   currentHP: 0
   IsPlayerControlled: 0
   skillUIs: []
   health: {fileID: 0}
+  IsHighlighted: 0
   Dying: 0
   charPortraits:
   - {fileID: 21300000, guid: f9ba9f8f1c30c4a4aa76318536d19c7d, type: 3}
   anim: {fileID: 0}
-  Execute: 0
   MiniMapIcons: []
   statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
-  IsHidden: 0
+  camOffset: {x: 0, y: 0, z: 0}
+  OverrideEmission: 0
   introText: []
   inventory: []
   levelUpScreenQuotes: []
@@ -126,15 +128,20 @@ MonoBehaviour:
   maxHP: 0
   attackStat: 0
   defenseStat: -2
+  armor: 0
   spotLight: {fileID: 7512584013941237244}
   actionCostMultiplier: 1
+  knockbackModifider: 0
   resistances: 
   weaknesses: 
   actionList:
+  - {fileID: 11400000, guid: d5d4cebc76bc09049a7575fecb5664fa, type: 2}
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
-  - {fileID: 11400000, guid: 2591929b617328944b8d631f46e412a6, type: 2}
-  - {fileID: 11400000, guid: a4d8a7ac53a1c3e488204ae9b11b8fd3, type: 2}
+  - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
+  - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   summonables: []
+  TutorialIcon4: {fileID: 338629660966762150, guid: 5118e747ef6dafa48982a502d1d4a55e,
+    type: 3}
 --- !u!199 &-5983281507674587463
 ParticleSystemRenderer:
   serializedVersion: 6

@@ -522,6 +522,12 @@ public class Tools : MonoBehaviour
                     stringToReturn = "HEAT2";
                 }
                 break;
+                break;
+            case DamageType.DARK:
+                {
+                    stringToReturn = "DARK2";
+                }
+                break;
             default:
                 {
                     stringToReturn = damageType.ToString();
