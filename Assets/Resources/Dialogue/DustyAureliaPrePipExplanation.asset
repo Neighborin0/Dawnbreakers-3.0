@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DustyAureliaPrePipExplanation
   m_EditorClassIdentifier: 
   labLines:
-  - text: ..Damn it...I'm still weak from before...
+  - text: ...Damn it...I'm slowing down.
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -25,7 +25,19 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: ...He still has a lot of fight left in him...And I'm still so far...
+  - text: 'I am not sure how much energy I still have left... '
+    expression: neutral
+    unit: Aurelia
+    textSpeed: 0.02
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'If this keeps up... '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DustyAureliaPostMeeting
   m_EditorClassIdentifier: 
   labLines:
-  - text: Wait!
+  - text: 'Wait. '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -23,6 +23,8 @@ MonoBehaviour:
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
   - text: You insist on pursuing me?
     expression: neutral
     unit: Aurelia
@@ -33,8 +35,11 @@ MonoBehaviour:
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
-  - text: Please, forgive me, I just think we might be in the same spot here. You
-      seem quite battered and I'm certainly in no good position either.
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: "Please. You\u2019re the only thing in this place which has shown me any
+      mercy. If you can forgive me for my early transgressions, there\u2019s something
+      I want to ask of you.  "
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -44,8 +49,10 @@ MonoBehaviour:
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
-  - text: I think we should band together, at least until I find my men. What do
-      you say?
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: "I don\u2019t know how much longer I can last out here alone and by the
+      looks of it you\u2019re quite battered as well.  "
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -55,7 +62,22 @@ MonoBehaviour:
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
-  - text: 'I don''t care what you do. Just don''t get in my way again. '
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'I think it would be best if we traveled together. '
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: "I don\u2019t care what you do, just don\u2019t raise your sword against
+      me again. Next time I won\u2019t be so merciful. "
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -65,8 +87,9 @@ MonoBehaviour:
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
-  - text: You have my word. If we are to be traveling together, I think proper introductions
-      are in order.
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'You have my word.  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -76,7 +99,10 @@ MonoBehaviour:
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
-  - text: My name is Wulfric, Leader of the Iron Fangs! May I have your name in turn?
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'If we are to be traveling together, I think proper introductions are in
+      order. '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -86,6 +112,32 @@ MonoBehaviour:
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: My name is Wulfric! I lead a small mercenary group known as the Iron Fangs.
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'May I have your name in turn? '
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
   - text: 'Aurelia. '
     expression: neutral
     unit: Aurelia
@@ -96,3 +148,17 @@ MonoBehaviour:
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: "Now enough with this, I\u2019m tired of dawdling here any further. "
+    expression: neutral
+    unit: Aurelia
+    textSpeed: 0.02
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}

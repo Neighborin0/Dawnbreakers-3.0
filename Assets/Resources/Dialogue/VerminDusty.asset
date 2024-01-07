@@ -25,7 +25,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Aurelia, we need to hit this beast fast and hard. Can I trust you on that? '
+  - text: 'Aurelia, if we are to kill this thing, we need to hit this beast fast
+      and  hard.  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.04
@@ -37,7 +38,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: On it.
+  - text: Right.
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

@@ -38,7 +38,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Don't fret now! He'll make a fine Husk!
+  - text: 'Do not cry for him. His brilliant spark will be lit again and again until
+      he seeks my embrace.  '
     expression: neutral
     unit: Matriarch
     textSpeed: 0.04
@@ -63,7 +64,82 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: I won't give you the chance...never again!
+  - text: "As for you...You\u2019re...brighter...  "
+    expression: neutral
+    unit: Matriarch
+    textSpeed: 0.05
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: MoveToUnit
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Matriarch
+            m_BoolArgument: 0
+          m_CallState: 2
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: "I\u2019m curious how you will go out...  "
+    expression: neutral
+    unit: Matriarch
+    textSpeed: 0.05
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: MoveToUnit
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Matriarch
+            m_BoolArgument: 0
+          m_CallState: 2
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'I''m tired of your words...  '
+    expression: neutral
+    unit: Aurelia
+    textSpeed: 0.02
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: MoveToUnit
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Aurelia
+            m_BoolArgument: 0
+          m_CallState: 2
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'This all ends here!  '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

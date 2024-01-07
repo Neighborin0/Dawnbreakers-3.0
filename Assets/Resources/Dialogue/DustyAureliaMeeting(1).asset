@@ -38,7 +38,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 11.17, z: -79.28}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: I mean you no harm...I just wish to pass...
+  - text: 'Step aside, I have no quarrel with you. '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -63,7 +63,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Bah! As if I would fall another trick!
+  - text: "Bah! And leave my back turned? I\u2019ve had enough of this place's tricks! "
     expression: neutral_darkened
     unit: Dusty
     textSpeed: 0.03
@@ -88,7 +88,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: I shall cut your lying tongue!
+  - text: 'I shall cut out your lying tongue! '
     expression: neutral_darkened
     unit: Dusty
     textSpeed: 0.03
@@ -139,8 +139,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: -15}
-  - text: Fine then. If you will not let me pass, then I will have no hesitation
-      in striking you down.
+  - text: 'Fine then. I will just have to move you by force. '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

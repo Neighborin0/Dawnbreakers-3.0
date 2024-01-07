@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DustyAureliaForcedLightAction
   m_EditorClassIdentifier: 
   labLines:
-  - text: What is this...
+  - text: 'What is this...? '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.03

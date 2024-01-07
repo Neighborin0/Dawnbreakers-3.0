@@ -233,7 +233,7 @@ public class DustyEnemy : Unit
             TutorialText.fontSharedMaterial.SetColor("_GlowColor", TextColor);
             TutorialText.fontSharedMaterial.SetFloat("_GlowPower", 0.5f);
             TutorialText.color = TextColor;
-            TutorialText.text = "Burn hotter...";
+            TutorialText.text = "Burn stronger...";
 
             Director.Instance.StartCoroutine(Tools.FadeText(TutorialText, 0.01f, true, false));
             yield return new WaitForSeconds(2f);

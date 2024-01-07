@@ -13,10 +13,34 @@ MonoBehaviour:
   m_Name: AureliaDeath
   m_EditorClassIdentifier: 
   labLines:
-  - text: ...I still have so much further to go...
+  - text: 'Go dim now radiant light...  '
+    expression: neutral
+    unit: Matriarch
+    textSpeed: 0.05
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: "Not here.... I can\u2019t fall here...  "
     expression: neutral
     unit: Aurelia
-    textSpeed: 0.02
+    textSpeed: 0.5
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'I still have so much further to go...  '
+    expression: neutral
+    unit: Aurelia
+    textSpeed: 0.5
     OnLineStarted:
       m_PersistentCalls:
         m_Calls: []

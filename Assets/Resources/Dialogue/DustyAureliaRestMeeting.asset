@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DustyAureliaRestMeeting
   m_EditorClassIdentifier: 
   labLines:
-  - text: 'Here. We will rest. '
+  - text: 'We can rest here. '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -25,7 +25,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Finally! I never thought I'd find a moment's peace here.
+  - text: "Never thought I\u2019d get some peace in this place."
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -37,8 +37,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Hmm...Say Aurelia, you seem to be...well traveled, you haven't seen any
-      other soliders have you?
+  - text: "Some wondrous kingdom this turned out to be, eh? Should\u2019ve known
+      the whole thing was daft.  "
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -50,7 +50,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: I have not.
+  - text: '...  '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -62,7 +62,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Shame...Hope the men are getting along fine without me...
+  - text: "Quite the stoic one, aren\u2019t you? You\u2019d fit right in with the
+      Iron Fangs.  "
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -74,7 +75,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: It's like they were there one moment, then gone the next..
+  - text: '...  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -86,8 +87,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: ...I was a damn fool to come here. Promises of endless wealth and life.
-      Bah!
+  - text: 'I just hope the lads are getting along fine without me...  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -99,19 +99,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: ...I wonder if they're even still alive...
-    expression: neutral
-    unit: Dusty
-    textSpeed: 0.03
-    OnLineStarted:
-      m_PersistentCalls:
-        m_Calls: []
-    OnLineEnded:
-      m_PersistentCalls:
-        m_Calls: []
-    PositionToMoveTo: {x: 0, y: 0, z: 0}
-    CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Sorry lass, just some ramblings from a old fool.
+  - text: 'We got separated some time ago, but it all seems...Seems like a blur now.  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -125,8 +113,8 @@ MonoBehaviour:
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: ...
     expression: neutral
-    unit: Aurelia
-    textSpeed: 0.02
+    unit: Dusty
+    textSpeed: 0.03
     OnLineStarted:
       m_PersistentCalls:
         m_Calls: []
@@ -135,7 +123,19 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Don't lose sight of finding your men Wulfric. Remember that.
+  - text: 'Sorry for rambling on lass, just an old fool lamenting. '
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: "\u2026  "
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -147,7 +147,32 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Hmmph...Yes...Yes I suppose...
+  - text: Never lose sight of finding your men Wulfric. Make sure you never forget
+      that.
+    expression: neutral
+    unit: Aurelia
+    textSpeed: 0.02
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'Hmmph... '
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'Thanks lass...  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
