@@ -103,6 +103,10 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleStates.START;
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
+        if(TutorialNode)
+        {
+          AudioManager.Instance.Stop(AudioManager.Instance.currentMusicTrack);
+        }
         StartBattle();
     }
     void Update()
@@ -228,9 +232,14 @@ public class BattleSystem : MonoBehaviour
             {
                 StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, false, false));
             }
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(0.3f);
+            AudioManager.Instance.Play("Coronus_Battle");
+            AudioManager.Instance.ReturnSound("Coronus_Battle").volume = 0;
+            StartCoroutine(AudioManager.Instance.Fade(1f, "Coronus_Battle", 50f, true));
+            yield return new WaitForSeconds(1.5f);
             TutorialParent.gameObject.SetActive(false);
-            LabCamera.Instance.GetComponent<MoveableObject>().Move(false, 0.01f, 100);
+
+            LabCamera.Instance.GetComponent<MoveableObject>().Move(false, 0.01f, 150);
             yield return new WaitUntil(() => LabCamera.Instance.transform.position.y <= BattleSystem.Instance.cameraPos1Units.y + 0.01f);
             LabCamera.Instance.GetComponent<MoveableObject>().Stop();
         }
@@ -242,6 +251,8 @@ public class BattleSystem : MonoBehaviour
             }
         }
         LabCamera.Instance.ReadjustCam();
+
+      
 
         if (!TutorialNode)
             yield return new WaitForSeconds(1.5f);
@@ -314,6 +325,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator TransitionToMap(bool LevelUpScreen = true)
     {
         yield return new WaitForSeconds(1f);
+        StartCoroutine(AudioManager.Instance.Fade(0.5f, AudioManager.Instance.currentMusicTrack, 2, false));
         foreach (Transform child in Director.Instance.timeline.transform)
         {
             if (child.GetComponent<TimeLineChild>() != null)

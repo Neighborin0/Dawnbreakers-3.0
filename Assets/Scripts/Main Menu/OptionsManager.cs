@@ -67,7 +67,7 @@ public class OptionsManager : MonoBehaviour
             Debug.unityLogger.logEnabled = false;
             OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
             OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 1);
-            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
+            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.01f, false));
 #endif
         }
 
@@ -75,7 +75,6 @@ public class OptionsManager : MonoBehaviour
 
     void Start()
     {
-        AudioManager.Instance.Play("Main Menu Theme");
         filteredResolutions = new List<FilteredResolutions>();
         resolutionsDropdown.ClearOptions();
         List<string> resoultionparams = new List<string>();
@@ -325,7 +324,7 @@ public class OptionsManager : MonoBehaviour
         {
             if(musicTrack.soundType == SoundType.MUSIC)
             {
-                StartCoroutine(AudioManager.Instance.Fade(false, musicTrack.AudioName, 1f, true));
+                StartCoroutine(AudioManager.Instance.Fade(0, musicTrack.AudioName, 1f, true));
             }
         }
         if (SceneToLoad != "Main Menu")
@@ -341,7 +340,7 @@ public class OptionsManager : MonoBehaviour
         print("TRANSITIONED");
         SceneManager.LoadScene(SceneToLoad);
         AudioManager.Instance.Play(MusicToPlay);
-        StartCoroutine(AudioManager.Instance.Fade(true, MusicToPlay, MusicFadeTime, false));
+        StartCoroutine(AudioManager.Instance.Fade(1, MusicToPlay, MusicFadeTime, false));
         canvas.sortingOrder = 2;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -47,6 +48,16 @@ public class CutsceneTools : MonoBehaviour
     public void ChangeVignetteIntensity(float DesiredValue)
     {
         Tools.StartAndCheckCoroutine(vignetteIEnumerator, ChangeVignetteIntensityCoroutine(DesiredValue));
+    }
+
+    public void StartMusicTrack(string TrackToPlay)
+    {
+       AudioManager.Instance.Play(TrackToPlay);
+    }
+
+    public void ChangeMusicTrackVolume(float TargetVolume)
+    {
+        Director.Instance.StartCoroutine(AudioManager.Instance.Fade(TargetVolume, AudioManager.Instance.currentMusicTrack, 1.5f, false));
     }
 
     private IEnumerator ChangeVignetteIntensityCoroutine(float DesiredValue)

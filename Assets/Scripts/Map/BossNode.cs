@@ -21,12 +21,14 @@ public class BossNode : MapNode
            
             print(unit.unitName);
         }
-        OptionsManager.Instance.Load("Battle", "Coronus_Boss");
+        OptionsManager.Instance.Load("Battle", "Coronus_Boss", 1000f);
+      
         SceneManager.sceneLoaded += OnSceneLoaded;  
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        AudioManager.Instance.Stop(AudioManager.Instance.currentMusicTrack);
         var battlesystem = BattleSystem.Instance;
         battlesystem.BossNode = true;
         battlesystem.playerUnits = playerUnits;

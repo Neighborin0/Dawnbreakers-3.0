@@ -75,7 +75,7 @@ MonoBehaviour:
     loop: 1
   - soundType: 1
     clip: {fileID: 8300000, guid: 3d0aedd3cccd8224cbd576bb95fc6db1, type: 3}
-    AudioName: Rest
+    AudioName: Rest_Coronus
     volume: 1
     pitch: 1
     source: {fileID: 0}
@@ -97,6 +97,13 @@ MonoBehaviour:
   - soundType: 1
     clip: {fileID: 8300000, guid: df670da80ada95e4ca6d3b5ae7678456, type: 3}
     AudioName: Coronus_Battle
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 1
+  - soundType: 1
+    clip: {fileID: 8300000, guid: fdb0c3a7cde2f5146a6d6eca28d6ee97, type: 3}
+    AudioName: Coronus_Map
     volume: 1
     pitch: 1
     source: {fileID: 0}

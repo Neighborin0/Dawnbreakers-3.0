@@ -18,7 +18,7 @@ public class CombatNode : MapNode
            
             print(unit.unitName);
         }
-        OptionsManager.Instance.Load("Battle", "Battle_Coronus");
+        OptionsManager.Instance.Load("Battle", "Coronus_Battle", 10f);
         SceneManager.sceneLoaded += OnSceneLoaded;  
     }
 

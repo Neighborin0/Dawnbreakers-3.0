@@ -267,6 +267,7 @@ public class Healthbar : MonoBehaviour
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
                     unit.DoDeathQuote();
                     LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 8, -40, 0.5f);
+                    StartCoroutine(AudioManager.Instance.Fade(0, AudioManager.Instance.currentMusicTrack, 0.5f, false));
                 }
                 else
                 {
@@ -343,6 +344,7 @@ public class Healthbar : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             yield return new WaitUntil(() => BattleLog.Instance.characterdialog.IsActive());
             yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
+            Director.Instance.StartCoroutine(AudioManager.Instance.Fade(1, AudioManager.Instance.currentMusicTrack, 1f, false));
             print("Player should be dead");
         }
         else

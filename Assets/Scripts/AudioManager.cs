@@ -8,12 +8,15 @@ using System;
 using UnityEngine.Audio;
 using JetBrains.Annotations;
 using UnityEngine.InputSystem.Utilities;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
   
     public static AudioManager Instance { get; private set;  }
     public Sound[] sounds;
+    public string currentMusicTrack;
+    private bool Stopped = false;
      void Awake()
     {
         if (Instance != null)
@@ -32,6 +35,11 @@ public class AudioManager : MonoBehaviour
                 s.source.pitch = s.pitch;
                 s.source.loop = s.loop;
             }
+
+            if (SceneManager.GetActiveScene().name == "Main Menu")
+                Play("Main Menu Theme");
+            else
+                Play("Coronus_Map");
         }
     }
 
@@ -40,6 +48,11 @@ public class AudioManager : MonoBehaviour
         var s = Array.Find(sounds, sound => sound.AudioName == AudioName);
         if(s != null)
         {
+            if(s.soundType == SoundType.MUSIC)
+            {
+                currentMusicTrack = s.AudioName;
+            }
+
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s?.source.Play();
@@ -47,38 +60,51 @@ public class AudioManager : MonoBehaviour
        
     }
 
-    public IEnumerator Fade(bool FadeIn, string AudioName, float FadeTime, bool Stop = false)
+    public void Stop(string AudioName)
+    {
+        var s = Array.Find(sounds, sound => sound.AudioName == AudioName);
+        if (s != null)
+        {
+            s?.source.Stop();
+        }
+    }
+
+    public Sound ReturnSound(string AudioName)
+    {
+        var s = Array.Find(sounds, sound => sound.AudioName == AudioName);
+        return s;
+    }
+
+    public IEnumerator Fade(float TargetVolume, string AudioName, float FadeTime, bool Stop = false)
     {
         var soundSource = Array.Find(sounds, sound => sound.AudioName == AudioName);
         float startVolume = soundSource.source.volume;
 
-        if (!FadeIn)
+        if(soundSource.source.volume > TargetVolume) //Fade Out
         {
             Debug.Log("Fading out nooo");
             Debug.Log(soundSource.AudioName);
-            while (soundSource.source.volume > 0)
+            while (soundSource.source.volume > TargetVolume)
             {
-                Debug.Log("Should be lowering volume");
                 soundSource.source.volume -= startVolume * Time.deltaTime / FadeTime;
                 yield return null;
             }
 
-            if(Stop)
+            if (Stop)
             {
                 soundSource.source.Stop();
             }
         }
-        else
+        else //Fade In
         {
-            soundSource.source.volume = 0;
-            Debug.Log("Fading in yessss");
-            while (soundSource.source.volume < 1)
+            while (soundSource.source.volume < TargetVolume)
             {
                 soundSource.source.volume += startVolume * Time.deltaTime / FadeTime;
 
                 yield return null;
             }
         }
+       
     }
         
 

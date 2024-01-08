@@ -47,7 +47,7 @@ public class PrologueEnding : MonoBehaviour
             yield return new WaitForSeconds(3f);
             StartCoroutine(Tools.FadeText(text[i], 0.01f, false, true));
             yield return new WaitForSeconds(2f);
-            if(i == 4)
+            if(i == 5)
             {
                 OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Main Menu", "Main Menu Theme"));
             }

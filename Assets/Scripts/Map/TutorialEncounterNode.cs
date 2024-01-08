@@ -18,12 +18,13 @@ public class TutorialEncounterNode : MapNode
            
             print(unit.unitName);
         }
-        OptionsManager.Instance.Load("Battle", "Coronus_Battle", 1.5f);
+        OptionsManager.Instance.Load("Battle", "Coronus_Battle", 100f);
         SceneManager.sceneLoaded += OnSceneLoaded;  
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        AudioManager.Instance.Stop(AudioManager.Instance.currentMusicTrack);
         var battlesystem = BattleSystem.Instance;
         battlesystem.playerUnits = playerUnits;
         battlesystem.TutorialNode = true;
