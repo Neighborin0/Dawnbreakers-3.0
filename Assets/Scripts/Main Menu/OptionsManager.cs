@@ -75,7 +75,7 @@ public class OptionsManager : MonoBehaviour
 
     void Start()
     {
-
+        AudioManager.Instance.Play("Main Menu Theme");
         filteredResolutions = new List<FilteredResolutions>();
         resolutionsDropdown.ClearOptions();
         List<string> resoultionparams = new List<string>();
@@ -126,6 +126,8 @@ public class OptionsManager : MonoBehaviour
 
     void Update()
     {
+
+
         if (Input.GetKeyDown(KeyCode.F) && fPSCounter != null)
         {
             FPSCounterEnable();
@@ -152,8 +154,8 @@ public class OptionsManager : MonoBehaviour
                    
                 }
             }
-          
-
+           
+              
             Move(SettingsMenuDisabled);
 
         }
@@ -305,18 +307,27 @@ public class OptionsManager : MonoBehaviour
 
     }
 
-    public void Load(string SceneToLoad)
+    public void Load(string SceneToLoad, string MusicToPlay, float MusicFadeInTime = 1)
     {
-        StartCoroutine(DoLoad(SceneToLoad));
+        StartCoroutine(DoLoad(SceneToLoad, MusicToPlay, MusicFadeInTime));
     }
 
-    public IEnumerator DoLoad(string SceneToLoad)
+    public IEnumerator DoLoad(string SceneToLoad, string MusicToPlay, float MusicFadeTime = 1)
     {
+
         OptionsManager.Instance.CanPause = false;
         Move(false);
         blackScreen.gameObject.SetActive(true);
         canvas.sortingOrder = 100;
         StartCoroutine(Tools.FadeObject(blackScreen, 0.001f, true));
+
+        foreach(var musicTrack in AudioManager.Instance.sounds)
+        {
+            if(musicTrack.soundType == SoundType.MUSIC)
+            {
+                StartCoroutine(AudioManager.Instance.Fade(false, musicTrack.AudioName, 1f, true));
+            }
+        }
         if (SceneToLoad != "Main Menu")
         {
             quitButton.gameObject.SetActive(true);
@@ -328,7 +339,9 @@ public class OptionsManager : MonoBehaviour
         yield return new WaitUntil(() => blackScreen.color == new Color(0, 0, 0, 1));
         yield return new WaitForSeconds(1f);
         print("TRANSITIONED");
-        SceneManager.LoadScene(SceneToLoad);  
+        SceneManager.LoadScene(SceneToLoad);
+        AudioManager.Instance.Play(MusicToPlay);
+        StartCoroutine(AudioManager.Instance.Fade(true, MusicToPlay, MusicFadeTime, false));
         canvas.sortingOrder = 2;
     }
 }

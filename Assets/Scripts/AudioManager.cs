@@ -7,6 +7,7 @@ using TMPro;
 using System;
 using UnityEngine.Audio;
 using JetBrains.Annotations;
+using UnityEngine.InputSystem.Utilities;
 
 public class AudioManager : MonoBehaviour
 {
@@ -37,15 +38,68 @@ public class AudioManager : MonoBehaviour
     public void Play(string AudioName)
     {
         var s = Array.Find(sounds, sound => sound.AudioName == AudioName);
-        s?.source.Play();
+        if(s != null)
+        {
+            s.source.volume = s.volume;
+            s.source.pitch = s.pitch;
+            s?.source.Play();
+        }
+       
     }
+
+    public IEnumerator Fade(bool FadeIn, string AudioName, float FadeTime, bool Stop = false)
+    {
+        var soundSource = Array.Find(sounds, sound => sound.AudioName == AudioName);
+        float startVolume = soundSource.source.volume;
+
+        if (!FadeIn)
+        {
+            Debug.Log("Fading out nooo");
+            Debug.Log(soundSource.AudioName);
+            while (soundSource.source.volume > 0)
+            {
+                Debug.Log("Should be lowering volume");
+                soundSource.source.volume -= startVolume * Time.deltaTime / FadeTime;
+                yield return null;
+            }
+
+            if(Stop)
+            {
+                soundSource.source.Stop();
+            }
+        }
+        else
+        {
+            soundSource.source.volume = 0;
+            Debug.Log("Fading in yessss");
+            while (soundSource.source.volume < 1)
+            {
+                soundSource.source.volume += startVolume * Time.deltaTime / FadeTime;
+
+                yield return null;
+            }
+        }
+    }
+        
 
    
 }
 
+
+
+[Serializable]
+public enum SoundType
+{
+    SFX,
+    MUSIC,
+    
+};
+
 [Serializable]
 public class Sound
 {
+    public SoundType soundType;
+
     public AudioClip clip;
     public string AudioName;
     [Range(0, 1)]

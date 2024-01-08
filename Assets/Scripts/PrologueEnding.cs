@@ -49,7 +49,7 @@ public class PrologueEnding : MonoBehaviour
             yield return new WaitForSeconds(2f);
             if(i == 4)
             {
-                OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Main Menu"));
+                OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Main Menu", "Main Menu Theme"));
             }
 
         }

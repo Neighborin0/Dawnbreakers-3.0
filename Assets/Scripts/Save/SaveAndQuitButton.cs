@@ -9,7 +9,7 @@ public class SaveAndQuitButton : MonoBehaviour
 {
     public void SaveAndQuit()
     {
-        OptionsManager.Instance.Load("Main Menu");
+        OptionsManager.Instance.Load("Main Menu", "Main Menu Theme");
         if(Director.Instance != null)
         {
             SceneManager.MoveGameObjectToScene(Director.Instance.gameObject, SceneManager.GetActiveScene());

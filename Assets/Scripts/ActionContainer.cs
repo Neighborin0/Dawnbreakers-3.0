@@ -330,7 +330,7 @@ public class ActionContainer : MonoBehaviour
     {
         if (isActiveAndEnabled)
         {
-            AudioManager.Instance.Play("ButtonHover");
+            //AudioManager.Instance.Play("ButtonHover");
             action.unit = baseUnit;
             if (currentEffectPopup == null)
             {

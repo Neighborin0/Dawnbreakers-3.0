@@ -301,7 +301,7 @@ public class BattleSystem : MonoBehaviour
         {
             CombatTools.PauseStaminaTimer();
             MapController.Instance.gameObject.transform.SetParent(this.transform);
-            OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Prologue Ending"));
+            OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Prologue Ending", "Ending"));
         }
         else
         {
@@ -354,7 +354,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             //Used in Dusty fight
-            OptionsManager.Instance.Load("MAP2");
+            OptionsManager.Instance.Load("MAP2", "Coronus_Map");
             yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
             foreach (var unit in Tools.GetAllUnits())
             {

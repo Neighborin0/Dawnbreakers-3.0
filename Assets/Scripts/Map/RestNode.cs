@@ -9,7 +9,7 @@ public class RestNode : MapNode
     public override void OnInteracted()
     {
         Director.Instance.CharacterSlotEnable();
-        OptionsManager.Instance.Load("Rest");
+        OptionsManager.Instance.Load("Rest", "Rest_Coronous");
     }
 
 

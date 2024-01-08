@@ -21,7 +21,7 @@ public class BossNode : MapNode
            
             print(unit.unitName);
         }
-        OptionsManager.Instance.Load("Battle");
+        OptionsManager.Instance.Load("Battle", "Coronus_Boss");
         SceneManager.sceneLoaded += OnSceneLoaded;  
     }
 

@@ -52,7 +52,7 @@ public class Sweep : Action
         yield return new WaitUntil(() => unit.Execute);
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
-        AudioManager.Instance.Play("slash_001");
+        //AudioManager.Instance.Play("slash_001");
         /*if(targets.statusEffects.Contains(targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault()))
         {
             var Stagger = targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault();

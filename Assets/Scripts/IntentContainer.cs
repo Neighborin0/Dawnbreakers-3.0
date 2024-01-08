@@ -40,7 +40,7 @@ public class IntentContainer : MonoBehaviour
 
     public void SetDescription()
     {
-        AudioManager.Instance.Play("ButtonHover");
+        //AudioManager.Instance.Play("ButtonHover");
         if (currentEffectPopup == null)
         {
             var EP = Instantiate(Director.Instance.EffectPopUp, BattleSystem.Instance.canvasParent.transform);
