@@ -267,7 +267,7 @@ public class Healthbar : MonoBehaviour
                     Director.Instance.StartCoroutine(popup.DestroyPopUp());
                     unit.DoDeathQuote();
                     LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 8, -40, 0.5f);
-                    StartCoroutine(AudioManager.Instance.Fade(0, AudioManager.Instance.currentMusicTrack, 0.5f, false));
+                    StartCoroutine(AudioManager.Instance.Fade(0, AudioManager.Instance.currentMusicTrack, 1f, false));
                 }
                 else
                 {

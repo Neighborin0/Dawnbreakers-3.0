@@ -89,7 +89,7 @@ MonoBehaviour:
     PositionToMoveTo: {x: 1, y: 12.07, z: -65.63}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: Doomed to go out again and again...
-    expression: neutral
+    expression: darkened
     unit: Matriarch
     textSpeed: 0.05
     OnLineStarted:
@@ -99,7 +99,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     PositionToMoveTo: {x: 4.55, y: 12.73, z: -70.48}
-    CameraRotation: {x: 0, y: 0, z: -15}
+    CameraRotation: {x: 0, y: 0, z: 0}
   - text: That voice....You...
     expression: neutral
     unit: Dusty
@@ -236,6 +236,19 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: Coronus_Boss
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: DoBossIntro
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
     PositionToMoveTo: {x: 4.55, y: 12.73, z: -70.48}

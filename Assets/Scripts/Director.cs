@@ -49,6 +49,7 @@ public class Director : MonoBehaviour
     public GameObject ConfirmButton;
     public GameObject CharacterSlotButtonprefab;
     public TextMeshProUGUI PipTutorialText;
+    public Image BossCircle;
 
     //Timeline stuff
     public TimeLine timeline;

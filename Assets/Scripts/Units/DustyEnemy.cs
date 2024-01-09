@@ -27,7 +27,6 @@ public class DustyEnemy : Unit
         behavior = this.gameObject.AddComponent<DustyBehavior>();
         BattleStarted += DoCharacterText;
         IsHidden = true;
-        AudioManager.Instance.Stop(AudioManager.Instance.currentMusicTrack);
     }
 
     public void Start()

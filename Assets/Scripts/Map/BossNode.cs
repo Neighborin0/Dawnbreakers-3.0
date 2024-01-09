@@ -28,7 +28,7 @@ public class BossNode : MapNode
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        AudioManager.Instance.Stop(AudioManager.Instance.currentMusicTrack);
+        Director.Instance.StartCoroutine(AudioManager.Instance.Fade(0, AudioManager.Instance.currentMusicTrack, 0.1f, false));
         var battlesystem = BattleSystem.Instance;
         battlesystem.BossNode = true;
         battlesystem.playerUnits = playerUnits;

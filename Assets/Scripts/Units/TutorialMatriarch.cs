@@ -29,7 +29,7 @@ public class TutorialMatriarch : Unit
 
     private void DoCharacterText(Unit obj)
     {
-        BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("MatriarchIntro"), true, false);
+        BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("MatriarchIntro"), true, false, false, false, true, true, false);
         foreach (var unit in Tools.GetAllUnits())
         {
             unit.StaminaHighlightIsDisabled = true;
@@ -50,7 +50,7 @@ public class TutorialMatriarch : Unit
         {
             unit.StaminaHighlightIsDisabled = true;
         }
-        yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
+        yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
         StartCoroutine(Director.Instance.timeline.ResetTimeline());
         OnPlayerUnitDeath -= Gloat;
     }

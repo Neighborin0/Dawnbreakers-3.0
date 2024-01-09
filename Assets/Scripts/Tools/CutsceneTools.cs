@@ -60,6 +60,11 @@ public class CutsceneTools : MonoBehaviour
         Director.Instance.StartCoroutine(AudioManager.Instance.Fade(TargetVolume, AudioManager.Instance.currentMusicTrack, 1.5f, false));
     }
 
+    public void DoBossIntro()
+    {
+        Director.Instance.StartCoroutine(Director.Instance.canvas.GetComponent<BossIntro>().DoIntro());
+    }
+
     private IEnumerator ChangeVignetteIntensityCoroutine(float DesiredValue)
     {
         if (BattleSystem.Instance.effectsSetting.sharedProfile.TryGet<Vignette>(out var vignette))

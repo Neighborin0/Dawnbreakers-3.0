@@ -93,14 +93,14 @@ public class BattleLog : MonoBehaviour
         ambientText.text = "";
     }
 
-    public void CharacterDialog(List<LabLine> dialog, bool PausesBattle = false, bool disableAfter = true, bool ambientText = false, bool EndBattle = false, bool TurnOffUiAfter = true, bool CheckForPause = true)
+    public void CharacterDialog(List<LabLine> dialog, bool PausesBattle = false, bool disableAfter = true, bool ambientText = false, bool EndBattle = false, bool TurnOffUiAfter = true, bool CheckForPause = true, bool ResetBackToIdleState = true)
     {
         ClearAllBattleLogText();
         Portraitparent.gameObject.SetActive(true);
         characterdialog.gameObject.SetActive(true);
         if (!ambientText)
         {
-            StartCoroutine(TypeMultiText(dialog, characterdialog, disableAfter, PausesBattle, EndBattle, TurnOffUiAfter, CheckForPause));
+            StartCoroutine(TypeMultiText(dialog, characterdialog, disableAfter, PausesBattle, EndBattle, TurnOffUiAfter, CheckForPause, ResetBackToIdleState));
         }
         else
             AmbientCharacterText(dialog, characterdialog);
@@ -328,7 +328,7 @@ public class BattleLog : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeMultiText(List<LabLine> text, TMP_Text x, bool disableAfter, bool Pauses = false, bool EndBattle = false, bool TurnOffUiAfter = true, bool CheckForPause = true)
+    private IEnumerator TypeMultiText(List<LabLine> text, TMP_Text x, bool disableAfter, bool Pauses = false, bool EndBattle = false, bool TurnOffUiAfter = true, bool CheckForPause = true, bool ResetBackToIdleState = true)
     {
         BattleStates previousState = BattleStates.IDLE;
         BattleLog.Instance.state = BattleLogStates.TALKING;
@@ -407,50 +407,55 @@ public class BattleLog : MonoBehaviour
                     BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
                     BattleSystem.Instance.state = previousState;
                     ResetBattleLog();
-                    foreach (var unit in Tools.GetAllUnits())
+                    if (ResetBackToIdleState)
                     {
-                       unit.state = PlayerState.IDLE;
 
-                        if (unit.IsPlayerControlled)
-                            unit.StaminaHighlightIsDisabled = true;
-                        if (unit.health != null)
-                            unit.health.DeathPaused = false;
 
-                        if (!unit.IsPlayerControlled)
-                            unit.intentUI.gameObject.SetActive(true);
-                    }
-
-                    if (CheckForPause)
-                    {
-                        if (!BattleSystem.Instance.BattlePhasePause)
-                            WasPaused = true;
-
-                        yield return new WaitUntil(() => !BattleSystem.Instance.BattlePhasePause);
+                        foreach (var unit in Tools.GetAllUnits())
                         {
-                            Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
-                            BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+                            unit.state = PlayerState.IDLE;
 
-                            if (previousState != BattleStates.BATTLE)
-                                BattleSystem.Instance.playerUnits[0].StartDecision();
-                            else if (WasPaused)
-                            {
-                                Director.Instance.StartCoroutine(BattleSystem.Instance.ForcePerformActionClose());
-                            }
-                            else
-                                CombatTools.UnpauseStaminaTimer();
+                            if (unit.IsPlayerControlled)
+                                unit.StaminaHighlightIsDisabled = true;
+                            if (unit.health != null)
+                                unit.health.DeathPaused = false;
 
+                            if (!unit.IsPlayerControlled)
+                                unit.intentUI.gameObject.SetActive(true);
                         }
-                    }
-                    else
-                    {
-                        BattleLog.Instance.state = BattleLogStates.IDLE;
-                    }
-                  
 
-                    if (TurnOffUiAfter)
-                        LabCamera.Instance.uicam.gameObject.SetActive(true);
+                        if (CheckForPause)
+                        {
+                            if (!BattleSystem.Instance.BattlePhasePause)
+                                WasPaused = true;
 
-                    Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                            yield return new WaitUntil(() => !BattleSystem.Instance.BattlePhasePause);
+                            {
+                                Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
+                                BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+
+                                if (previousState != BattleStates.BATTLE)
+                                    BattleSystem.Instance.playerUnits[0].StartDecision();
+                                else if (WasPaused)
+                                {
+                                    Director.Instance.StartCoroutine(BattleSystem.Instance.ForcePerformActionClose());
+                                }
+                                else
+                                    CombatTools.UnpauseStaminaTimer();
+
+                            }
+                        }
+                        else
+                        {
+                            BattleLog.Instance.state = BattleLogStates.IDLE;
+                        }
+
+
+                        if (TurnOffUiAfter)
+                            LabCamera.Instance.uicam.gameObject.SetActive(true);
+
+                        Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                    }
                 }
             }
             if (RestSite.Instance != null)
@@ -471,6 +476,7 @@ public class BattleLog : MonoBehaviour
             characterdialog.gameObject.SetActive(false);
             GetComponent<MoveableObject>().Move(false);
         }
+
         BattleLog.Instance.state = BattleLogStates.IDLE;
     }
 

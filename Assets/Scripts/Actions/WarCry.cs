@@ -34,7 +34,7 @@ public class WarCry : Action
 
     public override string GetDescription()
     {
-        description = $"Applies +{CombatTools.DetermineTrueActionValue(this)} <sprite name=\"VIGOR\"> to all allies for {duration} round.";
+        description = $"Applies +{CombatTools.DetermineTrueActionValue(this)} <sprite name=\"VIGOR\"> to all allies for {duration} rounds.";
         return description;
     }
     public override IEnumerator ExecuteAction()

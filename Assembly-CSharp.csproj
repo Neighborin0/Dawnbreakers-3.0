@@ -161,6 +161,7 @@
     <Compile Include="Assets\Scripts\Actions\Beacon.cs" />
     <Compile Include="Assets\Scripts\Save\LabProfile.cs" />
     <Compile Include="Assets\Scripts\Map\MapFlow.cs" />
+    <Compile Include="Assets\Scripts\Enemy Behaviors\BossIntro.cs" />
     <Compile Include="Assets\Scripts\TimeLine.cs" />
     <Compile Include="Assets\Scripts\Map\RestSite.cs" />
     <Compile Include="Assets\Scripts\Icons\Revitalize.cs" />
