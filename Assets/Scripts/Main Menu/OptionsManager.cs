@@ -68,6 +68,7 @@ public class OptionsManager : MonoBehaviour
             OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
             OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 1);
             StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.01f, false));
+
 #endif
         }
 
@@ -272,6 +273,15 @@ public class OptionsManager : MonoBehaviour
 
     public void Move(bool moveUp)
     {
+        if (SceneManager.GetActiveScene().name != "Main Menu")
+        {
+            quitButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            quitButton.gameObject.SetActive(false);
+        }
+
         if (moveUp)
         {
             if (generalCoruntine != null)
@@ -283,6 +293,7 @@ public class OptionsManager : MonoBehaviour
             Tools.ToggleUiBlocker(false);
             SettingsMenuDisabled = false;
             canvas.sortingOrder = 10;
+            AudioManager.QuickPlay("ui_woosh_001");
             if (BattleSystem.Instance != null && BattleSystem.Instance.state == BattleStates.BATTLE)
             {
                 CombatTools.PauseStaminaTimer();
@@ -298,7 +309,8 @@ public class OptionsManager : MonoBehaviour
             Tools.ToggleUiBlocker(true);
             SettingsMenuDisabled = true;
             canvas.sortingOrder = 2;
-            if(BattleSystem.Instance != null && BattleSystem.Instance.state == BattleStates.BATTLE)
+            AudioManager.QuickPlay("ui_woosh_001");
+            if (BattleSystem.Instance != null && BattleSystem.Instance.state == BattleStates.BATTLE)
             {
                 CombatTools.UnpauseStaminaTimer();
             }
@@ -327,14 +339,7 @@ public class OptionsManager : MonoBehaviour
                 StartCoroutine(AudioManager.Instance.Fade(0, musicTrack.AudioName, 1f, true));
             }
         }
-        if (SceneToLoad != "Main Menu")
-        {
-            quitButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            quitButton.gameObject.SetActive(false);
-        }
+       
         yield return new WaitUntil(() => blackScreen.color == new Color(0, 0, 0, 1));
         yield return new WaitForSeconds(1f);
         print("TRANSITIONED");

@@ -18,7 +18,7 @@ public class TutorialEncounterNode : MapNode
            
             print(unit.unitName);
         }
-        OptionsManager.Instance.Load("Battle", "Coronus_Battle", 100f);
+        OptionsManager.Instance.Load("Battle", null, 100f);
         SceneManager.sceneLoaded += OnSceneLoaded;  
     }
 

@@ -233,9 +233,9 @@ public class BattleSystem : MonoBehaviour
                 StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, false, false));
             }
             yield return new WaitForSeconds(0.3f);
-            AudioManager.Instance.Play("Coronus_Battle");
-            AudioManager.Instance.ReturnSound("Coronus_Battle").volume = 0;
-            StartCoroutine(AudioManager.Instance.Fade(1f, "Coronus_Battle", 50f, true));
+            AudioManager.Instance.Play("Coronus_Battle", 0.00000001f);
+            yield return new WaitForSeconds(0.001f);
+            StartCoroutine(AudioManager.Instance.Fade(1f, "Coronus_Battle", 0.1f, false));
             yield return new WaitForSeconds(1.5f);
             TutorialParent.gameObject.SetActive(false);
 

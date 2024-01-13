@@ -52,6 +52,7 @@ MonoBehaviour:
     pitch: 0.1
     source: {fileID: 0}
     loop: 0
+    Fading: 0
   - soundType: 0
     clip: {fileID: 8300000, guid: f5f60916b920f0d45bdb72615e4cfeb7, type: 3}
     AudioName: slash_001
@@ -59,6 +60,7 @@ MonoBehaviour:
     pitch: 0.1
     source: {fileID: 0}
     loop: 0
+    Fading: 0
   - soundType: 0
     clip: {fileID: 8300000, guid: 246c500ab05d1c44abae83a228535c2b, type: 3}
     AudioName: strike_001
@@ -66,45 +68,85 @@ MonoBehaviour:
     pitch: 0.1
     source: {fileID: 0}
     loop: 0
+    Fading: 0
   - soundType: 1
     clip: {fileID: 8300000, guid: 6db3caefa9dbcee48a035025fe36a3c9, type: 3}
     AudioName: Main Menu Theme
-    volume: 1
+    volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
+    Fading: 0
   - soundType: 1
     clip: {fileID: 8300000, guid: 3d0aedd3cccd8224cbd576bb95fc6db1, type: 3}
     AudioName: Rest_Coronus
-    volume: 1
+    volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
+    Fading: 0
   - soundType: 1
     clip: {fileID: 8300000, guid: 05f9d7b240e426f4ea167d1fb478ae60, type: 3}
     AudioName: Coronus_Boss
-    volume: 1
+    volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
+    Fading: 0
   - soundType: 1
     clip: {fileID: 8300000, guid: 9029701dc5eb29f4fa8f6f02dc55f464, type: 3}
     AudioName: Ending
-    volume: 1
+    volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
+    Fading: 0
   - soundType: 1
     clip: {fileID: 8300000, guid: df670da80ada95e4ca6d3b5ae7678456, type: 3}
     AudioName: Coronus_Battle
-    volume: 1
+    volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
+    Fading: 0
   - soundType: 1
     clip: {fileID: 8300000, guid: fdb0c3a7cde2f5146a6d6eca28d6ee97, type: 3}
     AudioName: Coronus_Map
-    volume: 1
+    volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 77043c72e06621c43bbe2fe3a9726758, type: 3}
+    AudioName: button_hover
+    volume: 0.1
+    pitch: 0.7
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 7949155b8fd0f4b40a6e3133027217fc, type: 3}
+    AudioName: button_Hit_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: df78e37dbc18da2489621501294438ed, type: 3}
+    AudioName: ui_woosh_001
+    volume: 0.2
+    pitch: 0.4
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
+    AudioName: button_Hit_002
+    volume: 1
+    pitch: 0.47
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  currentMusicTrack: 

@@ -10,13 +10,16 @@ using UnityEngine.UI;
 public class BossIntro : MonoBehaviour
 {
     public Image BossTitleCard;
-    public TextMeshProUGUI SubText;
     public bool Done = false;
 
     public IEnumerator DoIntro()
     {
         if (gameObject != null)
         {
+           // SubText.fontSharedMaterial = Instantiate<Material>(SubText.fontSharedMaterial);
+           // SubText.fontSharedMaterial.SetColor("_FaceColor", new Color(191, 167, 83, 0));
+
+
             LabCamera.Instance.uicam.gameObject.SetActive(true);
             Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
             LabCamera.Instance.state = LabCamera.CameraState.IDLE;
@@ -35,25 +38,34 @@ public class BossIntro : MonoBehaviour
             var BossTitleCardMat = BossTitleCard.material;
             while (BossTitleCardMat.GetColor("_BaseColor").a < 1)
             {
-                BossTitleCardMat.SetColor("_BaseColor", 10 * new Color(BossTitleCardMat.GetColor("_BaseColor").r, BossTitleCardMat.GetColor("_BaseColor").g, BossTitleCardMat.GetColor("_BaseColor").b, BossTitleCardMat.GetColor("_BaseColor").a + 0.05f));
+                BossTitleCardMat.SetColor("_BaseColor", new Color(BossTitleCardMat.GetColor("_BaseColor").r, BossTitleCardMat.GetColor("_BaseColor").g, BossTitleCardMat.GetColor("_BaseColor").b, BossTitleCardMat.GetColor("_BaseColor").a + 0.05f));
                 yield return new WaitForSeconds(0.05f);
             }
             yield return new WaitUntil(() => BossTitleCardMat.GetColor("_BaseColor").a >= 1);
             yield return new WaitForSeconds(0.5f);
 
+           /* Color color = SubText.fontSharedMaterial.GetColor("_FaceColor");
+            float adjustedIntensity = 0.02f - (0.4169F);
+            color *= Mathf.Pow(2.0F, adjustedIntensity);
+            SubText.fontSharedMaterial.SetColor("_FaceColor", new Color(color.r, color.g, color.b, 0));
+
+            SubText.ForceMeshUpdate();
+
             while (SubText.color.a < 1)
             {
                 SubText.color = new Color(SubText.color.r, SubText.color.g, SubText.color.b, SubText.color.a + 0.05f);
+                SubText.fontSharedMaterial.SetColor("_FaceColor", new Color(color.r, color.g, color.b, SubText.fontSharedMaterial.GetColor("_FaceColor").a + 0.05f));
                 yield return new WaitForSeconds(0.05f);
             }
             yield return new WaitUntil(() => SubText.color.a >= 1);
-
-            yield return new WaitForSeconds(3f);
+           */
+            yield return new WaitForSeconds(7f);
             //Fade Out
             while (BossTitleCardMat.GetColor("_BaseColor").a > 0)
             {
                 BossTitleCardMat.SetColor("_BaseColor", new Color(BossTitleCardMat.GetColor("_BaseColor").r, BossTitleCardMat.GetColor("_BaseColor").g, BossTitleCardMat.GetColor("_BaseColor").b, BossTitleCardMat.GetColor("_BaseColor").a - 0.05f));
-                SubText.color = new Color(SubText.color.r, SubText.color.g, SubText.color.b, SubText.color.a - 0.05f);
+                //SubText.color = new Color(SubText.color.r, SubText.color.g, SubText.color.b, SubText.color.a - 0.05f);
+                //SubText.fontSharedMaterial.SetColor("_FaceColor", new Color(color.r, color.g, color.b, SubText.fontSharedMaterial.GetColor("_FaceColor").a - 0.05f));
                 yield return new WaitForSeconds(0.05f);
             }
             yield return new WaitUntil(() => BossTitleCardMat.GetColor("_BaseColor").a <= 1);
