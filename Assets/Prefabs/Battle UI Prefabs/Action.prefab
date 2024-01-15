@@ -461,6 +461,7 @@ GameObject:
   - component: {fileID: 7974129783787021030}
   - component: {fileID: 1809002864911898344}
   - component: {fileID: 7876694886266373561}
+  - component: {fileID: 6597132093515408404}
   m_Layer: 5
   m_Name: LightButton
   m_TagString: Untagged
@@ -587,6 +588,40 @@ MonoBehaviour:
   heavyCostModifier: 20
   lightCostModifier: -20
   actionContainerParent: {fileID: 7729246865139320037}
+--- !u!114 &6597132093515408404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6606713157820267474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    m_PersistentCalls:
+      m_Calls: []
+  Exited:
+    m_PersistentCalls:
+      m_Calls: []
+  Clicked:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
+          type: 3}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: QuickPlay
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: button_Hit_002
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7341711105171390667
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,6 +679,7 @@ GameObject:
   - component: {fileID: 3374091796287635952}
   - component: {fileID: 3142062339997128824}
   - component: {fileID: 3655007133051986297}
+  - component: {fileID: 6107317962170059711}
   m_Layer: 5
   m_Name: HeavyButton
   m_TagString: Untagged
@@ -770,6 +806,40 @@ MonoBehaviour:
   heavyCostModifier: 20
   lightCostModifier: -20
   actionContainerParent: {fileID: 7729246865139320037}
+--- !u!114 &6107317962170059711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7402134945760203332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    m_PersistentCalls:
+      m_Calls: []
+  Exited:
+    m_PersistentCalls:
+      m_Calls: []
+  Clicked:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
+          type: 3}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: QuickPlay
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: button_Hit_002
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7484641724800909116
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,6 +856,7 @@ GameObject:
   - component: {fileID: 2226988906025449719}
   - component: {fileID: 5733310129128104707}
   - component: {fileID: 762319170085582014}
+  - component: {fileID: 8963779341540326746}
   m_Layer: 5
   m_Name: Action
   m_TagString: Untagged
@@ -1046,6 +1117,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newScaleSize: {x: 0, y: 0, z: 0}
   oldScaleSize: {x: 0, y: 0, z: 0}
+--- !u!114 &8963779341540326746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7484641724800909116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    m_PersistentCalls:
+      m_Calls: []
+  Exited:
+    m_PersistentCalls:
+      m_Calls: []
+  Clicked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8466068229968354415
 GameObject:
   m_ObjectHideFlags: 0

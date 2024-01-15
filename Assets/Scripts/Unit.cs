@@ -194,7 +194,7 @@ public class Unit : MonoBehaviour
                 if (BattleSystem.Instance.CheckPlayableState())
                 {
                     sprite.material.SetColor("_CharacterEmission", new Color(0.01f, 0.01f, 0.01f));
-                    if(timelinechild != null)
+                    if (timelinechild != null)
                         this.timelinechild.Shift(this);
                 }
 
@@ -317,7 +317,8 @@ public class Unit : MonoBehaviour
         if(timelinechild != null)
         {
             Director.Instance.timeline.RemoveTimelineChild(this);
-        }  
+        }
+        AudioManager.QuickPlay("button_Hit_004");
         print("Unit is deciding an action");
     }
 

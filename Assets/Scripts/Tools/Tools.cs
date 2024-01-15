@@ -14,6 +14,7 @@ using UnityEngine.UI;
 using static ActionTypeButton;
 using static UnityEngine.UI.CanvasScaler;
 
+
 public class Tools : MonoBehaviour
 {
     public static UnityEngine.RaycastHit GetMousePos()
@@ -538,4 +539,19 @@ public class Tools : MonoBehaviour
     }
 
 
+}
+
+public static class Extensions
+{
+    public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component
+    {
+        if (gameObject.TryGetComponent<T>(out T t))
+        {
+            return t;
+        }
+        else
+        {
+            return gameObject.AddComponent<T>();
+        }
+    }
 }

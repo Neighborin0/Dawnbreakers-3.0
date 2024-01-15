@@ -123,6 +123,7 @@
     <Compile Include="Assets\Scripts\Actions\Hasten.cs" />
     <Compile Include="Assets\Scripts\InventoryDisplay.cs" />
     <Compile Include="Assets\Scripts\Actions\Defend.cs" />
+    <Compile Include="Assets\Scripts\LabUIIntertactable.cs" />
     <Compile Include="Assets\Scripts\Map\MapController.cs" />
     <Compile Include="Assets\Scripts\Main Menu\OptionsManager.cs" />
     <Compile Include="Assets\Scripts\BattleLog.cs" />

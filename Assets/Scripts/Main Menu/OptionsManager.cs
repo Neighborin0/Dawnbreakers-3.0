@@ -318,12 +318,12 @@ public class OptionsManager : MonoBehaviour
 
     }
 
-    public void Load(string SceneToLoad, string MusicToPlay, float MusicFadeInTime = 1)
+    public void Load(string SceneToLoad, string MusicToPlay, float MusicFadeInTime = 1, float TargetVolume = 1)
     {
-        StartCoroutine(DoLoad(SceneToLoad, MusicToPlay, MusicFadeInTime));
+        StartCoroutine(DoLoad(SceneToLoad, MusicToPlay, MusicFadeInTime, TargetVolume));
     }
 
-    public IEnumerator DoLoad(string SceneToLoad, string MusicToPlay, float MusicFadeTime = 1)
+    public IEnumerator DoLoad(string SceneToLoad, string MusicToPlay, float MusicFadeTime = 1, float TargetVolume = 1)
     {
 
         OptionsManager.Instance.CanPause = false;
@@ -345,7 +345,7 @@ public class OptionsManager : MonoBehaviour
         print("TRANSITIONED");
         SceneManager.LoadScene(SceneToLoad);
         AudioManager.Instance.Play(MusicToPlay);
-        StartCoroutine(AudioManager.Instance.Fade(1, MusicToPlay, MusicFadeTime, false));
+        StartCoroutine(AudioManager.Instance.Fade(TargetVolume, MusicToPlay, MusicFadeTime, false));
         canvas.sortingOrder = 2;
     }
 }

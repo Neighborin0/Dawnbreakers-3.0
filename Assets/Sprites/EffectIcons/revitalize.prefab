@@ -28,9 +28,9 @@ RectTransform:
   m_LocalRotation: {x: 0.008726225, y: 0.008726225, z: -0.0000761528, w: 0.9999238}
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7312104641547316243}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1, y: 1, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 1095531887439886962}
   - component: {fileID: 9187573185300547448}
   - component: {fileID: 7863468966441426928}
+  - component: {fileID: 4275225735208224639}
   m_Layer: 5
   m_Name: revitalize
   m_TagString: Untagged
@@ -166,10 +167,10 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1892711283203369994}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -314,7 +315,7 @@ MonoBehaviour:
   icon: {fileID: 8466209792876554515}
   owner: {fileID: 0}
   timerText: {fileID: 5921198936861126908}
-  isPaused: 1
+  duration: 0
   ForceEnd: 0
   DoFancyStatChanges: 0
   description: 
@@ -324,3 +325,25 @@ MonoBehaviour:
   NumberofStacks: 0
   currentEffectPopup: {fileID: 0}
   descriptionSize: 0.4
+--- !u!114 &4275225735208224639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6181490423906128927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    m_PersistentCalls:
+      m_Calls: []
+  Exited:
+    m_PersistentCalls:
+      m_Calls: []
+  Clicked:
+    m_PersistentCalls:
+      m_Calls: []
+  HasClicked: 1

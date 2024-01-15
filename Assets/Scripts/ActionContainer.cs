@@ -111,6 +111,7 @@ public class ActionContainer : MonoBehaviour
             if (Input.GetMouseButtonUp(1))
             {
                 LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), Vector3.zero);
+                AudioManager.QuickPlay("ui_woosh_002");
                 SetActive(false);
             }
 
@@ -162,6 +163,7 @@ public class ActionContainer : MonoBehaviour
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                             BattleLog.Instance.ResetBattleLog();
                             LabCamera.Instance.ResetPosition();
+                            AudioManager.QuickPlay("button_Hit_003");
                             SetActive(false);
                         }
                     }
@@ -192,6 +194,7 @@ public class ActionContainer : MonoBehaviour
                             LabCamera.Instance.ResetPosition();
                             BattleLog.Instance.ResetBattleLog();
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
+                            AudioManager.QuickPlay("button_Hit_003");
                         }
                     }
                     break;
@@ -225,6 +228,7 @@ public class ActionContainer : MonoBehaviour
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                             SetActive(false);
+                            AudioManager.QuickPlay("button_Hit_003");
                             LabCamera.Instance.ResetPosition();
                         }
                     }
@@ -389,6 +393,7 @@ public class ActionContainer : MonoBehaviour
         {
             CombatTools.ReturnPipCounter().AddPip();
         }
+        AudioManager.Instance.Stop("statUp_Loop_001");
         action.actionStyle = Action.ActionStyle.STANDARD;
         //action.ResetAction();
         if(baseUnit != null)

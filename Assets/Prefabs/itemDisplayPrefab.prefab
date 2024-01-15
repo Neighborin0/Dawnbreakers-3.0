@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8384089550853146000}
   - component: {fileID: 163319887242382276}
   - component: {fileID: 263915718202882743}
+  - component: {fileID: 5183903262736558409}
   m_Layer: 8
   m_Name: itemDisplayPrefab
   m_TagString: Untagged
@@ -240,3 +241,25 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &5183903262736558409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2696112578268045512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    m_PersistentCalls:
+      m_Calls: []
+  Exited:
+    m_PersistentCalls:
+      m_Calls: []
+  Clicked:
+    m_PersistentCalls:
+      m_Calls: []
+  HasClicked: 0

@@ -18,7 +18,8 @@ public class CombatNode : MapNode
            
             print(unit.unitName);
         }
-        OptionsManager.Instance.Load("Battle", "Coronus_Battle", 10f);
+        AudioManager.QuickPlay("button_Hit_001");
+        OptionsManager.Instance.Load("Battle", "Coronus_Battle", 0.5f, 0.25f);
         SceneManager.sceneLoaded += OnSceneLoaded;  
     }
 

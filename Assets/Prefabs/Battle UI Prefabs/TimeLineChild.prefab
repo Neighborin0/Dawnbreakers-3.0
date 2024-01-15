@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 4778800779202628921}
   - component: {fileID: 6568516722610899599}
   - component: {fileID: 7428458782112312656}
+  - component: {fileID: 2887476182400550850}
   m_Layer: 5
   m_Name: TimeLineChild
   m_TagString: Untagged
@@ -285,6 +286,28 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &2887476182400550850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4867647486644119766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    m_PersistentCalls:
+      m_Calls: []
+  Exited:
+    m_PersistentCalls:
+      m_Calls: []
+  Clicked:
+    m_PersistentCalls:
+      m_Calls: []
+  HasClicked: 0
 --- !u!1 &5403960351164552912
 GameObject:
   m_ObjectHideFlags: 0

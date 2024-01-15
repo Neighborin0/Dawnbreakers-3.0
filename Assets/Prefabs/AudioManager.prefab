@@ -113,7 +113,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: fdb0c3a7cde2f5146a6d6eca28d6ee97, type: 3}
     AudioName: Coronus_Map
     volume: 0
-    pitch: 1
+    pitch: 0.7
     source: {fileID: 0}
     loop: 1
     Fading: 0
@@ -121,15 +121,15 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 77043c72e06621c43bbe2fe3a9726758, type: 3}
     AudioName: button_hover
     volume: 0.1
-    pitch: 0.7
+    pitch: 1.42
     source: {fileID: 0}
     loop: 0
     Fading: 0
   - soundType: 0
-    clip: {fileID: 8300000, guid: 7949155b8fd0f4b40a6e3133027217fc, type: 3}
+    clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
     AudioName: button_Hit_001
     volume: 1
-    pitch: 1
+    pitch: 0.65
     source: {fileID: 0}
     loop: 0
     Fading: 0
@@ -145,8 +145,48 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
     AudioName: button_Hit_002
     volume: 1
-    pitch: 0.47
+    pitch: 0.43
     source: {fileID: 0}
     loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: df78e37dbc18da2489621501294438ed, type: 3}
+    AudioName: ui_woosh_002
+    volume: 1
+    pitch: 3
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: d18ab59cb764e8547b0404f56268b44b, type: 3}
+    AudioName: button_Hit_003
+    volume: 1
+    pitch: 0.1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
+    AudioName: button_Hit_004
+    volume: 1
+    pitch: 0.3
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: d18ab59cb764e8547b0404f56268b44b, type: 3}
+    AudioName: button_Hit_005
+    volume: 1
+    pitch: 0.3
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 883d08073adb98e4987dcc0565810395, type: 3}
+    AudioName: statUp_Loop_001
+    volume: 1
+    pitch: 0.8
+    source: {fileID: 0}
+    loop: 1
     Fading: 0
   currentMusicTrack: 

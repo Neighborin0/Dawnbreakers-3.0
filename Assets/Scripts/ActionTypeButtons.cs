@@ -24,6 +24,7 @@ public class ActionTypeButton : Button
     public void ModifyAction()
     {
         var action = actionContainerParent.action;
+        AudioManager.Instance.Stop("statUp_Loop_001");
         switch (state)
         {
             case ActionButtonState.LIGHT:
@@ -42,6 +43,8 @@ public class ActionTypeButton : Button
                     Color lightColor = new Color(0, 216, 255);
                     Light.color = lightColor * 0.01f;
                     Light.intensity = 1f;
+                    AudioManager.QuickPlay("button_Hit_005");
+                    AudioManager.QuickPlay("statUp_Loop_001");
                     Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", lightColor, lightColor, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
                 }
                 break;
@@ -61,6 +64,8 @@ public class ActionTypeButton : Button
                     Color heavyColor = new(225, 27, 0);
                     Light.color = heavyColor * 0.01f;
                     Light.intensity = 1f;
+                    AudioManager.QuickPlay("button_Hit_005");
+                    AudioManager.QuickPlay("statUp_Loop_001");
                     Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", heavyColor, heavyColor, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity,float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
                 }
                 break;
@@ -77,6 +82,7 @@ public class ActionTypeButton : Button
                     actionContainerParent.SetStyleLight(true);
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
                     actionContainerParent.baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
+                    AudioManager.QuickPlay("ui_woosh_002");
                     Director.Instance.StartCoroutine(CombatTools.StopAndDestroyVFX(0.01f));
                 }
                 break;

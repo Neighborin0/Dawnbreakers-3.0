@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2593380671147905800}
   - component: {fileID: 2944601209896990489}
   - component: {fileID: 8596398589058066822}
+  - component: {fileID: 9099377037119587639}
   m_Layer: 5
   m_Name: ATK
   m_TagString: Untagged
@@ -189,6 +190,28 @@ MonoBehaviour:
   StartingThickness: 1
   DoesntHighlightInBattle: 1
   disabled: 0
+--- !u!114 &9099377037119587639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5459808448902100061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    m_PersistentCalls:
+      m_Calls: []
+  Exited:
+    m_PersistentCalls:
+      m_Calls: []
+  Clicked:
+    m_PersistentCalls:
+      m_Calls: []
+  HasClicked: 1
 --- !u!1 &8030429467529856473
 GameObject:
   m_ObjectHideFlags: 0

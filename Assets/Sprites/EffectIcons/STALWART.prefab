@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6228380717379859366}
   - component: {fileID: 975411508983971126}
   - component: {fileID: 6750853031504878976}
+  - component: {fileID: 7750311034726761472}
   m_Layer: 5
   m_Name: STALWART
   m_TagString: Untagged
@@ -178,6 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   owner: {fileID: 0}
+  timerText: {fileID: 0}
   duration: 0
   ForceEnd: 0
   DoFancyStatChanges: 0
@@ -188,6 +190,28 @@ MonoBehaviour:
   NumberofStacks: 0
   currentEffectPopup: {fileID: 0}
   descriptionSize: 0.4
+--- !u!114 &7750311034726761472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4023095660993884064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    m_PersistentCalls:
+      m_Calls: []
+  Exited:
+    m_PersistentCalls:
+      m_Calls: []
+  Clicked:
+    m_PersistentCalls:
+      m_Calls: []
+  HasClicked: 1
 --- !u!1 &5667017878258509523
 GameObject:
   m_ObjectHideFlags: 0
