@@ -342,7 +342,6 @@ public class OptionsManager : MonoBehaviour
        
         yield return new WaitUntil(() => blackScreen.color == new Color(0, 0, 0, 1));
         yield return new WaitForSeconds(1f);
-        print("TRANSITIONED");
         SceneManager.LoadScene(SceneToLoad);
         AudioManager.Instance.Play(MusicToPlay);
         StartCoroutine(AudioManager.Instance.Fade(TargetVolume, MusicToPlay, MusicFadeTime, false));

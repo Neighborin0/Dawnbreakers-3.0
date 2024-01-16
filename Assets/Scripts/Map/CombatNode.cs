@@ -16,9 +16,8 @@ public class CombatNode : MapNode
         {
             playerUnits.Add(unit);
            
-            print(unit.unitName);
         }
-        AudioManager.QuickPlay("button_Hit_001");
+        AudioManager.QuickPlay("button_Hit_001", true);
         OptionsManager.Instance.Load("Battle", "Coronus_Battle", 0.5f, 0.25f);
         SceneManager.sceneLoaded += OnSceneLoaded;  
     }
@@ -28,7 +27,6 @@ public class CombatNode : MapNode
         var battlesystem = BattleSystem.Instance;
         battlesystem.playerUnits = playerUnits;
         battlesystem.enemiesToLoad = enemies;
-        print(battlesystem.enemyUnits.Count);
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

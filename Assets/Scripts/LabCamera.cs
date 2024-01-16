@@ -76,19 +76,16 @@ public class LabCamera : MonoBehaviour
                 if (BattleSystem.Instance.playerPositions[2].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[2].GetComponent<BattleSpawnPoint>().unit != null)
                 {
                     PositonToMoveTo = BattleSystem.Instance.cameraPos3Units;
-                    print("Camera is sized for 3 units");
 
                 }
                 else if (BattleSystem.Instance.playerPositions[1].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[1].GetComponent<BattleSpawnPoint>().unit != null)
                 {
                     PositonToMoveTo = BattleSystem.Instance.cameraPos2Units;
                     uicam.transform.position = new Vector3(uicam.transform.position.x, uicam.transform.position.y, uicam.transform.position.z);
-                    print("Camera is sized for 2 units");
 
                 }
                 else
                 {
-                    print("Camera is sized for 1 unit");
                     PositonToMoveTo = BattleSystem.Instance.cameraPos1Units;
                     uicam.transform.position = new Vector3(uicam.transform.position.x, uicam.transform.position.y, uicam.transform.position.z);
                 }

@@ -2609,6 +2609,7 @@ GameObject:
   - component: {fileID: 238071203}
   - component: {fileID: 238071207}
   - component: {fileID: 238071206}
+  - component: {fileID: 238071208}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -2704,19 +2705,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
-          type: 3}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: QuickPlay
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: button_Hit_002
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!222 &238071205
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2754,19 +2742,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
-            type: 3}
-          m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-          m_MethodName: QuickPlay
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: button_hover
-            m_BoolArgument: 0
-          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -2797,6 +2772,65 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newScaleSize: {x: 1.05, y: 1.05, z: 1.05}
   oldScaleSize: {x: 1, y: 1, z: 1}
+--- !u!114 &238071208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238071201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: AudioManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null.QuickPlay
+      _PersistentArguments:
+      - _Type: 2
+        _Int: 0
+        _String: button_hover
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  Exited:
+    _PersistentCalls: []
+  Clicked:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: AudioManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null.QuickPlay
+      _PersistentArguments:
+      - _Type: 2
+        _Int: 0
+        _String: button_hit_002
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  CanClick: 1
 --- !u!1 &244722117
 GameObject:
   m_ObjectHideFlags: 0
@@ -7014,6 +7048,7 @@ GameObject:
   - component: {fileID: 648742232}
   - component: {fileID: 648742236}
   - component: {fileID: 648742235}
+  - component: {fileID: 648742237}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -7159,19 +7194,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
-            type: 3}
-          m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-          m_MethodName: QuickPlay
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: button_hover
-            m_BoolArgument: 0
-          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -7202,6 +7224,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newScaleSize: {x: 1.05, y: 1.05, z: 1.05}
   oldScaleSize: {x: 1, y: 1, z: 1}
+--- !u!114 &648742237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648742230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    _PersistentCalls: []
+  Exited:
+    _PersistentCalls: []
+  Clicked:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: AudioManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null.QuickPlay
+      _PersistentArguments:
+      - _Type: 2
+        _Int: 0
+        _String: button_hit_002
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  CanClick: 1
 --- !u!1 &673784752
 GameObject:
   m_ObjectHideFlags: 0
@@ -12170,6 +12231,7 @@ GameObject:
   - component: {fileID: 1247027414}
   - component: {fileID: 1247027418}
   - component: {fileID: 1247027417}
+  - component: {fileID: 1247027419}
   m_Layer: 5
   m_Name: Start
   m_TagString: Untagged
@@ -12265,19 +12327,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
-          type: 3}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: QuickPlay
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: button_Hit_002
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!222 &1247027416
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12315,19 +12364,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
-            type: 3}
-          m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-          m_MethodName: QuickPlay
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: button_hover
-            m_BoolArgument: 0
-          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -12358,6 +12394,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newScaleSize: {x: 1.05, y: 1.05, z: 1.05}
   oldScaleSize: {x: 1, y: 1, z: 1}
+--- !u!114 &1247027419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247027412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    _PersistentCalls: []
+  Exited:
+    _PersistentCalls: []
+  Clicked:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: AudioManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null.QuickPlay
+      _PersistentArguments:
+      - _Type: 2
+        _Int: 0
+        _String: button_Hit_002
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  CanClick: 1
 --- !u!1 &1258389848
 GameObject:
   m_ObjectHideFlags: 0

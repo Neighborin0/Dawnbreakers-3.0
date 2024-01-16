@@ -11,16 +11,18 @@ using UnityEngine.Rendering;
 using UnityEngine.Events;
 using static UnityEngine.EventSystems.EventTrigger;
 using System.Reflection;
-
 public class LabUIInteractable : MonoBehaviour
 {
     private EventTrigger eventTrigger;
 
-    public UnityEvent Entered;
-    public UnityEvent Exited;
-    public UnityEvent Clicked;
+    [SerializeField]
+    private UltEvents.UltEvent Entered;
+    [SerializeField]
+    private UltEvents.UltEvent Exited;
+    [SerializeField]
+    private UltEvents.UltEvent Clicked;
 
-    public bool HasClicked = true;
+    public bool CanClick = true;
     public void Start()
     {
         if (eventTrigger == null)
@@ -42,7 +44,7 @@ public class LabUIInteractable : MonoBehaviour
             exitEvent.callback.AddListener(TriggerExit);
             eventTrigger.triggers.Add(exitEvent);
 
-            if (HasClicked)
+            if (CanClick)
             {
                 Entry clickEvent = new Entry()
                 {
@@ -58,7 +60,7 @@ public class LabUIInteractable : MonoBehaviour
 
     public void TriggerEnter(BaseEventData baseEventData)
     {
-        if (Entered.GetPersistentEventCount() == 0)
+        if (Entered.ParameterCount == 0)
         {
             if (GetComponent<Button>() != null && GetComponent<Button>().interactable || GetComponent<TMP_Dropdown>() != null && GetComponent<TMP_Dropdown>().interactable || GetComponent<Slider>() != null && GetComponent<Slider>().interactable)
             {
@@ -79,14 +81,14 @@ public class LabUIInteractable : MonoBehaviour
     {
         if (AudioToReturn == string.Empty)
         {
-            AudioManager.QuickPlay("button_hover");
+            AudioManager.QuickPlay("button_hover", true);
         }
         else
             AudioManager.QuickPlay(AudioToReturn);
     }
     public void TriggerExit(BaseEventData baseEventData)
     {
-        if (Exited.GetPersistentEventCount() == 0)
+        if (Exited.ParameterCount == 0)
         {
             DoExit(string.Empty);
         }
@@ -98,7 +100,7 @@ public class LabUIInteractable : MonoBehaviour
     }
     public void TriggerClick(BaseEventData baseEventData)
     {
-        if (Clicked.GetPersistentEventCount() == 0)
+        if (Clicked.ParameterCount == 0)
         {
             DoClick(string.Empty);
         }
@@ -108,7 +110,7 @@ public class LabUIInteractable : MonoBehaviour
     {
         if (AudioToReturn == string.Empty)
         {
-            AudioManager.QuickPlay("button_Hit_001");
+            AudioManager.QuickPlay("button_Hit_001", true);
         }
         else
             AudioManager.QuickPlay(AudioToReturn);

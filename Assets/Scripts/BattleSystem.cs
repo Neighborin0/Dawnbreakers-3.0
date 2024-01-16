@@ -399,11 +399,7 @@ public class BattleSystem : MonoBehaviour
 
     public void DisplayEnemyIntent(Action action, Unit unit)
     {
-        print(action.ActionName);
-        if (action.targets == null)
-            Debug.LogError("TARGETS ARE NULL????");
-        else
-            print(action.targets.unitName);
+
         unit.intentUI.textMesh.text = action.ActionName;
         if (CombatTools.DetermineTrueActionValue(action) != 0)
             unit.intentUI.damageNums.text = $"<sprite name=\"{action.damageType}\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType))).ToString();
@@ -761,7 +757,6 @@ public class BattleSystem : MonoBehaviour
         }
         state = BattleStates.BATTLE;
         yield return new WaitForSeconds(1f);
-        print("Action should be performed");
         foreach (var x in Tools.GetAllUnits())
         {
             x.state = PlayerState.WAITING;

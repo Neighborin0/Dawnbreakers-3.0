@@ -11,12 +11,13 @@ using static UnityEngine.UI.CanvasScaler;
 using UnityEngine.EventSystems;
 using UnityEngine.ProBuilder.Shapes;
 using System.Data.Common;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public enum PlayerState { IDLE, DECIDING, READY, WAITING }
 public enum Stat { ATK, DEF, ARMOR, HP }
 public class Unit : MonoBehaviour
 {
-    
+
     public string unitName;
 
     public int currentHP;
@@ -58,6 +59,7 @@ public class Unit : MonoBehaviour
     IEnumerator fadeCoroutine;
     [NonSerialized]
     public bool IsHidden;
+    private EventTrigger eventTrigger;
 
 
     public bool OverrideEmission = false;
@@ -106,7 +108,8 @@ public class Unit : MonoBehaviour
     public string[] summonables;
     [NonSerialized]
     public bool IsSummon = false;
-   
+
+
     void Start()
     {
         currentHP = maxHP;
@@ -123,7 +126,7 @@ public class Unit : MonoBehaviour
         {
             if (!Dying && !OverrideEmission)
             {
-                
+
                 if (IsHighlighted)
                 {
                     sprite.material.SetFloat("_OutlineThickness", 1f);
@@ -158,26 +161,10 @@ public class Unit : MonoBehaviour
                     sprite.material.SetFloat("_OutlineThickness", 1f);
                     sprite.material.SetColor("_OutlineColor", Color.black);
                     sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
-                }    
+                }
             }
 
-           /* if (stamina != null)
-            {
-                if (IsPlayerControlled && stamina.slider.value == stamina.slider.maxValue && state == PlayerState.WAITING)
-                {
-                    state = PlayerState.IDLE;
-                    StartCoroutine(StartDelayedDecision());
-                }
-                if (state == PlayerState.IDLE && IsPlayerControlled)
-                {
-                    foreach (var unit in Tools.GetAllUnits())
-                    {
-                        unit.stamina.Paused = true;
-                    }
-                }
-            }
-           */
-           //Hit Detection
+            //Hit Detection
             if (hit.collider == this.GetComponent<BoxCollider>() && !isDarkened && !OverUI())
             {
                 if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && CombatTools.CheckIfAnyUnitIsDeciding())
@@ -237,7 +224,7 @@ public class Unit : MonoBehaviour
                     {
                         StopMovingToUnit = false;
                         BattleLog.Instance.DisplayCharacterStats(this);
-                        if(state == PlayerState.READY)
+                        if (state == PlayerState.READY)
                         {
                             foreach (var skill in skillUIs)
                             {
@@ -258,7 +245,7 @@ public class Unit : MonoBehaviour
             }
 
         }
-       
+
     }
 
     public void PlayUnitAction(string AnimationName, Unit unit)
@@ -314,12 +301,11 @@ public class Unit : MonoBehaviour
             LabCamera.Instance.MoveToUnit(this, new Vector3(0, 16.8f, 0), sprite.bounds.center.x / 5f, 0, 0);
 
         BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
-        if(timelinechild != null)
+        if (timelinechild != null)
         {
             Director.Instance.timeline.RemoveTimelineChild(this);
         }
-        AudioManager.QuickPlay("button_Hit_004");
-        print("Unit is deciding an action");
+        AudioManager.QuickPlay("button_Hit_004", true);
     }
 
     public IEnumerator StartDelayedDecision()
@@ -356,7 +342,7 @@ public class Unit : MonoBehaviour
     public void DoDeathQuote()
     {
         BattleLog.Instance.ClearAllBattleLogText();
-        if(BattleSystem.Instance.playerUnits.Count != 1 ) 
+        if (BattleSystem.Instance.playerUnits.Count != 1)
         {
             BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase(deathQuotes[UnityEngine.Random.Range(0, deathQuotes.Count)].name), true, true, false);
         }
@@ -371,9 +357,9 @@ public class Unit : MonoBehaviour
     public void ChangeUnitsLight(Light light, float desiredIntensity, float amountToRaiseBy, Color lightColor, float delay = 0, float stagnantDelay = 0)
     {
 
-        Tools.StartAndCheckCoroutine(lightCoroutine, ChangeUnitsLightCoroutine(light, desiredIntensity, amountToRaiseBy, lightColor ,delay, stagnantDelay));
+        Tools.StartAndCheckCoroutine(lightCoroutine, ChangeUnitsLightCoroutine(light, desiredIntensity, amountToRaiseBy, lightColor, delay, stagnantDelay));
     }
-    private IEnumerator ChangeUnitsLightCoroutine(Light light, float desiredIntensity, float amountToRaiseBy, Color lightColor ,float delay = 0, float stagnantDelay = 0)
+    private IEnumerator ChangeUnitsLightCoroutine(Light light, float desiredIntensity, float amountToRaiseBy, Color lightColor, float delay = 0, float stagnantDelay = 0)
     {
         light.color = lightColor;
         light.intensity = 0;
@@ -418,7 +404,7 @@ public class Unit : MonoBehaviour
         if (FadeOut)
         {
             FadingOutIntent = true;
-            if (intentUI != null) 
+            if (intentUI != null)
             {
                 var intentImage = intentUI.GetComponent<Image>();
                 intentUI.GetComponent<LabSpriteSwap>().interactable = false;
@@ -433,10 +419,10 @@ public class Unit : MonoBehaviour
                 }
                 if (!FadingOutIntent)
                     yield return new WaitUntil(() => intentImage.color.a <= 0);
-                if(FadingOutIntent)
-                intentUI.gameObject.SetActive(false);
+                if (FadingOutIntent)
+                    intentUI.gameObject.SetActive(false);
             }
-           
+
         }
         else
         {
@@ -462,6 +448,14 @@ public class Unit : MonoBehaviour
     private bool OverUI()
     {
         return EventSystem.current.IsPointerOverGameObject();
+    }
+
+    private void OnMouseEnter()
+    {
+        if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
+        {
+            AudioManager.QuickPlay("button_hover", true);
+        }
     }
 
     public void DoBattlePhaseEnd()

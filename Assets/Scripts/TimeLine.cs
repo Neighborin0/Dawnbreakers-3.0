@@ -35,7 +35,6 @@ public class TimeLine : MonoBehaviour
             if (slider.value < slider.maxValue && !Resetting)
                 slider.value += Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay;
         }
-        
         if (slider.value > 0 && Resetting)
             slider.value -= Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay * 2f;
     }
@@ -65,7 +64,6 @@ public class TimeLine : MonoBehaviour
 
     public TimeLineChild SpawnTimelineChild(Unit unit)
     {
-        print("Timeline child has been spawned");
         var TL = Instantiate(borderChildprefab, startpoint);
         children.Add(TL);
         TL.portrait.sprite = unit.charPortraits[0];

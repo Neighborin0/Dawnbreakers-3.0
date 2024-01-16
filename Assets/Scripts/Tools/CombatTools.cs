@@ -54,6 +54,7 @@ public class CombatTools : MonoBehaviour
     public static void UnpauseStaminaTimer()
     {
         Director.Instance.timeline.Paused = false;
+        AudioManager.Instance.Play("timeline_fill");
     }
 
     public static bool CheckIfAnyUnitIsDeciding()
@@ -279,7 +280,6 @@ public class CombatTools : MonoBehaviour
 
     public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, Quaternion rotation, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f)
     {
-        print("INTENSITY: " + intensityMultiplier);
         var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).SingleOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, rotation);
         VFX.transform.parent = null;
         if (VFX != null)
@@ -412,6 +412,7 @@ public class CombatTools : MonoBehaviour
         if (targetHP > 0)
         {
             LabCamera.Instance.ResetPosition();
+            AudioManager.QuickPlay("ui_woosh_002");
         }
     }
 

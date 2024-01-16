@@ -163,7 +163,7 @@ public class ActionContainer : MonoBehaviour
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                             BattleLog.Instance.ResetBattleLog();
                             LabCamera.Instance.ResetPosition();
-                            AudioManager.QuickPlay("button_Hit_003");
+                            AudioManager.QuickPlay("button_Hit_005");
                             SetActive(false);
                         }
                     }
@@ -194,7 +194,7 @@ public class ActionContainer : MonoBehaviour
                             LabCamera.Instance.ResetPosition();
                             BattleLog.Instance.ResetBattleLog();
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
-                            AudioManager.QuickPlay("button_Hit_003");
+                            AudioManager.QuickPlay("button_Hit_005");
                         }
                     }
                     break;
@@ -228,7 +228,7 @@ public class ActionContainer : MonoBehaviour
                             baseUnit.timelinechild.CanMove = true;
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                             SetActive(false);
-                            AudioManager.QuickPlay("button_Hit_003");
+                            AudioManager.QuickPlay("button_Hit_005");
                             LabCamera.Instance.ResetPosition();
                         }
                     }
@@ -552,7 +552,6 @@ public class ActionContainer : MonoBehaviour
                     TL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.5f);
                     TL.portrait.color = new Color(1, 1, 1, 0.5f);
                     targetting = true;
-                    print("targetting");
                     SetDescription();
                     button.interactable = false;
                     transform.localScale = this.GetComponent<ScalableObject>().oldScaleSize;

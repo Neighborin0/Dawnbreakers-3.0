@@ -9,7 +9,10 @@ public  class VFXEffect : MonoBehaviour
     void SetDone()
     {
       GetComponent<Animator>().SetBool("Done", true);
-        print("HELLO SET DONE IS BEING RUN!!!!");
     }
-  
+
+    public void PlayAudio(string AudioName)
+    {
+        AudioManager.QuickPlay(AudioName);
+    }
 }
