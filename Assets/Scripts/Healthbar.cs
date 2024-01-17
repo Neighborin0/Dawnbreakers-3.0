@@ -272,7 +272,7 @@ public class Healthbar : MonoBehaviour
                 }
                 else
                 {
-                    LabCamera.Instance.state = LabCamera.CameraState.IDLE;
+                    //LabCamera.Instance.state = LabCamera.CameraState.IDLE;
                     LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 8, -40, 0.5f);
                 }
                 unit.DoOnPreDeath();
@@ -290,13 +290,13 @@ public class Healthbar : MonoBehaviour
                     LabCamera.Instance.uicam.gameObject.SetActive(false);
 
                 yield return new WaitForSeconds(0.5f);
-
+                AudioManager.QuickPlay("rising_light_001");
                 Director.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMaxIntensity(unit.gameObject, Color.yellow, 0.02f));
-
                 unit.ChangeUnitsLight(unit.spotLight, 150, 15, Color.yellow, 0.04f, 0.1f);
 
                 yield return new WaitForSeconds(0.8f);
-                LabCamera.Instance.Shake(0.5f, 1f);
+                LabCamera.Instance.Shake(0.5f, 1.5f);
+                AudioManager.QuickPlay("light_burst_001");
                 Director.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "DeathBurst", Color.yellow, Color.yellow, Vector3.zero, Quaternion.identity, 10, 0, false));
                 yield return new WaitForSeconds(0.03f);
                 if (popup != null)

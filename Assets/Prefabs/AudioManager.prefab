@@ -112,8 +112,8 @@ MonoBehaviour:
   - soundType: 0
     clip: {fileID: 8300000, guid: 77043c72e06621c43bbe2fe3a9726758, type: 3}
     AudioName: button_hover
-    volume: 0.1
-    pitch: 0.9
+    volume: 0.05
+    pitch: 1.5
     source: {fileID: 0}
     loop: 0
     Fading: 0
@@ -206,7 +206,7 @@ MonoBehaviour:
     loop: 0
     Fading: 0
   - soundType: 0
-    clip: {fileID: 8300000, guid: acf27dc7bf4db6a42bb061e90197b135, type: 3}
+    clip: {fileID: 8300000, guid: 7a5ad8daf7a1fc94389769563ee26440, type: 3}
     AudioName: armor_hit_001
     volume: 1
     pitch: 1
@@ -218,6 +218,22 @@ MonoBehaviour:
     AudioName: button_Hit_006
     volume: 0.3
     pitch: 0.2
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: f001237a4447d534c96e9f2b19e55a01, type: 3}
+    AudioName: light_burst_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 891cc45f6397b2e49a0a66671632007f, type: 3}
+    AudioName: rising_light_001
+    volume: 1
+    pitch: 1.2
     source: {fileID: 0}
     loop: 0
     Fading: 0
