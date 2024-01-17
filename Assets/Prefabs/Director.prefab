@@ -250,7 +250,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BossTitleCard: {fileID: 5226578527851884803}
-  SubText: {fileID: 2568987424759279308}
   Done: 0
 --- !u!1 &330815495168617000
 GameObject:
@@ -1338,6 +1337,7 @@ GameObject:
   - component: {fileID: 392729441734879386}
   - component: {fileID: 392729441734879389}
   - component: {fileID: 392729441734879388}
+  - component: {fileID: 8142110312860603637}
   m_Layer: 5
   m_Name: Confirm
   m_TagString: Untagged
@@ -1489,6 +1489,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 726cef2be5a6c1046af30f605bb13e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8142110312860603637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392729441734879390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    _PersistentCalls: []
+  Exited:
+    _PersistentCalls: []
+  Clicked:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: AudioManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null.QuickPlay
+      _PersistentArguments:
+      - _Type: 2
+        _Int: 0
+        _String: button_Hit_002
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  CanClick: 1
 --- !u!1 &392729441767316515
 GameObject:
   m_ObjectHideFlags: 0

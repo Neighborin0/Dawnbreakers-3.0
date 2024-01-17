@@ -393,6 +393,7 @@ public class BattleLog : MonoBehaviour
                 yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2f);
             }
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+            AudioManager.QuickPlay("button_Hit_006");
             characterdialog.text = "";
             yield return new WaitForSeconds(0.01f);
             text[i].OnLineEnded.Invoke();

@@ -780,6 +780,7 @@ GameObject:
   - component: {fileID: 8176656157871100302}
   - component: {fileID: 1389599661357580660}
   - component: {fileID: 4622749584708557848}
+  - component: {fileID: 8532033529497631975}
   m_Layer: 5
   m_Name: DetailedDisplayAction
   m_TagString: Untagged
@@ -1045,3 +1046,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newScaleSize: {x: 0, y: 0, z: 0}
   oldScaleSize: {x: 0, y: 0, z: 0}
+--- !u!114 &8532033529497631975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8303490373506145765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    _PersistentCalls: []
+  Exited:
+    _PersistentCalls: []
+  Clicked:
+    _PersistentCalls: []
+  CanClick: 0

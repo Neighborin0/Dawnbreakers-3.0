@@ -128,6 +128,7 @@ public class Healthbar : MonoBehaviour
             number.color = new Color(0.04313726f, 0.4431373f, 0.5450981f);
             Debug.LogWarning(number.color.ToString());
             Debug.LogWarning("ARMOR");
+            AudioManager.QuickPlay("armor_hit_001");
         }
         else
         {

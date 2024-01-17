@@ -44,7 +44,7 @@ public class ActionTypeButton : Button
                     Light.color = lightColor * 0.01f;
                     Light.intensity = 1f;
                     AudioManager.QuickPlay("button_Hit_005", true);
-                    AudioManager.QuickPlay("statUp_Loop_001");
+                    AudioManager.Instance.Play("statUp_Loop_001", 0, false, 1.1f);
                     Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", lightColor, lightColor, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
                 }
                 break;

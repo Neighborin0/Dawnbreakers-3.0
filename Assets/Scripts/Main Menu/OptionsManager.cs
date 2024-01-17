@@ -38,7 +38,7 @@ public class OptionsManager : MonoBehaviour
     public Slider TextSpeedslider;
     public TextMeshProUGUI TextSpeedvalue;
     public FPSCounter fPSCounter;
-    public bool SettingsMenuDisabled;
+    public bool SettingsMenuDisabled = true;
     public Image blackScreen;
     public Button quitButton;
     public Button Continue;

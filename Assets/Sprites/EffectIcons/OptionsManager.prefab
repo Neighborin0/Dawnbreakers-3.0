@@ -140,14 +140,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 0
 --- !u!1 &95796316168008445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,14 +1520,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 0
 --- !u!1 &1226048003611256750
 GameObject:
   m_ObjectHideFlags: 0
@@ -2539,14 +2535,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 1
 --- !u!1 &2105057149756752150
 GameObject:
   m_ObjectHideFlags: 0
@@ -4248,14 +4242,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 1
 --- !u!1 &3469168314122828871
 GameObject:
   m_ObjectHideFlags: 0
@@ -5053,14 +5045,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 1
 --- !u!1 &4019398103335385606
 GameObject:
   m_ObjectHideFlags: 0
@@ -6248,14 +6238,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 1
 --- !u!1 &5008534624344017217
 GameObject:
   m_ObjectHideFlags: 0
@@ -6528,14 +6516,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 1
 --- !u!1 &5131544204616374266
 GameObject:
   m_ObjectHideFlags: 0
@@ -10297,14 +10283,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 0
 --- !u!1 &8178273946267907871
 GameObject:
   m_ObjectHideFlags: 0
@@ -10583,14 +10567,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 0
 --- !u!1 &8299376009146165180
 GameObject:
   m_ObjectHideFlags: 0
@@ -11900,11 +11882,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 1

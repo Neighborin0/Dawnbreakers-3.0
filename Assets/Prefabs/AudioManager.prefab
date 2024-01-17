@@ -46,15 +46,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - soundType: 0
-    clip: {fileID: 8300000, guid: f5f60916b920f0d45bdb72615e4cfeb7, type: 3}
+    clip: {fileID: 8300000, guid: c972c3d787072784d94752dca8403f3d, type: 3}
     AudioName: slash_001
     volume: 1
-    pitch: 0.8
+    pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
   - soundType: 0
-    clip: {fileID: 8300000, guid: 246c500ab05d1c44abae83a228535c2b, type: 3}
+    clip: {fileID: 8300000, guid: a8146a41ffa623345a3ff01b63c7ac53, type: 3}
     AudioName: strike_001
     volume: 2
     pitch: 1
@@ -113,7 +113,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 77043c72e06621c43bbe2fe3a9726758, type: 3}
     AudioName: button_hover
     volume: 0.1
-    pitch: 1.42
+    pitch: 0.9
     source: {fileID: 0}
     loop: 0
     Fading: 0
@@ -182,11 +182,43 @@ MonoBehaviour:
     loop: 1
     Fading: 0
   - soundType: 0
-    clip: {fileID: 8300000, guid: 7043915b2da430740967629637e931ee, type: 3}
-    AudioName: timeline_fill
+    clip: {fileID: 8300000, guid: 8d90df82d81dae245b95b7b0001aff81, type: 3}
+    AudioName: defend_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 883d08073adb98e4987dcc0565810395, type: 3}
+    AudioName: statUp_Loop_002
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 1
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: f7b15cbc815bfe746a8f4fbee8a714ed, type: 3}
+    AudioName: glint_001
+    volume: 0.53
+    pitch: 1.4
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: acf27dc7bf4db6a42bb061e90197b135, type: 3}
+    AudioName: armor_hit_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 0e471c4bffd330b4ab5533384235bfc9, type: 3}
+    AudioName: button_Hit_006
+    volume: 0.3
+    pitch: 0.2
+    source: {fileID: 0}
+    loop: 0
     Fading: 0
   currentMusicTrack: 

@@ -32,8 +32,10 @@ public class Awaken : Action
     public override IEnumerator ExecuteAction()
     {
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f);
+        AudioManager.QuickPlay("ui_woosh_002");
         yield return new WaitForSeconds(0.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
+        AudioManager.QuickPlay("glint_001");
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "AwakenLight", Color.white, Color.white, new Vector3(-1.95f, 4.02f, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
         yield return new WaitForSeconds(0.9f);
         var Light = targets.spotLight;
@@ -46,6 +48,7 @@ public class Awaken : Action
         BattleSystem.Instance.SetStatChanges(Stat.DEF, 5f, false, targets);
         yield return new WaitForSeconds(1f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
+        AudioManager.QuickPlay("ui_woosh_002");
         LabCamera.Instance.ResetPosition();
         this.Done = true;
     }

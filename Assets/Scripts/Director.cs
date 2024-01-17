@@ -201,6 +201,7 @@ public class Director : MonoBehaviour
 
     public void CharacterSlotEnable(bool forceDisable = false)
     {
+       
         if (forceDisable)
         {
             characterSlotpos.GetComponent<MoveableObject>().Move(true);
@@ -273,6 +274,7 @@ public class Director : MonoBehaviour
     public void DisplayCharacterTab(bool LevelUp, bool Interactable = false)
     {
         CharacterSlotEnable();
+        AudioManager.QuickPlay("ui_woosh_002");
         if (generalCoruntine != null)
             StopCoroutine(generalCoruntine);
         BattleLog.Instance.ClearAllBattleLogText();
@@ -428,10 +430,10 @@ public class Director : MonoBehaviour
     }
 
 
-    public void DisableCharacterTab(bool MoveBattleLog = true)
+    public void DisableCharacterTab()
     {
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(false);
-
+        AudioManager.QuickPlay("ui_woosh_002");
         if (MapController.Instance.mapControlBar != null)
             if (MapController.Instance.mapControlBar.activeInHierarchy)
                 MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);

@@ -10,6 +10,7 @@ public class CutsceneTools : MonoBehaviour
     public static void ZoomOnUnit(string unitName)
     {
         LabCamera.Instance.MoveToUnit(CombatTools.CheckAndReturnNamedUnit(unitName), Vector3.zero,0,8, -40, 0.5f, false);
+        AudioManager.QuickPlay("ui_woosh_002");
     }
 
     public static void ChangeTimeDelay(float time)
@@ -19,11 +20,13 @@ public class CutsceneTools : MonoBehaviour
     public static void MoveToUnit(string unitName)
     {
         LabCamera.Instance.MoveToUnit(CombatTools.CheckAndReturnNamedUnit(unitName), Vector3.zero, 0, 0, 0, 1, true);
+        AudioManager.QuickPlay("ui_woosh_002");
     }
 
     public static void ResetCam()
     {
         LabCamera.Instance.ResetPosition();
+        AudioManager.QuickPlay("ui_woosh_002");
     }
 
     public static void ResetRotation()

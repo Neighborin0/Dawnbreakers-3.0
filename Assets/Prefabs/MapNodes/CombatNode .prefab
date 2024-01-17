@@ -171,7 +171,7 @@ RectTransform:
   m_GameObject: {fileID: 4501081378682226759}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0000043, y: 1.0000043, z: 1.0000043}
+  m_LocalScale: {x: 1.0000044, y: 1.0000044, z: 1.0000044}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 463118231904982894}
@@ -396,25 +396,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
-          type: 3}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: QuickPlay
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: button_Hit_002
-          m_BoolArgument: 0
-        m_CallState: 2
-  HasClicked: 1
+    _PersistentCalls: []
+  CanClick: 1

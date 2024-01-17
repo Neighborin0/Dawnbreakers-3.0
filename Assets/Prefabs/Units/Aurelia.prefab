@@ -330,6 +330,9 @@ MonoBehaviour:
   weaknesses: 
   actionList:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
+  - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
+  - {fileID: 11400000, guid: a367c5a61075e5d439a7f2eea9211cd5, type: 2}
+  - {fileID: 11400000, guid: d92930017a77bc245bebc1281cd25a05, type: 2}
   summonables: []
 --- !u!114 &3966448854374177832
 MonoBehaviour:
@@ -347,17 +350,4 @@ MonoBehaviour:
   - eventID: 0
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
-            type: 3}
-          m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-          m_MethodName: QuickPlay
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: button_hover
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []

@@ -40,10 +40,10 @@ public class Defend : Action
         yield return new WaitForSeconds(0.8f);
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;
-        //BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, statAmount + unit.defenseStat);
         BattleSystem.Instance.SetStatChanges(Stat.ARMOR, statAmount + unit.defenseStat, false, targets);
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(1.5f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
+        AudioManager.QuickPlay("ui_woosh_002");
         LabCamera.Instance.ResetPosition();
         yield return new WaitForSeconds(0.6f);
         this.Done = true;

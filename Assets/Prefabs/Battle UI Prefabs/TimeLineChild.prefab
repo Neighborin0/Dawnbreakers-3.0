@@ -299,15 +299,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
-  HasClicked: 0
+    _PersistentCalls: []
+  CanClick: 0
 --- !u!1 &5403960351164552912
 GameObject:
   m_ObjectHideFlags: 0

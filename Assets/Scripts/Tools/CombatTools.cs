@@ -278,7 +278,7 @@ public class CombatTools : MonoBehaviour
 
     }
 
-    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, Quaternion rotation, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f)
+    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, Quaternion rotation, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f, string AudioToPlay = "")
     {
         var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).SingleOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, rotation);
         VFX.transform.parent = null;
@@ -321,11 +321,24 @@ public class CombatTools : MonoBehaviour
                 if (stopDuration > 0)
                     Director.Instance.StartCoroutine(Tools.StopTime(stopDuration));
             }
+            if(AudioToPlay != "")
+            {
+                AudioManager.QuickPlay(AudioToPlay);
+            }
+
             yield return new WaitForSeconds(duration);
             if (VFX != null && VFX.GetComponent<ParticleSystem>() != null)
             {
                 var particleSystem = VFX.GetComponent<ParticleSystem>();
                 particleSystem.Stop();
+            }
+            if (AudioToPlay != "")
+            {
+                var currentSFX = AudioManager.Instance.ReturnSound(AudioToPlay);
+                if (currentSFX.loop)
+                    Director.Instance.StartCoroutine(AudioManager.Instance.Fade(0, AudioToPlay, 1f, true));
+                else
+                    AudioManager.Instance.Stop(AudioToPlay);
             }
             if (VFX != null && VFX.GetComponent<SpriteRenderer>() != null)
             {
@@ -339,6 +352,7 @@ public class CombatTools : MonoBehaviour
                     yield return new WaitForSeconds(0.001f);
                 }
             }
+
             yield return new WaitForSeconds(ExtraDelay);
             if (VFX != null)
                 Destroy(VFX);

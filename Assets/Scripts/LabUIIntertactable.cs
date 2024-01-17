@@ -54,13 +54,15 @@ public class LabUIInteractable : MonoBehaviour
                 eventTrigger.triggers.Add(clickEvent);
             }
 
+           
+
         }
     }
 
 
     public void TriggerEnter(BaseEventData baseEventData)
     {
-        if (Entered.ParameterCount == 0)
+        if (Entered.PersistentCallsList.Count == 0)
         {
             if (GetComponent<Button>() != null && GetComponent<Button>().interactable || GetComponent<TMP_Dropdown>() != null && GetComponent<TMP_Dropdown>().interactable || GetComponent<Slider>() != null && GetComponent<Slider>().interactable)
             {
@@ -73,7 +75,7 @@ public class LabUIInteractable : MonoBehaviour
         }
         else
         {
-            print("finding persistent events");
+            Entered.Invoke();
         }
     }
 
@@ -88,9 +90,13 @@ public class LabUIInteractable : MonoBehaviour
     }
     public void TriggerExit(BaseEventData baseEventData)
     {
-        if (Exited.ParameterCount == 0)
+        if (Exited.PersistentCallsList.Count == 0)
         {
             DoExit(string.Empty);
+        }
+        else
+        {
+            Exited.Invoke();
         }
     }
 
@@ -100,10 +106,15 @@ public class LabUIInteractable : MonoBehaviour
     }
     public void TriggerClick(BaseEventData baseEventData)
     {
-        if (Clicked.ParameterCount == 0)
+        if (Clicked.PersistentCallsList.Count == 0)
         {
             DoClick(string.Empty);
         }
+        else
+        {
+            Clicked.Invoke();
+        }
+
     }
 
     public void DoClick(string AudioToReturn)
@@ -113,9 +124,14 @@ public class LabUIInteractable : MonoBehaviour
             AudioManager.QuickPlay("button_Hit_001", true);
         }
         else
+        {
+            print("Hello?");
             AudioManager.QuickPlay(AudioToReturn);
+        }
+          
     }
 
+   
 
 
 }

@@ -230,7 +230,7 @@ public class LabCamera : MonoBehaviour
         smoothingTime = 0f;
         this.MovingTimeDivider = MovingTimeDivider;
         var sprite = unit.GetComponent<SpriteRenderer>();
-
+        AudioManager.QuickPlay("ui_woosh_002");
         if (overrideYPos.y != 0)
         {
             PositonToMoveTo.x = sprite.bounds.center.x / 5f;

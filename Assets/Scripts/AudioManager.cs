@@ -45,7 +45,7 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    public void Play(string AudioName, float volume = 0, bool ApplyPitchVariations = false)
+    public void Play(string AudioName, float volume = 0, bool ApplyPitchVariations = false, float pitch = 0)
     {
         var s = Array.Find(sounds, sound => sound.AudioName == AudioName);
         if(s != null)
@@ -59,10 +59,21 @@ public class AudioManager : MonoBehaviour
             if(ApplyPitchVariations)
             {
                 pitchVarition = UnityEngine.Random.Range(-0.1f, 0.1f);
+
+                if(AudioName == "button_hover")
+                    pitchVarition = UnityEngine.Random.Range(-0.05f, 0.05f);
             }
 
-            s.source.volume = volume;
-            s.source.pitch = s.pitch + pitchVarition;
+            if(volume == 0)
+                s.source.volume = s.volume;
+            else
+                 s.source.volume = volume;
+
+            if (pitch == 0)
+                s.source.pitch = s.pitch + pitchVarition;
+            else
+                s.source.pitch = pitch;
+
             s?.source.Play();
         }
        
