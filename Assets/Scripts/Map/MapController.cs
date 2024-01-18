@@ -157,12 +157,12 @@ public class MapController : MonoBehaviour
 
     void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
         {
-            float force = 800f;
-            StartCoroutine(DoPlayerJump(force));
+            LabCamera.Instance.followDisplacement = new Vector3(0, MinZoom, MinZoom * 3.4f);
+            AudioManager.QuickPlay("ui_woosh_002");
         }
-        */
+
         if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name == "MAP2")
         {
             if (enableMapControls)
@@ -359,12 +359,15 @@ public class MapController : MonoBehaviour
         lineInstance.SetPosition(0, new Vector3(storedTransform.x + compressor, storedTransform.y, storedTransform.z));
         lineInstance.SetPosition(1, storedTransform);
         lineCoroutine = Tools.SmoothMoveLine(lineInstance, new Vector3(pointToDrawTo.x - compressor, pointToDrawTo.y, pointToDrawTo.z), 0.01f);
+        AudioManager.QuickPlay("map_line_draw_001");
         StartCoroutine(lineCoroutine);
         storedTransform = pointToDrawTo;
         yield return new WaitForSeconds(0.4f);
         currentNodes[completedNodeCount].IsEnabled = true;
         currentNodes[completedNodeCount].gameObject.SetActive(true);
+        Director.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "map_line_draw_001", 0.5f, true));
         StartCoroutine(Tools.SmoothScale(node.GetComponent<RectTransform>(), node.GetComponent<MapNode>().oldScaleSize, 0.01f));
+        AudioManager.QuickPlay("map_node_pop_001");
         yield return new WaitForSeconds(1.2f);
         currentNodes[completedNodeCount].mapline = lineInstance.gameObject;
         LabCamera.Instance.MoveAndFollowGameObject(MM, new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f));

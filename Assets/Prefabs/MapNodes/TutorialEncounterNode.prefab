@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4269435843688162064}
   - component: {fileID: 6522140342006938025}
   - component: {fileID: 7809853375734531937}
+  - component: {fileID: -4588069058346197302}
   m_Layer: 0
   m_Name: TutorialEncounterNode
   m_TagString: Untagged
@@ -245,6 +246,45 @@ MonoBehaviour:
   oldScaleSize: {x: 1, y: 1, z: 1}
   enemies: []
   playerUnits: []
+--- !u!114 &-4588069058346197302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5914670995363335976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082faa8386773f14da179ff28d923758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entered:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: AudioManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null.QuickPlay
+      _PersistentArguments:
+      - _Type: 2
+        _Int: 0
+        _String: map_node_interact_001
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  Exited:
+    _PersistentCalls: []
+  Clicked:
+    _PersistentCalls: []
+  CanClick: 1
 --- !u!1 &7315076030171653628
 GameObject:
   m_ObjectHideFlags: 0

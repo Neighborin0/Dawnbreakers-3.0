@@ -19,6 +19,7 @@ public class LevelDrop : MonoBehaviour
         if (gameObject != null)
         {
             //Inital Fade In
+            AudioManager.QuickPlay("map_opening_001");
             LevelDropImage.gameObject.SetActive(true);
             Director.Instance.blackScreen.color = new Color(0, 0, 0, 0);
             LevelDropImage.material = Instantiate<Material>(LevelDropImage.material);

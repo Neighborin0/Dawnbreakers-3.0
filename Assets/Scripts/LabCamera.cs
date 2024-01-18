@@ -212,10 +212,7 @@ public class LabCamera : MonoBehaviour
                     followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y, followDisplacement.z - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
-            {
-                followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
-            }
+           
           
             virtualCam.m_Lens.FieldOfView = Mathf.Lerp(virtualCam.m_Lens.FieldOfView, FOV, step);
             transform.position = Vector3.LerpUnclamped(transform.position, boundPos, step);

@@ -237,4 +237,36 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: b11c26ecffe7a7345a972a85d5ba8d37, type: 3}
+    AudioName: map_opening_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: fdb9d329248953345b022d1493035cf2, type: 3}
+    AudioName: map_line_draw_001
+    volume: 0.1
+    pitch: 0.9
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 99e918bcb9d687141988260560a105b3, type: 3}
+    AudioName: map_node_interact_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 7cd638fda9dcfa945a6ec690663b6990, type: 3}
+    AudioName: map_node_pop_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
   currentMusicTrack: 
