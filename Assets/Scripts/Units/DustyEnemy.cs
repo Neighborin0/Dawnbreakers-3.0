@@ -115,7 +115,7 @@ public class DustyEnemy : Unit
         {
             BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaPrePipExplanation"), true, false, false, false, true, false);
            yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
-            StartCoroutine(AudioManager.Instance.Fade(0.5f, AudioManager.Instance.currentMusicTrack, 2, false));
+            StartCoroutine(AudioManager.Instance.Fade(0f, AudioManager.Instance.currentMusicTrack, 2, false));
             BattleSystem.Instance.BattlePhasePause = true;
             Director.Instance.blackScreen.color = new Color(0,0,0,0);
             Director.Instance.blackScreen.transform.SetAsLastSibling();
@@ -223,7 +223,7 @@ public class DustyEnemy : Unit
             blackScreenFadeCoroutine = Tools.FadeObject(Director.Instance.blackScreen, 0.001f, true, false);
 
             Director.Instance.StartCoroutine(blackScreenFadeCoroutine);
-            StartCoroutine(AudioManager.Instance.Fade(0.5f, AudioManager.Instance.currentMusicTrack, 2, false));
+            StartCoroutine(AudioManager.Instance.Fade(0f, AudioManager.Instance.currentMusicTrack, 2, false));
             yield return new WaitUntil(() => Director.Instance.blackScreen.color.a >= 1);
             yield return new WaitForSeconds(0.1f);
 

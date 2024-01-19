@@ -25,8 +25,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Aurelia, if we are to kill this thing, we need to hit this beast fast
-      and  hard.  '
+  - text: 'Aurelia, if we''re going to kill this thing, we need to hit this beast
+      fast and hard.  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.04

@@ -489,7 +489,7 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: PlayAudio
-    data: defend_001
+    data: guard_001
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

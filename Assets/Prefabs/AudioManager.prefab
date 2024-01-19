@@ -216,7 +216,7 @@ MonoBehaviour:
   - soundType: 0
     clip: {fileID: 8300000, guid: 0e471c4bffd330b4ab5533384235bfc9, type: 3}
     AudioName: button_Hit_006
-    volume: 0.3
+    volume: 0.5
     pitch: 0.2
     source: {fileID: 0}
     loop: 0
@@ -256,7 +256,7 @@ MonoBehaviour:
   - soundType: 0
     clip: {fileID: 8300000, guid: 99e918bcb9d687141988260560a105b3, type: 3}
     AudioName: map_node_interact_001
-    volume: 1
+    volume: 0.5
     pitch: 1
     source: {fileID: 0}
     loop: 0
@@ -264,6 +264,62 @@ MonoBehaviour:
   - soundType: 0
     clip: {fileID: 8300000, guid: 7cd638fda9dcfa945a6ec690663b6990, type: 3}
     AudioName: map_node_pop_001
+    volume: 0.2
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
+    AudioName: map_node_hit_001
+    volume: 0.5
+    pitch: 0.7
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
+    AudioName: map_node_hit_001
+    volume: 0.5
+    pitch: 0.7
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 8ceaac7a15aafcc45acbe2a01d90dad4, type: 3}
+    AudioName: warcry_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 13777c3aeed3d9a45b273182faf5658d, type: 3}
+    AudioName: ui_low_woosh_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 04bdbd6137fdd7c4a9c6317a346842d9, type: 3}
+    AudioName: low_impact_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 16fd884bc0e3eba478421208cc0d7524, type: 3}
+    AudioName: stun_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 0308958691a40b446b31bc9d57634995, type: 3}
+    AudioName: guard_001
     volume: 1
     pitch: 1
     source: {fileID: 0}

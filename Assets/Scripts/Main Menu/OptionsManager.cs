@@ -325,7 +325,7 @@ public class OptionsManager : MonoBehaviour
 
     public IEnumerator DoLoad(string SceneToLoad, string MusicToPlay, float MusicFadeTime = 1, float TargetVolume = 1)
     {
-
+        OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         OptionsManager.Instance.CanPause = false;
         Move(false);
         blackScreen.gameObject.SetActive(true);

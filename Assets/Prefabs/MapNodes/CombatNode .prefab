@@ -171,7 +171,7 @@ RectTransform:
   m_GameObject: {fileID: 4501081378682226759}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0000056, y: 1.0000056, z: 1.0000056}
+  m_LocalScale: {x: 1.0000043, y: 1.0000043, z: 1.0000043}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 463118231904982894}
@@ -420,5 +420,25 @@ MonoBehaviour:
   Exited:
     _PersistentCalls: []
   Clicked:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: AudioManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null.QuickPlay
+      _PersistentArguments:
+      - _Type: 2
+        _Int: 0
+        _String: map_node_hit_001
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   CanClick: 1

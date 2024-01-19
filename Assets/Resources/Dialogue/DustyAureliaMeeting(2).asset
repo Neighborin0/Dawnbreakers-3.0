@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DustyAureliaMeeting(2)
   m_EditorClassIdentifier: 
   labLines:
-  - text: "I yield...I\u2019m clearly no match... "
+  - text: 'I yield...I''m clearly no match... '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -150,7 +150,7 @@ MonoBehaviour:
           m_CallState: 2
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "Alright...I won\u2019t stop you."
+  - text: Alright...I won't stop you.
     expression: neutral
     unit: Dusty
     textSpeed: 0.03

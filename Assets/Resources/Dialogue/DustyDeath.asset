@@ -38,7 +38,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "...I\u2019m sorry...lass... "
+  - text: '...I''m sorry...lass... '
     expression: neutral
     unit: Dusty
     textSpeed: 0.08
@@ -50,7 +50,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "...I wasn\u2019t strong enough...  "
+  - text: '...I wasn''t strong enough...  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.08

@@ -37,9 +37,9 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "Please. You\u2019re the only thing in this place which has shown me any
-      mercy. If you can forgive me for my early transgressions, there\u2019s something
-      I want to ask of you.  "
+  - text: "Please. You're the only thing in this place which has shown me any mercy.
+      If you can forgive me for my early transgressions, there\u2019s something I
+      want to ask of you.  "
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -51,8 +51,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "I don\u2019t know how much longer I can last out here alone and by the
-      looks of it you\u2019re quite battered as well.  "
+  - text: "I don't know how much longer I can last out here alone and by the looks
+      of it you\u2019re quite battered as well.  "
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -76,8 +76,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "I don\u2019t care what you do, just don\u2019t raise your sword against
-      me again. Next time I won\u2019t be so merciful. "
+  - text: "I don't care what you do, just don\u2019t raise your sword against me
+      again. Next time I won't be so merciful. "
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

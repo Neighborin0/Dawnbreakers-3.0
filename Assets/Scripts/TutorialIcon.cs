@@ -22,6 +22,7 @@ public class TutorialIcon : MonoBehaviour
 
     private IEnumerator StartDestroying()
     {
+        AudioManager.QuickPlay("button_Hit_002");
         IsBeingDestroyed = true;
         GetComponent<MoveableObject>().Move(false);
         BattleSystem.Instance.playerUnits[0].StartDecision(false);

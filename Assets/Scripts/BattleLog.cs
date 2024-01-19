@@ -333,6 +333,7 @@ public class BattleLog : MonoBehaviour
         BattleStates previousState = BattleStates.IDLE;
         BattleLog.Instance.state = BattleLogStates.TALKING;
         GetComponent<MoveableObject>().Move(true);
+        AudioManager.QuickPlay("ui_woosh_001");
         bool WasPaused = false;
         if (Pauses)
         {
@@ -393,7 +394,7 @@ public class BattleLog : MonoBehaviour
                 yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2f);
             }
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-            AudioManager.QuickPlay("button_Hit_006");
+            AudioManager.QuickPlay("button_Hit_006", true);
             characterdialog.text = "";
             yield return new WaitForSeconds(0.01f);
             text[i].OnLineEnded.Invoke();

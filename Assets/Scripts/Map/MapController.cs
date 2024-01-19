@@ -159,7 +159,7 @@ public class MapController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
         {
-            LabCamera.Instance.followDisplacement = new Vector3(0, MinZoom, MinZoom * 3.4f);
+            LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
             AudioManager.QuickPlay("ui_woosh_002");
         }
 

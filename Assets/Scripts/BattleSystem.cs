@@ -235,7 +235,7 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             AudioManager.Instance.Play("Coronus_Battle", 0.00000001f);
             yield return new WaitForSeconds(0.001f);
-            StartCoroutine(AudioManager.Instance.Fade(1f, "Coronus_Battle", 0.1f, false));
+            StartCoroutine(AudioManager.Instance.Fade(0.35f, "Coronus_Battle", 0.1f, false));
             yield return new WaitForSeconds(1.5f);
             TutorialParent.gameObject.SetActive(false);
 
@@ -583,7 +583,6 @@ public class BattleSystem : MonoBehaviour
             var Light = target.spotLight;
             target.ChangeUnitsLight(Light, 150, 15, number.outlineColor, 0.04f, 0.1f);
         }
-        print("stats should be popping up");
         yield return new WaitForSeconds(1f);
         StartCoroutine(popup.DestroyPopUp());
         yield break;

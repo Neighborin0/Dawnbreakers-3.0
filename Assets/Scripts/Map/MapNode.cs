@@ -38,7 +38,8 @@ public class MapNode : MonoBehaviour
     public void DisableNode(bool ApplyDelays = true)
     {
         StartCoroutine(StartLoadingNode(ApplyDelays));
-        Tools.ToggleUiBlocker(false, true, false);
+        if(SceneManager.GetActiveScene().name == "MAP2")
+            Tools.ToggleUiBlocker(false, true, true);
     }
 
     public IEnumerator StartLoadingNode(bool ApplyDelays = true)

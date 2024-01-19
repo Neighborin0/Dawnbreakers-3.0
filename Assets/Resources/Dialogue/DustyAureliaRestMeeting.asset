@@ -25,7 +25,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "Never thought I\u2019d get some peace in this place."
+  - text: Never thought I'd get some peace in this place.
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -37,8 +37,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "Some wondrous kingdom this turned out to be, eh? Should\u2019ve known
-      the whole thing was daft.  "
+  - text: 'Some wondrous kingdom this turned out to be, eh? Should''ve known the
+      whole thing was daft.  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -50,7 +50,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: '...  '
+  - text: ...
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -62,8 +62,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "Quite the stoic one, aren\u2019t you? You\u2019d fit right in with the
-      Iron Fangs.  "
+  - text: "Quite the stoic one, aren\u2019t you? You'd fit right in with the Iron
+      Fangs.  "
     expression: neutral
     unit: Dusty
     textSpeed: 0.03

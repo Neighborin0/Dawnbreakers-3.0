@@ -403,7 +403,6 @@ public class Tools : MonoBehaviour
         {
             sprite.material.SetColor("_CharacterEmission", newColor * intensity);
             intensity++;
-            print(intensity);
             yield return new WaitForSeconds(delay);
         }
     }
