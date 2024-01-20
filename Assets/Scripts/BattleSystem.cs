@@ -291,6 +291,7 @@ public class BattleSystem : MonoBehaviour
             }
             else
             {
+                Tools.ToggleUiBlocker(true, true, true);
                 playerUnits[0].StartDecision(true);
             }
         }
@@ -325,7 +326,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator TransitionToMap(bool LevelUpScreen = true)
     {
         yield return new WaitForSeconds(1f);
-        StartCoroutine(AudioManager.Instance.Fade(0.5f, AudioManager.Instance.currentMusicTrack, 2, false));
+       
         foreach (Transform child in Director.Instance.timeline.transform)
         {
             if (child.GetComponent<TimeLineChild>() != null)
@@ -361,12 +362,14 @@ public class BattleSystem : MonoBehaviour
         }
         if (LevelUpScreen)
         {
+            StartCoroutine(AudioManager.Instance.Fade(0.1f, AudioManager.Instance.currentMusicTrack, 2, false));
             StartCoroutine(EndBattle());
         }
         else
         {
             //Used in Dusty fight
-            OptionsManager.Instance.Load("MAP2", "Coronus_Map");
+            StartCoroutine(AudioManager.Instance.Fade(0f, AudioManager.Instance.currentMusicTrack, 0, false));
+            OptionsManager.Instance.Load("MAP2", "Coronus_Map", 1, 0.5f);
             yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
             foreach (var unit in Tools.GetAllUnits())
             {

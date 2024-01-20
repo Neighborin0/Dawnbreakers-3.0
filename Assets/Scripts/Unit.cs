@@ -452,7 +452,7 @@ public class Unit : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
+        if (BattleSystem.Instance != null && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
         {
             AudioManager.QuickPlay("button_hover", true);
         }

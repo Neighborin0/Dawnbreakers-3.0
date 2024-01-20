@@ -66,7 +66,8 @@ public class RestSite : MonoBehaviour
         LabCamera.Instance.ReadjustCam();
         yield return new WaitForSeconds(2f);
         OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
-        LabCamera.Instance.MovingTimeDivider = 1;
+        Tools.ToggleUiBlocker(true, true, true);
+        LabCamera.Instance.TimeDivider = 500;
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
         Director.Instance.CharacterSlotEnable();
         foreach (var button in buttons)
@@ -113,7 +114,7 @@ public class RestSite : MonoBehaviour
         {
             DontDestroyOnLoad(Director.Instance.party[i].gameObject);
         }
-        OptionsManager.Instance.Load("MAP2", "Coronus_Map");
+        OptionsManager.Instance.Load("MAP2", "Coronus_Map", 1, 0.5f);
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
         foreach (var unit in Tools.GetAllUnits())
         {

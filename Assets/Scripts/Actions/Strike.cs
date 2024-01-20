@@ -55,7 +55,7 @@ public class Strike : Action
             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Strike", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), Quaternion.identity, 1f));
             targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle);
             LabCamera.Instance.Shake(0.3f, 1.5f);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.9f);
             CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
         }
     }

@@ -20,7 +20,7 @@ public class ConfirmButton : MonoBehaviour
         Director.Instance.ConfirmButton.GetComponent<MoveableObject>().Move(true);
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(false);  
         yield return new WaitForSeconds(0.5f);
-        OptionsManager.Instance.Load("MAP2", "Coronus_Map");
+        OptionsManager.Instance.Load("MAP2", "Coronus_Map", 1, 0.5f);
         OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
         Director.Instance.timeline.RefreshTimeline();

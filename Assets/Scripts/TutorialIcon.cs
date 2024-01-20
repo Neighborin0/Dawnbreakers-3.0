@@ -10,7 +10,7 @@ public class TutorialIcon : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !IsBeingDestroyed)
+        if (Input.GetKeyDown(KeyCode.Space) && !IsBeingDestroyed || Input.GetKeyDown(KeyCode.Mouse0) && !IsBeingDestroyed)
         {
             StartCoroutine(StartDestroying());
         }

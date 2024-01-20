@@ -18,7 +18,7 @@ public class LabCamera : MonoBehaviour
     [SerializeField]
     private bool DoneMovingUp = false;
     [SerializeField]
-    private float TimeDivider = 100f;
+    public float TimeDivider = 100f;
     public float MovingTimeDivider = 10f;
     [SerializeField]
     private float amountToSway = 0.5f;

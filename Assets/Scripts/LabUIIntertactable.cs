@@ -22,6 +22,7 @@ public class LabUIInteractable : MonoBehaviour
     [SerializeField]
     private UltEvents.UltEvent Clicked;
 
+
     public bool CanClick = true;
     public void Start()
     {
@@ -53,9 +54,6 @@ public class LabUIInteractable : MonoBehaviour
                 clickEvent.callback.AddListener(TriggerClick);
                 eventTrigger.triggers.Add(clickEvent);
             }
-
-           
-
         }
     }
 
@@ -66,11 +64,11 @@ public class LabUIInteractable : MonoBehaviour
         {
             if (GetComponent<Button>() != null && GetComponent<Button>().interactable || GetComponent<TMP_Dropdown>() != null && GetComponent<TMP_Dropdown>().interactable || GetComponent<Slider>() != null && GetComponent<Slider>().interactable)
             {
-                DoEnter(string.Empty);
+                DoEnter("button_hover");
             }
             else
             {
-                DoEnter(string.Empty);
+                DoEnter("button_hover");
             }
         }
         else
@@ -81,12 +79,7 @@ public class LabUIInteractable : MonoBehaviour
 
     public void DoEnter(string AudioToReturn)
     {
-        if (AudioToReturn == string.Empty)
-        {
-            AudioManager.QuickPlay("button_hover", true);
-        }
-        else
-            AudioManager.QuickPlay(AudioToReturn);
+        PlayAudio(AudioToReturn);
     }
     public void TriggerExit(BaseEventData baseEventData)
     {
@@ -108,7 +101,14 @@ public class LabUIInteractable : MonoBehaviour
     {
         if (Clicked.PersistentCallsList.Count == 0)
         {
-            DoClick(string.Empty);
+            if (GetComponent<Button>() != null && GetComponent<Button>().IsInteractable())
+            {
+                DoClick("button_Hit_001");
+            }
+            else if (GetComponent<Button>() == null)
+            {
+                DoClick("button_Hit_001");
+            }
         }
         else
         {
@@ -119,18 +119,14 @@ public class LabUIInteractable : MonoBehaviour
 
     public void DoClick(string AudioToReturn)
     {
-        if (AudioToReturn == string.Empty)
-        {
-            AudioManager.QuickPlay("button_Hit_001", true);
-        }
-        else
-        {
-            print("Hello?");
-            AudioManager.QuickPlay(AudioToReturn);
-        }
-          
+        PlayAudio(AudioToReturn);
     }
 
+
+    private void PlayAudio(string AudioToReturn)
+    {
+        AudioManager.QuickPlay(AudioToReturn);
+    }
    
 
 

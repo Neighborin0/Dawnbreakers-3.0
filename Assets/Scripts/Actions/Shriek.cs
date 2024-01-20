@@ -47,15 +47,18 @@ public class Shriek : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(-0.4f, 0, -6f), Quaternion.identity, 5f));
-        LabCamera.Instance.Shake(0.3f, 1.5f);
+        LabCamera.Instance.MoveToPosition(new Vector3(0, 11.17f, -79.28f));
         yield return new WaitForSeconds(0.5f);
+        AudioManager.QuickPlay("shriek_001");
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(-0.4f, 0, -12f), Quaternion.identity, 5f));
+        LabCamera.Instance.Shake(0.5f, 1.5f);
+        yield return new WaitForSeconds(0.9f);
         foreach (var x in CombatTools.DetermineEnemies(unit))
         {
             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(x.gameObject, "Strike", new Color(156, 14, 207), new Color(156, 14, 207), new Vector3(0, 0, -2f), Quaternion.identity));
             x.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle, false, true);
         }
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 

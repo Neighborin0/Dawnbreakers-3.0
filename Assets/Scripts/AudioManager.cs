@@ -40,7 +40,7 @@ public class AudioManager : MonoBehaviour
             if (SceneManager.GetActiveScene().name == "Main Menu")
                 Play("Main Menu Theme", 1);
             else
-                Play("Coronus_Map", 1);
+                Play("Coronus_Map", 0.5f);
         }
     }
 

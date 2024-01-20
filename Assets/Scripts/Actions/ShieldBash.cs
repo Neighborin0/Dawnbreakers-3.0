@@ -60,7 +60,7 @@ public class ShieldBash : Action
         targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle);
         LabCamera.Instance.Shake(0.3f, 1.5f);
         //BattleSystem.Instance.SetTempEffect(targets, "STAGGER", true, duration);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.9f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 

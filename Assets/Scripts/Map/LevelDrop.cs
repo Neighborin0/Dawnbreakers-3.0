@@ -14,6 +14,11 @@ public class LevelDrop : MonoBehaviour
     public bool Done = false;
     public Image bar;
 
+    public void Awake()
+    {
+        if (Director.Instance.DevMode)
+            Destroy(this.gameObject);
+    }
     public IEnumerator DoOpening()
     {
         if (gameObject != null)

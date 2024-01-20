@@ -322,7 +322,7 @@ public class BattleLog : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))
         {
             textSpeed = overrideTextSpd;
         }
@@ -393,7 +393,7 @@ public class BattleLog : MonoBehaviour
                 x.text += letter;
                 yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2f);
             }
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0));
             AudioManager.QuickPlay("button_Hit_006", true);
             characterdialog.text = "";
             yield return new WaitForSeconds(0.01f);

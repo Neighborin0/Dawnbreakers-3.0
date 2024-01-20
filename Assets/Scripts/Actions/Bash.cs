@@ -58,7 +58,7 @@ public class Bash : Action
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "SmokeBurst", Color.white, Color.white, new Vector3(0, -2, 0), new Quaternion(-90, 0, 0, 0), 1, 0, false, 0, 2));
         targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle);
         LabCamera.Instance.Shake(0.2f, 1.5f);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.9f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }
 

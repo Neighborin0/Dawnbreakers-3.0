@@ -55,9 +55,7 @@ public class Beacon : Action
             summon.transform.localScale = new Vector3(9f, 9f, 9f);
             summon.GetComponent<BoxCollider>().isTrigger = true;
             summon.GetComponent<Rigidbody>().useGravity = false;
-            //summon.OverrideEmission = true;
-            //summon.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", Color.yellow * 10);
-
+           
             summon.IsSummon = true;
             if (unit.IsPlayerControlled)
             {
@@ -115,7 +113,6 @@ public class Beacon : Action
 
                        
                         yield return new WaitForSeconds(1f);
-                        //summon.transform.position = BSP.position;
                         summon.transform.SetParent(BSP.transform);
                         summon.transform.localScale = new Vector3(9f, 9f, 9f);
                         summon.GetComponent<Rigidbody>().mass = 10000;

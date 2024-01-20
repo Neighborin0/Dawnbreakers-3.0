@@ -138,11 +138,13 @@ public class DustyEnemy : Unit
             TutorialText.fontSharedMaterial.SetFloat("_GlowPower", 0.5f);
             TutorialText.color = TextColor;
             TutorialText.text = "Burn quickly...";
+            AudioManager.QuickPlay("low_hum_001");
 
             Director.Instance.StartCoroutine(Tools.FadeText(TutorialText, 0.001f, true, false));
             yield return new WaitForSeconds(2f);
 
             Director.Instance.StartCoroutine(Tools.FadeText(TutorialText, 0.01f, false, true));
+            Director.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "low_hum_001", 2f, true));
             yield return new WaitUntil(() => TutorialText.color.a <= 0);
 
             TutorialText.gameObject.SetActive(false);
@@ -155,7 +157,7 @@ public class DustyEnemy : Unit
             Director.Instance.StartCoroutine(blackScreenFadeCoroutine);
             yield return new WaitUntil(() => Director.Instance.blackScreen.color.a <= 0);
             Director.Instance.blackScreen.gameObject.SetActive(false);
-
+            StartCoroutine(AudioManager.Instance.Fade(0.35f, AudioManager.Instance.currentMusicTrack, 2, false));
             var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
             foreach (var skill in Aurelia.skillUIs)
             {
@@ -234,11 +236,13 @@ public class DustyEnemy : Unit
             TutorialText.fontSharedMaterial.SetFloat("_GlowPower", 0.5f);
             TutorialText.color = TextColor;
             TutorialText.text = "Burn stronger...";
+            AudioManager.QuickPlay("low_hum_001");
 
             Director.Instance.StartCoroutine(Tools.FadeText(TutorialText, 0.01f, true, false));
             yield return new WaitForSeconds(2f);
 
             Director.Instance.StartCoroutine(Tools.FadeText(TutorialText, 0.01f, false, true));
+            Director.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "low_hum_001", 2f, true));
             yield return new WaitUntil(() => TutorialText.color.a <= 0);
 
             TutorialText.gameObject.SetActive(false);
@@ -263,7 +267,7 @@ public class DustyEnemy : Unit
            
 
             yield return new WaitUntil(() => Director.Instance.blackScreen.color.a <= 0);
-            StartCoroutine(AudioManager.Instance.Fade(1f, AudioManager.Instance.currentMusicTrack, 2, false));
+            StartCoroutine(AudioManager.Instance.Fade(0.35f, AudioManager.Instance.currentMusicTrack, 2, false));
             Director.Instance.blackScreen.gameObject.SetActive(false);
 
             var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");

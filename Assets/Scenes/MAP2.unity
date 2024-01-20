@@ -642,6 +642,135 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 583542652}
   m_CullTransparentMesh: 1
+--- !u!1 &649522278
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 649522280}
+  - component: {fileID: 649522279}
+  m_Layer: 0
+  m_Name: WindAmbience
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &649522279
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649522278}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 609e6a8dc5edd324795ec49f6acc349f, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &649522280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649522278}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 18.7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &753609401
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,18 +846,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 753609401}
   m_CullTransparentMesh: 1
---- !u!114 &818347634 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3734025460934820490, guid: 27fc45e474975bf4da59da7751ab29bd,
-    type: 3}
-  m_PrefabInstance: {fileID: 392729441177267606}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &926879530
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,18 +1088,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1395242032 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2568987424759279308, guid: 27fc45e474975bf4da59da7751ab29bd,
-    type: 3}
-  m_PrefabInstance: {fileID: 392729441177267606}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1535510656
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1468,36 +1573,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 333017523283285963, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 392729441767316513, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 392729441767316513, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_RaycastTarget
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 392729441767316515, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2568987424759279308, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_text
-      value: High Priest of Cursed Radiance
-      objectReference: {fileID: 0}
-    - target: {fileID: 2991246765173396803, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: SubText
-      value: 
-      objectReference: {fileID: 1395242032}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
       propertyPath: DevMode
@@ -1505,13 +1580,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
-      propertyPath: PipTutorialText
-      value: 
-      objectReference: {fileID: 818347634}
-    - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
       propertyPath: party.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
@@ -1580,36 +1650,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Director
       objectReference: {fileID: 0}
-    - target: {fileID: 4101119310777859761, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226578527851884803, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5226578527851884803, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 2100000, guid: 8059534ff568e0d4fb0c82235b3f1a22, type: 2}
-    - target: {fileID: 5406466361145071920, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 837.1943
-      objectReference: {fileID: 0}
-    - target: {fileID: 5406466361145071920, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5406466361145071920, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -150
-      objectReference: {fileID: 0}
     - target: {fileID: 6193017222613090888, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1640,49 +1680,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7058214336305667724, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7105437235914375167, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_text
-      value: High Priest of Cursed Radiance
-      objectReference: {fileID: 0}
-    - target: {fileID: 7105437235914375167, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 7105437235914375167, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_fontColor.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7105437235914375167, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_fontSizeBase
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 7105437235914375167, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 9752831
-      objectReference: {fileID: 0}
-    - target: {fileID: 8349378510994242408, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9132417498016558863, guid: 27fc45e474975bf4da59da7751ab29bd,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 552059250028049508, guid: 27fc45e474975bf4da59da7751ab29bd, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27fc45e474975bf4da59da7751ab29bd, type: 3}
@@ -1798,7 +1797,7 @@ Camera:
   far clip plane: 5000
   field of view: 23
   orthographic: 0
-  orthographic size: 0.9
+  orthographic size: 10
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
@@ -2523,3 +2522,4 @@ SceneRoots:
   - {fileID: 392729441177267606}
   - {fileID: 287504076}
   - {fileID: 7370647193559244995}
+  - {fileID: 649522280}

@@ -311,8 +311,10 @@ public class MapController : MonoBehaviour
             Director.Instance.StartCoroutine(DoLevelDrop());
         else if(SceneManager.GetActiveScene().name == "MAP2")
         {
-            var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
-            levelDropObj.gameObject.SetActive(false);
+            foreach(var levelDropObj in GameObject.FindObjectsOfType<LevelDrop>())
+            {
+                levelDropObj.gameObject.SetActive(false);
+            }
             DoneOpening = true;
         }
 

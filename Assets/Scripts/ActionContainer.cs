@@ -232,7 +232,61 @@ public class ActionContainer : MonoBehaviour
                             LabCamera.Instance.ResetPosition();
                         }
                     }
-                    break;   
+                    break;
+
+                case Action.TargetType.ALL_ENEMIES:
+                    {
+                        foreach (var unit in Tools.GetAllUnits())
+                        {
+                            if (targetting)
+                            {
+                                if (!unit.IsPlayerControlled)
+                                {
+                                    unit.IsHighlighted = true;
+                                    if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1) // Not Effective
+                                    {
+                                        unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(0.5754717f * 255, 0.4533197f * 255, 0.4533197f * 255) * 0.02f);
+                                    }
+                                    else if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1) //Effective
+                                    {
+                                        unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(255, 1, 0) * 0.02f);
+                                    }
+                                }
+                                else
+                                {
+                                    unit.isDarkened = true;
+                                }
+                            }
+                            else
+                            {
+                                unit.IsHighlighted = false;
+                                unit.isDarkened = false;
+                            }
+
+                        }
+                        if (Input.GetMouseButtonUp(0))
+                        {
+                            if (hit.collider != null && hit.collider.gameObject != null && hit.collider != baseUnit.gameObject.GetComponent<BoxCollider>() && hit.collider.gameObject.GetComponent<Unit>() != null && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
+                            {
+                                baseUnit.state = PlayerState.READY;
+                                var unit = hit.collider.GetComponent<Unit>();
+
+                                action.targets = unit;
+                                action.unit = baseUnit;
+
+                                baseUnit.Queue(action);
+                                baseUnit.timelinechild.CanMove = true;
+                                Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
+                                BattleLog.Instance.ResetBattleLog();
+                                LabCamera.Instance.ResetPosition();
+                                AudioManager.QuickPlay("button_Hit_005");
+                                SetActive(false);
+                            }
+                        }
+
+                    }
+                    break;
+
             }
             switch (action.actionStyle)
             {
@@ -396,12 +450,12 @@ public class ActionContainer : MonoBehaviour
         AudioManager.Instance.Stop("statUp_Loop_001");
         action.actionStyle = Action.ActionStyle.STANDARD;
         //action.ResetAction();
-        if(baseUnit != null)
+        if (baseUnit != null)
         {
             var Light = baseUnit.GetComponentInChildren<Light>();
             baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.04f, 0.001f);
         }
-       
+
         lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
         heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
         SetActionStyleButtonsActive(turnOn);
@@ -450,9 +504,9 @@ public class ActionContainer : MonoBehaviour
                 {
                     targetting = false;
                     SetActionStyleButtonsActive(false);
-                        var Light = baseUnit.GetComponentInChildren<Light>();
-                        baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
-                    
+                    var Light = baseUnit.GetComponentInChildren<Light>();
+                    baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
+
                     LabCamera.Instance.ResetPosition();
                     RemoveDescription();
                     ResetAllStyleButtons();
@@ -566,7 +620,7 @@ public class ActionContainer : MonoBehaviour
                     if (action.targetType == Action.TargetType.ENEMY)
                         LabCamera.Instance.MoveToPosition(new Vector3(1, LabCamera.Instance.transform.position.y, LabCamera.Instance.transform.position.z), 1f);
                     baseUnit.DoOnActionSelected(this);
-
+                    AudioManager.QuickPlay("button_Hit_001", true);
 
                 }
             }
