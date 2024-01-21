@@ -58,14 +58,14 @@ public class CutsceneTools : MonoBehaviour
        AudioManager.Instance.Play(TrackToPlay);
     }
 
-    public void ChangeMusicTrackVolume(float TargetVolume)
+    public static void ChangeMusicTrackVolume(float TargetVolume)
     {
         Director.Instance.StartCoroutine(AudioManager.Instance.Fade(TargetVolume, AudioManager.Instance.currentMusicTrack, 1.5f, false));
     }
 
     public void DoBossIntro()
     {
-        Director.Instance.StartCoroutine(Director.Instance.canvas.GetComponent<BossIntro>().DoIntro());
+        OptionsManager.Instance.StartCoroutine(Director.Instance.bossIntro.DoIntro());
     }
 
     public void QuickPlay(string AudioName)
@@ -73,6 +73,7 @@ public class CutsceneTools : MonoBehaviour
         AudioManager.QuickPlay(AudioName);
     }
 
+  
     private IEnumerator ChangeVignetteIntensityCoroutine(float DesiredValue)
     {
         if (BattleSystem.Instance.effectsSetting.sharedProfile.TryGet<Vignette>(out var vignette))

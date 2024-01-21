@@ -28,7 +28,7 @@ MonoBehaviour:
   - text: 'Not here.... I can''t fall here...  '
     expression: neutral
     unit: Aurelia
-    textSpeed: 0.5
+    textSpeed: 0.05
     OnLineStarted:
       m_PersistentCalls:
         m_Calls: []
@@ -40,7 +40,7 @@ MonoBehaviour:
   - text: 'I still have so much further to go...  '
     expression: neutral
     unit: Aurelia
-    textSpeed: 0.5
+    textSpeed: 0.05
     OnLineStarted:
       m_PersistentCalls:
         m_Calls: []

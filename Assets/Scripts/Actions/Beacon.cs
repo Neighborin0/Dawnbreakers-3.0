@@ -43,9 +43,10 @@ public class Beacon : Action
         LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0f, 10, -55, 0.5f);
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, new Color(1, 0.86f, 0.55f), 0.04f, 0.1f);
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLight", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(-2.95f, 5.02f, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
+        AudioManager.QuickPlay("glint_001");
 
-        
-      
+
+
         yield return new WaitForSeconds(1f);
         for (int i = 0; i < numofUnitsToAdd; i++)
         {
@@ -72,7 +73,7 @@ public class Beacon : Action
                         BattleSystem.Instance.playerUnits.Add(summon);
                         BattlePoint.Occupied = true;
                         BattlePoint.unit = summon;
-                        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(summon.gameObject, "SummonVFX", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(0, -1.82f, -2f), Quaternion.identity, 10f));
+                        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(summon.gameObject, "SummonVFX", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(0, -1.82f, -2f), Quaternion.identity, 10f, 0, false, 0, 10, 0.0001f, "statUp_Loop_001"));
                         LabCamera.Instance.MoveToUnit(summon, Vector3.zero ,0f, 15, -55, 0.5f);
                         Director.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMinIntensity(summon.gameObject, 0.01f));
                         summon.ChangeUnitsLight(summon.spotLight, 150, 15, new Color(1, 0.5409836f, 0, 1), 0.04f, 0.1f);
@@ -99,7 +100,8 @@ public class Beacon : Action
                     LabCamera.Instance.MoveToUnit(summon, Vector3.zero, 0, 15, -40, 0.5f);
                     if (!BattlePoint.Occupied)
                     {
-                        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(BSP.gameObject, "SummonVFX", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(0, -1.82f, 0), Quaternion.identity, 10f));
+                        AudioManager.QuickPlay("summon_001");
+                        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(BSP.gameObject, "SummonVFX", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(0, -1.82f, 0), Quaternion.identity, 10f, 0, false, 0, 10, 0.0001f, "statUp_Loop_001"));
                         var UnitLight = summon.spotLight;
                         UnitLight.transform.position = new Vector3(BSP.position.x, BSP.position.y, BSP.position.z - 0.28f);
                         LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 12, -70, 0.5f);
@@ -118,6 +120,7 @@ public class Beacon : Action
                         summon.GetComponent<Rigidbody>().mass = 10000;
                         BattleSystem.Instance.SetupHUD(summon, BSP);
                         summon.unitName = CombatTools.CheckNames(summon);
+                        Director.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "statUp_Loop_001", 0.5f, true));
                         break;
                     }
 

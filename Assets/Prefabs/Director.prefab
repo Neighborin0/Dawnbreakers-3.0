@@ -251,6 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BossTitleCard: {fileID: 5226578527851884803}
   Done: 0
+  SubText: {fileID: 2568987424759279308}
 --- !u!1 &330815495168617000
 GameObject:
   m_ObjectHideFlags: 0
@@ -3732,6 +3733,7 @@ MonoBehaviour:
     type: 3}
   PipTutorialText: {fileID: 3734025460934820490}
   BossCircle: {fileID: 9132417498016558863}
+  bossIntro: {fileID: 2991246765173396803}
   timeline: {fileID: 6650513377061637855}
   staminaSPDDivider: 2
   WeaknessMultiplier: 1.3
@@ -4104,8 +4106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: fc2a263026c202643b185e56afdf96dd, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Material: {fileID: 2100000, guid: 8af8f65b57c85e146a056ef762d5af59, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5002,7 +5004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

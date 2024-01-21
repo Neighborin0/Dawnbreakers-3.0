@@ -50,6 +50,7 @@ public class Director : MonoBehaviour
     public GameObject CharacterSlotButtonprefab;
     public TextMeshProUGUI PipTutorialText;
     public Image BossCircle;
+    public BossIntro bossIntro;
 
     //Timeline stuff
     public TimeLine timeline;
