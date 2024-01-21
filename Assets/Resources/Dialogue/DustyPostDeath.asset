@@ -77,7 +77,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'As for you...You''re...brighter...  '
+  - text: 'As for you...You''re...Brighter...  '
     expression: neutral
     unit: Matriarch
     textSpeed: 0.05

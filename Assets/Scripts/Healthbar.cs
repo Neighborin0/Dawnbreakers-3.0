@@ -249,6 +249,7 @@ public class Healthbar : MonoBehaviour
             {
                 var popup = Instantiate(damagePopUp, new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x, unit.GetComponent<SpriteRenderer>().bounds.center.y + 2, unit.transform.position.z), Quaternion.identity);
                 var number = popup.GetComponentInChildren<TextMeshProUGUI>();
+
                 try
                 {
                     HandleTypeDamage(damageType, number, damage, actionStyle, AppliesStun);
@@ -259,6 +260,7 @@ public class Healthbar : MonoBehaviour
                     print("text isn't being found?");
                 }
                 StartCoroutine(popup.Pop());
+                Director.Instance.StartCoroutine(FlashWhite());
                 unit.Dying = true;
                 BattleSystem.Instance.BattlePhasePause = true;
                 if (unit.IsPlayerControlled)
@@ -308,7 +310,6 @@ public class Healthbar : MonoBehaviour
             else
             {
 
-                unit.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", new Color(1f, 1f, 1f));
                 var popup = Instantiate(damagePopUp, new Vector3(unit.GetComponent<SpriteRenderer>().bounds.center.x, unit.GetComponent<SpriteRenderer>().bounds.center.y + 2, unit.transform.position.z), Quaternion.identity);
                 var number = popup.GetComponentInChildren<TextMeshProUGUI>();
                 try
@@ -321,12 +322,21 @@ public class Healthbar : MonoBehaviour
                     print("text isn't being found?");
                 }
                 StartCoroutine(popup.Pop());
-                yield return new WaitForSeconds(0.2f);
-                unit.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f));
-                yield return new WaitForSeconds(1f);
+                Director.Instance.StartCoroutine(FlashWhite());
+                yield return new WaitForSeconds(1.2f);
                 Director.Instance.StartCoroutine(popup.DestroyPopUp());
             }
         }
+    }
+
+    public IEnumerator FlashWhite()
+    {
+        yield return new WaitForSeconds(0.1f);
+        unit.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", new Color(1f, 1f, 1f));
+        unit.HitEmissionChanged = true;
+        yield return new WaitForSeconds(0.1f);
+        unit.GetComponent<SpriteRenderer>().material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f));
+        unit.HitEmissionChanged = false;
     }
     public IEnumerator Die()
     {

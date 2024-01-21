@@ -275,8 +275,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.65000004, y: 0.51841515, z: 0.2}
-  m_Center: {x: 0.032500006, y: 0.0057928087, z: 0}
+  m_Size: {x: 0.65000004, y: 0.5144365, z: 0.2}
+  m_Center: {x: 0.032500006, y: 0.0077821496, z: 0}
 --- !u!114 &7201352204941650085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +332,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
   - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
   summonables: []
+  HitEmissionChanged: 0
 --- !u!114 &3966448854374177832
 MonoBehaviour:
   m_ObjectHideFlags: 0

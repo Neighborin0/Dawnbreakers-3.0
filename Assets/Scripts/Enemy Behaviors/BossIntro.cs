@@ -22,13 +22,13 @@ public class BossIntro : MonoBehaviour
             SubText.fontSharedMaterial.SetColor("_FaceColor", new Color(191, 167, 83, 0));
             AudioManager.QuickPlay("map_opening_001");
             AudioManager.Instance.Play("Coronus_Boss", 0);
-            Director.Instance.StartCoroutine(AudioManager.Instance.Fade(0.8f, "Coronus_Boss", 0.6f, false));
+            Director.Instance.StartCoroutine(AudioManager.Instance.Fade(0.8f, "Coronus_Boss", 0.5f, false));
             LabCamera.Instance.uicam.gameObject.SetActive(true);
             Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
             LabCamera.Instance.state = LabCamera.CameraState.IDLE;
 
             Director.Instance.BossCircle.gameObject.SetActive(true);
-            OptionsManager.Instance.StartCoroutine(Tools.SmoothScale(Director.Instance.BossCircle.transform.GetComponent<RectTransform>(), new Vector3 (100, 100, 100), 0.01f));
+            OptionsManager.Instance.StartCoroutine(Tools.SmoothScale(Director.Instance.BossCircle.transform.GetComponent<RectTransform>(), new Vector3 (100, 100, 100), 0.1f));
             yield return new WaitUntil(() => Director.Instance.BossCircle.transform.localScale.x >= 100);
             //Inital Fade In
             BossTitleCard.gameObject.SetActive(true);
@@ -48,17 +48,16 @@ public class BossIntro : MonoBehaviour
 
             while (BossTitleCardMat.GetColor("_BaseColor").a < 1)
             {
-              
                 BossTitleCardMat.SetColor("_BaseColor", new Color(TitleColor.r, TitleColor.g, TitleColor.b, BossTitleCardMat.GetColor("_BaseColor").a + 0.05f));
                 yield return new WaitForSeconds(0.05f);
             }
             yield return new WaitUntil(() => BossTitleCardMat.GetColor("_BaseColor").a >= 1);
             yield return new WaitForSeconds(1f);
-
+            SubText.color = new Color(SubText.color.r, SubText.color.g, SubText.color.b, 0);
             SubText.gameObject.SetActive(true);
             Color color = new Color32(255, 222, 180, 0);
             SubText.fontSharedMaterial.SetColor("_FaceColor", new Color(color.r, color.g, color.b, 255) * 1.00001f);
-
+            SubText.color = new Color(SubText.color.r, SubText.color.g, SubText.color.b, 0);
             SubText.ForceMeshUpdate();
 
             while (SubText.color.a < 1)

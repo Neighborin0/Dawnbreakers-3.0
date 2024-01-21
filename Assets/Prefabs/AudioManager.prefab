@@ -341,4 +341,44 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 207b940face9ce14d97f09df88cc636a, type: 3}
+    AudioName: incinerate_cackle_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 1
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: cbb4a630af728044aa63b480a4af1b77, type: 3}
+    AudioName: incinerate_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 891cc45f6397b2e49a0a66671632007f, type: 3}
+    AudioName: incinerate_buildup_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: c103f4e533b9f1845804a623ab55f0fa, type: 3}
+    AudioName: fire_impact_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+  - soundType: 0
+    clip: {fileID: 8300000, guid: 2a7f1c7ed0bc4444ab4a7b2896894980, type: 3}
+    AudioName: summon_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
   currentMusicTrack: 

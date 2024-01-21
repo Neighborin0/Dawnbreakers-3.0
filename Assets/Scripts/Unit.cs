@@ -108,6 +108,7 @@ public class Unit : MonoBehaviour
     public string[] summonables;
     [NonSerialized]
     public bool IsSummon = false;
+    public bool HitEmissionChanged = false;
 
 
     void Start()
@@ -155,6 +156,12 @@ public class Unit : MonoBehaviour
                     sprite.material.SetColor("_OutlineColor", Color.black);
                     sprite.material.SetColor("_CharacterEmission", new Color(-0.01f, -0.01f, -0.01f, 1f));
 
+                }
+                else if(HitEmissionChanged)
+                {
+                    sprite.material.SetFloat("_OutlineThickness", 1f);
+                    sprite.material.SetColor("_OutlineColor", Color.black);
+                    sprite.material.SetColor("_CharacterEmission", new Color(1f, 1f, 1f, 1f));
                 }
                 else
                 {
