@@ -45,340 +45,381 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - soundType: 0
-    clip: {fileID: 8300000, guid: c972c3d787072784d94752dca8403f3d, type: 3}
+  - clip: {fileID: 8300000, guid: c972c3d787072784d94752dca8403f3d, type: 3}
     AudioName: slash_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: a8146a41ffa623345a3ff01b63c7ac53, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: a8146a41ffa623345a3ff01b63c7ac53, type: 3}
     AudioName: strike_001
-    volume: 2
+    volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 1
-    clip: {fileID: 8300000, guid: 6db3caefa9dbcee48a035025fe36a3c9, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 6db3caefa9dbcee48a035025fe36a3c9, type: 3}
     AudioName: Main Menu Theme
     volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
     Fading: 0
-  - soundType: 1
-    clip: {fileID: 8300000, guid: 3d0aedd3cccd8224cbd576bb95fc6db1, type: 3}
+    type: {fileID: 2915642816189426846, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 3d0aedd3cccd8224cbd576bb95fc6db1, type: 3}
     AudioName: Rest_Coronus
     volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
     Fading: 0
-  - soundType: 1
-    clip: {fileID: 8300000, guid: 05f9d7b240e426f4ea167d1fb478ae60, type: 3}
+    type: {fileID: 2915642816189426846, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 05f9d7b240e426f4ea167d1fb478ae60, type: 3}
     AudioName: Coronus_Boss
     volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
     Fading: 0
-  - soundType: 1
-    clip: {fileID: 8300000, guid: 9029701dc5eb29f4fa8f6f02dc55f464, type: 3}
+    type: {fileID: 2915642816189426846, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 9029701dc5eb29f4fa8f6f02dc55f464, type: 3}
     AudioName: Ending
     volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
     Fading: 0
-  - soundType: 1
-    clip: {fileID: 8300000, guid: df670da80ada95e4ca6d3b5ae7678456, type: 3}
+    type: {fileID: 2915642816189426846, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: df670da80ada95e4ca6d3b5ae7678456, type: 3}
     AudioName: Coronus_Battle
     volume: 0
     pitch: 1
     source: {fileID: 0}
     loop: 1
     Fading: 0
-  - soundType: 1
-    clip: {fileID: 8300000, guid: fdb0c3a7cde2f5146a6d6eca28d6ee97, type: 3}
+    type: {fileID: 2915642816189426846, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: fdb0c3a7cde2f5146a6d6eca28d6ee97, type: 3}
     AudioName: Coronus_Map
     volume: 0
     pitch: 0.7
     source: {fileID: 0}
     loop: 1
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 77043c72e06621c43bbe2fe3a9726758, type: 3}
+    type: {fileID: 2915642816189426846, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 77043c72e06621c43bbe2fe3a9726758, type: 3}
     AudioName: button_hover
     volume: 0.05
     pitch: 1.5
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
     AudioName: button_Hit_001
     volume: 1
     pitch: 0.65
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: df78e37dbc18da2489621501294438ed, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: df78e37dbc18da2489621501294438ed, type: 3}
     AudioName: ui_woosh_001
     volume: 0.4
     pitch: 0.4
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
     AudioName: button_Hit_002
     volume: 1
     pitch: 0.43
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: df78e37dbc18da2489621501294438ed, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: df78e37dbc18da2489621501294438ed, type: 3}
     AudioName: ui_woosh_002
     volume: 0.06
     pitch: 3
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: d18ab59cb764e8547b0404f56268b44b, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: d18ab59cb764e8547b0404f56268b44b, type: 3}
     AudioName: button_Hit_003
-    volume: 1.3
+    volume: 1
     pitch: 0.3
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
     AudioName: button_Hit_004
     volume: 0.3
     pitch: 0.8
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 7949155b8fd0f4b40a6e3133027217fc, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 7949155b8fd0f4b40a6e3133027217fc, type: 3}
     AudioName: button_Hit_005
     volume: 0.7
     pitch: 0.3
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 883d08073adb98e4987dcc0565810395, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 883d08073adb98e4987dcc0565810395, type: 3}
     AudioName: statUp_Loop_001
     volume: 1
     pitch: 0.8
     source: {fileID: 0}
     loop: 1
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 8d90df82d81dae245b95b7b0001aff81, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 8d90df82d81dae245b95b7b0001aff81, type: 3}
     AudioName: defend_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 883d08073adb98e4987dcc0565810395, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 883d08073adb98e4987dcc0565810395, type: 3}
     AudioName: statUp_Loop_002
     volume: 0.5
     pitch: 1
     source: {fileID: 0}
     loop: 1
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: f7b15cbc815bfe746a8f4fbee8a714ed, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: f7b15cbc815bfe746a8f4fbee8a714ed, type: 3}
     AudioName: glint_001
     volume: 0.53
     pitch: 1.4
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 7a5ad8daf7a1fc94389769563ee26440, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 7a5ad8daf7a1fc94389769563ee26440, type: 3}
     AudioName: armor_hit_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 0e471c4bffd330b4ab5533384235bfc9, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 0e471c4bffd330b4ab5533384235bfc9, type: 3}
     AudioName: button_Hit_006
     volume: 0.5
     pitch: 0.2
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: f001237a4447d534c96e9f2b19e55a01, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: f001237a4447d534c96e9f2b19e55a01, type: 3}
     AudioName: light_burst_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 891cc45f6397b2e49a0a66671632007f, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 891cc45f6397b2e49a0a66671632007f, type: 3}
     AudioName: rising_light_001
     volume: 1
     pitch: 1.2
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: b11c26ecffe7a7345a972a85d5ba8d37, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: b11c26ecffe7a7345a972a85d5ba8d37, type: 3}
     AudioName: map_opening_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: fdb9d329248953345b022d1493035cf2, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: fdb9d329248953345b022d1493035cf2, type: 3}
     AudioName: map_line_draw_001
     volume: 0.1
     pitch: 0.9
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 99e918bcb9d687141988260560a105b3, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 99e918bcb9d687141988260560a105b3, type: 3}
     AudioName: map_node_interact_001
     volume: 0.5
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 7cd638fda9dcfa945a6ec690663b6990, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 7cd638fda9dcfa945a6ec690663b6990, type: 3}
     AudioName: map_node_pop_001
     volume: 0.2
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
     AudioName: map_node_hit_001
     volume: 0.5
     pitch: 0.7
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
     AudioName: map_node_hit_001
     volume: 0.5
     pitch: 0.7
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 8ceaac7a15aafcc45acbe2a01d90dad4, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 8ceaac7a15aafcc45acbe2a01d90dad4, type: 3}
     AudioName: warcry_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 13777c3aeed3d9a45b273182faf5658d, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 13777c3aeed3d9a45b273182faf5658d, type: 3}
     AudioName: ui_low_woosh_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 04bdbd6137fdd7c4a9c6317a346842d9, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 04bdbd6137fdd7c4a9c6317a346842d9, type: 3}
     AudioName: low_impact_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 16fd884bc0e3eba478421208cc0d7524, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 16fd884bc0e3eba478421208cc0d7524, type: 3}
     AudioName: stun_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 0308958691a40b446b31bc9d57634995, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 0308958691a40b446b31bc9d57634995, type: 3}
     AudioName: guard_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: b875a59326e37bc42ba7f1ba3fe32c0b, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: b875a59326e37bc42ba7f1ba3fe32c0b, type: 3}
     AudioName: low_hum_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 2d41ba52b1f1e3f4b80a17f9a10c3c7e, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 2d41ba52b1f1e3f4b80a17f9a10c3c7e, type: 3}
     AudioName: shriek_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 207b940face9ce14d97f09df88cc636a, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 207b940face9ce14d97f09df88cc636a, type: 3}
     AudioName: incinerate_cackle_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 1
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: cbb4a630af728044aa63b480a4af1b77, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: cbb4a630af728044aa63b480a4af1b77, type: 3}
     AudioName: incinerate_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 891cc45f6397b2e49a0a66671632007f, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 891cc45f6397b2e49a0a66671632007f, type: 3}
     AudioName: incinerate_buildup_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: c103f4e533b9f1845804a623ab55f0fa, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: c103f4e533b9f1845804a623ab55f0fa, type: 3}
     AudioName: fire_impact_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
-  - soundType: 0
-    clip: {fileID: 8300000, guid: 2a7f1c7ed0bc4444ab4a7b2896894980, type: 3}
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 2a7f1c7ed0bc4444ab4a7b2896894980, type: 3}
     AudioName: summon_001
     volume: 1
     pitch: 1
     source: {fileID: 0}
     loop: 0
     Fading: 0
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: b67612ae31fc475499ecabbf9f478194, type: 3}
+    AudioName: ending_ambience_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 1
+    Fading: 0
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: d52365788a02d8f4db0c5cc0842538b6, type: 3}
+    AudioName: ending_rumble_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: ac566d7448fa48848a7615766b02a8db, type: 3}
+    AudioName: ending_woosh_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 122131bb22b386d439ee3314977f3ff4, type: 3}
+    AudioName: droning_ambience_001
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
+  - clip: {fileID: 8300000, guid: 0e1314027efbfe9439028f01a044285c, type: 3}
+    AudioName: wind_ambience_001
+    volume: 1
+    pitch: 0.7
+    source: {fileID: 0}
+    loop: 0
+    Fading: 0
+    type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
   currentMusicTrack: 
+  mixer: {fileID: 24100000, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}

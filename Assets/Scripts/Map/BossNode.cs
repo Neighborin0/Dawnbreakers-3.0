@@ -21,8 +21,10 @@ public class BossNode : MapNode
            
             print(unit.unitName);
         }
-        OptionsManager.Instance.Load("Battle", null, 1000f);
-      
+        OptionsManager.Instance.Load("Battle", "Coronus_Boss", 1000f, 0);
+        AudioManager.Instance.Pause("Coronus_Boss");
+        AudioManager.QuickPlay("button_Hit_003", true);
+
         SceneManager.sceneLoaded += OnSceneLoaded;  
     }
 

@@ -602,6 +602,7 @@ public class ActionContainer : MonoBehaviour
                     TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * TL.offset, 50);
                     TL.staminaText.text = (100 - CombatTools.DetermineTrueCost(action)).ToString();
                     TL.CanClear = true;
+                    TL.GetComponent<LabUIInteractable>().CanHover = false;
                     TL.CanBeHighlighted = false;
                     TL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.5f);
                     TL.portrait.color = new Color(1, 1, 1, 0.5f);

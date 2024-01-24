@@ -18,6 +18,7 @@ public class AudioManager : MonoBehaviour
     public Sound[] sounds;
     public string currentMusicTrack;
     private bool Stopped = false;
+    public AudioMixer mixer;
      void Awake()
     {
         if (Instance != null)
@@ -38,9 +39,12 @@ public class AudioManager : MonoBehaviour
             }
 
             if (SceneManager.GetActiveScene().name == "Main Menu")
-                Play("Main Menu Theme", 1);
-            else
+                Play("Main Menu Theme", 0.5f);
+            else if(SceneManager.GetActiveScene().name == "MAP2")
                 Play("Coronus_Map", 0.5f);
+           /* else if(SceneManager.GetActiveScene().name == "Prologue Ending")
+                Play("Ending", 1f);
+           */
         }
     }
 
@@ -51,12 +55,14 @@ public class AudioManager : MonoBehaviour
         if(s != null)
         {
             float pitchVarition = 0;
-            if(s.soundType == SoundType.MUSIC)
+            if(s.type.name == "Music")
             {
-                currentMusicTrack = s.AudioName;
+                currentMusicTrack = s.AudioName;   
             }
 
-            if(ApplyPitchVariations)
+            s.source.outputAudioMixerGroup = s.type;
+
+            if (ApplyPitchVariations)
             {
                 pitchVarition = UnityEngine.Random.Range(-0.1f, 0.1f);
 
@@ -78,6 +84,7 @@ public class AudioManager : MonoBehaviour
         }
        
     }
+
 
     public static void QuickPlay(string AudioName, bool ApplyPitchVariations = false)//For controlling audio through editor
     {
@@ -145,26 +152,33 @@ public class AudioManager : MonoBehaviour
         }
        
     }
-        
 
-   
+    public void Pause(string AudioName)
+    {
+        var soundSource = Array.Find(sounds, sound => sound.AudioName == AudioName);
+        soundSource.source.Pause();
+
+    }
+
+    public void UnPause(string AudioName)
+    {
+        var soundSource = Array.Find(sounds, sound => sound.AudioName == AudioName);
+        soundSource.source.UnPause();
+        soundSource.source.Play();
+
+    }
+
+
+
 }
 
 
 
-[Serializable]
-public enum SoundType
-{
-    SFX,
-    MUSIC,
-    
-};
+
 
 [Serializable]
 public class Sound
 {
-    public SoundType soundType;
-
     public AudioClip clip;
     public string AudioName;
     [Range(0, 1)]
@@ -175,4 +189,6 @@ public class Sound
     public AudioSource source;
     public bool loop;
     public bool Fading = false;
+    public AudioMixerGroup type;
+
 }

@@ -31554,6 +31554,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1389145944}
   - component: {fileID: 1389145945}
+  - component: {fileID: 1389145946}
   m_Layer: 0
   m_Name: WindAmbience (1)
   m_TagString: Untagged
@@ -31673,6 +31674,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1389145946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389145943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6520b6845b144040ab20a3aeef3f51f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ambiences:
+  - {fileID: 1389145945}
 --- !u!1 &1390400846
 GameObject:
   m_ObjectHideFlags: 0
@@ -34004,6 +34019,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1609664823}
+  - component: {fileID: 1609664825}
+  - component: {fileID: 1609664826}
   - component: {fileID: 1609664824}
   m_Layer: 0
   m_Name: WindAmbience
@@ -34124,6 +34141,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1609664825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609664822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6520b6845b144040ab20a3aeef3f51f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ambiences:
+  - {fileID: 1609664824}
+--- !u!114 &1609664826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609664822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6520b6845b144040ab20a3aeef3f51f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ambiences:
+  - {fileID: 1609664824}
 --- !u!1 &1612811588
 GameObject:
   m_ObjectHideFlags: 0
@@ -36138,7 +36183,7 @@ Transform:
   m_GameObject: {fileID: 1742221824}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 0.4, z: -16.37}
+  m_LocalPosition: {x: -5, y: 0, z: -16.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

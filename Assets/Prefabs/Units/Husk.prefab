@@ -243,6 +243,7 @@ MonoBehaviour:
   actionList:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   summonables: []
+  HitEmissionChanged: 0
 --- !u!65 &8262538968179080166
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -262,8 +263,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.52, y: 0.68158406, z: 0.2}
-  m_Center: {x: 0, y: 0.024208201, z: 0}
+  m_Size: {x: 0.52, y: 0.67976266, z: 0.2}
+  m_Center: {x: 0, y: 0.02511896, z: 0}
 --- !u!54 &-5386635525920679100
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -313,7 +313,7 @@ public class BattleSystem : MonoBehaviour
         {
             CombatTools.PauseStaminaTimer();
             MapController.Instance.gameObject.transform.SetParent(this.transform);
-            OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Prologue Ending", "Ending"));
+            OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Prologue Ending", null));
         }
         else
         {
@@ -800,6 +800,7 @@ public class BattleSystem : MonoBehaviour
 
                         var TL = Director.Instance.timeline.ReturnTimelineChild(action.unit);
                         TL.CanClear = true;
+                        TL.GetComponent<LabUIInteractable>().CanHover = false;
                         TL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.2f);
                         TL.portrait.color = new Color(1, 1, 1, 0.2f);
 

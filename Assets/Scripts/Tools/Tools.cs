@@ -537,8 +537,24 @@ public class Tools : MonoBehaviour
         return stringToReturn;
     }
 
+    public static float CheckPlayerPrefsFloat(string KeyToCheck, float defaultValue)
+    {
+        float floatToReturn = defaultValue;
+        if(PlayerPrefs.HasKey(KeyToCheck))
+        {
+            floatToReturn = PlayerPrefs.GetFloat(KeyToCheck);
+        }
+        else
+        {
+            PlayerPrefs.SetFloat(KeyToCheck, floatToReturn);
+        }
+        return floatToReturn;
+    }
+
 
 }
+
+
 
 public static class Extensions
 {

@@ -24,6 +24,9 @@ public class LabUIInteractable : MonoBehaviour
 
 
     public bool CanClick = true;
+    public bool CanHover = true;
+
+
     public void Start()
     {
         if (eventTrigger == null)
@@ -60,26 +63,33 @@ public class LabUIInteractable : MonoBehaviour
 
     public void TriggerEnter(BaseEventData baseEventData)
     {
-        if (Entered.PersistentCallsList.Count == 0)
+        if (OverUI())
         {
-            if (GetComponent<Button>() != null && GetComponent<Button>().interactable || GetComponent<TMP_Dropdown>() != null && GetComponent<TMP_Dropdown>().interactable || GetComponent<Slider>() != null && GetComponent<Slider>().interactable)
+            if (CanHover)
             {
-                DoEnter("button_hover");
+                if (Entered.PersistentCallsList.Count == 0)
+                {
+                    if (GetComponent<Button>() != null && GetComponent<Button>().interactable || GetComponent<TMP_Dropdown>() != null && GetComponent<TMP_Dropdown>().interactable || GetComponent<Slider>() != null && GetComponent<Slider>().interactable)
+                    {
+                        DoEnter("button_hover");
+                    }
+                    else
+                    {
+                        DoEnter("button_hover");
+                    }
+                }
+                else
+                {
+                    Entered.Invoke();
+                }
             }
-            else
-            {
-                DoEnter("button_hover");
-            }
-        }
-        else
-        {
-            Entered.Invoke();
         }
     }
 
     public void DoEnter(string AudioToReturn)
     {
-        PlayAudio(AudioToReturn);
+        if (CanHover)
+            PlayAudio(AudioToReturn);
     }
     public void TriggerExit(BaseEventData baseEventData)
     {
@@ -127,7 +137,12 @@ public class LabUIInteractable : MonoBehaviour
     {
         AudioManager.QuickPlay(AudioToReturn);
     }
-   
+
+    private bool OverUI()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
+
 
 
 }

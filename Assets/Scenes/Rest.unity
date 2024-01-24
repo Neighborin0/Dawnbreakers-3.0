@@ -19362,6 +19362,7 @@ MonoBehaviour:
   Clicked:
     _PersistentCalls: []
   CanClick: 1
+  CanHover: 1
 --- !u!1 &892061737
 GameObject:
   m_ObjectHideFlags: 0
@@ -25147,6 +25148,7 @@ GameObject:
   - component: {fileID: 1371357522}
   - component: {fileID: 1371357523}
   - component: {fileID: 1371357524}
+  - component: {fileID: 1371357525}
   m_Layer: 0
   m_Name: lampost (1)
   m_TagString: Untagged
@@ -25324,6 +25326,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1371357525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371357521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6520b6845b144040ab20a3aeef3f51f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ambiences:
+  - {fileID: 1371357524}
 --- !u!1 &1379992554
 GameObject:
   m_ObjectHideFlags: 0
@@ -37940,6 +37956,7 @@ MonoBehaviour:
         _W: 0
         _Object: {fileID: 0}
   CanClick: 1
+  CanHover: 1
 --- !u!1 &1997449066
 GameObject:
   m_ObjectHideFlags: 0
@@ -44354,6 +44371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2088592913}
   - component: {fileID: 2088592912}
+  - component: {fileID: 2088592914}
   m_Layer: 0
   m_Name: WindAmbience
   m_TagString: Untagged
@@ -44473,6 +44491,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2088592914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088592911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6520b6845b144040ab20a3aeef3f51f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ambiences:
+  - {fileID: 2088592912}
 --- !u!1 &2092018731
 GameObject:
   m_ObjectHideFlags: 0
@@ -44794,6 +44826,7 @@ MonoBehaviour:
   Clicked:
     _PersistentCalls: []
   CanClick: 1
+  CanHover: 1
 --- !u!1 &2116954439
 GameObject:
   m_ObjectHideFlags: 0

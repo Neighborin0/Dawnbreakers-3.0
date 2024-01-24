@@ -187,6 +187,7 @@ public class Healthbar : MonoBehaviour
                         if (TL.value <= 0)
                         {
                             TL.CanClear = true;
+                            TL.GetComponent<LabUIInteractable>().CanHover = false;
                             BattleSystem.Instance.StartCoroutine(LateRemove());
                             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), Quaternion.identity, 15f, 0, true, 0, 2));
                             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), new Quaternion(0, 180, Quaternion.identity.z, Quaternion.identity.w), 15f, 0, true, 0, 2));
@@ -233,7 +234,7 @@ public class Healthbar : MonoBehaviour
     {
         if (unit != null)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(1f);
             Director.Instance.timeline.RemoveTimelineChild(unit);
         }
         yield break;

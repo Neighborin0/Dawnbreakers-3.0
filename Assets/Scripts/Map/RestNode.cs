@@ -10,6 +10,7 @@ public class RestNode : MapNode
     {
         Director.Instance.CharacterSlotEnable();
         OptionsManager.Instance.Load("Rest", "Rest_Coronus", 1, 0.5f);
+        AudioManager.QuickPlay("button_Hit_003", true);
     }
 
 

@@ -34,21 +34,30 @@ public class PrologueEnding : MonoBehaviour
 
     private IEnumerator EndConversation()
     {
-      
-        yield return new WaitForSeconds(3);
+        AudioManager.Instance.Play("Ending");
+        AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0.5f, "Ending", 0.5f, false));
+        yield return new WaitForSeconds(2);
         for (int i = 0; i < text.Count; i++)
         {
             StartCoroutine(Tools.FadeText(text[i], 0.01f, true, false));
-            yield return new WaitForSeconds(1.5f);
+            AudioManager.QuickPlay("low_hum_001", true);
+            yield return new WaitForSeconds(1.2f);
+            if (i == 0)
+            {
+                AudioManager.QuickPlay("ending_rumble_001");
+            }
+            yield return new WaitForSeconds(0.3f);
             if (i == 0)
             {
                 transform.GetComponent<Animator>().Play("MoteEnding");
             }
             yield return new WaitForSeconds(3f);
+            AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "low_hum_001", 2f, true));
             StartCoroutine(Tools.FadeText(text[i], 0.01f, false, true));
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(7.5f);
             if(i == 5)
             {
+                AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "ending_ambience_001", 1f, true));
                 OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Main Menu", "Main Menu Theme"));
             }
 
