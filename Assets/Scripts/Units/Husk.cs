@@ -26,7 +26,7 @@ public class Husk : Unit
         }
         else
         {
-            behavior = this.gameObject.AddComponent<RandomEnemyBehavior>();
+            behavior = this.gameObject.AddComponent<TutorialHuskMatriarchBehavior>();
             maxHP = UnityEngine.Random.Range(17, 22);
             attackStat = UnityEngine.Random.Range(0, 2);
             print("using regular behavior");
@@ -40,7 +40,6 @@ public class Husk : Unit
         {
             int move = UnityEngine.Random.Range(0, baseUnit.actionList.Count);
             CombatTools.ModifyAction(baseUnit, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0, ActionVariance01.Length)]);
-             CombatTools.SetupEnemyAction(baseUnit, move, null);
             if (CombatTools.CheckAndReturnNamedUnit("Dusty") != null)
             {
                 CombatTools.SetupEnemyAction(baseUnit, move, CombatTools.CheckAndReturnNamedUnit("Dusty"));

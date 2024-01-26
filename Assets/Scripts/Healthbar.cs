@@ -276,7 +276,7 @@ public class Healthbar : MonoBehaviour
                 }
                 else
                 {
-                    //LabCamera.Instance.state = LabCamera.CameraState.IDLE;
+                    yield return new WaitForSeconds(0.3f);
                     LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 8, -40, 0.5f);
                 }
                 unit.DoOnPreDeath();
@@ -364,6 +364,7 @@ public class Healthbar : MonoBehaviour
         {
             BattleSystem.Instance.enemyUnits.Remove(unit);
             print("Enemy should be dead");
+          
         }
         BattleSystem.Instance.numOfUnits.Remove(unit);
         Destroy(unit.ActionLayout);
@@ -371,9 +372,13 @@ public class Healthbar : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         if(unit.unitName != "Dusty")
-            BattleSystem.Instance.BattlePhasePause = false;
+        {
+            yield return new WaitForSeconds(0.5f);
+            Director.Instance.StartCoroutine(Tools.LateUnpause(true));
+        }
+        else
+            Director.Instance.StartCoroutine(Tools.LateUnpause());
 
-        Director.Instance.StartCoroutine(Tools.LateUnpause());
         Destroy(unit.gameObject);
     }
 

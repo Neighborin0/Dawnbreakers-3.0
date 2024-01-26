@@ -5006,7 +5006,7 @@ MonoBehaviour:
   PositionUpX: 0
   PositionUpY: 760
   PositionDownX: 0
-  PositionDownY: 410
+  PositionDownY: 450
   moved: 0
 --- !u!1 &7058214336305667724
 GameObject:

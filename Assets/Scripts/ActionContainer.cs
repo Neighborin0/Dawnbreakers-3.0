@@ -6,6 +6,8 @@ using TMPro;
 using System;
 using static UnityEngine.UI.CanvasScaler;
 using System.Linq;
+using static Action;
+using JetBrains.Annotations;
 
 public class ActionContainer : MonoBehaviour
 {
@@ -30,6 +32,9 @@ public class ActionContainer : MonoBehaviour
     public bool limited = false;
     private TimeLineChild TL;
     private GameObject currentEffectPopup;
+    private bool HasDoneOnAction = false;
+    private bool CreatedTempTimelineChild = false;
+    private TimeLineChild TempTL;
 
     void Awake()
     {
@@ -75,34 +80,49 @@ public class ActionContainer : MonoBehaviour
             //Checks if mouse is actually hovering over something
             if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null && hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK && hit.collider.gameObject.GetComponent<Unit>().IsHighlighted && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
             {
-                var unit = hit.collider.gameObject.GetComponent<Unit>();
-                unit.timelinechild.Shift(unit);
+                var TargetUnit = hit.collider.gameObject.GetComponent<Unit>();
+                TargetUnit.timelinechild.Shift(TargetUnit);
 
                 //If the user's attack is greater than zero, then string return is the true damage, otherwise the string is zero.
 
-                damageNums.text = (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType)) > 0 ?
+                damageNums.text = (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType)) > 0 ?
                     $"<sprite name=\"{action.damageType}\">" +
-                    ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(unit, action.damageType))).ToString()
+                    ((int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType))).ToString()
                     : $"<sprite name=\"{action.damageType}\">" + "0";
 
                 //If the true damage is being reduced, then the text will turn red. The text also turns red when a resisted move appears
 
-                if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1)
+                if (CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType) < 1)
                 {
                     damageNums.color = Color.red;
                 }
 
-                //If the true damage is being increased, then the text will turn green. The text also turns green when a effective move appears
+                //If the true damage is being increased, then the text will turn green. The text also turns green when a effective move appears. Also displays how far back an enemy will be pushed
 
-                else if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1)
+                else if (CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType) > 1)
                 {
                     damageNums.color = Color.green;
+
+                    if (!CreatedTempTimelineChild && CombatTools.ReturnIconStatus(TargetUnit, "INDOMITABLE") && CombatTools.DetermineTrueCost(Director.Instance.timeline.ReturnTimeChildAction(TargetUnit)) > CombatTools.DetermineTrueCost(action))
+                    {
+                        CreateTempTimeLineChild(TargetUnit);
+                    }
+
+
+
                 }
             }
             else if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
             {
                 damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
                 damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
+
+                if (CreatedTempTimelineChild)
+                {
+                    Destroy(TempTL.gameObject);
+                    CreatedTempTimelineChild = false;
+                }
+
             }
 
             costNums.text = CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier}%" : $"100%";
@@ -140,6 +160,7 @@ public class ActionContainer : MonoBehaviour
                             {
                                 unit.isDarkened = true;
                             }
+
                         }
                         else
                         {
@@ -313,6 +334,12 @@ public class ActionContainer : MonoBehaviour
                     }
                     break;
             }
+
+            if (!HasDoneOnAction)
+            {
+                baseUnit.DoOnActionSelected(this);
+                HasDoneOnAction = true;
+            }
         }
         else
         {
@@ -336,6 +363,38 @@ public class ActionContainer : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void CreateTempTimeLineChild(Unit TargetUnit)
+    {
+        CreatedTempTimelineChild = true;
+        TempTL = Instantiate(Director.Instance.timeline.borderChildprefab, Director.Instance.timeline.startpoint);
+        TempTL.unit = TargetUnit;
+        TempTL.portrait.sprite = TargetUnit.charPortraits[0];
+        Director.Instance.timeline.children.Add(TempTL);
+        TempTL.CanMove = false;
+
+
+        float costToReturn = CombatTools.DetermineTrueCost(Director.Instance.timeline.ReturnTimeChildAction(TargetUnit));
+        costToReturn += Director.Instance.TimelineReduction;
+
+        if (action.actionStyle != Action.ActionStyle.STANDARD)
+            costToReturn += 10;
+
+        if (costToReturn > 100 || action.AppliesStun)
+            costToReturn = 100;
+
+        if (TargetUnit.IsPlayerControlled)
+            TempTL.rectTransform.anchoredPosition = new Vector3((100 - costToReturn) * TempTL.offset, 50);
+        else
+            TempTL.rectTransform.anchoredPosition = new Vector3((100 - costToReturn) * TempTL.offset, -50);
+
+        TempTL.staminaText.text = (100 - costToReturn).ToString();
+        TempTL.CanClear = true;
+        TempTL.GetComponent<LabUIInteractable>().CanHover = false;
+        TempTL.CanBeHighlighted = false;
+        TempTL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.5f);
+        TempTL.portrait.color = new Color(1, 1, 1, 0.5f);
     }
 
     public IEnumerator lightCoroutine;
@@ -450,10 +509,10 @@ public class ActionContainer : MonoBehaviour
         AudioManager.Instance.Stop("statUp_Loop_001");
         action.actionStyle = Action.ActionStyle.STANDARD;
         //action.ResetAction();
-        if (baseUnit != null)
+        if (baseUnit != null && baseUnit.GetComponentInChildren<Light>().intensity < 1.1)
         {
             var Light = baseUnit.GetComponentInChildren<Light>();
-            baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.04f, 0.001f);
+            baseUnit.ChangeUnitsLight(Light, 0, 0, Light.color, 0f, 0);
         }
 
         lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
@@ -504,9 +563,6 @@ public class ActionContainer : MonoBehaviour
                 {
                     targetting = false;
                     SetActionStyleButtonsActive(false);
-                    var Light = baseUnit.GetComponentInChildren<Light>();
-                    baseUnit.ChangeUnitsLight(Light, 0, 15, Color.white, 0.1f, 0);
-
                     LabCamera.Instance.ResetPosition();
                     RemoveDescription();
                     ResetAllStyleButtons();
@@ -584,7 +640,7 @@ public class ActionContainer : MonoBehaviour
                     }
                     foreach (TimeLineChild child in Director.Instance.timeline.children)
                     {
-                        if (child.CanClear)
+                        if (child != null && child.CanClear)
                         {
                             Director.Instance.timeline.children.Remove(child);
                             Destroy(child.gameObject);
@@ -620,14 +676,15 @@ public class ActionContainer : MonoBehaviour
                     }
                     if (action.targetType == Action.TargetType.ENEMY)
                         LabCamera.Instance.MoveToPosition(new Vector3(1, LabCamera.Instance.transform.position.y, LabCamera.Instance.transform.position.z), 1f);
-                    baseUnit.DoOnActionSelected(this);
                     AudioManager.QuickPlay("button_Hit_001", true);
+                    HasDoneOnAction = false;
 
                 }
             }
             else
             {
                 SetDescription();
+                HasDoneOnAction = false;
             }
 
         }

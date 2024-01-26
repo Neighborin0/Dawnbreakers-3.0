@@ -114,7 +114,7 @@ public class TimeLine : MonoBehaviour
             if (child.unit.unitName == unit.unitName)
             {
                 Director.Instance.timeline.children.Remove(child);
-                Director.Instance.StartCoroutine(child.FadeOut());
+                Director.Instance.StartCoroutine(FadeOut(child));
                 break;
             }
         }
@@ -138,6 +138,25 @@ public class TimeLine : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator FadeOut(TimeLineChild timeLineChild)
+    {
+        if (timeLineChild.gameObject != null)
+        {
+            while (timeLineChild.childImage.color.a > 0 && timeLineChild.gameObject != null)
+            {
+                timeLineChild.childImage.color = new Color(timeLineChild.childImage.color.r, timeLineChild.childImage.color.g, timeLineChild.childImage.color.b, timeLineChild.childImage.color.a - 0.1f);
+                timeLineChild.portrait.color = new Color(timeLineChild.portrait.color.r, timeLineChild.portrait.color.g, timeLineChild.portrait.color.b, timeLineChild.portrait.color.a - 0.1f);
+                timeLineChild.staminaText.color = new Color(timeLineChild.staminaText.color.r, timeLineChild.staminaText.color.g, timeLineChild.staminaText.color.b, timeLineChild.staminaText.color.a - 0.1f);
+            }
+            yield return new WaitUntil(() => timeLineChild.childImage.color.a <= 0);
+
+            if (timeLineChild.gameObject != null)
+                Destroy(timeLineChild.gameObject);
+        }
+
+    }
+
     public void DoCost(float cost, Unit unit)
     {
         var TL = SpawnTimelineChild(unit);

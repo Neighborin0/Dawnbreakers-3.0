@@ -601,27 +601,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
-          type: 3}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: QuickPlay
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: button_Hit_002
-          m_BoolArgument: 0
-        m_CallState: 2
+    _PersistentCalls: []
+  CanClick: 1
+  CanHover: 1
 --- !u!1 &7341711105171390667
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,27 +805,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8558299653546925816, guid: 16ddabcbc6d1a8645b535c74d7700007,
-          type: 3}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: QuickPlay
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: button_Hit_002
-          m_BoolArgument: 0
-        m_CallState: 2
+    _PersistentCalls: []
+  CanClick: 1
+  CanHover: 1
 --- !u!1 &7484641724800909116
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,6 +928,7 @@ MonoBehaviour:
   Disabled: 0
   numberofUses: 0
   limited: 0
+  HasDoneOnAction: 0
 --- !u!114 &3190603437284686847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1130,14 +1103,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  CanClick: 1
+  CanHover: 1
 --- !u!1 &8466068229968354415
 GameObject:
   m_ObjectHideFlags: 0

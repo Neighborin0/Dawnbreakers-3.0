@@ -401,7 +401,7 @@ public class BattleLog : MonoBehaviour
                 if (letter.ToString() == ",")
                     yield return new WaitForSeconds(0.1f);
 
-                yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 3f);
+                yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2.5f);
             }
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0));
             AudioManager.QuickPlay("button_Hit_006", true);

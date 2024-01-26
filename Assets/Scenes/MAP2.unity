@@ -1390,7 +1390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be782f718897ae047b04571c8aedc484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelDropImage: {fileID: 1285502977}
+  MainText: {fileID: 0}
   SubText: {fileID: 583542654}
   Done: 0
   bar: {fileID: 753609403}

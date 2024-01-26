@@ -479,10 +479,12 @@ public class Tools : MonoBehaviour
         Director.Instance.StartCoroutine(originalIEnumerator);
     }
 
-    public static IEnumerator LateUnpause()
+    public static IEnumerator LateUnpause(bool UnpauseBattle = false)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         LabCamera.Instance.ResetPosition();
+        if(UnpauseBattle)
+            BattleSystem.Instance.BattlePhasePause = false;
         yield break;
     }
 

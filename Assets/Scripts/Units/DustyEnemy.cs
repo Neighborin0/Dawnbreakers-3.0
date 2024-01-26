@@ -187,7 +187,8 @@ public class DustyEnemy : Unit
         private void ForceLightAction(Unit unit, ActionContainer actionContainerParent)
         {
             actionContainerParent.lightButton.ModifyAction();
-            Director.Instance.StartCoroutine(DelayedLightChange(unit));
+            //var light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
+            //Director.Instance.StartCoroutine(DelayedLightChange(unit));
         }
 
         private IEnumerator DelayedLightChange(Unit unit)

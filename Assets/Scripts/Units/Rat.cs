@@ -25,10 +25,6 @@ public class Rat : Unit
         behavior = this.gameObject.AddComponent<TutorialVerminBehavior>();
         resistances = new DamageType[] { DamageType.STRIKE };
         weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE };
-        /*CombatTools.ModifyAction(this, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0, ActionVariance01.Length)]);
-        CombatTools.ModifyAction(this, "Enrage", 1, ActionVariance02[UnityEngine.Random.Range(0, ActionVariance02.Length)]);
-        CombatTools.ModifyAction(this, "Screech", 2, ActionVariance02[UnityEngine.Random.Range(0, ActionVariance02.Length)]);
-        */
 
     }
 
