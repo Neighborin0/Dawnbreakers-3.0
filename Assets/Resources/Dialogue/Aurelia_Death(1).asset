@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   labLines:
   - text: ...Not here...I still have so much further to go...
-    expression: neutral
+    expression: death
     unit: Aurelia
     textSpeed: 0.02
     OnLineStarted:

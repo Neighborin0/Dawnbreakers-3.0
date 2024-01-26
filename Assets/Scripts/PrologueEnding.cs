@@ -34,6 +34,7 @@ public class PrologueEnding : MonoBehaviour
 
     private IEnumerator EndConversation()
     {
+        yield return new WaitForSeconds(3f);
         AudioManager.Instance.Play("Ending");
         AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0.5f, "Ending", 0.5f, false));
         yield return new WaitForSeconds(2);

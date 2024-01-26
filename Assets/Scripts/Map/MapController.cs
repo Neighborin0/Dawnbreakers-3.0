@@ -354,8 +354,14 @@ public class MapController : MonoBehaviour
         node.transform.localScale = new Vector3(0, 0, 0);
 
         LabCamera.Instance.state = LabCamera.CameraState.IDLE;
-        LabCamera.Instance.MoveToGameObject(node);
+        LabCamera.Instance.MoveToGameObject(node);     
+
         float compressor = 2.1f;
+
+        if (node.GetComponent<BossNode>() != null)
+        {
+            compressor = 1.8f;
+        }
         var lineInstance = Instantiate(linePrefab, mapCanvas.transform);
         lineInstance.gameObject.SetActive(true);
         lineInstance.SetPosition(0, new Vector3(storedTransform.x + compressor, storedTransform.y, storedTransform.z));

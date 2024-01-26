@@ -308,6 +308,7 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         LabCamera.Instance.ResetPosition();
+        AudioManager.QuickPlay("matriarch_laugh_001");
         yield return new WaitForSeconds(1f);
         if (OptionsManager.Instance.IntensityLevel == 0)
         {
@@ -600,7 +601,7 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatDownVFX", color, color, new Vector3(0, 15, 0), Quaternion.identity, 1f, 0, false, 1));
+            StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatDownVFX", color, color, new Vector3(0, 15, 0), Quaternion.identity, 1f, 0, false, 1, 10, 0.0001f, "statDown_Loop_001"));
         }
     }
 

@@ -69,7 +69,7 @@ public class AudioManager : MonoBehaviour
                 if(AudioName == "button_hover")
                     pitchVarition = UnityEngine.Random.Range(-0.05f, 0.05f);
             }
-
+          
             if(volume == 0)
                 s.source.volume = s.volume;
             else

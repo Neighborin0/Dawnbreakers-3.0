@@ -38,7 +38,7 @@ MonoBehaviour:
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: 'I still have so much further to go...  '
-    expression: neutral
+    expression: death
     unit: Aurelia
     textSpeed: 0.05
     OnLineStarted:

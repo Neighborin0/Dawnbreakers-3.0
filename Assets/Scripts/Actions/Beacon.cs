@@ -126,8 +126,8 @@ public class Beacon : Action
                 }
             }
             BattleSystem.Instance.numOfUnits.Add(summon);
-            AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "summon_001", 0.5f, true));
             yield return new WaitForSeconds(0.2f);
+            AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "summon_001", 1f, true));
         }
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
         LabCamera.Instance.ResetPosition();

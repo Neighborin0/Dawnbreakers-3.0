@@ -41,7 +41,7 @@ public class ActionTypeButton : Button
                     var target = actionContainerParent.baseUnit;
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
                     Color lightColor = new Color(0, 216, 255);
-                    Light.color = lightColor * 0.01f;
+                    Light.color = lightColor * 0.00001f;
                     Light.intensity = 1f;
                     AudioManager.QuickPlay("button_Hit_005", false);
                     AudioManager.Instance.Play("statUp_Loop_001", 0, false, 1f);
@@ -62,7 +62,7 @@ public class ActionTypeButton : Button
                     var target = actionContainerParent.baseUnit;
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
                     Color heavyColor = new(225, 27, 0);
-                    Light.color = heavyColor * 0.01f;
+                    Light.color = heavyColor * 0.00001f;
                     Light.intensity = 1f;
                     AudioManager.QuickPlay("button_Hit_005", false);
                     AudioManager.QuickPlay("statUp_Loop_001");

@@ -387,11 +387,21 @@ public class BattleLog : MonoBehaviour
                 charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == "neutral");
 
             textSpeed = text[i].textSpeed;
+            int characterIndex = 0;
+
+
             foreach (char letter in text[i].text.ToCharArray())
             {
                 Portraitparent.gameObject.SetActive(true);
-                x.text += letter;
-                yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2f);
+                characterIndex++;
+                string TextToWrite = text[i].text.Substring(0, characterIndex);
+                TextToWrite += "<color=#00000000>" + text[i].text.Substring(characterIndex) + "</color>";
+                x.text = TextToWrite;
+             
+                if (letter.ToString() == ",")
+                    yield return new WaitForSeconds(0.1f);
+
+                yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 3f);
             }
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0));
             AudioManager.QuickPlay("button_Hit_006", true);

@@ -257,6 +257,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1837556329e91ac4695f398f6e2e14e9, type: 3}
   - {fileID: 21300000, guid: 34355069512a9454487a6a6d8e02c199, type: 3}
   - {fileID: 21300000, guid: 6735face80b4b534eafebf6258e86a48, type: 3}
+  - {fileID: 21300000, guid: 47e5467aaba0e094ebf75b5dc1264cc8, type: 3}
   anim: {fileID: 1580378982329499966}
   MiniMapIcons:
   - {fileID: 21300000, guid: 4d0531293d0c76a47a2d8842267e3393, type: 3}

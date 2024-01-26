@@ -32,7 +32,7 @@ public class Block : EffectIcon
 
     public void RemoveBuff(Unit unit)
     {
-        Director.Instance.StartCoroutine(CombatTools.PlayVFX(owner.gameObject, "BlockBreak", new Color32(65, 38, 243, 255), new Color(65, 38, 243), new Vector3(0, 0.5f, -2f), Quaternion.identity, 0.5f, 0, false, 0, 2));
+        Director.Instance.StartCoroutine(CombatTools.PlayVFX(owner.gameObject, "BlockBreak", new Color32(65, 38, 243, 255), new Color(65, 38, 243), new Vector3(0, 0.5f, -2f), Quaternion.identity, 0.5f, 0, false, 0, 2));AudioManager.Instance.Play("armor_hit_001", 0, false, 0.6f);
         unit.health.DamageModifier = 1f;
         unit.OnDamaged -= RemoveBuff;
         owner.statusEffects.Remove(owner.statusEffects.Where(obj => obj.iconName == iconName).SingleOrDefault());

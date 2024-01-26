@@ -15,7 +15,7 @@ MonoBehaviour:
   labLines:
   - text: GAH!
     expression: neutral
-    unit: Dusty
+    unit: death
     textSpeed: 0.04
     OnLineStarted:
       m_PersistentCalls:
@@ -39,7 +39,7 @@ MonoBehaviour:
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: '...I''m sorry...lass... '
-    expression: neutral
+    expression: death
     unit: Dusty
     textSpeed: 0.08
     OnLineStarted:
@@ -51,7 +51,7 @@ MonoBehaviour:
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: '...I wasn''t strong enough...  '
-    expression: neutral
+    expression: death
     unit: Dusty
     textSpeed: 0.08
     OnLineStarted:
