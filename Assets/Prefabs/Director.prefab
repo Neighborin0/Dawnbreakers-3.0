@@ -3626,6 +3626,7 @@ MonoBehaviour:
   characterdatabase:
   - {fileID: 7201352204941650085, guid: f830cff71f0f12444ba1edc5593d0fdd, type: 3}
   - {fileID: 8438103007488650918, guid: 7961aa52f479600439fca57c241b5cb9, type: 3}
+  - {fileID: 7348431651559243503, guid: 6b95c3562742e5f4dbdcaf2e6854150e, type: 3}
   Unitdatabase:
   - {fileID: 8438103007488650918, guid: 7961aa52f479600439fca57c241b5cb9, type: 3}
   - {fileID: 3767246738405216190, guid: 3b4fa2cc43a00ff4491a3066626481f2, type: 3}

@@ -19,6 +19,10 @@ public class TimeLineChild : MonoBehaviour
     public bool CanBeHighlighted = true;
     public float value;
     public float offset = -12.13f;
+
+    public MiniTimelineChildren PlayerMiniChild;
+    public MiniTimelineChildren EnemyMiniChild;
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -34,14 +38,33 @@ public class TimeLineChild : MonoBehaviour
     }
     void LateUpdate()
     {
-        if(CanMove)
-        {        
+        if (CanMove)
+        {
             rectTransform.anchoredPosition = Vector3.Lerp(rectTransform.anchoredPosition, new Vector3(value * offset, rectTransform.anchoredPosition.y), 0.1f);
             staminaText.text = Mathf.Round(value).ToString();
+            foreach(var TL in Director.Instance.timeline.children)
+            {
+                if (TL != null && TL.unit != null && unit != null)
+                {
+                    if (unit.IsPlayerControlled && TL.unit.IsPlayerControlled && TL.unit != unit)
+                    {
+                        if (value == TL.value)
+                        {
+                            SetupMiniChild(TL.unit);
+                            TL.gameObject.SetActive(false);
+                        }
+                    }
+                    else
+                    {
+                        TL.gameObject.SetActive(true);
+                        PlayerMiniChild.gameObject.SetActive(false);
+                    }
+                }
+            }
         }
 
     }
-    public void MoveToNewPosition(Vector2 pos) 
+    public void MoveToNewPosition(Vector2 pos)
     {
         PositionToMoveTo = pos;
     }
@@ -49,7 +72,7 @@ public class TimeLineChild : MonoBehaviour
     public void Shift(Unit unit)
     {
 
-        if (gameObject != null )
+        if (gameObject != null)
         {
             transform.SetAsLastSibling();
             childImage.material.SetFloat("OutlineThickness", 1f);
@@ -60,13 +83,13 @@ public class TimeLineChild : MonoBehaviour
     }
     public void Return()
     {
-        if(gameObject != null)
+        if (gameObject != null)
         {
             childImage.material.SetFloat("OutlineThickness", 0);
             childImage.material.SetColor("OutlineColor", Color.black);
 
         }
-       
+
     }
 
 
@@ -79,9 +102,9 @@ public class TimeLineChild : MonoBehaviour
                 unit.IsHighlighted = true;
                 UnitIsHighlighted = true;
                 HighlightedIsBeingOverwritten = true;
-                if(unit.IsPlayerControlled && BattleSystem.Instance.state != BattleStates.DECISION_PHASE)
+                if (unit.IsPlayerControlled && BattleSystem.Instance.state != BattleStates.DECISION_PHASE)
                     BattleLog.Instance.DisplayCharacterStats(unit);
-                else if(!unit.IsPlayerControlled)
+                else if (!unit.IsPlayerControlled)
                     BattleLog.Instance.DisplayCharacterStats(unit);
 
                 transform.SetAsLastSibling();
@@ -95,6 +118,32 @@ public class TimeLineChild : MonoBehaviour
                 Return();
             }
         }
+    }
+
+    public void SetupMiniChild(Unit TargetUnit)
+    {
+        MiniTimelineChildren miniChild = null;
+
+        if (TargetUnit.IsPlayerControlled)
+            miniChild = PlayerMiniChild;
+        else
+            miniChild = EnemyMiniChild;
+
+       
+        miniChild.unit = TargetUnit;
+        miniChild.portrait.sprite = TargetUnit.charPortraits[0];
+        miniChild.gameObject.SetActive(true);
+    }
+
+    public void RemoveMiniChild(Unit TargetUnit)
+    {
+        MiniTimelineChildren miniChild = null;
+        if (TargetUnit.IsPlayerControlled)
+            miniChild = PlayerMiniChild;
+        else
+            miniChild = EnemyMiniChild;
+
+        miniChild.gameObject.SetActive(false);
     }
 
 }

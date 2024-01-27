@@ -97,19 +97,20 @@ public class ActionContainer : MonoBehaviour
                     damageNums.color = Color.red;
                 }
 
-                //If the true damage is being increased, then the text will turn green. The text also turns green when a effective move appears. Also displays how far back an enemy will be pushed
+                //If the true damage is being increased, then the text will turn green. The text also turns green when a effective move appears.
 
                 else if (CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType) > 1)
                 {
                     damageNums.color = Color.green;
+                }
 
-                    if (!CreatedTempTimelineChild && CombatTools.ReturnIconStatus(TargetUnit, "INDOMITABLE") && CombatTools.DetermineTrueCost(Director.Instance.timeline.ReturnTimeChildAction(TargetUnit)) > CombatTools.DetermineTrueCost(action))
+                //Display how far back an enemy will be pushed
+                if(CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType) > 1 || action.actionStyle != Action.ActionStyle.STANDARD || action.AppliesStun)
+                {
+                    if (!CreatedTempTimelineChild && CombatTools.ReturnIconStatus(TargetUnit, "INDOMITABLE") && CombatTools.DetermineTrueCost(Director.Instance.timeline.ReturnTimeChildAction(TargetUnit)) >= CombatTools.DetermineTrueCost(action))
                     {
                         CreateTempTimeLineChild(TargetUnit);
                     }
-
-
-
                 }
             }
             else if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
@@ -119,7 +120,8 @@ public class ActionContainer : MonoBehaviour
 
                 if (CreatedTempTimelineChild)
                 {
-                    Destroy(TempTL.gameObject);
+                    if(TempTL != null)
+                        Destroy(TempTL.gameObject);
                     CreatedTempTimelineChild = false;
                 }
 
@@ -375,8 +377,10 @@ public class ActionContainer : MonoBehaviour
         TempTL.CanMove = false;
 
 
-        float costToReturn = CombatTools.DetermineTrueCost(Director.Instance.timeline.ReturnTimeChildAction(TargetUnit));
-        costToReturn += Director.Instance.TimelineReduction;
+        float costToReturn = 0;
+
+        if(CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType) > 1)
+            costToReturn += Director.Instance.TimelineReduction;
 
         if (action.actionStyle != Action.ActionStyle.STANDARD)
             costToReturn += 10;
@@ -599,13 +603,21 @@ public class ActionContainer : MonoBehaviour
                         z.isDarkened = false;
                     }
                     foreach (var z in Tools.GetAllUnits())
-
-
                         if (TL != null)
                         {
                             Director.Instance.timeline.children.Remove(TL);
                             Destroy(TL.gameObject);
                         }
+
+                    foreach (TimeLineChild child in Director.Instance.timeline.children)
+                    {
+                        if (child != null && child.CanClear)
+                        {
+                            Director.Instance.timeline.children.Remove(child);
+                            Destroy(child.gameObject);
+                            break;
+                        }
+                    }
 
                 }
                 //Turn On

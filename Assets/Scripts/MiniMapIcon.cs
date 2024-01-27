@@ -35,7 +35,7 @@ public class MiniMapIcon : MonoBehaviour
         {
             StopCoroutine(mover);
         }
-        mover = Tools.SmoothMoveObject(gameObject.transform, transformPointX, transformPointY, 0.01f, false, 0, 10);
+        mover = Tools.SmoothMoveObject(gameObject.transform, transformPointX, gameObject.transform.position.y, 0.01f, false, 0, 10);
         StartCoroutine(mover);
         yield return new WaitForSeconds(0.5f);
         state = MapIconState.IDLE;

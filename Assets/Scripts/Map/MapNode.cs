@@ -56,7 +56,7 @@ public class MapNode : MonoBehaviour
 
         foreach (var MM in FindObjectsOfType<MiniMapIcon>())
         {
-            StartCoroutine(MM.Move((this.transform.position.x + 0.7f) - (i * 1.3f), transform.position.y + 1f - (i * 0.4f), transform.position.z - 1.5f));
+            StartCoroutine(MM.Move((this.transform.position.x + 0.7f) + (i * 1.3f), transform.position.y + 1f - (i * 0.4f), transform.position.z - 1.5f));
             i++;
         }
         AudioManager.QuickPlay("ui_woosh_002");

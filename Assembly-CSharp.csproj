@@ -77,9 +77,9 @@
     <Compile Include="Assets\Scripts\ConfirmButton.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
     <Compile Include="Assets\Scripts\HighlightedObject.cs" />
+    <Compile Include="Assets\Scripts\Main Menu\StartButton.cs" />
     <Compile Include="Assets\Scripts\Actions\Mend.cs" />
     <Compile Include="Assets\Scripts\Actions\Pummel.cs" />
-    <Compile Include="Assets\Scripts\Main Menu\StartButton.cs" />
     <Compile Include="Assets\Scripts\Actions\Nothing.cs" />
     <Compile Include="Assets\Scripts\TargetLine.cs" />
     <Compile Include="Assets\Scripts\Actions\Stab.cs" />
@@ -133,6 +133,7 @@
     <Compile Include="Assets\Scripts\Actions\Shriek.cs" />
     <Compile Include="Assets\Scripts\ScalableObject.cs" />
     <Compile Include="Assets\Scripts\Icons\DefendEF.cs" />
+    <Compile Include="Assets\Scripts\Units\Morgan.cs" />
     <Compile Include="Assets\Scripts\Actions\ShieldBash.cs" />
     <Compile Include="Assets\Scripts\ControlBar.cs" />
     <Compile Include="Assets\Scripts\DialogueHandler.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Assets\Scripts\Save\SaveAndQuitButton.cs" />
     <Compile Include="Assets\Scripts\BattleSpawnPoint.cs" />
     <Compile Include="Assets\Scripts\MoveableObject.cs" />
+    <Compile Include="Assets\Scripts\MiniTimelineChildren.cs" />
     <Compile Include="Assets\Scripts\Map\LabTile.cs" />
     <Compile Include="Assets\Scripts\LabLine.cs" />
     <Compile Include="Assets\Scripts\Map\MapNode.cs" />

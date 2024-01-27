@@ -16,8 +16,10 @@ public class IntentContainer : MonoBehaviour
     public TextMeshProUGUI costNums;
     public Unit unit;
     private GameObject currentEffectPopup;
+    private bool CreatedTempTimelineChild = false;
+    private TimeLineChild TempTL;
 
-     void Start()
+    void Start()
     {
         var ScaleComponent = GetComponent<ScalableObject>();
         var OldScaleVector = ScaleComponent.oldScaleSize;
@@ -35,6 +37,11 @@ public class IntentContainer : MonoBehaviour
             var newAction = Instantiate(action);
             newAction.unit = unit;
             SetDescription();
+
+            if (!CreatedTempTimelineChild && CombatTools.ReturnIconStatus(newAction.targets, "INDOMITABLE") && CombatTools.DetermineTrueCost(Director.Instance.timeline.ReturnTimeChildAction(newAction.targets)) > CombatTools.DetermineTrueCost(action))
+            {
+                CreateTempTimeLineChild(newAction.targets);
+            }
         }
     }
 
@@ -78,6 +85,44 @@ public class IntentContainer : MonoBehaviour
         this.unit.timelinechild.HighlightedIsBeingOverwritten = false;
         if (currentEffectPopup != null)
             currentEffectPopup.SetActive(false);
+
+        if (CreatedTempTimelineChild)
+        {
+            Destroy(TempTL.gameObject);
+            CreatedTempTimelineChild = false;
+        }
+    }
+
+    public void CreateTempTimeLineChild(Unit TargetUnit)
+    {
+        CreatedTempTimelineChild = true;
+        TempTL = Instantiate(Director.Instance.timeline.borderChildprefab, Director.Instance.timeline.startpoint);
+        TempTL.unit = TargetUnit;
+        TempTL.portrait.sprite = TargetUnit.charPortraits[0];
+        Director.Instance.timeline.children.Add(TempTL);
+        TempTL.CanMove = false;
+
+
+        float costToReturn = CombatTools.DetermineTrueCost(Director.Instance.timeline.ReturnTimeChildAction(TargetUnit));
+        costToReturn += Director.Instance.TimelineReduction;
+
+        if (action.actionStyle != Action.ActionStyle.STANDARD)
+            costToReturn += 10;
+
+        if (costToReturn > 100 || action.AppliesStun)
+            costToReturn = 100;
+
+        if (TargetUnit.IsPlayerControlled)
+            TempTL.rectTransform.anchoredPosition = new Vector3((100 - costToReturn) * TempTL.offset, 50);
+        else
+            TempTL.rectTransform.anchoredPosition = new Vector3((100 - costToReturn) * TempTL.offset, -50);
+
+        TempTL.staminaText.text = (100 - costToReturn).ToString();
+        TempTL.CanClear = true;
+        TempTL.GetComponent<LabUIInteractable>().CanHover = false;
+        TempTL.CanBeHighlighted = false;
+        TempTL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.5f);
+        TempTL.portrait.color = new Color(1, 1, 1, 0.5f);
     }
 
     public void CheckTarget(Action action, Unit unit)

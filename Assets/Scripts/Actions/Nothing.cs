@@ -8,7 +8,7 @@ public class Nothing : Action
     private void OnEnable()
     {
         ActionName = "...";
-        cost = 0f;
+        cost = 5f;
         actionType = ActionType.STATUS;
         damageText = damage.ToString();
         targetType = TargetType.SELF;

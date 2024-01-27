@@ -23,8 +23,8 @@ public class TimeLine : MonoBehaviour
     public void Start()
     {
         slider.value = 0;
-      
-       
+
+
     }
 
 
@@ -43,7 +43,7 @@ public class TimeLine : MonoBehaviour
     {
         Resetting = true;
 
-        foreach(var x in Tools.GetAllUnits())
+        foreach (var x in Tools.GetAllUnits())
             Director.Instance.timeline.RemoveTimelineChild(x);
 
         yield return new WaitUntil(() => slider.value <= 0);
@@ -70,7 +70,7 @@ public class TimeLine : MonoBehaviour
         TL.unit = unit;
         unit.timelinechild = TL;
 
-        if(unit.IsPlayerControlled)
+        if (unit.IsPlayerControlled)
             TL.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 50);
         else
             TL.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -50);
@@ -111,8 +111,24 @@ public class TimeLine : MonoBehaviour
     {
         foreach (TimeLineChild child in Director.Instance.timeline.children)
         {
+
+
             if (child.unit.unitName == unit.unitName)
             {
+                if (child.EnemyMiniChild.gameObject.activeSelf || child.PlayerMiniChild.gameObject.activeSelf)
+                {
+                    MiniTimelineChildren miniChild = null;
+                    if (unit.IsPlayerControlled)
+                        miniChild = child.EnemyMiniChild;
+                    else
+                        miniChild = child.PlayerMiniChild;
+
+                    child.unit = miniChild.unit;
+                    child.portrait = miniChild.portrait;
+
+                    Debug.LogWarning("Replacing Timeline Child");
+
+                }
                 Director.Instance.timeline.children.Remove(child);
                 Director.Instance.StartCoroutine(FadeOut(child));
                 break;
@@ -122,11 +138,11 @@ public class TimeLine : MonoBehaviour
         {
             if (action.unit.unitName == unit.unitName)
             {
-                if(BattleSystem.Instance.state == BattleStates.DECISION_PHASE && action.actionStyle != Action.ActionStyle.STANDARD)
+                if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && action.actionStyle != Action.ActionStyle.STANDARD)
                 {
                     CombatTools.ReturnPipCounter().AddPip();
                 }
-                foreach(var skill in action.unit.skillUIs)
+                foreach (var skill in action.unit.skillUIs)
                 {
                     var actionContainer = skill.GetComponent<ActionContainer>();
                     actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
