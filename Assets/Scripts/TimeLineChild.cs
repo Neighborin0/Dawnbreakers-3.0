@@ -38,47 +38,6 @@ public class TimeLineChild : MonoBehaviour
         {
             rectTransform.anchoredPosition = Vector3.Lerp(rectTransform.anchoredPosition, new Vector3(value * offset, rectTransform.anchoredPosition.y), 0.1f);
             staminaText.text = Mathf.Round(value).ToString();
-            /*foreach (var TL in Director.Instance.timeline.children)
-           {
-               if (!TL.CanClear)
-               {
-                   if (TL != null && TL.unit != null && unit != null)
-                   {
-                       if (unit.IsPlayerControlled && TL.unit.IsPlayerControlled && TL.unit != unit)
-                       {
-                           if (value == TL.value)
-                           {
-                               SetupMiniChild(TL.unit);
-                               TL.gameObject.SetActive(false);
-                               break;
-                           }
-
-                           else
-                           {
-                               TL.gameObject.SetActive(true);
-                               PlayerMiniChild.gameObject.SetActive(false);
-                           }
-                       }
-                       else if (!unit.IsPlayerControlled && !TL.unit.IsPlayerControlled && TL.unit != unit)
-                       {
-                           if (value == TL.value)
-                           {
-                               SetupMiniChild(TL.unit);
-                               TL.gameObject.SetActive(false);
-                               break;
-                           }
-
-                           else
-                           {
-                               TL.gameObject.SetActive(true);
-                               PlayerMiniChild.gameObject.SetActive(false);
-                           }
-                       }
-
-                   }
-               }
-           }
-           */
         }
 
     }
@@ -110,23 +69,7 @@ public class TimeLineChild : MonoBehaviour
 
     }
 
-    public IEnumerator FadeOut()
-    {
-        if (gameObject != null)
-        {
-            while (childImage.color.a > 0 && gameObject != null)
-            {
-                childImage.color = new Color(childImage.color.r, childImage.color.g, childImage.color.b, childImage.color.a - 0.1f);
-                portrait.color = new Color(portrait.color.r, portrait.color.g, portrait.color.b, portrait.color.a - 0.1f);
-                staminaText.color = new Color(staminaText.color.r, staminaText.color.g, staminaText.color.b, staminaText.color.a - 0.1f);
-            }
-            yield return new WaitUntil(() => childImage.color.a <= 0);
-
-            if (gameObject != null)
-                Destroy(gameObject);
-        }
-
-    }
+   
 
     public void ToggleHightlightOnUnit()
     {

@@ -370,7 +370,7 @@ public class OptionsManager : MonoBehaviour
             StartCoroutine(generalCoruntine);
             Tools.ToggleUiBlocker(true);
             SettingsMenuDisabled = true;
-            canvas.sortingOrder = 2;
+            canvas.sortingOrder = 10;
             AudioManager.QuickPlay("ui_woosh_001");
             if (BattleSystem.Instance != null && BattleSystem.Instance.state == BattleStates.BATTLE)
             {

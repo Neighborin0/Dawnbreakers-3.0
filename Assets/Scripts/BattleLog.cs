@@ -67,13 +67,7 @@ public class BattleLog : MonoBehaviour
         
     }
 
-    private static string[] ambience = new string[]
-        {
-            "...",
-
-        };
-
-
+   
     public void CreateActionLayout(Unit unit)
     {
         var layout = Instantiate(ActionLayout, transform);
@@ -121,12 +115,13 @@ public class BattleLog : MonoBehaviour
     {
         ambientText.gameObject.SetActive(false);
     }
-    public void CreateRandomAmbientText()
+    /*public void CreateRandomAmbientText()
     {
         var text = ambience[UnityEngine.Random.Range(0, ambience.Length)];
         ambientText.text = "";
         StartCoroutine(TypeText(text, 0.03f, ambientText, false));
     }
+    */
 
     public void DisplayPlayerStats(Unit unit)
     {
@@ -283,7 +278,7 @@ public class BattleLog : MonoBehaviour
     {
         DisableCharacterStats();
         ambientText.gameObject.SetActive(false);
-        CreateRandomAmbientText();
+        //CreateRandomAmbientText();
         ClearBattleText();
         foreach (var z in Tools.GetAllUnits())
         {
@@ -394,21 +389,31 @@ public class BattleLog : MonoBehaviour
 
             textSpeed = l.textSpeed;
             int characterIndex = 0;
-
+            bool Ignoring = false;
             foreach (char letter in l.text.ToCharArray())
             {
                 Portraitparent.gameObject.SetActive(true);
                 characterIndex++;
-               
-                string textToWrite = l.text.Substring(0, characterIndex) + "<color=#00000000>" + l.text.Substring(characterIndex) + "</color>";
-                x.text = textToWrite;
-
-                if (letter.ToString() == ",")
+                //So colors don't get formatted
+                if(letter.ToString() == "<")
                 {
-                    yield return new WaitForSeconds(0.1f);
+                    Ignoring = true;
                 }
-
-                yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2.5f);
+                else if(letter.ToString() == ">")
+                {
+                    Ignoring = false;
+                }
+               
+                if (!Ignoring)
+                {
+                    string textToWrite = l.text.Substring(0, characterIndex) + "<color=#00000000>" + l.text.Substring(characterIndex) + "</color>";
+                    x.text = textToWrite;
+                    if (letter.ToString() == ",")
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2.5f);
+                }
             }
 
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0));
@@ -466,7 +471,7 @@ public class BattleLog : MonoBehaviour
                         }
                         else if (WasPaused)
                         {
-                            Director.Instance.StartCoroutine(BattleSystem.Instance.ForcePerformActionClose());
+                            BattleSystem.Instance.BattlePhasePause = false;
                         }
                         else
                         {

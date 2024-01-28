@@ -36,7 +36,7 @@ public class TimeLine : MonoBehaviour
                 slider.value += Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay;
         }
         if (slider.value > 0 && Resetting)
-            slider.value -= Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay * 3f;
+            slider.value -= Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay * 2f;
     }
     //In Battle
     public IEnumerator ResetTimeline()
@@ -81,7 +81,7 @@ public class TimeLine : MonoBehaviour
 
     public TimeLineChild ReturnTimelineChild(Unit unit)
     {
-        var TimelineKid = new TimeLineChild();
+        TimeLineChild TimelineKid = null;
         foreach (TimeLineChild child in Director.Instance.timeline.children)
         {
             if (child.unit.unitName == unit.unitName)
@@ -109,40 +109,22 @@ public class TimeLine : MonoBehaviour
 
     public void RemoveTimelineChild(Unit unit)
     {
+        List<TimeLineChild> childrenToRemove = new List<TimeLineChild>();
+
         foreach (TimeLineChild child in Director.Instance.timeline.children)
         {
-            if (child.unit.unitName == unit.unitName)
+            if (child != null && child.unit.unitName == unit.unitName)
             {
-                Director.Instance.timeline.children.Remove(child);
-                Director.Instance.StartCoroutine(child.FadeOut());
-                break;
+                childrenToRemove.Add(child);
+                Director.Instance.StartCoroutine(FadeOut(child));
             }
         }
-        /* foreach (TimeLineChild child in Director.Instance.timeline.children.ToList())
+
+        foreach (TimeLineChild childToRemove in childrenToRemove)
         {
-
-            if (child != null && child.unit != null && child.unit.unitName == unit.unitName)
-            {
-                if (child.miniChild != null && child.miniChild.unit != null && child.miniChild.gameObject.activeSelf)
-                {
-                    child.unit = child.miniChild.unit;
-                    child.portrait.sprite = child.miniChild.portrait.sprite;
-                    child.unit.timelinechild = child;
-                    child.RemoveMiniChild(child.unit);
-                    Director.Instance.timeline.children.Remove(child);
-                    Director.Instance.StartCoroutine(FadeOut(child));
-                }
-                else
-                {
-                    Director.Instance.timeline.children.Remove(child);
-                    Director.Instance.StartCoroutine(FadeOut(child));
-                }
-
-                break;
-            }
-
+            Director.Instance.timeline.children.Remove(childToRemove);
         }
-       */
+
         foreach (var action in BattleSystem.Instance.ActionsToPerform)
         {
             if (action.unit.unitName == unit.unitName)
@@ -160,6 +142,27 @@ public class TimeLine : MonoBehaviour
                 BattleSystem.Instance.ActionsToPerform.Remove(action);
 
                 break;
+            }
+        }
+    }
+
+    public IEnumerator FadeOut(TimeLineChild timeLineChild)
+    {
+        if (timeLineChild != null && timeLineChild.gameObject != null)
+        {
+            while (timeLineChild.childImage != null && timeLineChild.childImage.color.a > 0 && timeLineChild.gameObject != null)
+            {
+                timeLineChild.childImage.color = new Color(timeLineChild.childImage.color.r, timeLineChild.childImage.color.g, timeLineChild.childImage.color.b, timeLineChild.childImage.color.a - 0.1f);
+                timeLineChild.portrait.color = new Color(timeLineChild.portrait.color.r, timeLineChild.portrait.color.g, timeLineChild.portrait.color.b, timeLineChild.portrait.color.a - 0.1f);
+                timeLineChild.staminaText.color = new Color(timeLineChild.staminaText.color.r, timeLineChild.staminaText.color.g, timeLineChild.staminaText.color.b, timeLineChild.staminaText.color.a - 0.1f);
+                yield return null; 
+            }
+
+            yield return new WaitUntil(() => timeLineChild.childImage.color.a <= 0);
+
+            if (timeLineChild.gameObject != null)
+            {
+                Destroy(timeLineChild.gameObject);
             }
         }
     }

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   labLines:
   - text: GAH!
-    expression: neutral
-    unit: death
+    expression: death
+    unit: Dusty
     textSpeed: 0.04
     OnLineStarted:
       m_PersistentCalls:

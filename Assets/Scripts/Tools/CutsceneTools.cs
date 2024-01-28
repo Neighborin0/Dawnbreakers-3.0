@@ -65,7 +65,7 @@ public class CutsceneTools : MonoBehaviour
 
     public void DoBossIntro()
     {
-
+        Tools.ToggleUiBlocker(false, false, true);
         OptionsManager.Instance.StartCoroutine(Director.Instance.bossIntro.DoIntro());
     }
 

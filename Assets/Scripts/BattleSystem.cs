@@ -111,39 +111,34 @@ public class BattleSystem : MonoBehaviour
     }
     void Update()
     {
-        if (state != BattleStates.WON | state != BattleStates.DEAD)
+        if (state != BattleStates.WON && state != BattleStates.DEAD)
         {
             if (playerUnits.Count == 0 && enemyUnits.Count != 0)
             {
-                state = BattleStates.DEAD;
-                if (!StopUpdating)
-                {
-                    CombatTools.EndAllTempEffectTimers();
-                    StopUpdating = true;
-                    if (battleCo != null)
-                        StopCoroutine(battleCo);
-
-                    battleCo = TransitionToDeath();
-                    StartCoroutine(battleCo);
-                }
-
+                TransitionToState(BattleStates.DEAD, (isMapTransition) => TransitionToDeath());
             }
             else if (enemyUnits.Count == 0 && playerUnits.Count != 0)
             {
-                state = BattleStates.WON;
-                if (!StopUpdating)
-                {
-                    CombatTools.EndAllTempEffectTimers();
-                    StopUpdating = true;
-                    if (battleCo != null)
-                        StopCoroutine(battleCo);
-
-                    battleCo = TransitionToMap();
-                    StartCoroutine(battleCo);
-                }
+                TransitionToState(BattleStates.WON, (isMapTransition) => TransitionToMap(isMapTransition));
             }
         }
+    }
 
+    void TransitionToState(BattleStates nextState, Func<bool?, IEnumerator> transitionAction)
+    {
+        state = nextState;
+        if (!StopUpdating)
+        {
+            CombatTools.EndAllTempEffectTimers();
+            StopUpdating = true;
+            if (battleCo != null)
+            {
+                StopCoroutine(battleCo);
+            }
+
+            battleCo = transitionAction(nextState == BattleStates.WON);
+            StartCoroutine(battleCo);
+        }
     }
 
     public BattleStates state;
@@ -324,7 +319,7 @@ public class BattleSystem : MonoBehaviour
         }
         yield break;
     }
-    public IEnumerator TransitionToMap(bool LevelUpScreen = true)
+    public IEnumerator TransitionToMap(bool? levelUpScreen = true)
     {
         yield return new WaitForSeconds(1f);
 
@@ -361,14 +356,14 @@ public class BattleSystem : MonoBehaviour
                 DontDestroyOnLoad(unit.gameObject);
             }
         }
-        if (LevelUpScreen)
+        if (levelUpScreen ?? true)
         {
             StartCoroutine(AudioManager.Instance.Fade(0.1f, AudioManager.Instance.currentMusicTrack, 2, false));
             StartCoroutine(EndBattle());
         }
         else
         {
-            //Used in Dusty fight
+            // Used in Dusty fight
             StartCoroutine(AudioManager.Instance.Fade(0f, AudioManager.Instance.currentMusicTrack, 0, false));
             OptionsManager.Instance.Load("MAP2", "Coronus_Map", 1, 0.5f);
             yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
@@ -378,7 +373,6 @@ public class BattleSystem : MonoBehaviour
                 CombatTools.ReturnPipCounter().ResetPips();
                 unit.StaminaHighlightIsDisabled = true;
                 unit.gameObject.SetActive(false);
-
             }
         }
     }

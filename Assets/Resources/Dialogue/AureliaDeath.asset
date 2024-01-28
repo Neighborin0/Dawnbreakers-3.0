@@ -26,7 +26,7 @@ MonoBehaviour:
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: 'Not here.... I can''t fall here...  '
-    expression: neutral
+    expression: death
     unit: Aurelia
     textSpeed: 0.05
     OnLineStarted:

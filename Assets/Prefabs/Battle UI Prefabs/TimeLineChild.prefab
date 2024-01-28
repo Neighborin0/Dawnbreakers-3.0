@@ -619,9 +619,6 @@ MonoBehaviour:
   CanBeHighlighted: 1
   value: 0
   offset: -12.384
-  PlayerMiniChild: {fileID: 3889650526274626284}
-  EnemyMiniChild: {fileID: 1667513840649561423}
-  miniChild: {fileID: 0}
 --- !u!114 &7428458782112312656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,7 +639,7 @@ MonoBehaviour:
         - m_Target: {fileID: 6568516722610899599}
           m_TargetAssemblyTypeName: TimeLineChild, Assembly-CSharp
           m_MethodName: ToggleHightlightOnUnit
-          m_Mode: 6
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -658,7 +655,7 @@ MonoBehaviour:
         - m_Target: {fileID: 6568516722610899599}
           m_TargetAssemblyTypeName: TimeLineChild, Assembly-CSharp
           m_MethodName: ToggleHightlightOnUnit
-          m_Mode: 6
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

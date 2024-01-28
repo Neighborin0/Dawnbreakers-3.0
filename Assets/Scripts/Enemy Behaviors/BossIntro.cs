@@ -106,7 +106,8 @@ public class BossIntro : MonoBehaviour
             BattleSystem.Instance.playerUnits[0].StartDecision();
             LabCamera.Instance.uicam.gameObject.SetActive(true);
             Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            foreach(var unit in Tools.GetAllUnits())
+            Tools.ToggleUiBlocker(true, false, true);
+            foreach (var unit in Tools.GetAllUnits())
             {
                 if(!unit.IsPlayerControlled)
                 {
