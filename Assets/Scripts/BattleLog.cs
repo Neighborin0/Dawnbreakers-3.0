@@ -328,159 +328,173 @@ public class BattleLog : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeMultiText(List<LabLine> text, TMP_Text x, bool disableAfter, bool Pauses = false, bool EndBattle = false, bool TurnOffUiAfter = true, bool CheckForPause = true, bool ResetBackToIdleState = true)
+    private IEnumerator TypeMultiText(List<LabLine> line, TMP_Text x, bool disableAfter, bool Pauses = false, bool EndBattle = false, bool TurnOffUiAfter = true, bool CheckForPause = true, bool ResetBackToIdleState = true)
     {
         BattleStates previousState = BattleStates.IDLE;
         BattleLog.Instance.state = BattleLogStates.TALKING;
         GetComponent<MoveableObject>().Move(true);
         AudioManager.QuickPlay("ui_woosh_001");
         bool WasPaused = false;
-        if (Pauses)
+
+        if (Pauses && BattleSystem.Instance != null)
         {
-            if (BattleSystem.Instance != null)
+            previousState = BattleSystem.Instance.state;
+            foreach (var unit in Tools.GetAllUnits())
             {
-                previousState = BattleSystem.Instance.state;
-                foreach (var unit in Tools.GetAllUnits())
+                unit.state = PlayerState.DECIDING;
+                unit.StaminaHighlightIsDisabled = true;
+                unit.ExitDecision();
+                if (!unit.IsPlayerControlled)
                 {
-                    unit.state = PlayerState.DECIDING;
-                    unit.StaminaHighlightIsDisabled = true;
-                    unit.ExitDecision();
-                    if (!unit.IsPlayerControlled)
-                    {
-                        unit.intentUI.gameObject.SetActive(false);
-                    }
+                    unit.intentUI.gameObject.SetActive(false);
                 }
-                LabCamera.Instance.uicam.gameObject.SetActive(false);
-                Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-                Director.Instance.timeline.GetComponent<MoveableObject>().Move(false);
-                //Tools.PauseStaminaTimer();
-                print("BATTLE SHOULD BE PAUSED");
-                ClearAllBattleLogText();
-                BattleSystem.Instance.state = BattleStates.TALKING;
             }
+            LabCamera.Instance.uicam.gameObject.SetActive(false);
+            Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            Director.Instance.timeline.GetComponent<MoveableObject>().Move(false);
+            print("BATTLE SHOULD BE PAUSED");
+            ClearAllBattleLogText();
+            BattleSystem.Instance.state = BattleStates.TALKING;
         }
 
-        for (int i = 0; i < text.Count; i++)
+        foreach (var l in line)
         {
             x.text = "";
             Portraitparent.gameObject.SetActive(true);
             Tools.ToggleUiBlocker(false, true, true);
-            if (text[i].PositionToMoveTo != Vector3.zero)
+
+            if (l.PositionToMoveTo != Vector3.zero)
             {
-                LabCamera.Instance.MoveToPosition((text[i].PositionToMoveTo));
+                LabCamera.Instance.MoveToPosition(l.PositionToMoveTo);
             }
-            if (text[i].CameraRotation != Vector3.zero)
+
+            if (l.CameraRotation != Vector3.zero)
             {
-                LabCamera.Instance.Rotate(text[i].CameraRotation);
+                LabCamera.Instance.Rotate(l.CameraRotation);
             }
+
             foreach (var unit in Tools.GetAllUnits())
             {
                 if (!unit.IsPlayerControlled)
+                {
                     unit.intentUI.gameObject.SetActive(false);
+                }
             }
-            text[i].OnLineStarted.Invoke();
 
+            l.OnLineStarted.Invoke();
 
-            if (Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression) != null)
-                charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == text[i].expression);
+            if (Director.Instance.Unitdatabase.FirstOrDefault(obj => obj.name == l.unit)?.charPortraits.FirstOrDefault(obj => obj.name == l.expression) != null)
+            {
+                charPortrait.sprite = Director.Instance.Unitdatabase.FirstOrDefault(obj => obj.name == l.unit)?.charPortraits.FirstOrDefault(obj => obj.name == l.expression);
+            }
             else
-                charPortrait.sprite = Director.Instance.Unitdatabase.Where(obj => obj.name == text[i].unit).SingleOrDefault().charPortraits.Find(obj => obj.name == "neutral");
+            {
+                charPortrait.sprite = Director.Instance.Unitdatabase.FirstOrDefault(obj => obj.name == l.unit)?.charPortraits.FirstOrDefault(obj => obj.name == "neutral");
+            }
 
-            textSpeed = text[i].textSpeed;
+            textSpeed = l.textSpeed;
             int characterIndex = 0;
 
-
-            foreach (char letter in text[i].text.ToCharArray())
+            foreach (char letter in l.text.ToCharArray())
             {
                 Portraitparent.gameObject.SetActive(true);
                 characterIndex++;
-                string TextToWrite = text[i].text.Substring(0, characterIndex);
-                TextToWrite += "<color=#00000000>" + text[i].text.Substring(characterIndex) + "</color>";
-                x.text = TextToWrite;
-             
+               
+                string textToWrite = l.text.Substring(0, characterIndex) + "<color=#00000000>" + l.text.Substring(characterIndex) + "</color>";
+                x.text = textToWrite;
+
                 if (letter.ToString() == ",")
+                {
                     yield return new WaitForSeconds(0.1f);
+                }
 
                 yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2.5f);
             }
+
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0));
             AudioManager.QuickPlay("button_Hit_006", true);
             characterdialog.text = "";
             yield return new WaitForSeconds(0.01f);
-            text[i].OnLineEnded.Invoke();
+            l.OnLineEnded.Invoke();
         }
-        if (Pauses)
+
+        if (Pauses && BattleSystem.Instance != null)
         {
-            if (BattleSystem.Instance != null)
+            DisableCharacterDialog();
+            if (!EndBattle)
             {
-                DisableCharacterDialog();
-                if (!EndBattle)
+                BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
+                BattleSystem.Instance.state = previousState;
+                ResetBattleLog();
+
+                if (ResetBackToIdleState)
                 {
-                    BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
-                    BattleSystem.Instance.state = previousState;
-                    ResetBattleLog();
-                    if (ResetBackToIdleState)
+                    foreach (var unit in Tools.GetAllUnits())
                     {
+                        unit.state = PlayerState.IDLE;
 
-
-                        foreach (var unit in Tools.GetAllUnits())
+                        if (unit.IsPlayerControlled)
                         {
-                            unit.state = PlayerState.IDLE;
-
-                            if (unit.IsPlayerControlled)
-                                unit.StaminaHighlightIsDisabled = true;
-                            if (unit.health != null)
-                                unit.health.DeathPaused = false;
-
-                            if (!unit.IsPlayerControlled)
-                                unit.intentUI.gameObject.SetActive(true);
+                            unit.StaminaHighlightIsDisabled = true;
                         }
 
-                        if (CheckForPause)
+                        if (unit.health != null)
                         {
-                            if (!BattleSystem.Instance.BattlePhasePause)
-                                WasPaused = true;
+                            unit.health.DeathPaused = false;
+                        }
 
-                            yield return new WaitUntil(() => !BattleSystem.Instance.BattlePhasePause);
-                            {
-                                Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
-                                BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+                        if (!unit.IsPlayerControlled)
+                        {
+                            unit.intentUI.gameObject.SetActive(true);
+                        }
+                    }
 
-                                if (previousState != BattleStates.BATTLE)
-                                    BattleSystem.Instance.playerUnits[0].StartDecision();
-                                else if (WasPaused)
-                                {
-                                    Director.Instance.StartCoroutine(BattleSystem.Instance.ForcePerformActionClose());
-                                }
-                                else
-                                    CombatTools.UnpauseStaminaTimer();
+                    if (CheckForPause)
+                    {
+                        if (!BattleSystem.Instance.BattlePhasePause)
+                        {
+                            WasPaused = true;
+                        }
 
-                            }
+                        yield return new WaitUntil(() => !BattleSystem.Instance.BattlePhasePause);
+                        Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
+                        BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
+
+                        if (previousState != BattleStates.BATTLE)
+                        {
+                            BattleSystem.Instance.playerUnits[0].StartDecision();
+                        }
+                        else if (WasPaused)
+                        {
+                            Director.Instance.StartCoroutine(BattleSystem.Instance.ForcePerformActionClose());
                         }
                         else
                         {
-                            BattleLog.Instance.state = BattleLogStates.IDLE;
+                            CombatTools.UnpauseStaminaTimer();
                         }
-
-
-                        if (TurnOffUiAfter)
-                            LabCamera.Instance.uicam.gameObject.SetActive(true);
-
-                        Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
                     }
+                    else
+                    {
+                        BattleLog.Instance.state = BattleLogStates.IDLE;
+                    }
+
+                    if (TurnOffUiAfter)
+                    {
+                        LabCamera.Instance.uicam.gameObject.SetActive(true);
+                    }
+
+                    Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
                 }
             }
-            if (RestSite.Instance != null)
-            {
-                GetComponent<MoveableObject>().Move(false);
-            }
-            Tools.ToggleUiBlocker(true, true, true);
         }
-        else
+
+        if (RestSite.Instance != null)
         {
             GetComponent<MoveableObject>().Move(false);
-            Tools.ToggleUiBlocker(true, true, true);
         }
+
+        Tools.ToggleUiBlocker(true, true, true);
+
         if (disableAfter)
         {
             x.text = "";

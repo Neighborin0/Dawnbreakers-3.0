@@ -19,11 +19,6 @@ public class TimeLineChild : MonoBehaviour
     public bool CanBeHighlighted = true;
     public float value;
     public float offset = -12.13f;
-
-    public MiniTimelineChildren PlayerMiniChild;
-    public MiniTimelineChildren EnemyMiniChild;
-    public MiniTimelineChildren miniChild;
-
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -43,48 +38,47 @@ public class TimeLineChild : MonoBehaviour
         {
             rectTransform.anchoredPosition = Vector3.Lerp(rectTransform.anchoredPosition, new Vector3(value * offset, rectTransform.anchoredPosition.y), 0.1f);
             staminaText.text = Mathf.Round(value).ToString();
-            foreach (var TL in Director.Instance.timeline.children)
-            {
-                if (!TL.CanClear)
-                {
+            /*foreach (var TL in Director.Instance.timeline.children)
+           {
+               if (!TL.CanClear)
+               {
+                   if (TL != null && TL.unit != null && unit != null)
+                   {
+                       if (unit.IsPlayerControlled && TL.unit.IsPlayerControlled && TL.unit != unit)
+                       {
+                           if (value == TL.value)
+                           {
+                               SetupMiniChild(TL.unit);
+                               TL.gameObject.SetActive(false);
+                               break;
+                           }
 
+                           else
+                           {
+                               TL.gameObject.SetActive(true);
+                               PlayerMiniChild.gameObject.SetActive(false);
+                           }
+                       }
+                       else if (!unit.IsPlayerControlled && !TL.unit.IsPlayerControlled && TL.unit != unit)
+                       {
+                           if (value == TL.value)
+                           {
+                               SetupMiniChild(TL.unit);
+                               TL.gameObject.SetActive(false);
+                               break;
+                           }
 
-                    if (TL != null && TL.unit != null && unit != null)
-                    {
-                        if (unit.IsPlayerControlled && TL.unit.IsPlayerControlled && TL.unit != unit)
-                        {
-                            if (value == TL.value)
-                            {
-                                SetupMiniChild(TL.unit);
-                                TL.gameObject.SetActive(false);
-                                break;
-                            }
+                           else
+                           {
+                               TL.gameObject.SetActive(true);
+                               PlayerMiniChild.gameObject.SetActive(false);
+                           }
+                       }
 
-                            else
-                            {
-                                TL.gameObject.SetActive(true);
-                                PlayerMiniChild.gameObject.SetActive(false);
-                            }
-                        }
-                        else if (!unit.IsPlayerControlled && !TL.unit.IsPlayerControlled && TL.unit != unit)
-                        {
-                            if (value == TL.value)
-                            {
-                                SetupMiniChild(TL.unit);
-                                TL.gameObject.SetActive(false);
-                                break;
-                            }
-
-                            else
-                            {
-                                TL.gameObject.SetActive(true);
-                                PlayerMiniChild.gameObject.SetActive(false);
-                            }
-                        }
-
-                    }
-                }
-            }
+                   }
+               }
+           }
+           */
         }
 
     }
@@ -98,14 +92,6 @@ public class TimeLineChild : MonoBehaviour
 
         if (gameObject != null)
         {
-            foreach (var TL in Director.Instance.timeline.children)
-            {
-                if (TL.miniChild != null && TL.miniChild.unit == unit)
-                {
-                    TL.miniChild.Shift(unit);
-                    break;
-                }
-            }
             transform.SetAsLastSibling();
             childImage.material.SetFloat("OutlineThickness", 1f);
             childImage.material.SetColor("OutlineColor", Color.white);
@@ -117,24 +103,34 @@ public class TimeLineChild : MonoBehaviour
     {
         if (gameObject != null)
         {
-            foreach (var TL in Director.Instance.timeline.children)
-            {
-                if (TL.miniChild != null && TL.miniChild.unit == unit)
-                {
-                    TL.miniChild.Return();
-                    break;
-                }
-            }
             childImage.material.SetFloat("OutlineThickness", 0);
             childImage.material.SetColor("OutlineColor", Color.black);
+
         }
 
     }
 
-
-    public void ToggleHightlightOnUnit(bool ForceOff = false)
+    public IEnumerator FadeOut()
     {
-        if (CanBeHighlighted && !ForceOff)
+        if (gameObject != null)
+        {
+            while (childImage.color.a > 0 && gameObject != null)
+            {
+                childImage.color = new Color(childImage.color.r, childImage.color.g, childImage.color.b, childImage.color.a - 0.1f);
+                portrait.color = new Color(portrait.color.r, portrait.color.g, portrait.color.b, portrait.color.a - 0.1f);
+                staminaText.color = new Color(staminaText.color.r, staminaText.color.g, staminaText.color.b, staminaText.color.a - 0.1f);
+            }
+            yield return new WaitUntil(() => childImage.color.a <= 0);
+
+            if (gameObject != null)
+                Destroy(gameObject);
+        }
+
+    }
+
+    public void ToggleHightlightOnUnit()
+    {
+        if (CanBeHighlighted)
         {
             if (!UnitIsHighlighted && BattleSystem.Instance.state != BattleStates.BATTLE && BattleSystem.Instance.state != BattleStates.START && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD)
             {
@@ -157,34 +153,6 @@ public class TimeLineChild : MonoBehaviour
                 Return();
             }
         }
-    }
-
-    public void SetupMiniChild(Unit TargetUnit)
-    {
-        var miniChild = ReturnMiniChild(TargetUnit);
-
-        miniChild.unit = TargetUnit;
-        miniChild.portrait.sprite = TargetUnit.charPortraits[0];
-        miniChild.parent = this;
-        miniChild.gameObject.SetActive(true);
-        TargetUnit.HasMiniTimelineChild = true;
-    }
-
-    public MiniTimelineChildren ReturnMiniChild(Unit TargetUnit)
-    {
-        if (TargetUnit.IsPlayerControlled)
-            miniChild = PlayerMiniChild;
-        else
-            miniChild = EnemyMiniChild;
-
-
-        return miniChild;
-    }
-    public void RemoveMiniChild(Unit TargetUnit)
-    {
-        var miniChild = ReturnMiniChild(TargetUnit);
-        miniChild.gameObject.SetActive(false);
-        TargetUnit.HasMiniTimelineChild = false;
     }
 
 }

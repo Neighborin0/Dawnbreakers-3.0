@@ -123,138 +123,116 @@ public class Unit : MonoBehaviour
 
     void Update()
     {
+        if (BattleSystem.Instance == null)
+            return;
+
         var hit = Tools.GetMousePos();
-        var sprite = this.gameObject.GetComponent<SpriteRenderer>();
-        if (BattleSystem.Instance != null)
+        var sprite = gameObject.GetComponent<SpriteRenderer>();
+
+        if (!Dying && !OverrideEmission)
         {
-            if (!Dying && !OverrideEmission)
+            if (IsHighlighted)
             {
-
-                if (IsHighlighted)
-                {
-                    sprite.material.SetFloat("_OutlineThickness", 1f);
-                    sprite.material.SetColor("_OutlineColor", Color.white * 2f);
-                    sprite.material.SetColor("_CharacterEmission", new Color(0.01f, 0.01f, 0.01f));
-
-                }
-                else if (IsHidden)
-                {
-                    sprite.material.SetFloat("_OutlineThickness", 1f);
-                    sprite.material.SetColor("_OutlineColor", Color.black);
-                    sprite.material.SetColor("_CharacterEmission", new Color(-0.3f, -0.3f, -0.3f, 1f));
-                }
-                else if (state == PlayerState.DECIDING && IsPlayerControlled)
-                {
-
-                    sprite.material.SetFloat("_OutlineThickness", 1f);
-                    sprite.material.SetColor("_OutlineColor", Color.yellow * 2f);
-                    sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
-
-                }
-                else if (state == PlayerState.READY && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && IsPlayerControlled)
-                {
-
-                    sprite.material.SetFloat("_OutlineThickness", 1f);
-                    sprite.material.SetColor("_OutlineColor", Color.black);
-                    sprite.material.SetColor("_CharacterEmission", new Color(-0.01f, -0.01f, -0.01f, 1f));
-
-                }
-                else if(HitEmissionChanged)
-                {
-                    sprite.material.SetFloat("_OutlineThickness", 1f);
-                    sprite.material.SetColor("_OutlineColor", Color.black);
-                    sprite.material.SetColor("_CharacterEmission", new Color(1f, 1f, 1f, 1f));
-                }
-                else
-                {
-                    sprite.material.SetFloat("_OutlineThickness", 1f);
-                    sprite.material.SetColor("_OutlineColor", Color.black);
-                    sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
-                }
+                SetMaterialProperties(sprite, 1f, Color.white * 2f, new Color(0.01f, 0.01f, 0.01f));
             }
-
-            //Hit Detection
-            if (hit.collider == this.GetComponent<BoxCollider>() && !isDarkened && !OverUI())
+            else if (IsHidden)
             {
-                if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && CombatTools.CheckIfAnyUnitIsDeciding())
-                {
-                    if (!this.IsPlayerControlled)
-                    {
-                        BattleLog.Instance.DisplayCharacterStats(this);
-                    }
-                }
-                if (BattleSystem.Instance.state == BattleStates.IDLE)
+                SetMaterialProperties(sprite, 1f, Color.black, new Color(-0.3f, -0.3f, -0.3f, 1f));
+            }
+            else if (state == PlayerState.DECIDING && IsPlayerControlled)
+            {
+                SetMaterialProperties(sprite, 1f, Color.yellow * 2f, new Color(0f, 0f, 0f, 1f));
+            }
+            else if (state == PlayerState.READY && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && IsPlayerControlled)
+            {
+                SetMaterialProperties(sprite, 1f, Color.black, new Color(-0.01f, -0.01f, -0.01f, 1f));
+            }
+            else if (HitEmissionChanged)
+            {
+                SetMaterialProperties(sprite, 1f, Color.black, new Color(1f, 1f, 1f, 1f));
+            }
+            else
+            {
+                SetMaterialProperties(sprite, 1f, Color.black, new Color(0f, 0f, 0f, 1f));
+            }
+        }
+
+        // Hit Detection
+        if (hit.collider == GetComponent<BoxCollider>() && !isDarkened && !OverUI())
+        {
+            if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && CombatTools.CheckIfAnyUnitIsDeciding())
+            {
+                if (!IsPlayerControlled)
                 {
                     BattleLog.Instance.DisplayCharacterStats(this);
                 }
-                if (BattleSystem.Instance.CheckPlayableState())
+            }
+            if (BattleSystem.Instance.state == BattleStates.IDLE)
+            {
+                BattleLog.Instance.DisplayCharacterStats(this);
+            }
+            if (BattleSystem.Instance.CheckPlayableState())
+            {
+                sprite.material.SetColor("_CharacterEmission", new Color(0.01f, 0.01f, 0.01f));
+                if (timelinechild != null)
                 {
-                    sprite.material.SetColor("_CharacterEmission", new Color(0.01f, 0.01f, 0.01f));
-                    if (timelinechild != null)
-                        this.timelinechild.Shift(this);
-                }
-
-            }
-            //Makes sure Timeline Child Automatically Returns When Not Selected
-            else if (timelinechild != null && !timelinechild.HighlightedIsBeingOverwritten)
-            {
-                timelinechild.Return();
-            }
-            //Decision Phase and Darkened
-            if (isDarkened && BattleSystem.Instance.state == BattleStates.DECISION_PHASE)
-            {
-                sprite.material.SetColor("_CharacterEmission", new Color(-0.01f, -0.01f, -0.01f));
-            }
-            //Decision Start
-            if (Input.GetMouseButtonUp(0))
-            {
-                if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !OverUI() && state != PlayerState.DECIDING)
-                {
-                    if (!CombatTools.CheckIfAnyUnitIsTargetting())
-                    {
-                        BattleLog.Instance.itemText.text = "";
-                        BattleLog.Instance.DisplayCharacterStats(this);
-                        if (this.IsPlayerControlled)
-                        {
-                            foreach (var x in Tools.GetAllUnits())
-                            {
-                                BattleSystem.SetUIOff(x);
-                            }
-                        }
-                    }
-
+                    timelinechild.Shift(this);
                 }
             }
-            if (state == PlayerState.IDLE && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI() || state == PlayerState.READY && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI())
-            {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    if (hit.collider != null && hit.collider == this.GetComponent<BoxCollider>() && this.IsPlayerControlled)
-                    {
-                        StopMovingToUnit = false;
-                        BattleLog.Instance.DisplayCharacterStats(this);
-                        if (state == PlayerState.READY)
-                        {
-                            foreach (var skill in skillUIs)
-                            {
-                                var actionContainer = skill.GetComponent<ActionContainer>();
-                                if (actionContainer.action != null && actionContainer.action.actionStyle != Action.ActionStyle.STANDARD)
-                                {
-                                    CombatTools.ReturnPipCounter().AddPip();
-                                    actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
-                                }
-                            }
-                            Director.Instance.timeline.RemoveTimelineChild(this);
-                        }
-                        StartDecision();
-
-                    }
-
-                }
-            }
-
+        }
+        else if (timelinechild != null && !timelinechild.HighlightedIsBeingOverwritten)
+        {
+            timelinechild.Return();
         }
 
+        // Decision Start
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (hit.collider != null && hit.collider == GetComponent<BoxCollider>() && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !OverUI() && state != PlayerState.DECIDING)
+            {
+                if (!CombatTools.CheckIfAnyUnitIsTargetting())
+                {
+                    BattleLog.Instance.itemText.text = "";
+                    BattleLog.Instance.DisplayCharacterStats(this);
+                    if (IsPlayerControlled)
+                    {
+                        foreach (var x in Tools.GetAllUnits())
+                        {
+                            BattleSystem.SetUIOff(x);
+                        }
+                    }
+                }
+            }
+            if ((state == PlayerState.IDLE || state == PlayerState.READY) && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !IsHighlighted && !OverUI())
+            {
+                if (hit.collider != null && hit.collider == GetComponent<BoxCollider>() && IsPlayerControlled)
+                {
+                    StopMovingToUnit = false;
+                    BattleLog.Instance.DisplayCharacterStats(this);
+                    if (state == PlayerState.READY)
+                    {
+                        foreach (var skill in skillUIs)
+                        {
+                            var actionContainer = skill.GetComponent<ActionContainer>();
+                            if (actionContainer.action != null && actionContainer.action.actionStyle != Action.ActionStyle.STANDARD)
+                            {
+                                CombatTools.ReturnPipCounter().AddPip();
+                                actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
+                            }
+                        }
+                        Director.Instance.timeline.RemoveTimelineChild(this);
+                    }
+                    StartDecision();
+                }
+            }
+        }
+    }
+
+    void SetMaterialProperties(SpriteRenderer sprite, float outlineThickness, Color outlineColor, Color emissionColor)
+    {
+        sprite.material.SetFloat("_OutlineThickness", outlineThickness);
+        sprite.material.SetColor("_OutlineColor", outlineColor);
+        sprite.material.SetColor("_CharacterEmission", emissionColor);
     }
 
     public void PlayUnitAction(string AnimationName, Unit unit)

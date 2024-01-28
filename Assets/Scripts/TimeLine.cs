@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -63,7 +62,7 @@ public class TimeLine : MonoBehaviour
 
     }
 
-    public TimeLineChild SpawnTimelineChild(Unit unit, float value = 100)
+    public TimeLineChild SpawnTimelineChild(Unit unit)
     {
         var TL = Instantiate(borderChildprefab, startpoint);
         children.Add(TL);
@@ -76,15 +75,13 @@ public class TimeLine : MonoBehaviour
         else
             TL.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -50);
 
-        Debug.LogWarning(TL.value);
-
-        TL.value = value;
+        TL.value = 100;
         return TL;
     }
 
     public TimeLineChild ReturnTimelineChild(Unit unit)
     {
-        TimeLineChild TimelineKid = null;
+        var TimelineKid = new TimeLineChild();
         foreach (TimeLineChild child in Director.Instance.timeline.children)
         {
             if (child.unit.unitName == unit.unitName)
@@ -112,7 +109,16 @@ public class TimeLine : MonoBehaviour
 
     public void RemoveTimelineChild(Unit unit)
     {
-        foreach (TimeLineChild child in Director.Instance.timeline.children.ToList())
+        foreach (TimeLineChild child in Director.Instance.timeline.children)
+        {
+            if (child.unit.unitName == unit.unitName)
+            {
+                Director.Instance.timeline.children.Remove(child);
+                Director.Instance.StartCoroutine(child.FadeOut());
+                break;
+            }
+        }
+        /* foreach (TimeLineChild child in Director.Instance.timeline.children.ToList())
         {
 
             if (child != null && child.unit != null && child.unit.unitName == unit.unitName)
@@ -123,65 +129,40 @@ public class TimeLine : MonoBehaviour
                     child.portrait.sprite = child.miniChild.portrait.sprite;
                     child.unit.timelinechild = child;
                     child.RemoveMiniChild(child.unit);
+                    Director.Instance.timeline.children.Remove(child);
+                    Director.Instance.StartCoroutine(FadeOut(child));
                 }
                 else
                 {
                     Director.Instance.timeline.children.Remove(child);
                     Director.Instance.StartCoroutine(FadeOut(child));
                 }
-               
+
                 break;
             }
-            else if (child.miniChild != null && child.miniChild.unit != null && child.miniChild.unit.unitName == unit.unitName)
-            {
-                child.unit = child.miniChild.unit;
-                child.portrait.sprite = child.miniChild.portrait.sprite;
-                child.unit.timelinechild = child;
-                child.RemoveMiniChild(child.unit);
-            }
 
-
-
-
-            foreach (var action in BattleSystem.Instance.ActionsToPerform.ToList())
-            {
-                if (action.unit.unitName == unit.unitName)
-                {
-                    if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && action.actionStyle != Action.ActionStyle.STANDARD)
-                    {
-                        CombatTools.ReturnPipCounter().AddPip();
-                    }
-                    foreach (var skill in action.unit.skillUIs)
-                    {
-                        var actionContainer = skill.GetComponent<ActionContainer>();
-                        actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
-                        actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
-                    }
-                    BattleSystem.Instance.ActionsToPerform.Remove(action);
-                    break;
-                }
-            }
         }
-    }
-
-    public IEnumerator FadeOut(TimeLineChild timeLineChild)
-    {
-        if (timeLineChild.gameObject != null)
+       */
+        foreach (var action in BattleSystem.Instance.ActionsToPerform)
         {
-            while (timeLineChild.childImage.color.a > 0 && timeLineChild.gameObject != null)
+            if (action.unit.unitName == unit.unitName)
             {
-                timeLineChild.childImage.color = new Color(timeLineChild.childImage.color.r, timeLineChild.childImage.color.g, timeLineChild.childImage.color.b, timeLineChild.childImage.color.a - 0.1f);
-                timeLineChild.portrait.color = new Color(timeLineChild.portrait.color.r, timeLineChild.portrait.color.g, timeLineChild.portrait.color.b, timeLineChild.portrait.color.a - 0.1f);
-                timeLineChild.staminaText.color = new Color(timeLineChild.staminaText.color.r, timeLineChild.staminaText.color.g, timeLineChild.staminaText.color.b, timeLineChild.staminaText.color.a - 0.1f);
+                if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && action.actionStyle != Action.ActionStyle.STANDARD)
+                {
+                    CombatTools.ReturnPipCounter().AddPip();
+                }
+                foreach (var skill in action.unit.skillUIs)
+                {
+                    var actionContainer = skill.GetComponent<ActionContainer>();
+                    actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
+                    actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
+                }
+                BattleSystem.Instance.ActionsToPerform.Remove(action);
+
+                break;
             }
-            yield return new WaitUntil(() => timeLineChild.childImage.color.a <= 0);
-
-            if (timeLineChild.gameObject != null)
-                Destroy(timeLineChild.gameObject);
         }
-
     }
-
     public void DoCost(float cost, Unit unit)
     {
         var TL = SpawnTimelineChild(unit);

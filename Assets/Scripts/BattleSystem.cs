@@ -103,9 +103,9 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleStates.START;
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
-        if(TutorialNode)
+        if (TutorialNode)
         {
-          AudioManager.Instance.Stop(AudioManager.Instance.currentMusicTrack);
+            AudioManager.Instance.Stop(AudioManager.Instance.currentMusicTrack);
         }
         StartBattle();
     }
@@ -143,7 +143,7 @@ public class BattleSystem : MonoBehaviour
                 }
             }
         }
-        
+
     }
 
     public BattleStates state;
@@ -224,7 +224,7 @@ public class BattleSystem : MonoBehaviour
             for (int i = 0; i < TutorialText.Count; i++)
             {
                 StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, true, false));
-                yield return new WaitForSeconds(2f); 
+                yield return new WaitForSeconds(2f);
 
             }
             yield return new WaitForSeconds(2f);
@@ -252,12 +252,12 @@ public class BattleSystem : MonoBehaviour
         }
         LabCamera.Instance.ReadjustCam();
 
-      
+
 
         if (!TutorialNode)
             yield return new WaitForSeconds(1.5f);
 
-        if(TutorialNode)
+        if (TutorialNode)
             yield return new WaitForSeconds(0.5f);
         BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
@@ -327,7 +327,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator TransitionToMap(bool LevelUpScreen = true)
     {
         yield return new WaitForSeconds(1f);
-       
+
         foreach (Transform child in Director.Instance.timeline.transform)
         {
             if (child.GetComponent<TimeLineChild>() != null)
@@ -468,8 +468,8 @@ public class BattleSystem : MonoBehaviour
                 EI.DoFancyStatChanges = false;
                 EI.DestoryEffectIcon();
                 break;
-            }  
-        }      
+            }
+        }
         i.duration = duration;
         unit.statusEffects.Add(i);
         if (unit == null)
@@ -612,9 +612,9 @@ public class BattleSystem : MonoBehaviour
         {
             if (unit.state == PlayerState.DECIDING)
             {
-                unit.state = PlayerState.IDLE;               
+                unit.state = PlayerState.IDLE;
                 Director.Instance.timeline.RemoveTimelineChild(unit);
-                
+
                 foreach (var skill in unit.skillUIs)
                 {
                     var actionContainer = skill.GetComponent<ActionContainer>();
@@ -626,7 +626,7 @@ public class BattleSystem : MonoBehaviour
                     actionContainer.SetActive(false);
                 }
             }
-                
+
             foreach (var skill in unit.skillUIs)
             {
                 skill.SetActive(false);
@@ -653,7 +653,7 @@ public class BattleSystem : MonoBehaviour
     public static void SetUIOn(Unit unit)
     {
         int i = 0;
-        
+
         foreach (var x in Tools.GetAllUnits())
         {
             SetUIOff(x);
@@ -692,7 +692,7 @@ public class BattleSystem : MonoBehaviour
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = newAction.ActionName;
 
-            assignedAction.SetActionStyleButtonsActive(false);           
+            assignedAction.SetActionStyleButtonsActive(false);
 
             if (assignedAction.action.actionType == Action.ActionType.STATUS)
             {
@@ -729,7 +729,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-   
+
 
 
 
@@ -764,7 +764,11 @@ public class BattleSystem : MonoBehaviour
         {
             x.state = PlayerState.WAITING;
         }
-            ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.unit.unitName).Reverse().ToList();
+        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).
+        ThenBy(x => x.unit.IsPlayerControlled).
+        ThenBy(x => x.unit.unitName).
+        Reverse().ToList();
+
         for (int i = 0; i < ActionsToPerform.Count; i++)
         {
             var action = ActionsToPerform[i];
@@ -831,7 +835,7 @@ public class BattleSystem : MonoBehaviour
                             CombatTools.PauseStaminaTimer();
                             StopCoroutine(actionCo);
                             yield break;
-                          
+
                         }
                         else
                         {
@@ -844,7 +848,7 @@ public class BattleSystem : MonoBehaviour
             }
             else
                 break;
-          
+
         }
         yield return new WaitUntil(() => !BattlePhasePause);
         yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
@@ -863,7 +867,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitUntil(() => Director.Instance.timeline.slider.value <= 0);
         foreach (var y in Tools.GetAllUnits())
         {
-          
+
             foreach (var skill in y.skillUIs)
             {
                 var actionContainer = skill.GetComponent<ActionContainer>();
@@ -873,7 +877,7 @@ public class BattleSystem : MonoBehaviour
                     actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
                     actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
                 }
-               
+
             }
             if (!y.IsPlayerControlled)
             {
@@ -894,7 +898,7 @@ public class BattleSystem : MonoBehaviour
         CombatTools.TickAllEffectIcons();
         yield return new WaitUntil(() => !BattlePhasePause);
         if (BattleSystem.Instance.enemyUnits.Count != 0 && BattleSystem.Instance.playerUnits.Count != 0)
-        {          
+        {
             BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
             for (int i = 0; i < BattleSystem.Instance.playerUnits.Count; i++)
             {
@@ -923,7 +927,7 @@ public class BattleSystem : MonoBehaviour
 
         }
         CombatTools.ReturnPipCounter().AddPip();
-      
+
         if (BattleSystem.Instance.state != BattleStates.DECISION_PHASE && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD && BattleSystem.Instance.state != BattleStates.TALKING && BattleSystem.Instance.enemyUnits.Count > 0 && BattleSystem.Instance.playerUnits.Count > 0)
         {
             BattleSystem.Instance.state = BattleStates.IDLE;
@@ -967,7 +971,7 @@ public class BattleSystem : MonoBehaviour
         }
         return StopBattle;
     }
-    
+
     public void SetupHUD(Unit unit, Transform position)
     {
         foreach (var x in Tools.GetAllUnits())
