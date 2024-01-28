@@ -16,7 +16,7 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class CombatTools : MonoBehaviour
 {
-  
+
 
     public static int GetNumberOfPlayerUnits()
     {
@@ -321,7 +321,7 @@ public class CombatTools : MonoBehaviour
                 if (stopDuration > 0)
                     Director.Instance.StartCoroutine(Tools.StopTime(stopDuration));
             }
-            if(AudioToPlay != "")
+            if (AudioToPlay != "")
             {
                 AudioManager.QuickPlay(AudioToPlay);
             }
@@ -368,7 +368,7 @@ public class CombatTools : MonoBehaviour
             statUpObject[i].GetComponent<ParticleSystem>().Stop();
             yield return new WaitForSeconds(delay);
             Destroy(statUpObject[i]);
-        }              
+        }
     }
 
 
@@ -398,7 +398,7 @@ public class CombatTools : MonoBehaviour
 
 
     public static IEnumerator TurnOffDirectionalLight(float delay = 0.0001f)
-    {      
+    {
         if (BattleSystem.Instance.mainLight != null)
         {
             while (BattleSystem.Instance.mainLight.intensity != 0)
@@ -468,31 +468,34 @@ public class CombatTools : MonoBehaviour
     public static float DetermineTrueCost(Action action)
     {
         float floatToReturn = 0;
-        switch (action.actionStyle)
+        if (action != null)
         {
-            case Action.ActionStyle.LIGHT:
-                {
-                   floatToReturn = action.lightCost;
-                }
-                break;
-            case Action.ActionStyle.HEAVY:
-                {
-                    floatToReturn = action.heavyCost;
-                }
-                break;
-            case Action.ActionStyle.STANDARD:
-                {
-                    floatToReturn = action.cost;
-                }
-                break;
+            switch (action.actionStyle)
+            {
+                case Action.ActionStyle.LIGHT:
+                    {
+                        floatToReturn = action.lightCost;
+                    }
+                    break;
+                case Action.ActionStyle.HEAVY:
+                    {
+                        floatToReturn = action.heavyCost;
+                    }
+                    break;
+                case Action.ActionStyle.STANDARD:
+                    {
+                        floatToReturn = action.cost;
+                    }
+                    break;
+            }
         }
-        return floatToReturn; 
+        return floatToReturn;
     }
 
     public static int DetermineTrueActionValue(Action action)
     {
         int valueToReturn = 0;
-        if(action.actionType == Action.ActionType.STATUS)
+        if (action.actionType == Action.ActionType.STATUS)
         {
             switch (action.actionStyle)
             {
@@ -533,9 +536,9 @@ public class CombatTools : MonoBehaviour
                     }
                     break;
             }
-          
+
         }
-      
+
         return valueToReturn;
     }
 
@@ -564,10 +567,10 @@ public class CombatTools : MonoBehaviour
     public static PipCounter ReturnPipCounter()
     {
         if (Director.Instance.UnlockedPipSystem)
-           return Director.Instance.timeline.pipCounter;
+            return Director.Instance.timeline.pipCounter;
         else
-          return new PipCounter();
+            return new PipCounter();
     }
 
-   
+
 }

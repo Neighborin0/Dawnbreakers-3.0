@@ -221,13 +221,11 @@ MonoBehaviour:
   CanMove: 1
   rectTransform: {fileID: 8304306010813181600}
   CanClear: 0
-  PositionToMoveTo: {x: 0, y: 0}
-  value: 0
-  offset: -12.13
-  childImage: {fileID: 2188227538886958059}
-  CanBeHighlighted: 0
+  childImage: {fileID: 6437991053300170028}
   UnitIsHighlighted: 0
   HighlightedIsBeingOverwritten: 0
+  CanBeHighlighted: 1
+  parent: {fileID: 0}
 --- !u!1 &1019806089771009197
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,9 +576,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4052769437652328046}
-  - {fileID: 8304306010813181600}
   - {fileID: 2417414458985034167}
+  - {fileID: 8304306010813181600}
+  - {fileID: 4052769437652328046}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -623,6 +621,7 @@ MonoBehaviour:
   offset: -12.384
   PlayerMiniChild: {fileID: 3889650526274626284}
   EnemyMiniChild: {fileID: 1667513840649561423}
+  miniChild: {fileID: 0}
 --- !u!114 &7428458782112312656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,7 +642,7 @@ MonoBehaviour:
         - m_Target: {fileID: 6568516722610899599}
           m_TargetAssemblyTypeName: TimeLineChild, Assembly-CSharp
           m_MethodName: ToggleHightlightOnUnit
-          m_Mode: 1
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -659,7 +658,7 @@ MonoBehaviour:
         - m_Target: {fileID: 6568516722610899599}
           m_TargetAssemblyTypeName: TimeLineChild, Assembly-CSharp
           m_MethodName: ToggleHightlightOnUnit
-          m_Mode: 1
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1059,13 +1058,11 @@ MonoBehaviour:
   CanMove: 1
   rectTransform: {fileID: 4052769437652328046}
   CanClear: 0
-  PositionToMoveTo: {x: 0, y: 0}
-  value: 0
-  offset: -12.13
-  childImage: {fileID: 102473245233797792}
-  CanBeHighlighted: 0
+  childImage: {fileID: 6655743044182367208}
   UnitIsHighlighted: 0
   HighlightedIsBeingOverwritten: 0
+  CanBeHighlighted: 1
+  parent: {fileID: 0}
 --- !u!1 &5950707907655080184
 GameObject:
   m_ObjectHideFlags: 0

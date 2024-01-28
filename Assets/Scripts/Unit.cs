@@ -60,6 +60,8 @@ public class Unit : MonoBehaviour
     [NonSerialized]
     public bool IsHidden;
     private EventTrigger eventTrigger;
+    [NonSerialized]
+    public bool HasMiniTimelineChild = false;
 
 
     public bool OverrideEmission = false;

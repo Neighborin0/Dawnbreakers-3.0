@@ -11,13 +11,11 @@ public class MiniTimelineChildren : MonoBehaviour
     public bool CanMove = true;
     public RectTransform rectTransform;
     public bool CanClear = false;
-    public Vector2 PositionToMoveTo;
-    public float value;
-    public float offset = -12.13f;
     public Image childImage;
-    public bool CanBeHighlighted;
     public bool UnitIsHighlighted;
-    public bool HighlightedIsBeingOverwritten;
+    public bool HighlightedIsBeingOverwritten = false;
+    public bool CanBeHighlighted = true;
+    public TimeLineChild parent;
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -58,7 +56,7 @@ public class MiniTimelineChildren : MonoBehaviour
 
 
     public void ToggleHightlightOnUnit()
-    {
+    { 
         if (CanBeHighlighted)
         {
             if (!UnitIsHighlighted && BattleSystem.Instance.state != BattleStates.BATTLE && BattleSystem.Instance.state != BattleStates.START && BattleSystem.Instance.state != BattleStates.WON && BattleSystem.Instance.state != BattleStates.DEAD)
@@ -73,6 +71,8 @@ public class MiniTimelineChildren : MonoBehaviour
 
                 transform.SetAsLastSibling();
                 Shift(unit);
+               
+
             }
             else
             {

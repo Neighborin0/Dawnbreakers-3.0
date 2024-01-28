@@ -788,7 +788,7 @@ MonoBehaviour:
   endpoint: {fileID: 2057894625471288361}
   startpoint: {fileID: 4746596444374704095}
   minPos: 0
-  maxPos: 0
+  maxPos: 4.49
   children: []
   slider: {fileID: 7933466824737894121}
   Paused: 1
