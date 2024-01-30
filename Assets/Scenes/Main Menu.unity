@@ -2843,6 +2843,7 @@ MonoBehaviour:
         _W: 0
         _Object: {fileID: 0}
   CanClick: 1
+  CanHover: 1
 --- !u!1 &244722117
 GameObject:
   m_ObjectHideFlags: 0
@@ -5998,6 +5999,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5131544204616374266, guid: 015bd4d7d34a9ac45a0e3c82fb7df725,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5214590900143247698, guid: 015bd4d7d34a9ac45a0e3c82fb7df725,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -2000
+      objectReference: {fileID: 0}
     - target: {fileID: 5311847613502696806, guid: 015bd4d7d34a9ac45a0e3c82fb7df725,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -7510,6 +7521,7 @@ MonoBehaviour:
         _W: 0
         _Object: {fileID: 0}
   CanClick: 1
+  CanHover: 1
 --- !u!1 &673784752
 GameObject:
   m_ObjectHideFlags: 0
@@ -10585,6 +10597,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 392729441734879391, guid: 27fc45e474975bf4da59da7751ab29bd,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 3164872719846570995, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12680,6 +12697,7 @@ MonoBehaviour:
         _W: 0
         _Object: {fileID: 0}
   CanClick: 1
+  CanHover: 1
 --- !u!1 &1258389848
 GameObject:
   m_ObjectHideFlags: 0
@@ -13491,10 +13509,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1693829045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -845, y: 481.22888}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: -1720, y: -1030}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1395745998
 MonoBehaviour:
@@ -16267,7 +16285,7 @@ PrefabInstance:
     - target: {fileID: 1756486628775432474, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
         type: 3}
       propertyPath: orthographic size
-      value: 0.9
+      value: 3.505
       objectReference: {fileID: 0}
     - target: {fileID: 1756486628775432474, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
         type: 3}
@@ -16293,6 +16311,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 4294967007
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756486628775432474, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
+        type: 3}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756486628775432474, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
+        type: 3}
+      propertyPath: m_NormalizedViewPortRect.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756486628775432474, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
+        type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756486628775432474, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
+        type: 3}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1756486628775432677, guid: 4069ee8c66f6c9b4aadbb7da405a0b34,
         type: 3}

@@ -129,6 +129,7 @@ public class MapController : MonoBehaviour
                 if (!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2" && !DoneOpening)
                 {
                     var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
+                    levelDropObj.gameObject.SetActive(true);
                     levelDropObj.bar.color = new Color(0, 0, 0, 1);
                 }
                 else if(!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2" && DoneOpening)

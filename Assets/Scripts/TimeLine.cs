@@ -19,14 +19,13 @@ public class TimeLine : MonoBehaviour
     public bool Paused = true;
     public bool Resetting = false;
     public PipCounter pipCounter;
+    public ActionDisplayer actionDisplayer;
 
     public void Start()
     {
         slider.value = 0;
-
-
+        actionDisplayer = GetComponentInChildren<ActionDisplayer>();
     }
-
 
     void FixedUpdate()
     {
@@ -163,6 +162,55 @@ public class TimeLine : MonoBehaviour
             if (timeLineChild.gameObject != null)
             {
                 Destroy(timeLineChild.gameObject);
+            }
+        }
+    }
+
+    public IEnumerator actionDisplayerCoroutine;
+
+    public void StartFadeAction(bool FadeIn)
+    {
+        if (actionDisplayerCoroutine != null)
+        {
+            StopCoroutine(actionDisplayerCoroutine);
+        }
+        else
+        {
+            actionDisplayerCoroutine = FadeActionDisplayer(FadeIn);
+            StartCoroutine(actionDisplayerCoroutine);
+        }
+          
+    }
+    private IEnumerator FadeActionDisplayer(bool FadeIn)
+    {
+        actionDisplayer.gameObject.SetActive(true);
+        var img = actionDisplayer.GetComponent<Image>();
+        if (!FadeIn)
+        {
+            if (actionDisplayer.gameObject != null)
+            {
+                while (img.color.a > 0 && this != null)
+                {
+                    img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a - 0.1f);
+                    actionDisplayer.baseText.color = new Color(actionDisplayer.baseText.color.r, actionDisplayer.baseText.color.g, actionDisplayer.baseText.color.b, actionDisplayer.baseText.color.a - 0.1f);
+                    yield return new WaitForSeconds(0.001f);
+                }
+                yield return new WaitUntil(() => img.color.a <= 0);
+                actionDisplayer.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            if (actionDisplayer.gameObject != null)
+            {
+                gameObject.SetActive(true);
+                while (img.color.a < 1 && this != null)
+                {
+                    img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + 0.1f);
+                    actionDisplayer.baseText.color = new Color(actionDisplayer.baseText.color.r, actionDisplayer.baseText.color.g, actionDisplayer.baseText.color.b, actionDisplayer.baseText.color.a + 0.1f);
+                    yield return new WaitForSeconds(0.001f);
+                }
+                yield return new WaitUntil(() => img.color.a >= 1);
             }
         }
     }

@@ -593,7 +593,7 @@ public class ActionContainer : MonoBehaviour
 
             if (BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
             {
-                currentEffectPopup.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x - 400, rectTrans.anchoredPosition.y - 210, 0);
+                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rectTrans.anchoredPosition.x - 400, rectTrans.anchoredPosition.y - 210, 0);
             }
             else
             {

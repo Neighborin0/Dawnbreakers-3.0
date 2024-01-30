@@ -763,86 +763,90 @@ public class BattleSystem : MonoBehaviour
         ThenBy(x => x.unit.unitName).
         Reverse().ToList();
 
-        for (int i = 0; i < ActionsToPerform.Count; i++)
+        foreach (var action in ActionsToPerform.ToList())
         {
-            var action = ActionsToPerform[i];
             if (action.unit == null)
             {
-                ActionsToPerform.RemoveAt(i);
-                i--;
+                ActionsToPerform.Remove(action);
                 continue;
             }
+
             CombatTools.UnpauseStaminaTimer();
-            if (ActionsToPerform.Count > 0)
+
+            yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier) || Director.Instance.timeline.slider.value == Director.Instance.timeline.slider.maxValue);
+
+            if (Director.Instance.timeline.slider.value < Director.Instance.timeline.slider.maxValue)
             {
-                yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier) || Director.Instance.timeline.slider.value == Director.Instance.timeline.slider.maxValue);
-                if (Director.Instance.timeline.slider.value < Director.Instance.timeline.slider.maxValue)
+                CombatTools.PauseStaminaTimer();
+
+                if (action.targets == null)
                 {
-                    CombatTools.PauseStaminaTimer();
-                    if (action.unit != null)
+                    switch (action.targetType)
                     {
-                        if (action.targets == null)
-                        {
-                            switch (action.targetType)
-                            {
-                                case Action.TargetType.ENEMY:
-                                    action.targets = CombatTools.GetRandomEnemy(action.unit);
-                                    break;
-                                case Action.TargetType.ALLY:
-                                    action.targets = CombatTools.GetRandomAlly(action.unit);
-                                    break;
-                            }
-                        }
-                        action.Done = false;
-                        action.unit.state = PlayerState.IDLE;
-                        action.OnActivated();
-
-                        var TL = Director.Instance.timeline.ReturnTimelineChild(action.unit);
-                        TL.CanClear = true;
-                        TL.GetComponent<LabUIInteractable>().CanHover = false;
-                        TL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.2f);
-                        TL.portrait.color = new Color(1, 1, 1, 0.2f);
-
-
-                        if (action.limited)
-                        {
-                            foreach (var act in action.unit.skillUIs)
-                            {
-                                if (action.ActionName == act.GetComponent<ActionContainer>().action.ActionName)
-                                {
-                                    act.GetComponent<ActionContainer>().numberofUses--;
-                                }
-                            }
-                        }
-                        yield return new WaitUntil(() => action.Done);
-                        yield return new WaitUntil(() => !BattlePhasePause);
-                        yield return new WaitForSeconds(0.2f);
-                        action.ResetAction();
-                        yield return new WaitForSeconds(0.01f);
-                        foreach (var x in Tools.GetAllUnits())
-                        {
-                            x.DoActionEnded();
-                        }
-                        if (CheckDeathState())
-                        {
-                            BattlePhasePause = true;
-                            CombatTools.PauseStaminaTimer();
-                            StopCoroutine(actionCo);
-                            yield break;
-
-                        }
-                        else
-                        {
-                            yield return new WaitUntil(() => !BattlePhasePause);
-                            yield return new WaitForSeconds(0.1f);
-                        }
-                        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).ThenBy(x => x.unit.IsPlayerControlled).ThenBy(x => x.unit.unitName).Reverse().ToList();
+                        case Action.TargetType.ENEMY:
+                            action.targets = CombatTools.GetRandomEnemy(action.unit);
+                            break;
+                        case Action.TargetType.ALLY:
+                            action.targets = CombatTools.GetRandomAlly(action.unit);
+                            break;
                     }
                 }
-            }
-            else
-                break;
 
+                Director.Instance.timeline.actionDisplayer.baseText.text = action.ActionName;
+                Director.Instance.timeline.StartFadeAction(true);
+
+                action.Done = false;
+                action.unit.state = PlayerState.IDLE;
+                action.OnActivated();
+
+                var timelineChild = Director.Instance.timeline.ReturnTimelineChild(action.unit);
+                timelineChild.CanClear = true;
+                timelineChild.GetComponent<LabUIInteractable>().CanHover = false;
+                timelineChild.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.2f);
+                timelineChild.portrait.color = new Color(1, 1, 1, 0.2f);
+
+                if (action.limited)
+                {
+                    foreach (var skillUI in action.unit.skillUIs)
+                    {
+                        if (action.ActionName == skillUI.GetComponent<ActionContainer>().action.ActionName)
+                        {
+                            skillUI.GetComponent<ActionContainer>().numberofUses--;
+                        }
+                    }
+                }
+
+                yield return new WaitUntil(() => action.Done);
+                yield return new WaitUntil(() => !BattlePhasePause);
+                yield return new WaitForSeconds(0.2f);
+                action.ResetAction();
+                Director.Instance.timeline.StartFadeAction(false);
+                yield return new WaitForSeconds(0.01f);
+                foreach (var unit in Tools.GetAllUnits())
+                {
+                    unit.DoActionEnded();
+                }
+
+                if (CheckDeathState())
+                {
+                    BattlePhasePause = true;
+                    CombatTools.PauseStaminaTimer();
+                    StopCoroutine(actionCo);
+                    yield break;
+                }
+                else
+                {
+                    yield return new WaitUntil(() => !BattlePhasePause);
+                    yield return new WaitForSeconds(0.1f);
+                }
+
+                ActionsToPerform = ActionsToPerform
+                    .OrderBy(x => 100 - CombatTools.DetermineTrueCost(x))
+                    .ThenBy(x => x.unit.IsPlayerControlled)
+                    .ThenBy(x => x.unit.unitName)
+                    .Reverse()
+                    .ToList();
+            }
         }
         yield return new WaitUntil(() => !BattlePhasePause);
         yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
@@ -909,7 +913,6 @@ public class BattleSystem : MonoBehaviour
         {
             if (!y.DoesntLoseArmorAtStartOfRound)
             {
-                y.armor = 0;
                 y.namePlate.UpdateArmor(y.armor);
             }
 

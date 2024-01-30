@@ -25,7 +25,18 @@ public class Rat : Unit
         behavior = this.gameObject.AddComponent<TutorialVerminBehavior>();
         resistances = new DamageType[] { DamageType.STRIKE };
         weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE };
+        BattleStarted += DoCharacterText;
 
+    }
+
+    private void DoCharacterText(Unit obj)
+    {
+        BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("VerminDustyIntro"), true, false);
+        foreach (var unit in Tools.GetAllUnits())
+        {
+            unit.StaminaHighlightIsDisabled = true;
+        }
+        BattlePostStarted -= DoCharacterText;
     }
 
 

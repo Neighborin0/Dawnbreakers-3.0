@@ -366,7 +366,7 @@ public class OptionsManager : MonoBehaviour
             if (generalCoruntine != null)
                 StopCoroutine(generalCoruntine);
 
-            generalCoruntine = Tools.SmoothMoveUI(SettingsMenu.gameObject.GetComponent<RectTransform>(), 0, -1215, 0.01f);
+            generalCoruntine = Tools.SmoothMoveUI(SettingsMenu.gameObject.GetComponent<RectTransform>(), 0, -2000, 0.01f);
             StartCoroutine(generalCoruntine);
             Tools.ToggleUiBlocker(true);
             SettingsMenuDisabled = true;
