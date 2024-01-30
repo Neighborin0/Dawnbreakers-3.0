@@ -23,6 +23,7 @@ public class EffectIcon : MonoBehaviour
     public int NumberofStacks;
     public GameObject currentEffectPopup;
     public float descriptionSize = 0.4f;
+    public Color popupTextColor = Color.white;
 
     public void Awake()
     {
@@ -52,8 +53,8 @@ public class EffectIcon : MonoBehaviour
         manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable.sizeDelta = new Vector2(70.24f, 21.96f);    
         storedValue = storedvalue;
         DoFancyStatChanges = dofancystatchanges;
+        BattleSystem.Instance.DoTextPopup(owner, iconName, popupTextColor);
     }
-
 
     public void Tick()
     {

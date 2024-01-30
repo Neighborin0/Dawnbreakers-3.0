@@ -103,7 +103,7 @@ public class ActionContainer : MonoBehaviour
     {
         if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null &&
             hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ENEMY &&
-            action.actionType == Action.ActionType.ATTACK && hit.collider.gameObject.GetComponent<Unit>().IsHighlighted &&
+            action.actionType == Action.ActionType.ATTACK &&
             !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
         {
             var targetUnit = hit.collider.gameObject.GetComponent<Unit>();
@@ -148,15 +148,12 @@ public class ActionContainer : MonoBehaviour
     {
         if (CreatedTempTimelineChild)
         {
-            foreach (TimeLineChild child in Director.Instance.timeline.children.ToList())
+            if (TempTL != null)
             {
-                if (child != null && child.CanClear)
-                {
-                    Director.Instance.timeline.children.Remove(child);
-                    Destroy(child.gameObject);
-                    break;
-                }
+                Director.Instance.timeline.children.Remove(TempTL);
+                Destroy(TempTL.gameObject);
             }
+            CreatedTempTimelineChild = false;
         }
     }
 

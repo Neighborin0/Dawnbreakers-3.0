@@ -190,6 +190,7 @@ MonoBehaviour:
   NumberofStacks: 0
   currentEffectPopup: {fileID: 0}
   descriptionSize: 0.4
+  popupTextColor: {r: 0.99381757, g: 1, b: 0, a: 1}
 --- !u!114 &7750311034726761472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,15 +204,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Entered:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Exited:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   Clicked:
-    m_PersistentCalls:
-      m_Calls: []
-  HasClicked: 1
+    _PersistentCalls: []
+  CanClick: 1
+  CanHover: 1
 --- !u!1 &5667017878258509523
 GameObject:
   m_ObjectHideFlags: 0

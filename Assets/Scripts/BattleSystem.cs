@@ -63,7 +63,6 @@ public class BattleSystem : MonoBehaviour
     public Light mainLight;
     public float mainLightValue;
     public bool BossNode = false;
-    private IEnumerator EnemyIntentFade;
 
     //Tutorial Stuff
     public bool TutorialNode = false;
@@ -395,7 +394,7 @@ public class BattleSystem : MonoBehaviour
         return check;
     }
 
-    public void DisplayEnemyIntent(Action action, Unit unit)
+    public void DisplayIntent(Action action, Unit unit)
     {
 
         unit.intentUI.textMesh.text = action.ActionName;
@@ -438,7 +437,7 @@ public class BattleSystem : MonoBehaviour
     {
         var popup = Instantiate(statPopUp, new Vector3(target.GetComponent<SpriteRenderer>().bounds.center.x, target.GetComponent<SpriteRenderer>().bounds.max.y, target.transform.position.z), Quaternion.identity);
         var popupText = popup.GetComponentInChildren<TextMeshProUGUI>();
-        popupText.outlineWidth = 0.1f;
+        popupText.outlineWidth = 0.2f;
         popupText.outlineColor = Color.black;
         popupText.color = color;
         popupText.text = text;
@@ -914,7 +913,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (!y.DoesntLoseArmorAtStartOfRound)
             {
-                y.namePlate.UpdateArmor(y.armor);
+                y.namePlate.UpdateArmor(y.armor, true);
             }
 
             else
@@ -990,13 +989,16 @@ public class BattleSystem : MonoBehaviour
                 x.GetComponent<SpriteRenderer>().flipX = false;
 
             }
-            if (!x.IsPlayerControlled && x.intentUI == null)
+            if (x.intentUI == null)
             {
                 var intentContainer = Instantiate(intent, canvasParent.transform);
                 intentContainer.transform.localScale = new Vector3(0.025f, 0.03f, -25f);
                 intentContainer.transform.SetPositionAndRotation(new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + x.enemyintentOffset.x, x.GetComponent<SpriteRenderer>().bounds.max.y + x.enemyintentOffset.y, x.transform.position.z + x.enemyintentOffset.z) / canvas.scaleFactor, LabCamera.Instance.transform.rotation);
                 x.intentUI = intentContainer;
                 intentContainer.unit = x;
+            }
+            if (!x.IsPlayerControlled)
+            {
                 x.namePlate.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x - 1.8f, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;
                 x.namePlate.IconGrid.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x, x.namePlate.IconGrid.transform.position.y, x.transform.position.z) / canvas.scaleFactor;
                 x.GetComponent<SpriteRenderer>().flipX = true;

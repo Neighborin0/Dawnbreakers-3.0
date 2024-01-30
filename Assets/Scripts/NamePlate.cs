@@ -22,7 +22,7 @@ public class NamePlate : MonoBehaviour
             DEF_icon.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(67.1f, DEF_icon.transform.GetComponent<RectTransform>().anchoredPosition.y);
         }
     }
-    public void UpdateArmor(float ArmorAdded)
+    public void UpdateArmor(float ArmorAdded, bool ForceClose = false)
     {
         Debug.LogWarning($"{ArmorAdded}");
         Debug.LogWarning($"{ArmorAdded > 0}");
@@ -48,7 +48,8 @@ public class NamePlate : MonoBehaviour
          
         
         defText.text = unit.armor.ToString();
-        if(unit.armor <= 0)
+
+        if(unit.armor <= 0 || ForceClose)
         {
             if (fadeCoroutine != null)
             {
@@ -56,7 +57,7 @@ public class NamePlate : MonoBehaviour
             }
                 
             fadeCoroutine = Fade(false);
-
+            unit.armor = 0;
             Director.Instance.StartCoroutine(fadeCoroutine);
         }
     }
@@ -74,6 +75,7 @@ public class NamePlate : MonoBehaviour
                     defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a - 0.1f);
                     yield return new WaitForSeconds(0.05f);
                 }
+                unit.armor = 0;
                 yield return new WaitUntil(() => DEfImage.color.a <= 0);
                 DEF_icon.SetActive(false);
             }

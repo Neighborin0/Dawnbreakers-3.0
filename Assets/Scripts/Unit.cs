@@ -12,6 +12,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.ProBuilder.Shapes;
 using System.Data.Common;
 using static UnityEngine.EventSystems.EventTrigger;
+using System.Linq.Expressions;
 
 public enum PlayerState { IDLE, DECIDING, READY, WAITING }
 public enum Stat { ATK, DEF, ARMOR, HP }
@@ -209,6 +210,7 @@ public class Unit : MonoBehaviour
                 {
                     StopMovingToUnit = false;
                     BattleLog.Instance.DisplayCharacterStats(this);
+                    //Cancelling Action
                     if (state == PlayerState.READY)
                     {
                         foreach (var skill in skillUIs)
@@ -220,6 +222,7 @@ public class Unit : MonoBehaviour
                                 actionContainer.action.actionStyle = Action.ActionStyle.STANDARD;
                             }
                         }
+                        FadeIntent(true);
                         Director.Instance.timeline.RemoveTimelineChild(this);
                     }
                     StartDecision();
@@ -273,7 +276,8 @@ public class Unit : MonoBehaviour
         if (action.unit != null && action.targets != null)
         {
             Director.Instance.timeline.DoCost(CombatTools.DetermineTrueCost(action), action.unit);
-            BattleSystem.Instance.AddAction(action);
+            BattleSystem.Instance.DisplayIntent(action, this);
+            BattleSystem.Instance.AddAction(action);         
             BattleSystem.SetUIOff(action.unit);
         }
     }

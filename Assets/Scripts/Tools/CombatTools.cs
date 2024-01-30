@@ -457,7 +457,7 @@ public class CombatTools : MonoBehaviour
     public static void SetupEnemyAction(Unit baseUnit, int DecidingNum, Unit overrideTarget = null)
     {
         DetermineActionData(baseUnit, DecidingNum, overrideTarget);
-        BattleSystem.Instance.DisplayEnemyIntent(baseUnit.actionList[DecidingNum], baseUnit);
+        BattleSystem.Instance.DisplayIntent(baseUnit.actionList[DecidingNum], baseUnit);
         DetermineActionData(baseUnit, DecidingNum, overrideTarget);
         baseUnit.state = PlayerState.READY;
 

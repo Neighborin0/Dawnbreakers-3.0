@@ -339,7 +339,7 @@ public class BattleLog : MonoBehaviour
                 unit.state = PlayerState.DECIDING;
                 unit.StaminaHighlightIsDisabled = true;
                 unit.ExitDecision();
-                if (!unit.IsPlayerControlled)
+                if (unit.intentUI != null)
                 {
                     unit.intentUI.gameObject.SetActive(false);
                 }
@@ -370,7 +370,7 @@ public class BattleLog : MonoBehaviour
 
             foreach (var unit in Tools.GetAllUnits())
             {
-                if (!unit.IsPlayerControlled)
+                if (unit.intentUI != null)
                 {
                     unit.intentUI.gameObject.SetActive(false);
                 }
@@ -448,7 +448,7 @@ public class BattleLog : MonoBehaviour
                             unit.health.DeathPaused = false;
                         }
 
-                        if (!unit.IsPlayerControlled)
+                        if (unit.intentUI != null && !unit.IsPlayerControlled)
                         {
                             unit.intentUI.gameObject.SetActive(true);
                         }

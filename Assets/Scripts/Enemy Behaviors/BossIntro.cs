@@ -109,7 +109,7 @@ public class BossIntro : MonoBehaviour
             Tools.ToggleUiBlocker(true, false, true);
             foreach (var unit in Tools.GetAllUnits())
             {
-                if(!unit.IsPlayerControlled)
+                if(unit.intentUI != null)
                 {
                     unit.intentUI.gameObject.SetActive(true);
                 }
