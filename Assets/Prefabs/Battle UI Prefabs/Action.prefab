@@ -547,7 +547,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -588,6 +588,7 @@ MonoBehaviour:
   heavyCostModifier: 20
   lightCostModifier: -20
   actionContainerParent: {fileID: 7729246865139320037}
+  BaseAnimator: {fileID: 0}
 --- !u!114 &6597132093515408404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -751,7 +752,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -792,6 +793,7 @@ MonoBehaviour:
   heavyCostModifier: 20
   lightCostModifier: -20
   actionContainerParent: {fileID: 7729246865139320037}
+  BaseAnimator: {fileID: 0}
 --- !u!114 &6107317962170059711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -928,7 +930,6 @@ MonoBehaviour:
   Disabled: 0
   numberofUses: 0
   limited: 0
-  HasDoneOnAction: 0
 --- !u!114 &3190603437284686847
 MonoBehaviour:
   m_ObjectHideFlags: 0

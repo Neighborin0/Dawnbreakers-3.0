@@ -820,8 +820,9 @@ public class BattleSystem : MonoBehaviour
                 yield return new WaitUntil(() => !BattlePhasePause);
                 yield return new WaitForSeconds(0.2f);
                 action.ResetAction();
-                Director.Instance.timeline.StartFadeAction(false);
                 yield return new WaitForSeconds(0.01f);
+
+                Director.Instance.timeline.StartFadeAction(false);
                 foreach (var unit in Tools.GetAllUnits())
                 {
                     unit.DoActionEnded();

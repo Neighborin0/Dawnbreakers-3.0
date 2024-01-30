@@ -174,12 +174,9 @@ public class TimeLine : MonoBehaviour
         {
             StopCoroutine(actionDisplayerCoroutine);
         }
-        else
-        {
-            actionDisplayerCoroutine = FadeActionDisplayer(FadeIn);
-            StartCoroutine(actionDisplayerCoroutine);
-        }
-          
+        actionDisplayerCoroutine = FadeActionDisplayer(FadeIn);
+        StartCoroutine(actionDisplayerCoroutine);
+
     }
     private IEnumerator FadeActionDisplayer(bool FadeIn)
     {

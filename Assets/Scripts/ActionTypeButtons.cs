@@ -6,6 +6,7 @@ using TMPro;
 using System;
 using static ActionContainer;
 using UnityEngine.XR;
+using JetBrains.Annotations;
 
 public class ActionTypeButton : Button
 {
@@ -19,8 +20,13 @@ public class ActionTypeButton : Button
     public float lightCostModifier = -20;
 
     public ActionContainer actionContainerParent;
+    public Animator BaseAnimator;
 
-   
+    public new void Start()
+    {
+        if (GetComponent<Animator>() != null)
+            BaseAnimator = GetComponent<Animator>();
+    }
     public void ModifyAction()
     {
         var action = actionContainerParent.action;
@@ -32,7 +38,7 @@ public class ActionTypeButton : Button
                     var newAction = Instantiate(action);
                     CombatTools.ReturnPipCounter().TakePip();
                     actionContainerParent.lightButton.interactable = false;
-                    actionContainerParent.heavyButton.state = ActionButtonState.DEFAULT;    
+                    actionContainerParent.heavyButton.state = ActionButtonState.DEFAULT;
                     newAction.actionStyle = Action.ActionStyle.LIGHT;
                     actionContainerParent.action = newAction;
                     actionContainerParent.UpdateOnStyleSwitch();
@@ -45,6 +51,7 @@ public class ActionTypeButton : Button
                     Light.intensity = 1f;
                     AudioManager.QuickPlay("button_Hit_005", false);
                     AudioManager.Instance.Play("statUp_Loop_001", 0, false, 1f);
+
                     Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", lightColor * 0.1f, lightColor * 0.1f, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
                 }
                 break;
@@ -66,7 +73,9 @@ public class ActionTypeButton : Button
                     Light.intensity = 1f;
                     AudioManager.QuickPlay("button_Hit_005", false);
                     AudioManager.QuickPlay("statUp_Loop_001");
-                    Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", heavyColor * 0.1f, heavyColor * 0.1f, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity,float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
+
+
+                    Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", heavyColor * 0.1f, heavyColor * 0.1f, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
                 }
                 break;
             case ActionButtonState.DEFAULT:
@@ -89,5 +98,6 @@ public class ActionTypeButton : Button
         }
     }
 
-    
+   
+
 }

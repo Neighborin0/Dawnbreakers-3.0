@@ -30,7 +30,6 @@ public class ScalableObject : MonoBehaviour
             if(GetComponent<Button>().interactable)
             {
                 Scale(true, delay);
-                //AudioManager.Instance.QuickPlay("button_hover");
             }
         }
         else

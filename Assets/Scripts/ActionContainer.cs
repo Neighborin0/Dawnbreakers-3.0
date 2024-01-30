@@ -55,7 +55,7 @@ public class ActionContainer : MonoBehaviour
         var scaleComponent = GetComponent<ScalableObject>();
         scaleComponent.oldScaleSize = Vector3.one;
         scaleComponent.newScaleSize = scaleComponent.oldScaleSize * 1.02f;
-        
+
     }
 
     private void OnEnable()
@@ -78,13 +78,17 @@ public class ActionContainer : MonoBehaviour
     void Update()
     {
         var hit = Tools.GetMousePos();
+        if (Input.GetMouseButtonUp(1))
+        {
+            SetStyleLight(true);
+        }
 
         if (targetting && BattleSystem.Instance.state != BattleStates.WON)
         {
             UpdateDamageNumbers(hit);
             UpdateCostNumbers();
             HandleActionCancel();
-            UpdateTargetHighlights(hit);
+            UpdateTargetHighlights();
             ExecuteActionOnClick(hit);
             UpdateActionStyleOutline();
             PerformOnActionSelected();
@@ -183,17 +187,18 @@ public class ActionContainer : MonoBehaviour
         {
             LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), Vector3.zero);
             AudioManager.QuickPlay("ui_woosh_002");
+            SetStyleLight(true);
             SetActive(false);
         }
     }
 
-    void UpdateTargetHighlights(RaycastHit hit)
+    void UpdateTargetHighlights()
     {
         foreach (var unit in Tools.GetAllUnits())
         {
             if (targetting)
             {
-                UpdateUnitHighlight(unit, hit);
+                UpdateUnitHighlight(unit);
             }
             else
             {
@@ -202,38 +207,19 @@ public class ActionContainer : MonoBehaviour
         }
     }
 
-    void UpdateUnitHighlight(Unit unit, RaycastHit hit)
+    void UpdateUnitHighlight(Unit unit)
     {
         if (!unit.IsPlayerControlled)
         {
-            UpdateUnitHighlightForEnemy(unit);
+            if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1)
+            {
+                unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(0.5754717f * 255, 0.4533197f * 255, 0.4533197f * 255) * 0.02f);
+            }
+            else if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1)
+            {
+                unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(255, 1, 0) * 0.02f);
+            }
         }
-        else
-        {
-            UpdateUnitHighlightForAlly(unit, hit);
-        }
-    }
-
-    void UpdateUnitHighlightForEnemy(Unit unit)
-    {
-        unit.IsHighlighted = true;
-        if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1)
-        {
-            unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(0.5754717f * 255, 0.4533197f * 255, 0.4533197f * 255) * 0.02f);
-        }
-        else if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1)
-        {
-            unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(255, 1, 0) * 0.02f);
-        }
-    }
-
-    void UpdateUnitHighlightForAlly(Unit unit, RaycastHit hit)
-    {
-        if (unit != baseUnit)
-        {
-            unit.isDarkened = true;
-        }
-        baseUnit.IsHighlighted = true;
     }
 
     void ResetUnitHighlight(Unit unit)
@@ -489,9 +475,9 @@ public class ActionContainer : MonoBehaviour
         TempTL.CanMove = false;
         float costToReturn = 0;
         if (TargetUnit != null)
-        costToReturn = Director.Instance.timeline.ReturnTimeChildAction(TargetUnit).cost;
+            costToReturn = Director.Instance.timeline.ReturnTimeChildAction(TargetUnit).cost;
 
-        if(CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType) > 1)
+        if (CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType) > 1)
             costToReturn += Director.Instance.TimelineReduction;
 
         if (action.actionStyle != Action.ActionStyle.STANDARD)
@@ -691,6 +677,7 @@ public class ActionContainer : MonoBehaviour
     {
         targetting = false;
         SetActionStyleButtonsActive(false);
+        SetStyleLight(true);
         LabCamera.Instance.ResetPosition();
         RemoveDescription();
         ResetAllStyleButtons();

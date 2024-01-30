@@ -69,8 +69,8 @@
     <Compile Include="Assets\Scripts\Icons\Indomitable.cs" />
     <Compile Include="Assets\Scripts\TimeLineChild.cs" />
     <Compile Include="Assets\Scripts\CharacterSlot.cs" />
-    <Compile Include="Assets\Scripts\IntentContainer.cs" />
     <Compile Include="Assets\Scripts\Units\Map\CombatNode.cs" />
+    <Compile Include="Assets\Scripts\IntentContainer.cs" />
     <Compile Include="Assets\Scripts\Units\Dusty.cs" />
     <Compile Include="Assets\Scripts\Actions\Slash.cs" />
     <Compile Include="Assets\Scripts\Actions\Summon.cs" />
