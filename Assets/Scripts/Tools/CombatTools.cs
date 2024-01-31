@@ -456,13 +456,14 @@ public class CombatTools : MonoBehaviour
 
     public static void SetupEnemyAction(Unit baseUnit, int DecidingNum, Unit overrideTarget = null)
     {
+       
         DetermineActionData(baseUnit, DecidingNum, overrideTarget);
         BattleSystem.Instance.DisplayIntent(baseUnit.actionList[DecidingNum], baseUnit);
         DetermineActionData(baseUnit, DecidingNum, overrideTarget);
         baseUnit.state = PlayerState.READY;
-
-        Director.Instance.timeline.DoCost(CombatTools.DetermineTrueCost(baseUnit.actionList[DecidingNum]), baseUnit);
-        BattleSystem.Instance.AddAction(baseUnit.actionList[DecidingNum]);
+        var newAction = UnityEngine.Object.Instantiate(baseUnit.actionList[DecidingNum]);
+        Director.Instance.timeline.DoCost(CombatTools.DetermineTrueCost(newAction), baseUnit);
+        BattleSystem.Instance.AddAction(newAction);
     }
 
     public static float DetermineTrueCost(Action action)

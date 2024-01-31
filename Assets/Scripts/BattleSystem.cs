@@ -799,6 +799,7 @@ public class BattleSystem : MonoBehaviour
                 action.OnActivated();
 
                 var timelineChild = Director.Instance.timeline.ReturnTimelineChild(action.unit);
+                print(timelineChild.unit.unitName);
                 timelineChild.CanClear = true;
                 timelineChild.GetComponent<LabUIInteractable>().CanHover = false;
                 timelineChild.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.2f);

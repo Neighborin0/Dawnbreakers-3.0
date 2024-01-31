@@ -129,138 +129,7 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-    private void HandleTypeDamage(DamageType damageType, TextMeshProUGUI number, int damage, Action.ActionStyle actionStyle, bool appliesStun = false)
-    {
-        number.SetText(damage.ToString());
-
-        Color textColor;
-        string logMessage;
-
-        if (CombatTools.ReturnTypeMultiplier(unit, damageType) < 1)
-        {
-            textColor = new Color(0.5754717f, 0.4533197f, 0.4533197f);
-            logMessage = "NOT EFFECTIVE";
-        }
-        else if (damage == 0 && unit.armor > 0)
-        {
-            textColor = new Color(0.04313726f, 0.4431373f, 0.5450981f);
-            logMessage = "ARMOR";
-            AudioManager.QuickPlay("armor_hit_001");
-        }
-        else
-        {
-            textColor = new Color(1, 0.3647059f, 0.3647059f);
-            logMessage = "NORMAL";
-        }
-
-        Debug.LogWarning(textColor.ToString());
-        Debug.LogWarning(logMessage);
-
-        number.color = textColor;
-        number.outlineColor = Color.black;
-        number.outlineWidth = 0.2f;
-
-        HandleTimelineEffects(damageType, number, actionStyle, appliesStun);
-    }
-
-    private void HandleTimelineEffects(DamageType damageType, TextMeshProUGUI number, Action.ActionStyle actionStyle, bool appliesStun)
-    {
-        var timelineChild = Director.Instance.timeline.ReturnTimelineChild(unit);
-        if (timelineChild != null && !timelineChild.CanClear)
-        {
-            var action = Director.Instance.timeline.ReturnTimeChildAction(unit);
-            var prevModifier = unit.knockbackModifider;
-
-            if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1 || actionStyle != Action.ActionStyle.STANDARD || appliesStun)
-            {
-                if (CombatTools.ReturnIconStatus(unit, "STALWART") && CombatTools.ReturnIconStatus(unit, "INDOMITABLE"))
-                {
-                    HandleStunEffects(timelineChild, action, number, appliesStun);
-                }
-                else if (CombatTools.ReturnIconStatus(unit, "INDOMITABLE"))
-                {
-                    HandleIndomitableEffect(timelineChild, action);
-                }
-                else if (CombatTools.ReturnIconStatus(unit, "STALWART"))
-                {
-                    HandleStalwartEffect(timelineChild, action);
-                }
-            }
-        }
-    }
-
-    private void HandleStunEffects(TimeLineChild timelineChild, Action action, TextMeshProUGUI number, bool appliesStun)
-    {
-        if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1)
-        {
-            ModifyTimelineValue(action, timelineChild, Director.Instance.TimelineReduction);
-            number.color = Color.red;
-        }
-
-        if (action.actionStyle != Action.ActionStyle.STANDARD)
-        {
-            ModifyTimelineValue(action, timelineChild, 10);
-            number.outlineColor = (action.actionStyle == Action.ActionStyle.LIGHT) ? new Color(0, 0.635f, 0.749f) : new Color(1, 0.011f, 0);
-        }
-
-        if (appliesStun)
-        {
-            unit.knockbackModifider = 100;
-            ModifyTimelineValue(action, timelineChild, (int)action.unit.knockbackModifider);
-        }
-
-        if (timelineChild.value <= 0)
-        {
-            HandleStalwartRemoval(timelineChild, action);
-        }
-    }
-
-    private void ModifyTimelineValue(Action action, TimeLineChild timelineChild, int value)
-    {
-        timelineChild.value -= value;
-        action.cost += value;
-    }
-
-    private void HandleIndomitableEffect(TimeLineChild timelineChild, Action action)
-    {
-        if (timelineChild.value <= Director.Instance.TimelineReduction)
-        {
-            timelineChild.value = 0;
-            action.cost = 100;
-        }
-    }
-
-    private void HandleStalwartEffect(TimeLineChild timelineChild, Action action)
-    {
-        if (timelineChild.value <= Director.Instance.TimelineReduction)
-        {
-            timelineChild.value = 0;
-            action.cost = 100;
-            var stalwart = unit.statusEffects.FirstOrDefault(obj => obj.iconName == "STALWART");
-            if (stalwart != null)
-            {
-                unit.statusEffects.Remove(stalwart);
-                Destroy(stalwart.gameObject);
-            }
-        }
-    }
-
-    private void HandleStalwartRemoval(TimeLineChild timelineChild, Action action)
-    {
-        timelineChild.CanClear = true;
-        timelineChild.GetComponent<LabUIInteractable>().CanHover = false;
-        BattleSystem.Instance.StartCoroutine(LateRemove());
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), Quaternion.identity, 15f, 0, true, 0, 2));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), new Quaternion(0, 180, Quaternion.identity.z, Quaternion.identity.w), 15f, 0, true, 0, 2));
-        AudioManager.QuickPlay("stun_001");
-        BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
-
-        if (!unit.IsPlayerControlled)
-        {
-            unit.behavior.turn--;
-        }
-    }
-
+  
     private IEnumerator LateRemove()
     {
         if (unit != null)
@@ -269,6 +138,133 @@ public class Healthbar : MonoBehaviour
             Director.Instance.timeline.RemoveTimelineChild(unit);
         }
         yield break;
+    }
+
+    private void HandleTypeDamage(DamageType damageType, TextMeshProUGUI number, int damage, Action.ActionStyle actionStyle, bool AppliesStun = false)
+    {
+        number.SetText(damage.ToString());
+
+        if (CombatTools.ReturnTypeMultiplier(unit, damageType) < 1)
+        {
+            number.faceColor = new Color(0.5754717f, 0.4533197f, 0.4533197f);
+            Debug.LogWarning(number.color.ToString());
+            Debug.LogWarning("NOT EFFECTIVE");
+        }
+        else if (damage == 0 && unit.armor > 0)
+        {
+            number.color = new Color(0.04313726f, 0.4431373f, 0.5450981f);
+            Debug.LogWarning(number.color.ToString());
+            Debug.LogWarning("ARMOR");
+            AudioManager.QuickPlay("armor_hit_001");
+        }
+        else
+        {
+            number.color = new Color(1, 0.3647059f, 0.3647059f);
+            Debug.LogWarning("NORMAL");
+
+        }
+        number.outlineColor = Color.black;
+        number.outlineWidth = 0.2f;
+
+        if (Director.Instance.timeline.ReturnTimelineChild(unit) != null)
+        {
+            var TL = Director.Instance.timeline.ReturnTimelineChild(unit);
+            var action = Director.Instance.timeline.ReturnTimeChildAction(unit);
+            var prevModifier = unit.knockbackModifider;
+            if (!TL.CanClear)
+            {
+                if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1 || actionStyle != Action.ActionStyle.STANDARD || AppliesStun) //effective
+                {
+                    if (CombatTools.ReturnIconStatus(unit, "STALWART") && CombatTools.ReturnIconStatus(unit, "INDOMITABLE") && Director.Instance.timeline.ReturnTimelineChild(unit) != null) //Applies Stun
+                    {
+                        if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1)
+                        {
+                            TL.value -= Director.Instance.TimelineReduction;
+                            action.cost += Director.Instance.TimelineReduction;
+                            number.color = Color.red;
+                        }
+
+                        if (actionStyle != Action.ActionStyle.STANDARD)
+                        {
+                            TL.value -= 10;
+                            action.cost += 10;
+                            if (actionStyle == Action.ActionStyle.LIGHT)
+                            {
+                                number.outlineColor = new Color(0, 0.635f, 0.749f);
+                            }
+                            else if (actionStyle == Action.ActionStyle.HEAVY)
+                            {
+                                number.outlineColor = new Color(1, 0.011f, 0);
+                            }
+                        }
+
+
+                        if (AppliesStun)
+                        {
+                            unit.knockbackModifider = 100;
+                        }
+
+
+                        if (unit.knockbackModifider != 0)
+                        {
+                            if(AppliesStun)
+                            {
+                                TL.value = -1;
+                                action.cost = 101;
+                            }
+                            else
+                            {
+                                TL.value -= unit.knockbackModifider;
+                                action.cost += unit.knockbackModifider;
+                            }
+
+                           
+                        }
+
+                        if (TL.value <= 0)
+                        {
+                            TL.CanClear = true;
+                            TL.GetComponent<LabUIInteractable>().CanHover = false;
+                            BattleSystem.Instance.StartCoroutine(LateRemove());
+                            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), Quaternion.identity, 15f, 0, true, 0, 2));
+                            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), new Quaternion(0, 180, Quaternion.identity.z, Quaternion.identity.w), 15f, 0, true, 0, 2));
+                            AudioManager.QuickPlay("stun_001");
+                            BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
+                            if (!unit.IsPlayerControlled)
+                            {
+                                unit.behavior.turn--;
+                            }
+                        }
+                    }
+                    else if (CombatTools.ReturnIconStatus(unit, "INDOMITABLE"))
+                    {
+                        if (TL.value <= Director.Instance.TimelineReduction)
+                        {
+                            TL.value = 0;
+                            action.cost = 100;
+                        }
+                    }
+                    else if (CombatTools.ReturnIconStatus(unit, "STALWART")) //Removes Stalwart
+                    {
+                        if (TL.value <= Director.Instance.TimelineReduction)
+                        {
+                            TL.value = 0;
+                            action.cost = 100;
+                            var stalwart = unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault();
+                            unit.statusEffects.Remove(unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault());
+                            Destroy(stalwart.gameObject);
+                        }
+
+                    }
+                }
+            }
+
+            if (AppliesStun)
+            {
+                unit.knockbackModifider = prevModifier;
+            }
+        }
+
     }
 
     private IEnumerator DamagePopUp(int damage, DamageType damageType, Action.ActionStyle actionStyle, bool AppliesStun = false)

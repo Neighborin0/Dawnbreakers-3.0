@@ -30,16 +30,16 @@ public class ItemText : MonoBehaviour
         {
             if (currentEffectPopup == null)
             {
-                var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
-                EP.transform.localScale = new Vector3(1.5f, 1.5f, -25f);
+                var EP = Instantiate(Director.Instance.EffectPopUp, this.transform.GetComponent<RectTransform>());
+                EP.transform.localScale = new Vector3(0.01f, 0.01f, 1);
                 currentEffectPopup = EP;
             }
             else
             {
                 currentEffectPopup.SetActive(true);
             }
-            var rect = transform.position;
-            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x + 230, rect.y - 250);
+            var rect = this.transform.GetComponent<RectTransform>();
+            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.anchoredPosition.x, rect.anchoredPosition.y + 2, 0);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             EPtext.text = $"{item.itemDescription}";
             //currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();
@@ -53,8 +53,8 @@ public class ItemText : MonoBehaviour
             }
             if (currentEffectPopup == null)
             {
-                var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
-                EP.transform.localScale = new Vector3(1.5f, 1.5f, -25f);
+                var EP = Instantiate(Director.Instance.EffectPopUp, this.transform.GetComponent<RectTransform>());
+                EP.transform.localScale = new Vector3(0.02f, 0.02f, 1);
                 currentEffectPopup = EP;
                 //currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();
             }
@@ -63,28 +63,9 @@ public class ItemText : MonoBehaviour
                 currentEffectPopup.SetActive(true);
             }
 
-          
-
-            var rect = transform.position;
-           
-           
-
-            /*if (currentEffectPopup.GetComponent<EffectPopUp>().childeffectPopUp != null)
-            {
-                if (!currentEffectPopup.GetComponent<EffectPopUp>().AlreadyAssignedPosition)
-                {
-                    currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition.x, currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition.y + currentEffectPopup.GetComponent<EffectPopUp>().childeffectPopUp.GetComponent<RectTransform>().sizeDelta.y + 100);
-                }
-                currentEffectPopup.GetComponent<EffectPopUp>().AlreadyAssignedPosition = true;
-                currentEffectPopup.GetComponent<EffectPopUp>().childeffectPopUp.SetActive(true);
-            }
-            else
-            {
-                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x - 686, rect.y - 460);
-            }
-            */
-
-            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x - 686, rect.y - 460);
+         
+            var rect = this.transform.GetComponent<RectTransform>();
+            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1.19f, 0);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             EPtext.text = $"{item.itemDescription}";
             StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));

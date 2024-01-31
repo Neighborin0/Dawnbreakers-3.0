@@ -274,6 +274,7 @@ public class ActionContainer : MonoBehaviour
                         baseUnit.timelinechild.CanMove = true;
                         Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                         BattleLog.Instance.ResetBattleLog();
+                        ClearTimelineChildren();
                         LabCamera.Instance.ResetPosition();
                         AudioManager.QuickPlay("button_Hit_005");
                         SetActive(false);
@@ -305,6 +306,7 @@ public class ActionContainer : MonoBehaviour
                         baseUnit.timelinechild.CanMove = true;
                         LabCamera.Instance.ResetPosition();
                         BattleLog.Instance.ResetBattleLog();
+                        ClearTimelineChildren();
                         Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                         AudioManager.QuickPlay("button_Hit_005");
                     }
@@ -340,6 +342,7 @@ public class ActionContainer : MonoBehaviour
                         baseUnit.timelinechild.CanMove = true;
                         Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                         SetActive(false);
+                        ClearTimelineChildren();
                         AudioManager.QuickPlay("button_Hit_005");
                         LabCamera.Instance.ResetPosition();
                     }
@@ -391,6 +394,7 @@ public class ActionContainer : MonoBehaviour
                             Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                             BattleLog.Instance.ResetBattleLog();
                             LabCamera.Instance.ResetPosition();
+                            ClearTimelineChildren();
                             AudioManager.QuickPlay("button_Hit_005");
                             SetActive(false);
                         }
@@ -522,7 +526,7 @@ public class ActionContainer : MonoBehaviour
 
     private IEnumerator TurnOffLight(float delay = 0.0001f)
     {
-        if (BattleSystem.Instance.mainLight != null)
+        if (BattleSystem.Instance != null && BattleSystem.Instance.mainLight != null)
         {
             while (BattleSystem.Instance.mainLight.intensity != 0 && action.actionStyle != Action.ActionStyle.STANDARD)
             {
@@ -533,7 +537,7 @@ public class ActionContainer : MonoBehaviour
     }
     private IEnumerator TurnOnLight(float delay = 0.0001f)
     {
-        if (BattleSystem.Instance.mainLight != null)
+        if (BattleSystem.Instance != null && BattleSystem.Instance.mainLight != null)
         {
             while (BattleSystem.Instance.mainLight.intensity < BattleSystem.Instance.mainLightValue && action.actionStyle == Action.ActionStyle.STANDARD)
             {
@@ -546,10 +550,11 @@ public class ActionContainer : MonoBehaviour
     {
         if (isActiveAndEnabled)
         {
+            var rectTrans = transform.GetComponent<RectTransform>();
             action.unit = baseUnit;
             if (currentEffectPopup == null)
             {
-                var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
+                var EP = Instantiate(Director.Instance.EffectPopUp, this.transform);
                 EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 currentEffectPopup = EP;
             }
@@ -558,7 +563,7 @@ public class ActionContainer : MonoBehaviour
                 currentEffectPopup.SetActive(true);
             }
 
-            var rectTrans = transform.GetComponent<RectTransform>();
+          
 
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             //Description for Battle
@@ -576,12 +581,12 @@ public class ActionContainer : MonoBehaviour
 
             if (BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
             {
-                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rectTrans.anchoredPosition.x - 400, rectTrans.anchoredPosition.y - 210, 0);
+                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rectTrans.anchoredPosition.x, rectTrans.anchorMax.y + 70, 0);
             }
             else
             {
-                var rect = transform.position;
-                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.x - 706, rect.y - 465);
+                currentEffectPopup.transform.localScale = new Vector3(0.02f, 0.02f, 1);
+                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1, 0);
             }
 
             Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));

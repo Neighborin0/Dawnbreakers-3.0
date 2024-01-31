@@ -558,6 +558,7 @@ MonoBehaviour:
   Clicked:
     _PersistentCalls: []
   CanClick: 1
+  CanHover: 1
 --- !u!1 &2125309255
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,6 +712,7 @@ MonoBehaviour:
   Clicked:
     _PersistentCalls: []
   CanClick: 1
+  CanHover: 1
 --- !u!1 &813109551792262378
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,6 +866,7 @@ MonoBehaviour:
   Clicked:
     _PersistentCalls: []
   CanClick: 1
+  CanHover: 1
 --- !u!1 &813109552512691905
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,6 +1020,7 @@ MonoBehaviour:
   Clicked:
     _PersistentCalls: []
   CanClick: 1
+  CanHover: 1
 --- !u!1 &813109552512736313
 GameObject:
   m_ObjectHideFlags: 0
@@ -1056,8 +1060,8 @@ RectTransform:
   - {fileID: 813109552621352171}
   - {fileID: 2231499438867235168}
   - {fileID: 1278030808341825861}
-  - {fileID: 8783840870599418424}
   - {fileID: 3479301250239040392}
+  - {fileID: 8783840870599418424}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2141,6 +2145,7 @@ MonoBehaviour:
         _W: 0
         _Object: {fileID: 0}
   CanClick: 1
+  CanHover: 1
 --- !u!1 &4062735480564382810
 GameObject:
   m_ObjectHideFlags: 0

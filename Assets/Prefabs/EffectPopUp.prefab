@@ -132,7 +132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260374d96ffa54d4c8b1c36cfa5bf9e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentEffectPopup: {fileID: 0}
 --- !u!1 &7851959697389933563
 GameObject:
   m_ObjectHideFlags: 0

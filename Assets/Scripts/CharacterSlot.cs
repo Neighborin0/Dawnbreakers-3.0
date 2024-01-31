@@ -16,6 +16,19 @@ public class CharacterSlot : MonoBehaviour
     public Slider slider;
     public Unit unit;
    
+    public void EnableCharacterTab()
+    {
+        if (Director.Instance.CharacterSlotsDisplayed)
+        {
+            if (BattleLog.Instance != null)
+                if (BattleLog.Instance.state != BattleLogStates.TALKING)
+                    Director.Instance.DisplayCharacterTab(false);
+        }
+        else if (Director.Instance.ItemTabGrid.transform.childCount == 0)
+        {
+            Director.Instance.DisableCharacterTab();
+        }
+    }
     public void ResetStats()
     {
         ATKtext.text = $"<sprite name=\"ATK\">:{unit.attackStat}";
