@@ -175,7 +175,7 @@ public class TimeLine : MonoBehaviour
             StopCoroutine(actionDisplayerCoroutine);
         }
         actionDisplayerCoroutine = FadeActionDisplayer(FadeIn);
-        StartCoroutine(actionDisplayerCoroutine);
+        Director.Instance.StartCoroutine(actionDisplayerCoroutine);
 
     }
     private IEnumerator FadeActionDisplayer(bool FadeIn)

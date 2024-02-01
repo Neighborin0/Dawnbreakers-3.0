@@ -132,13 +132,13 @@ public class MapController : MonoBehaviour
                     levelDropObj.gameObject.SetActive(true);
                     levelDropObj.bar.color = new Color(0, 0, 0, 1);
                 }
-                else if(!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2" && DoneOpening)
+                else if (!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2" && DoneOpening)
                 {
                     var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
                     levelDropObj.gameObject.SetActive(false);
                 }
 
-                 
+
                 Loaded = true;
                 OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
                 StartCoroutine(LoadSlots());
@@ -158,26 +158,32 @@ public class MapController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
+        if (Director.Instance != null && Director.Instance.CharacterSlotsDisplayed)
         {
-            LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
-            AudioManager.QuickPlay("ui_woosh_002");
-        }
 
-        if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name == "MAP2")
-        {
-            if (enableMapControls)
+
+            if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
             {
-                enableMapControls = false;
-                mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
-                mapControlBar.SetActive(enableMapControls);
+                LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
+                AudioManager.QuickPlay("ui_woosh_002");
             }
-            else
-            {
-                enableMapControls = true;
-                mapControlBar.SetActive(enableMapControls);
-                mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
 
+
+            if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name == "MAP2")
+            {
+                if (enableMapControls)
+                {
+                    enableMapControls = false;
+                    mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
+                    mapControlBar.SetActive(enableMapControls);
+                }
+                else
+                {
+                    enableMapControls = true;
+                    mapControlBar.SetActive(enableMapControls);
+                    mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
+
+                }
             }
         }
 
@@ -306,13 +312,13 @@ public class MapController : MonoBehaviour
         {
             Director.Instance.StartCoroutine(MapControlsIntro());
         }
-           
+
 
         if (!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2")
             Director.Instance.StartCoroutine(DoLevelDrop());
-        else if(SceneManager.GetActiveScene().name == "MAP2")
+        else if (SceneManager.GetActiveScene().name == "MAP2")
         {
-            foreach(var levelDropObj in GameObject.FindObjectsOfType<LevelDrop>())
+            foreach (var levelDropObj in GameObject.FindObjectsOfType<LevelDrop>())
             {
                 levelDropObj.gameObject.SetActive(false);
             }
@@ -337,7 +343,7 @@ public class MapController : MonoBehaviour
         var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
         levelDropObj.bar.color = new Color(0, 0, 0, 1);
         levelDropObj.gameObject.SetActive(true);
-        levelDropObj.bar.gameObject.SetActive(true);      
+        levelDropObj.bar.gameObject.SetActive(true);
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 0) || !OptionsManager.Instance.blackScreen.gameObject.activeSelf);
         Debug.LogWarning("Level Drop Starting?");
         yield return new WaitForSeconds(1f);
@@ -355,7 +361,7 @@ public class MapController : MonoBehaviour
         node.transform.localScale = new Vector3(0, 0, 0);
 
         LabCamera.Instance.state = LabCamera.CameraState.IDLE;
-        LabCamera.Instance.MoveToGameObject(node);     
+        LabCamera.Instance.MoveToGameObject(node);
 
         float compressor = 2.1f;
 

@@ -229,6 +229,7 @@ public class Healthbar : MonoBehaviour
                             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), Quaternion.identity, 15f, 0, true, 0, 2));
                             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), new Quaternion(0, 180, Quaternion.identity.z, Quaternion.identity.w), 15f, 0, true, 0, 2));
                             AudioManager.QuickPlay("stun_001");
+                            BattleSystem.Instance.DoTextPopup(unit, "Stun", Color.yellow);
                             BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
                             if (!unit.IsPlayerControlled)
                             {

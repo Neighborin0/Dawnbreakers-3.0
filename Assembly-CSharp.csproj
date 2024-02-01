@@ -200,6 +200,7 @@
     <Compile Include="Assets\Scripts\Main Menu\SettingsButton.cs" />
     <Compile Include="Assets\Scripts\Units\Map\RestSite.cs" />
     <Compile Include="Assets\Scripts\Units\Aurelia.cs" />
+    <Compile Include="Assets\Scripts\LabExplainer.cs" />
     <Compile Include="Assets\Scripts\Actions\Slam.cs" />
     <Compile Include="Assets\Scripts\Save\SaveTools.cs" />
     <Compile Include="Assets\Scripts\Tools\LabLayoutGroup.cs" />

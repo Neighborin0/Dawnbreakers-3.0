@@ -174,48 +174,53 @@ public class LabCamera : MonoBehaviour
         }
         if (state == CameraState.MAP)
         {
+            
             float step = 10 * Time.deltaTime;
             var boundPos = new Vector3(
                     followTarget.transform.position.x + followDisplacement.x,
                     followTarget.transform.position.y + followDisplacement.y,
                     followTarget.transform.position.z + followDisplacement.z);
-            //Zoom In
-            if (Input.GetAxis("Mouse ScrollWheel") > 0 && FOV > MapController.Instance.MinZoom && !Tools.CheckUiBlockers() && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
+            if (MapController.Instance != null && Director.Instance.CharacterSlotsDisplayed)
             {
-                FOV -= MapController.Instance.ZoomAmount;
-            }
-            //Zoom Out
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0 && FOV < MapController.Instance.MaxZoom && !Tools.CheckUiBlockers() && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
-            {
-                FOV += MapController.Instance.ZoomAmount;
-            }
-            var virtualCam = this.GetComponent<CinemachineVirtualCamera>();
-            if (Input.GetMouseButton(1) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
-            {
-                //this is hella jank but it's like 2 am bear with me
-                var bounds = this.GetComponent<CinemachineConfiner>().m_BoundingVolume.bounds;
-                if (camTransform.position.x - 0.1f > bounds.min.x && -Input.GetAxis("Mouse X") < 0)
-                    followDisplacement = new Vector3(followDisplacement.x - Input.GetAxis("Mouse X") * OptionsManager.Instance.mapSensitivityMultiplier, followDisplacement.y, followDisplacement.z);
-                else if (camTransform.position.x + 0.1f < bounds.max.x && -Input.GetAxis("Mouse X") > 0)
-                    followDisplacement = new Vector3(followDisplacement.x - Input.GetAxis("Mouse X") * OptionsManager.Instance.mapSensitivityMultiplier, followDisplacement.y, followDisplacement.z);
-
-
-
-                if (camTransform.position.y - 0.1f > bounds.min.y && -Input.GetAxis("Mouse Y") < 0)
+                //Zoom In
+                if (Input.GetAxis("Mouse ScrollWheel") > 0 && FOV > MapController.Instance.MinZoom && !Tools.CheckUiBlockers() && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
                 {
-                    followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier, followDisplacement.z);
-                    followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y, followDisplacement.z - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier);
+                    FOV -= MapController.Instance.ZoomAmount;
                 }
-                if (camTransform.position.y + 0.1f < bounds.max.y && -Input.GetAxis("Mouse Y") > 0)
+                //Zoom Out
+                else if (Input.GetAxis("Mouse ScrollWheel") < 0 && FOV < MapController.Instance.MaxZoom && !Tools.CheckUiBlockers() && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
                 {
-                    followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier, followDisplacement.z);
-                    followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y, followDisplacement.z - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier);
+                    FOV += MapController.Instance.ZoomAmount;
                 }
+                var virtualCam = this.GetComponent<CinemachineVirtualCamera>();
+                if (Input.GetMouseButton(1) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
+                {
+                    //this is hella jank but it's like 2 am bear with me
+                    var bounds = this.GetComponent<CinemachineConfiner>().m_BoundingVolume.bounds;
+                    if (camTransform.position.x - 0.1f > bounds.min.x && -Input.GetAxis("Mouse X") < 0)
+                        followDisplacement = new Vector3(followDisplacement.x - Input.GetAxis("Mouse X") * OptionsManager.Instance.mapSensitivityMultiplier, followDisplacement.y, followDisplacement.z);
+                    else if (camTransform.position.x + 0.1f < bounds.max.x && -Input.GetAxis("Mouse X") > 0)
+                        followDisplacement = new Vector3(followDisplacement.x - Input.GetAxis("Mouse X") * OptionsManager.Instance.mapSensitivityMultiplier, followDisplacement.y, followDisplacement.z);
+
+
+
+                    if (camTransform.position.y - 0.1f > bounds.min.y && -Input.GetAxis("Mouse Y") < 0)
+                    {
+                        followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier, followDisplacement.z);
+                        followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y, followDisplacement.z - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier);
+                    }
+                    if (camTransform.position.y + 0.1f < bounds.max.y && -Input.GetAxis("Mouse Y") > 0)
+                    {
+                        followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier, followDisplacement.z);
+                        followDisplacement = new Vector3(followDisplacement.x, followDisplacement.y, followDisplacement.z - Input.GetAxis("Mouse Y") * OptionsManager.Instance.mapSensitivityMultiplier);
+                    }
+                }
+                virtualCam.m_Lens.FieldOfView = Mathf.Lerp(virtualCam.m_Lens.FieldOfView, FOV, step);
+                transform.position = Vector3.LerpUnclamped(transform.position, boundPos, step);
             }
 
          
-            virtualCam.m_Lens.FieldOfView = Mathf.Lerp(virtualCam.m_Lens.FieldOfView, FOV, step);
-            transform.position = Vector3.LerpUnclamped(transform.position, boundPos, step);
+          
         }
 
     }
