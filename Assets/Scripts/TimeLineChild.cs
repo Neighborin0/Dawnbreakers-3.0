@@ -37,7 +37,7 @@ public class TimeLineChild : MonoBehaviour
         if (CanMove)
         {
             rectTransform.anchoredPosition = Vector3.Lerp(rectTransform.anchoredPosition, new Vector3(value * offset, rectTransform.anchoredPosition.y), 0.1f);
-            staminaText.text = Mathf.Round(value).ToString();
+            staminaText.text = Mathf.Round(-value + 100).ToString();
         }
 
     }

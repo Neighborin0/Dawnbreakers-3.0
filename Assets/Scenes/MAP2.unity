@@ -1638,7 +1638,7 @@ PrefabInstance:
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
       propertyPath: party.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
@@ -1656,7 +1656,7 @@ PrefabInstance:
         type: 3}
       propertyPath: party.Array.data[2]
       value: 
-      objectReference: {fileID: 7348431651559243503, guid: 6b95c3562742e5f4dbdcaf2e6854150e,
+      objectReference: {fileID: 8438103007488650918, guid: 7961aa52f479600439fca57c241b5cb9,
         type: 3}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
@@ -1886,15 +1886,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.0011173184
+    x: 0
     y: 0
-    width: 0.996648
-    height: 0.9985735
+    width: 1
+    height: 1
   near clip plane: 0.1
   far clip plane: 5000
   field of view: 23
   orthographic: 0
-  orthographic size: 1.75
+  orthographic size: 0.9
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2

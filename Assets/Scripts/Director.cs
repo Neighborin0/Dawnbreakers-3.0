@@ -79,7 +79,7 @@ public class Director : MonoBehaviour
 #if UNITY_EDITOR
 
 #else
-             DevMode = false;
+             DevMode = true;
 #endif
             Instance = this;
             DontDestroyOnLoad(gameObject);

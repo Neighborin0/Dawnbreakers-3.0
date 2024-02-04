@@ -134,6 +134,7 @@ public class DustyEnemy : Unit
             var TutorialText = Director.Instance.PipTutorialText;
             TutorialText.gameObject.SetActive(true);
             var TextColor = new Color(0, 237, 255, 0);
+
             TutorialText.fontSharedMaterial.SetColor("_GlowColor", TextColor);
             TutorialText.fontSharedMaterial.SetFloat("_GlowPower", 0.5f);
             TutorialText.color = TextColor;

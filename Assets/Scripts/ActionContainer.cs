@@ -492,7 +492,7 @@ public class ActionContainer : MonoBehaviour
         else
             TempTL.rectTransform.anchoredPosition = new Vector3((100 - costToReturn) * TempTL.offset, -50);
 
-        TempTL.staminaText.text = (100 - costToReturn).ToString();
+        TempTL.staminaText.text = (costToReturn).ToString();
         TempTL.CanClear = true;
         TempTL.GetComponent<LabUIInteractable>().CanHover = false;
         TempTL.CanBeHighlighted = false;
@@ -628,7 +628,7 @@ public class ActionContainer : MonoBehaviour
     {
         if (TL != null)
         {
-            TL.staminaText.text = (100 - CombatTools.DetermineTrueCost(action)).ToString();
+            TL.staminaText.text = (CombatTools.DetermineTrueCost(action)).ToString();
             TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * TL.offset, 50);
         }
         SetDescription();
@@ -772,7 +772,7 @@ public class ActionContainer : MonoBehaviour
         TL.CanMove = false;
         TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
         TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * TL.offset, 50);
-        TL.staminaText.text = (100 - CombatTools.DetermineTrueCost(action)).ToString();
+        TL.staminaText.text = (CombatTools.DetermineTrueCost(action)).ToString();
         TL.CanClear = true;
         TL.GetComponent<LabUIInteractable>().CanHover = false;
         TL.CanBeHighlighted = false;
@@ -785,7 +785,7 @@ public class ActionContainer : MonoBehaviour
     {
         TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
         TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * TL.offset, 50);
-        TL.staminaText.text = (100 - CombatTools.DetermineTrueCost(action)).ToString();
+        TL.staminaText.text = (CombatTools.DetermineTrueCost(action)).ToString();
         TL.CanClear = true;
         TL.GetComponent<LabUIInteractable>().CanHover = false;
         TL.CanBeHighlighted = false;

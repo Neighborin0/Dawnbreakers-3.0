@@ -117,7 +117,7 @@ public class IntentContainer : MonoBehaviour
         else
             TempTL.rectTransform.anchoredPosition = new Vector3((100 - costToReturn) * TempTL.offset, -50);
 
-        TempTL.staminaText.text = (100 - costToReturn).ToString();
+        TempTL.staminaText.text = (costToReturn).ToString();
         TempTL.CanClear = true;
         TempTL.GetComponent<LabUIInteractable>().CanHover = false;
         TempTL.CanBeHighlighted = false;

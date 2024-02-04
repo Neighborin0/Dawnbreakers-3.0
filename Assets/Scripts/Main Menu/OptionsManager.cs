@@ -64,7 +64,11 @@ public class OptionsManager : MonoBehaviour
     public float mapSensitivityMultiplier = 1;
     public float textSpeedMultiplier = 1;
     public bool CanPause = true;
-    
+
+    public bool BeatenDemo = false;
+    public GameObject playtestPrompt;
+    public GameObject disclaimer;
+
     void Awake()
     {
         if (Instance != null)
@@ -75,14 +79,16 @@ public class OptionsManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+         
 #if UNITY_EDITOR
             Debug.unityLogger.logEnabled = true;
-            
+
 #else
             Debug.unityLogger.logEnabled = false;
             OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
             OptionsManager.Instance.blackScreen.color = new Color(0, 0, 0, 1);
             StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.01f, false));
+            disclaimer.gameObject.SetActive(true);
 
 #endif
         }
@@ -155,6 +161,8 @@ public class OptionsManager : MonoBehaviour
         SFXSliderValue.text = Math.Round(SFXSlider.value * 100, 0).ToString();
         MusicSliderValue.text = Math.Round(MusicSlider.value * 100, 0).ToString();
 
+
+        SceneManager.sceneLoaded += CheckIfBeatenDemo;
 
     }
 
@@ -408,5 +416,17 @@ public class OptionsManager : MonoBehaviour
         AudioManager.Instance.Play(MusicToPlay);
         StartCoroutine(AudioManager.Instance.Fade(TargetVolume, MusicToPlay, MusicFadeTime, false));
         canvas.sortingOrder = 2;
+
+    }
+
+    private void CheckIfBeatenDemo(Scene arg0, LoadSceneMode arg1)
+    {
+
+        if (BeatenDemo)
+        {
+        
+            playtestPrompt.gameObject.SetActive(true);
+            BeatenDemo = false;
+        }
     }
 }

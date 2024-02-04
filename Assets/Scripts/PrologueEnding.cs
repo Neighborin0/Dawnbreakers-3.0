@@ -59,6 +59,7 @@ public class PrologueEnding : MonoBehaviour
             if(i == 5)
             {
                 AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "ending_ambience_001", 1f, true));
+                OptionsManager.Instance.BeatenDemo = true;
                 OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Main Menu", "Main Menu Theme"));
             }
 
