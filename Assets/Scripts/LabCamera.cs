@@ -21,7 +21,7 @@ public class LabCamera : MonoBehaviour
     public float TimeDivider = 100f;
     public float MovingTimeDivider = 10f;
     [SerializeField]
-    private float amountToSway = 0.5f;
+    private float amountToSway = 0.1f;
     public float shakeAmount = 100f;
     public float decreaseFactor = 0.1f;
     public Vector3 originalLocalPos;

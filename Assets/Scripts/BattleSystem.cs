@@ -94,8 +94,9 @@ public class BattleSystem : MonoBehaviour
         }
         if (BattleSystem.Instance.effectsSetting.sharedProfile.TryGet<Vignette>(out var vignette))
         {
-            vignette.intensity.value = 0.13f;
+            vignette.intensity.value = 0.28f;
         }
+        BattleSystem.Instance.mainLightValue = mainLight.intensity;
 
     }
     void Start()
@@ -251,6 +252,8 @@ public class BattleSystem : MonoBehaviour
                 TutorialText[i].gameObject.SetActive(false);
             }
         }
+        if(!TutorialNode)
+        LabCamera.Instance.camTransform.position = Camera.main.transform.position;
         LabCamera.Instance.ReadjustCam();
 
 
@@ -645,7 +648,7 @@ public class BattleSystem : MonoBehaviour
                 }
             }
         }
-        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.05f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(2));
     }
 
 
@@ -993,7 +996,7 @@ public class BattleSystem : MonoBehaviour
                 x.namePlate = NP;
                 NP.unit = x;
                 NP.defText.text = "0";
-                NP.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + unit.offset.x, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;
+                NP.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + unit.offset.x, x.GetComponent<SpriteRenderer>().bounds.min.y + 2, x.transform.position.z) / canvas.scaleFactor;
                 x.GetComponent<SpriteRenderer>().flipX = false;
 
             }

@@ -399,23 +399,30 @@ public class CombatTools : MonoBehaviour
 
     public static IEnumerator TurnOffDirectionalLight(float delay = 0.0001f)
     {
-        if (BattleSystem.Instance.mainLight != null)
+
+        if (BattleSystem.Instance != null && BattleSystem.Instance.mainLight != null)
         {
+            float startIntensity = BattleSystem.Instance.mainLight.intensity;
+            float currentTime = 0;
             while (BattleSystem.Instance.mainLight.intensity != 0)
             {
-                BattleSystem.Instance.mainLight.intensity -= 0.01f;
-                yield return new WaitForSeconds(delay);
+                currentTime += Time.deltaTime * delay;
+                BattleSystem.Instance.mainLight.intensity = Mathf.Lerp(startIntensity, 500, currentTime);
+                yield return null;
             }
         }
     }
     public static IEnumerator TurnOnDirectionalLight(float delay = 0.0001f)
     {
-        if (BattleSystem.Instance.mainLight != null)
+        if (BattleSystem.Instance != null && BattleSystem.Instance.mainLight != null)
         {
+            float startIntensity = BattleSystem.Instance.mainLight.intensity;
+            float currentTime = 0;
             while (BattleSystem.Instance.mainLight.intensity < BattleSystem.Instance.mainLightValue)
             {
-                BattleSystem.Instance.mainLight.intensity += 0.01f;
-                yield return new WaitForSeconds(delay);
+                currentTime += Time.deltaTime * delay;
+                BattleSystem.Instance.mainLight.intensity = Mathf.Lerp(startIntensity, BattleSystem.Instance.mainLightValue, currentTime);
+                yield return null;
             }
         }
     }

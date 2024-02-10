@@ -231,7 +231,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: High Priest of Cursed Radiance
+  m_text: Roads To Nowhere
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
@@ -1434,7 +1434,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MATRIARCH
+  m_text: CORONUS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2b0856da42d84704eb5708bb8998adc5, type: 2}
   m_sharedMaterial: {fileID: -1827735172243065419, guid: 2b0856da42d84704eb5708bb8998adc5,
@@ -1638,7 +1638,7 @@ PrefabInstance:
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
       propertyPath: party.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}

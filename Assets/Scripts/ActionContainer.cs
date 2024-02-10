@@ -8,6 +8,8 @@ using static UnityEngine.UI.CanvasScaler;
 using System.Linq;
 using static Action;
 using JetBrains.Annotations;
+using UnityEngine.ProBuilder.Shapes;
+using UnityEngine.Rendering.PostProcessing;
 
 public class ActionContainer : MonoBehaviour
 {
@@ -182,7 +184,7 @@ public class ActionContainer : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(1))
         {
-            LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), Vector3.zero);
+            LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), new Vector3(0, 16.8f, 0), CombatTools.FindDecidingUnit().GetComponent<SpriteRenderer>().sprite.bounds.center.x / 5f, 0, 0);
             AudioManager.QuickPlay("ui_woosh_002");
             SetStyleLight(true);
             SetActive(false);
@@ -276,6 +278,7 @@ public class ActionContainer : MonoBehaviour
                         BattleLog.Instance.ResetBattleLog();
                         ClearTimelineChildren();
                         LabCamera.Instance.ResetPosition();
+                        SetStyleLight(true);
                         AudioManager.QuickPlay("button_Hit_005");
                         SetActive(false);
                     }
@@ -306,6 +309,7 @@ public class ActionContainer : MonoBehaviour
                         baseUnit.timelinechild.CanMove = true;
                         LabCamera.Instance.ResetPosition();
                         BattleLog.Instance.ResetBattleLog();
+                        SetStyleLight(true);
                         ClearTimelineChildren();
                         Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                         AudioManager.QuickPlay("button_Hit_005");
@@ -343,6 +347,7 @@ public class ActionContainer : MonoBehaviour
                         Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
                         SetActive(false);
                         ClearTimelineChildren();
+                        SetStyleLight(true);
                         AudioManager.QuickPlay("button_Hit_005");
                         LabCamera.Instance.ResetPosition();
                     }
@@ -395,6 +400,7 @@ public class ActionContainer : MonoBehaviour
                             BattleLog.Instance.ResetBattleLog();
                             LabCamera.Instance.ResetPosition();
                             ClearTimelineChildren();
+                            SetStyleLight(true);
                             AudioManager.QuickPlay("button_Hit_005");
                             SetActive(false);
                         }
@@ -508,7 +514,7 @@ public class ActionContainer : MonoBehaviour
             if (lightCoroutine != null)
                 StopCoroutine(lightCoroutine);
 
-            lightCoroutine = TurnOnLight(0.01f);
+            lightCoroutine = TurnOnLight(2);
             if (this != null)
                 Director.Instance.StartCoroutine(lightCoroutine);
 
@@ -518,7 +524,7 @@ public class ActionContainer : MonoBehaviour
             if (lightCoroutine != null)
                 StopCoroutine(lightCoroutine);
 
-            lightCoroutine = TurnOffLight(0.01f);
+            lightCoroutine = TurnOffLight(2);
             if (this != null)
                 Director.Instance.StartCoroutine(lightCoroutine);
         }
@@ -528,10 +534,13 @@ public class ActionContainer : MonoBehaviour
     {
         if (BattleSystem.Instance != null && BattleSystem.Instance.mainLight != null)
         {
+            float startIntensity = BattleSystem.Instance.mainLight.intensity;
+            float currentTime = 0;
             while (BattleSystem.Instance.mainLight.intensity != 0 && action.actionStyle != Action.ActionStyle.STANDARD)
             {
-                BattleSystem.Instance.mainLight.intensity -= 0.01f;
-                yield return new WaitForSeconds(delay);
+                currentTime += Time.deltaTime * delay;
+                BattleSystem.Instance.mainLight.intensity = Mathf.Lerp(startIntensity, 500, currentTime);
+                yield return null;
             }
         }
     }
@@ -539,10 +548,13 @@ public class ActionContainer : MonoBehaviour
     {
         if (BattleSystem.Instance != null && BattleSystem.Instance.mainLight != null)
         {
+            float startIntensity = BattleSystem.Instance.mainLight.intensity;
+            float currentTime = 0;
             while (BattleSystem.Instance.mainLight.intensity < BattleSystem.Instance.mainLightValue && action.actionStyle == Action.ActionStyle.STANDARD)
             {
-                BattleSystem.Instance.mainLight.intensity += 0.01f;
-                yield return new WaitForSeconds(delay);
+                currentTime += Time.deltaTime * delay;
+                BattleSystem.Instance.mainLight.intensity = Mathf.Lerp(startIntensity, BattleSystem.Instance.mainLightValue, currentTime);
+                yield return null;
             }
         }
     }
@@ -576,7 +588,7 @@ public class ActionContainer : MonoBehaviour
             }
             if (!action.CanBeStyled)
             {
-                EPtext.text += "<color=#FF0000>\nCan't be styled.</color>";
+                EPtext.text += "<color=#FF0000>\nCan't be ignited.</color>";
             }
 
             if (BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
@@ -681,6 +693,10 @@ public class ActionContainer : MonoBehaviour
         SetActionStyleButtonsActive(false);
         SetStyleLight(true);
         LabCamera.Instance.ResetPosition();
+
+        if(CombatTools.FindDecidingUnit() != null)
+            LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), new Vector3(0, 16.8f, 0), CombatTools.FindDecidingUnit().GetComponent<SpriteRenderer>().sprite.bounds.center.x / 5f, 0, 0);
+
         RemoveDescription();
         ResetAllStyleButtons();
 
@@ -710,7 +726,7 @@ public class ActionContainer : MonoBehaviour
         DeactivateOtherActionContainers();
 
         ClearTimelineChildren();
-
+        SetStyleLight(true);
         LabCamera.Instance.ResetPosition();
         RemoveDescription();
 

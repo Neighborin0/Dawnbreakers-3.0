@@ -138,7 +138,7 @@ public class Unit : MonoBehaviour
             }
             else if (IsHidden)
             {
-                SetMaterialProperties(sprite, 1f, Color.black, new Color(-0.3f, -0.3f, -0.3f, 1f));
+                SetMaterialProperties(sprite, 1f, Color.black, new Color(-1f, -1f, -1f, 1f));
             }
             else if (state == PlayerState.DECIDING && IsPlayerControlled)
             {

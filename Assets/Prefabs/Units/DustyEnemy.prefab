@@ -140,7 +140,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
   - {fileID: 11400000, guid: abf50d286d1dffc4ca1b7e3804c86162, type: 2}
   summonables: []
-  TutorialIcon3: {fileID: 338629660966762150, guid: 5118e747ef6dafa48982a502d1d4a55e,
+  HitEmissionChanged: 0
+  TutorialIcon3: {fileID: 6123992061989291869, guid: ac6176318e1b31347ae91dad28a6aebd,
     type: 3}
 --- !u!95 &1571792269196389254
 Animator:

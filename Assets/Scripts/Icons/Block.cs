@@ -26,7 +26,7 @@ public class Block : EffectIcon
     }
     public override string GetDescription()
     {
-        description = $"Reduces the DMG of the next hit by 50%.";
+        description = $"Reduces the DMG of \nthe next hit by 50%.";
         return description;
     }
 

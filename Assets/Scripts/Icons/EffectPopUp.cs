@@ -11,97 +11,102 @@ using static System.Collections.Specialized.BitVector32;
 
 public class EffectPopUp : MonoBehaviour
 {
-   /* private TextMeshProUGUI text;
-    public GameObject childeffectPopUp;
-    bool ISchildEP = false;
-    public bool AlreadyAssignedPosition = false;
-
-    private void Awake()
+    public void Start()
     {
-        text = GetComponentInChildren<TextMeshProUGUI>();
+        transform.LookAt(Camera.main.transform);
+        transform.rotation = Camera.main.transform.rotation;
     }
+    /* private TextMeshProUGUI text;
+     public GameObject childeffectPopUp;
+     bool ISchildEP = false;
+     public bool AlreadyAssignedPosition = false;
 
-     void OnEnable()
-    {
-        CheckForSpecialText(); 
-      
-           
-    }
+     private void Awake()
+     {
+         text = GetComponentInChildren<TextMeshProUGUI>();
+     }
 
-    private void OnDisable()
-    {
-        if (childeffectPopUp != null)
-            childeffectPopUp.SetActive(false);
-    }
-    public void CheckForSpecialText()
-    {
-        var effectText = text.text;
-        if(!ISchildEP)
-        {
-            switch (effectText)
-            {
-                case var s when effectText.Contains("<sprite name=\"BLOCK\">"):
-                    {
-                        if (childeffectPopUp == null)
-                        {
-                            var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
-                            EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                            childeffectPopUp = EP;
-                            var rectTrans = transform.GetComponent<RectTransform>();
-                            childeffectPopUp.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x, rectTrans.anchoredPosition.y, 0);
-                            var EPtext = childeffectPopUp.GetComponentInChildren<TextMeshProUGUI>();
-                            EPtext.text = "<sprite name=\"BLOCK\">: Reduces the DMG of the\n next hit by 50%.";
-                        }
-                        else
-                        {
-                            childeffectPopUp.SetActive(true);
-                        }
-                        childeffectPopUp.GetComponent<EffectPopUp>().ISchildEP = true;
-                    }
-                    break;
+      void OnEnable()
+     {
+         CheckForSpecialText(); 
 
-                case var s when effectText.Contains("<sprite name=\"FORTIFY\">"):
-                    {
-                        if (childeffectPopUp == null)
-                        {
-                            var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
-                            EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                            childeffectPopUp = EP;
-                            var rectTrans = transform.GetComponent<RectTransform>();
-                            childeffectPopUp.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x, rectTrans.anchoredPosition.y, 0);
-                            var EPtext = childeffectPopUp.GetComponentInChildren<TextMeshProUGUI>();
-                            EPtext.text = "<sprite name=\"FORTIFY\">: Reduces damage taken until \nthe start of the next round.";
-                        }
-                        else
-                        {
-                            childeffectPopUp.SetActive(true);
-                        }
-                        childeffectPopUp.GetComponent<EffectPopUp>().ISchildEP = true;
-                    }
-                    break;
 
-                case var s when effectText.Contains("<sprite name=\"VIGOR\">"):
-                    {
-                        if (childeffectPopUp == null)
-                        {
-                            var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
-                            EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                            childeffectPopUp = EP;
-                            var rectTrans = transform.GetComponent<RectTransform>();
-                            childeffectPopUp.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x, rectTrans.anchoredPosition.y, 0);
-                            var EPtext = childeffectPopUp.GetComponentInChildren<TextMeshProUGUI>();
-                            EPtext.text = "<sprite name=\"VIGOR\": Increases damage.";
-                        }
-                        else
-                        {
-                            childeffectPopUp.SetActive(true);
-                        }
-                        childeffectPopUp.GetComponent<EffectPopUp>().ISchildEP = true;
-                    }
-                    break;
-            }
+     }
 
-        }
-    }
-   */
+     private void OnDisable()
+     {
+         if (childeffectPopUp != null)
+             childeffectPopUp.SetActive(false);
+     }
+     public void CheckForSpecialText()
+     {
+         var effectText = text.text;
+         if(!ISchildEP)
+         {
+             switch (effectText)
+             {
+                 case var s when effectText.Contains("<sprite name=\"BLOCK\">"):
+                     {
+                         if (childeffectPopUp == null)
+                         {
+                             var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
+                             EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                             childeffectPopUp = EP;
+                             var rectTrans = transform.GetComponent<RectTransform>();
+                             childeffectPopUp.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x, rectTrans.anchoredPosition.y, 0);
+                             var EPtext = childeffectPopUp.GetComponentInChildren<TextMeshProUGUI>();
+                             EPtext.text = "<sprite name=\"BLOCK\">: Reduces the DMG of the\n next hit by 50%.";
+                         }
+                         else
+                         {
+                             childeffectPopUp.SetActive(true);
+                         }
+                         childeffectPopUp.GetComponent<EffectPopUp>().ISchildEP = true;
+                     }
+                     break;
+
+                 case var s when effectText.Contains("<sprite name=\"FORTIFY\">"):
+                     {
+                         if (childeffectPopUp == null)
+                         {
+                             var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
+                             EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                             childeffectPopUp = EP;
+                             var rectTrans = transform.GetComponent<RectTransform>();
+                             childeffectPopUp.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x, rectTrans.anchoredPosition.y, 0);
+                             var EPtext = childeffectPopUp.GetComponentInChildren<TextMeshProUGUI>();
+                             EPtext.text = "<sprite name=\"FORTIFY\">: Reduces damage taken until \nthe start of the next round.";
+                         }
+                         else
+                         {
+                             childeffectPopUp.SetActive(true);
+                         }
+                         childeffectPopUp.GetComponent<EffectPopUp>().ISchildEP = true;
+                     }
+                     break;
+
+                 case var s when effectText.Contains("<sprite name=\"VIGOR\">"):
+                     {
+                         if (childeffectPopUp == null)
+                         {
+                             var EP = Instantiate(Director.Instance.EffectPopUp, Director.Instance.canvas.transform);
+                             EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                             childeffectPopUp = EP;
+                             var rectTrans = transform.GetComponent<RectTransform>();
+                             childeffectPopUp.transform.GetComponent<RectTransform>().localPosition = new Vector3(rectTrans.anchoredPosition.x, rectTrans.anchoredPosition.y, 0);
+                             var EPtext = childeffectPopUp.GetComponentInChildren<TextMeshProUGUI>();
+                             EPtext.text = "<sprite name=\"VIGOR\": Increases damage.";
+                         }
+                         else
+                         {
+                             childeffectPopUp.SetActive(true);
+                         }
+                         childeffectPopUp.GetComponent<EffectPopUp>().ISchildEP = true;
+                     }
+                     break;
+             }
+
+         }
+     }
+    */
 }

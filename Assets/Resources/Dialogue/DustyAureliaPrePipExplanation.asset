@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DustyAureliaPrePipExplanation
   m_EditorClassIdentifier: 
   labLines:
-  - text: ...Damn it...I'm slowing down.
+  - text: ...I'm slowing down...
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

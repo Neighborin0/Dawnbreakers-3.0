@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AureliaDeath
   m_EditorClassIdentifier: 
   labLines:
-  - text: 'Go dim now radiant light...  '
+  - text: 'Go dim now...  '
     expression: neutral
     unit: Matriarch
     textSpeed: 0.05

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DustyAureliaRestMeeting
   m_EditorClassIdentifier: 
   labLines:
-  - text: 'We can rest here. '
+  - text: Here. We'll be safe.
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -62,8 +62,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "Quite the stoic one, aren\u2019t you? You'd fit right in with the Iron
-      Fangs.  "
+  - text: 'Quite the stoic one, aren''t you? You''d fit right in with my group.  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -87,7 +86,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'I just hope the lads are getting along fine without me...  '
+  - text: I just hope my men are getting along fine without me...
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -123,7 +122,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Sorry for rambling on lass, just an old fool lamenting. '
+  - text: 'Sorry for rambling on, just an old fool lamenting. '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -135,7 +134,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "\u2026  "
+  - text: ...
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -147,8 +146,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Never lose sight of finding your men Wulfric. Make sure you never forget
-      that.
+  - text: Hold onto that feeling Wulfric...
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -158,6 +156,31 @@ MonoBehaviour:
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: You'll find them in time...
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: QuickPlay
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: button_hit_001
+            m_BoolArgument: 0
+          m_CallState: 2
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: 'Hmmph... '

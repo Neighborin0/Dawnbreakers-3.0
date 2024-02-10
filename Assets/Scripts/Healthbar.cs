@@ -35,6 +35,7 @@ public class Healthbar : MonoBehaviour
             {
                 InitializeHealthbar();
             }
+
             catch (Exception e)
             {
                 Debug.LogError($"Error in Healthbar Start(): {e.Message}");
@@ -45,7 +46,10 @@ public class Healthbar : MonoBehaviour
     void Update()
     {
         UpdateHealthbar();
+        transform.LookAt(Camera.main.transform);
+        transform.rotation = Camera.main.transform.rotation;
     }
+
 
     private void InitializeHealthbar()
     {
@@ -186,8 +190,8 @@ public class Healthbar : MonoBehaviour
 
                         if (actionStyle != Action.ActionStyle.STANDARD)
                         {
-                            TL.value -= 10;
-                            action.cost += 10;
+                            TL.value -= 15;
+                            action.cost += 15;
                             if (actionStyle == Action.ActionStyle.LIGHT)
                             {
                                 number.outlineColor = new Color(0, 0.635f, 0.749f);

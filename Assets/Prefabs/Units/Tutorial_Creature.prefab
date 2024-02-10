@@ -5142,7 +5142,7 @@ MonoBehaviour:
   HitEmissionChanged: 0
   TutorialIcon1: {fileID: 338629660966762150, guid: 5118e747ef6dafa48982a502d1d4a55e,
     type: 3}
-  TutorialIcon2: {fileID: 7305245774478826978, guid: 8b25eb35cade2e540990d6fb4afbed18,
+  TutorialIcon2: {fileID: 6123992061989291869, guid: abdf47f182a6a894b9fd1395c957b695,
     type: 3}
 --- !u!1 &7455860217542930484
 GameObject:

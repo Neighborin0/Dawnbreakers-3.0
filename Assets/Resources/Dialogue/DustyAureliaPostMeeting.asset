@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DustyAureliaPostMeeting
   m_EditorClassIdentifier: 
   labLines:
-  - text: 'Wait. '
+  - text: Wait...
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -51,8 +51,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'I don''t know how much longer I can last out here alone and by the looks
-      of it you''re quite battered as well.  '
+  - text: I don't know how much longer I can last out here alone. I need your help.
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -76,8 +75,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "I don't care what you do, just don\u2019t raise your sword against me
-      again. Next time I won't be so merciful. "
+  - text: 'I don''t care what you do, just don''t raise your sword against me again.
+      Next time I won''t be so merciful. '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -114,7 +113,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: My name is Wulfric! I lead a small mercenary group known as the Iron Fangs.
+  - text: My name is Wulfric. I lead a small mercenary group known as the Iron Fangs.
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -138,19 +137,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Aurelia. '
-    expression: neutral
-    unit: Aurelia
-    textSpeed: 0.02
-    OnLineStarted:
-      m_PersistentCalls:
-        m_Calls: []
-    OnLineEnded:
-      m_PersistentCalls:
-        m_Calls: []
-    PositionToMoveTo: {x: 0, y: 0, z: 0}
-    CameraRotation: {x: 0, y: 0, z: 0}
-  - text: "Now enough with this, I\u2019m tired of dawdling here any further. "
+  - text: "Aurelia. Now enough with this, I\u2019m tired of dawdling here any further. "
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

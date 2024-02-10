@@ -13,13 +13,26 @@ MonoBehaviour:
   m_Name: DustyAureliaMeeting(2)
   m_EditorClassIdentifier: 
   labLines:
-  - text: 'I yield...I''m clearly no match... '
+  - text: 'Just end it quickly... '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
     OnLineStarted:
       m_PersistentCalls:
         m_Calls:
+        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
+            type: 3}
+          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
+          m_MethodName: ChangeMusicTrackVolume
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
         - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
             type: 3}
           m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
@@ -33,37 +46,12 @@ MonoBehaviour:
             m_StringArgument: Dusty
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
-            type: 3}
-          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
-          m_MethodName: ChangeMusicTrackVolume
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Dusty
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnLineEnded:
-      m_PersistentCalls:
-        m_Calls: []
-    PositionToMoveTo: {x: 0, y: 0, z: 0}
-    CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Just end it quickly... '
-    expression: neutral
-    unit: Dusty
-    textSpeed: 0.03
-    OnLineStarted:
-      m_PersistentCalls:
-        m_Calls: []
     OnLineEnded:
       m_PersistentCalls:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 11.17, z: -79.28}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Just get out of my way, I have no interest in your life. '
+  - text: 'Stand aside, I have no interest in your life. '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -151,6 +139,18 @@ MonoBehaviour:
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: Alright...I won't stop you.
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: ...
     expression: neutral
     unit: Dusty
     textSpeed: 0.03

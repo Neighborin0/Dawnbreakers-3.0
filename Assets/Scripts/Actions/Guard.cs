@@ -38,7 +38,7 @@ public class Guard : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(2));
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Defend_001", Color.blue, Color.white, new Vector3(0, 5, -2f), Quaternion.identity, 0.8f, 0, true, 0, 10));
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f);
         yield return new WaitForSeconds(0.8f);
@@ -47,7 +47,7 @@ public class Guard : Action
         //BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, CombatTools.DetermineTrueActionValue(this) + unit.defenseStat);
         BattleSystem.Instance.SetStatChanges(Stat.ARMOR, CombatTools.DetermineTrueActionValue(this) + unit.defenseStat, false, targets);
         yield return new WaitForSeconds(1.3f);
-        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(2));
         LabCamera.Instance.ResetPosition();
         yield return new WaitForSeconds(0.5f);
         this.Done = true;

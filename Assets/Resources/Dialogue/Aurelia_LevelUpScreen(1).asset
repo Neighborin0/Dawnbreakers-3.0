@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Aurelia_LevelUpScreen(1)
   m_EditorClassIdentifier: 
   labLines:
-  - text: Huff...Huff...
+  - text: ...Huff...Huff...
     expression: neutral
     unit: Aurelia
     textSpeed: 0

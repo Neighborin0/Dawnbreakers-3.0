@@ -51,7 +51,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Do not cry for him. His brilliant spark will be lit again and again until
+  - text: 'Do not mourn him. His brilliant spark will be lit again and again until
       he seeks my embrace.  '
     expression: neutral
     unit: Matriarch
@@ -77,7 +77,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'As for you...You''re...Brighter...  '
+  - text: 'As for you...You are... Brighter...  '
     expression: neutral
     unit: Matriarch
     textSpeed: 0.05
@@ -152,7 +152,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'This all ends here!  '
+  - text: I'll end it all here...
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

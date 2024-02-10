@@ -138,7 +138,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   summonables: []
-  TutorialIcon4: {fileID: 338629660966762150, guid: 5118e747ef6dafa48982a502d1d4a55e,
+  HitEmissionChanged: 0
+  TutorialIcon4: {fileID: 6123992061989291869, guid: 4a4bc514f1a6cc44b8242ea1b4cb1e42,
     type: 3}
 --- !u!54 &2464946091940644846
 Rigidbody:

@@ -18,7 +18,7 @@ public class Indomitable : EffectIcon
     }
     public override string GetDescription()
     {
-        description = $"Prevents knockback.";
+        description = $"Prevents delays and stuns.";
         return description;
     }
 

@@ -39,7 +39,7 @@ public class WarCry : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(0.01f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(2));
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
         AudioManager.QuickPlay("warcry_001");
@@ -54,7 +54,7 @@ public class WarCry : Action
             battleSystem.SetTempEffect(x, "ATK", true, duration, CombatTools.DetermineTrueActionValue(this), 0);
         }
         yield return new WaitForSeconds(1f);
-        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(2));
         LabCamera.Instance.ResetPosition();
         yield return new WaitForSeconds(0.5f);
         this.Done = true;
