@@ -34,7 +34,7 @@ public class Defend : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(2));
+        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "DefendSelf", Color.blue, Color.blue ,new Vector3(0, 1, -2f), Quaternion.identity, 0.8f, 0, true, 0, 10)); 
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f);
         yield return new WaitForSeconds(0.8f);
@@ -42,7 +42,7 @@ public class Defend : Action
         Light.color = Color.blue;
         BattleSystem.Instance.SetStatChanges(Stat.ARMOR, statAmount + unit.defenseStat, false, targets);
         yield return new WaitForSeconds(1.5f);
-        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(2));
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(10));
         AudioManager.QuickPlay("ui_woosh_002");
         LabCamera.Instance.ResetPosition();
         yield return new WaitForSeconds(0.6f);

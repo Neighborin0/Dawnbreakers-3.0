@@ -35,7 +35,7 @@ public class RestSite : MonoBehaviour
         for (int i = 0; i <= Director.Instance.party.Count - 1; i++)
         {
             Director.Instance.party[i].gameObject.SetActive(true);
-            Director.Instance.party[i].gameObject.transform.localScale = new Vector3(10f, 10f, 1f);
+            Director.Instance.party[i].gameObject.transform.localScale = new Vector3(13, 13, 13);
             Director.Instance.party[i].transform.position = restPoints[i].transform.position;
             if (i == 1 || i == 3)
             {
@@ -66,9 +66,10 @@ public class RestSite : MonoBehaviour
         LabCamera.Instance.ReadjustCam();
         yield return new WaitForSeconds(2f);
         OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
-        Tools.ToggleUiBlocker(true, true, true);
-        LabCamera.Instance.TimeDivider = 500;
+        Tools.ToggleUiBlocker(true, true, true);     
         LabCamera.Instance.state = LabCamera.CameraState.SWAY;
+        LabCamera.Instance.TimeDivider = 800;
+        LabCamera.Instance.amountToSway = 0.1f;
         Director.Instance.CharacterSlotEnable();
         foreach (var button in buttons)
         {

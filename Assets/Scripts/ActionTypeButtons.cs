@@ -52,7 +52,7 @@ public class ActionTypeButton : Button
                     AudioManager.QuickPlay("button_Hit_005", false);
                     AudioManager.Instance.Play("statUp_Loop_001", 0, false, 1f);
 
-                    Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", lightColor * 0.1f, lightColor * 0.1f, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
+                    Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", lightColor * 0.3f, lightColor * 0.3f, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
                 }
                 break;
             case ActionButtonState.HEAVY:
@@ -75,7 +75,7 @@ public class ActionTypeButton : Button
                     AudioManager.QuickPlay("statUp_Loop_001");
 
 
-                    Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", heavyColor * 0.1f, heavyColor * 0.1f, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
+                    Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", heavyColor * 0.3f, heavyColor * 0.3f, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
                 }
                 break;
             case ActionButtonState.DEFAULT:

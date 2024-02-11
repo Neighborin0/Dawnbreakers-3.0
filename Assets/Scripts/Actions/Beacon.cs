@@ -39,7 +39,7 @@ public class Beacon : Action
     public override IEnumerator ExecuteAction()
     {
         int numofUnitsToAdd = 3 - CombatTools.DetermineAllies(unit).Count;
-        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(2));
+        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
         LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0f, 10, -55, 0.5f);
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, new Color(1, 0.86f, 0.55f), 0.04f, 0.1f);
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLight", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(-2.95f, 5.02f, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
@@ -129,7 +129,7 @@ public class Beacon : Action
             yield return new WaitForSeconds(0.2f);
             AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "summon_001", 1f, true));
         }
-        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(0.01f));
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(10));
         LabCamera.Instance.ResetPosition();
         Done = true;
         yield break;

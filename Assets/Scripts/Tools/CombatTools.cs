@@ -289,7 +289,7 @@ public class CombatTools : MonoBehaviour
                 VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
                 var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
                 vfxMaterial.SetColor("_BaseColor", vfxColor * intensityMultiplier);
-                vfxMaterial.SetColor("_EmissionColor", vfxColor);
+                vfxMaterial.SetColor("_EmissionColor", vfxColor * intensityMultiplier);
             }
             if (VFX.GetComponent<MeshRenderer>() != null)
             {
@@ -399,30 +399,39 @@ public class CombatTools : MonoBehaviour
 
     public static IEnumerator TurnOffDirectionalLight(float delay = 0.0001f)
     {
-
-        if (BattleSystem.Instance != null && BattleSystem.Instance.mainLight != null)
+        if (BattleSystem.Instance != null && BattleSystem.Instance.lablights != null)
         {
-            float startIntensity = BattleSystem.Instance.mainLight.intensity;
-            float currentTime = 0;
-            while (BattleSystem.Instance.mainLight.intensity != 0)
+            foreach (var light in BattleSystem.Instance.lablights.ToList())
             {
-                currentTime += Time.deltaTime * delay;
-                BattleSystem.Instance.mainLight.intensity = Mathf.Lerp(startIntensity, 500, currentTime);
-                yield return null;
+                float currentIntensity = light.lightComponent.intensity;
+                float startIntensity = light.startIntensity;
+                float currentTime = 0;
+                float TargetIntensity = startIntensity / 40;
+                while (light.lightComponent.intensity > TargetIntensity)
+                {
+                    currentTime += Time.deltaTime * delay;
+                    light.lightComponent.intensity = Mathf.Lerp(currentIntensity, TargetIntensity, currentTime);
+                    yield return null;
+                }
             }
         }
     }
     public static IEnumerator TurnOnDirectionalLight(float delay = 0.0001f)
     {
-        if (BattleSystem.Instance != null && BattleSystem.Instance.mainLight != null)
+        if (BattleSystem.Instance != null && BattleSystem.Instance.lablights != null)
         {
-            float startIntensity = BattleSystem.Instance.mainLight.intensity;
-            float currentTime = 0;
-            while (BattleSystem.Instance.mainLight.intensity < BattleSystem.Instance.mainLightValue)
+            foreach (var light in BattleSystem.Instance.lablights.ToList())
             {
-                currentTime += Time.deltaTime * delay;
-                BattleSystem.Instance.mainLight.intensity = Mathf.Lerp(startIntensity, BattleSystem.Instance.mainLightValue, currentTime);
-                yield return null;
+                float currentIntensity = light.lightComponent.intensity;
+                float startIntensity = light.startIntensity;
+                float currentTime = 0;
+                float TargetIntensity = startIntensity;
+                while (light.lightComponent.intensity < TargetIntensity)
+                {
+                    currentTime += Time.deltaTime * delay;
+                    light.lightComponent.intensity = Mathf.Lerp(currentIntensity, TargetIntensity, currentTime);
+                    yield return null;
+                }
             }
         }
     }

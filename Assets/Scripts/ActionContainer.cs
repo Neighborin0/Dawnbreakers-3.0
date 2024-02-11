@@ -427,7 +427,7 @@ public class ActionContainer : MonoBehaviour
                     Color heavyColor = new Color(225, 1, 0);
                     this.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
                     this.GetComponent<Image>().material.SetColor("OutlineColor", heavyColor * 10);
-                    baseUnit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", heavyColor * 0.02f);
+                    baseUnit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", heavyColor * 0.05f);
                 }
                 break;
             case Action.ActionStyle.LIGHT:
@@ -435,7 +435,7 @@ public class ActionContainer : MonoBehaviour
                     Color lightColor = new Color(0, 162, 191);
                     this.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
                     this.GetComponent<Image>().material.SetColor("OutlineColor", lightColor * 10);
-                    baseUnit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", lightColor * 0.02f);
+                    baseUnit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", lightColor * 0.05f);
                 }
                 break;
         }
@@ -514,7 +514,7 @@ public class ActionContainer : MonoBehaviour
             if (lightCoroutine != null)
                 StopCoroutine(lightCoroutine);
 
-            lightCoroutine = TurnOnLight(2);
+            lightCoroutine = TurnOnLight(10);
             if (this != null)
                 Director.Instance.StartCoroutine(lightCoroutine);
 
@@ -524,7 +524,7 @@ public class ActionContainer : MonoBehaviour
             if (lightCoroutine != null)
                 StopCoroutine(lightCoroutine);
 
-            lightCoroutine = TurnOffLight(2);
+            lightCoroutine = TurnOffLight(10);
             if (this != null)
                 Director.Instance.StartCoroutine(lightCoroutine);
         }
@@ -532,29 +532,39 @@ public class ActionContainer : MonoBehaviour
 
     private IEnumerator TurnOffLight(float delay = 0.0001f)
     {
-        if (BattleSystem.Instance != null && BattleSystem.Instance.mainLight != null)
+        if (BattleSystem.Instance != null && BattleSystem.Instance.lablights != null)
         {
-            float startIntensity = BattleSystem.Instance.mainLight.intensity;
-            float currentTime = 0;
-            while (BattleSystem.Instance.mainLight.intensity != 0 && action.actionStyle != Action.ActionStyle.STANDARD)
+            foreach (var light in BattleSystem.Instance.lablights.ToList())
             {
-                currentTime += Time.deltaTime * delay;
-                BattleSystem.Instance.mainLight.intensity = Mathf.Lerp(startIntensity, 500, currentTime);
-                yield return null;
+                float currentIntensity = light.lightComponent.intensity;
+                float startIntensity = light.startIntensity;
+                float currentTime = 0;
+                float TargetIntensity = startIntensity / 22.5f;
+                while (light.lightComponent.intensity > TargetIntensity && action.actionStyle != Action.ActionStyle.STANDARD)
+                {
+                    currentTime += Time.deltaTime * delay;
+                    light.lightComponent.intensity = Mathf.Lerp(currentIntensity, TargetIntensity, currentTime);
+                    yield return null;
+                }
             }
         }
     }
     private IEnumerator TurnOnLight(float delay = 0.0001f)
     {
-        if (BattleSystem.Instance != null && BattleSystem.Instance.mainLight != null)
+        if (BattleSystem.Instance != null && BattleSystem.Instance.lablights != null)
         {
-            float startIntensity = BattleSystem.Instance.mainLight.intensity;
-            float currentTime = 0;
-            while (BattleSystem.Instance.mainLight.intensity < BattleSystem.Instance.mainLightValue && action.actionStyle == Action.ActionStyle.STANDARD)
+            foreach (var light in BattleSystem.Instance.lablights.ToList())
             {
-                currentTime += Time.deltaTime * delay;
-                BattleSystem.Instance.mainLight.intensity = Mathf.Lerp(startIntensity, BattleSystem.Instance.mainLightValue, currentTime);
-                yield return null;
+                float currentIntensity = light.lightComponent.intensity;
+                float startIntensity = light.startIntensity;
+                float currentTime = 0;
+                float TargetIntensity = startIntensity;
+                while (light.lightComponent.intensity < TargetIntensity && action.actionStyle == Action.ActionStyle.STANDARD)
+                {
+                    currentTime += Time.deltaTime * delay;
+                    light.lightComponent.intensity = Mathf.Lerp(currentIntensity, TargetIntensity, currentTime);
+                    yield return null;
+                }
             }
         }
     }

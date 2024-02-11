@@ -163,6 +163,27 @@ public class Director : MonoBehaviour
 
         }
 
+        if (Input.GetKeyDown(KeyCode.U) && Director.Instance.DevMode)
+        {
+            if(canvas.gameObject.activeSelf)
+            {
+                canvas.gameObject.SetActive(false);
+            }
+            else
+            {
+                canvas.gameObject.SetActive(true);
+            }
+            if (LabCamera.Instance != null && LabCamera.Instance.uicam != null)
+            {
+                if (LabCamera.Instance.uicam.gameObject.activeSelf)
+                {
+                    LabCamera.Instance.uicam.gameObject.SetActive(false);
+                }
+                else
+                    LabCamera.Instance.uicam.gameObject.SetActive(true);
+            }
+        }
+
     }
 
 

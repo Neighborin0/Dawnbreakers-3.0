@@ -158,9 +158,9 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: You'll find them in time...
+  - text: You will find them in time...
     expression: neutral
-    unit: Dusty
+    unit: Aurelia
     textSpeed: 0.03
     OnLineStarted:
       m_PersistentCalls:

@@ -7794,8 +7794,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3913775495214286369}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -137}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7806,7 +7806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2000}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!223 &5788762225702094327
@@ -15867,11 +15867,11 @@ MonoBehaviour:
   m_text: "This is a short 10-15 minute experince. The current version you are playing
     is a early prototype. Many features are still being refined and implemented.
     Some features may be missing entirely. \r\n\r\nThis build is meant to act as
-    a foundation for a larger project and should give you a sense of where the project
-    is heading. \nIf you have any thoughts about the project, message me directly
-    through Discord (@neighborino) or send anonymous feedback through the feedback
-    button in the settings menu.\r\n\r\nThank you for taking the time to play my
-    game!"
+    a foundation/tutorial for a larger project and should give you a sense of where
+    the project is heading. \n\nIf you have any thoughts about the project, message
+    me directly through Discord (@neighborino) or send anonymous feedback through
+    the feedback button in the settings menu.\r\n\r\nThank you for taking the time
+    to play my game!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
@@ -15899,8 +15899,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 38
+  m_fontSizeBase: 38
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

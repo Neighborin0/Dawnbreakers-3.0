@@ -140,12 +140,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Hitting an enemy''s WEAK or using an <color=#ffffff>ignited action</color>
-    <color=#FFEB00>delays</color> them by  <color=#FFEB00>20 units</color>.
+  m_text: 'Hitting an enemy''s <color=#FFEB00>WEAK</color> or using an <color=#ffffff>ignited
+    action</color> <color=#FFEB00>delays</color> them by  <color=#FFEB00>20 units</color>.
 
     Delaying
     an enemy past <color=#FFEB00>100 units</color>, <color=#FFEB00>stuns them</color>.
-    <color=#ff0840>However this also prevents the next stun.</color>'
+    <color=#ff0840>However, this also prevents the next stun.</color>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
@@ -587,16 +587,16 @@ MonoBehaviour:
 
     <color=#ffa93b>PHYS</color>:
     Slash  <sprite name="SLASH">, Strike   <sprite name="STRIKE">, Pierce  <sprite
-    name="PIERCE">, Cleave  <sprite name="CLEAVE">.
+    name="PIERCE">, Cleave  <sprite name="CLEAVE">
 
     <color=#ffdd80>MAG</color>:
     Light  <sprite name="LIGHT">, Dark  <sprite name="DARK">, Heat    <sprite name="HEAT">,
-    Cold  <sprite name="COLD">.
+    Cold  <sprite name="COLD">
 
 
-    Hitting an enemy''s WEAK deals <color=#46ff40>+30%
-    more damage</color>, while hitting RES deals <color=#ff0840>-30% less damage</color>.
-    The same applies to enemy actions.
+    Hitting an enemy''s <color=#FFEB00>WEAK</color>
+    deals <color=#46ff40>+30% more damage</color>, while hitting <color=#FFEB00>RES</color>
+    deals <color=#ff0840>-30% less damage</color>. The same applies to enemy actions.
 
 
 

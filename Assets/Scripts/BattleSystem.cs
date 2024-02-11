@@ -60,7 +60,7 @@ public class BattleSystem : MonoBehaviour
     public bool StopUpdating = false;
     public GridLayoutGroup ActionLayout;
     public Volume effectsSetting;
-    public Light mainLight;
+    public List<LabLight> lablights;
     public float mainLightValue;
     public bool BossNode = false;
 
@@ -96,7 +96,7 @@ public class BattleSystem : MonoBehaviour
         {
             vignette.intensity.value = 0.28f;
         }
-        BattleSystem.Instance.mainLightValue = mainLight.intensity;
+       
 
     }
     void Start()
@@ -122,6 +122,7 @@ public class BattleSystem : MonoBehaviour
                 TransitionToState(BattleStates.WON, (isMapTransition) => TransitionToMap(isMapTransition));
             }
         }
+     
     }
 
     void TransitionToState(BattleStates nextState, Func<bool?, IEnumerator> transitionAction)
@@ -154,7 +155,7 @@ public class BattleSystem : MonoBehaviour
             for (int i = 0; i <= playerUnits.Count - 1; i++)
             {
                 playerUnits[i].gameObject.SetActive(true);
-                playerUnits[i].transform.localScale = new Vector3(9f, 9f, 9f);
+                playerUnits[i].transform.localScale = new Vector3(11f, 11f, 11f);
                 playerUnits[i].transform.position = playerPositions[i].position;
                 playerUnits[i].transform.SetParent(playerPositions[i].transform);
                 var BSP = playerPositions[i].GetComponent<BattleSpawnPoint>();
@@ -174,7 +175,7 @@ public class BattleSystem : MonoBehaviour
             for (int i = 0; i <= enemiesToLoad.Count - 1; i++)
             {
                 var enemy = Instantiate(enemiesToLoad[i], enemyPositions[i]);
-                enemy.transform.localScale = new Vector3(9f, 9f, 9f);
+                enemy.transform.localScale = new Vector3(11f, 11f, 11f);
                 enemiesToLoad[i].gameObject.SetActive(true);
                 var BSP = enemyPositions[i].GetComponent<BattleSpawnPoint>();
                 BSP.unit = enemiesToLoad[i];
@@ -648,7 +649,7 @@ public class BattleSystem : MonoBehaviour
                 }
             }
         }
-        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(2));
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(10));
     }
 
 

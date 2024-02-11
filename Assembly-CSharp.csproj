@@ -173,6 +173,7 @@
     <Compile Include="Assets\Scripts\Actions\Kindle.cs" />
     <Compile Include="Assets\Scripts\Main Menu\MainMenuController.cs" />
     <Compile Include="Assets\Scripts\Units\Morgan.cs" />
+    <Compile Include="Assets\Scripts\LabLight.cs" />
     <Compile Include="Assets\Scripts\Actions\ShieldBash.cs" />
     <Compile Include="Assets\Scripts\DialogueHandler.cs" />
     <Compile Include="Assets\Scripts\Items\ItemDisplayBackButton.cs" />

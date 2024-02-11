@@ -48,7 +48,7 @@ public class Incinerate : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(2));
+        Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f);
         yield return new WaitForSeconds(0.3f);
         var Light = targets.spotLight;
@@ -66,7 +66,7 @@ public class Incinerate : Action
         AudioManager.QuickPlay("fire_impact_001");
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "FireImpact", new Color(255, 74, 0), new Color(255, 74, 0), new Vector3(0, 0, -2f), Quaternion.identity, 1f, 0, true, 0, 10));
         targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle, true);
-        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(2));
+        Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(10));
         targets.ChangeUnitsLight(Light, 0, 15, new Color(255, 74, 0) * 0.01f, 0.04f, 0.001f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }

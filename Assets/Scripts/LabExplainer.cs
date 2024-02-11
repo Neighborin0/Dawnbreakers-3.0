@@ -10,6 +10,9 @@ public class LabExplainer : MonoBehaviour
     [NonSerialized]
     public GameObject currentEffectPopup;
     public Vector3 offset;
+
+    public bool useCustomScale = false;
+    public Vector3 CustomScale;
     public void SetDescription()
     {
         if (currentEffectPopup == null)
@@ -25,7 +28,13 @@ public class LabExplainer : MonoBehaviour
 
         var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
         EPtext.text = Description;
-        currentEffectPopup.transform.localScale = new Vector3(0.015f, 0.015f, 1);
+        if(useCustomScale)
+        {
+            currentEffectPopup.transform.localScale = CustomScale;
+        }
+        else
+            currentEffectPopup.transform.localScale = new Vector3(0.015f, 0.015f, 1);
+
         currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1, 0) + offset;
         Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
     }

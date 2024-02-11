@@ -21,7 +21,7 @@ public class LabCamera : MonoBehaviour
     public float TimeDivider = 100f;
     public float MovingTimeDivider = 10f;
     [SerializeField]
-    private float amountToSway = 0.1f;
+    public float amountToSway = 0.1f;
     public float shakeAmount = 100f;
     public float decreaseFactor = 0.1f;
     public Vector3 originalLocalPos;
@@ -180,6 +180,8 @@ public class LabCamera : MonoBehaviour
                     followTarget.transform.position.x + followDisplacement.x,
                     followTarget.transform.position.y + followDisplacement.y,
                     followTarget.transform.position.z + followDisplacement.z);
+
+          
             if (MapController.Instance != null && Director.Instance.CharacterSlotsDisplayed)
             {
                 //Zoom In
@@ -216,7 +218,8 @@ public class LabCamera : MonoBehaviour
                     }
                 }
                 virtualCam.m_Lens.FieldOfView = Mathf.Lerp(virtualCam.m_Lens.FieldOfView, FOV, step);
-                transform.position = Vector3.LerpUnclamped(transform.position, boundPos, step);
+                uicam.fieldOfView = virtualCam.m_Lens.FieldOfView;
+               transform.position = Vector3.LerpUnclamped(transform.position, boundPos, step);
             }
 
          
