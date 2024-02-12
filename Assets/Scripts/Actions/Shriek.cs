@@ -52,10 +52,11 @@ public class Shriek : Action
         AudioManager.QuickPlay("shriek_001");
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(-0.4f, 0, -12f), Quaternion.identity, 5f));
         LabCamera.Instance.Shake(0.5f, 1.5f);
-        yield return new WaitForSeconds(0.9f);
+        yield return new WaitForSeconds(0.7f);
         foreach (var x in CombatTools.DetermineEnemies(unit))
         {
             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(x.gameObject, "Strike", new Color(156, 14, 207), new Color(156, 14, 207), new Vector3(0, 0, -2f), Quaternion.identity));
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "WarCry3", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), Quaternion.identity, 0.3f, 0, true, 0, 10));
             x.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle, false, true);
         }
         yield return new WaitForSeconds(1f);

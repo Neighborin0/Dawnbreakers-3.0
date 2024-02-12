@@ -136,6 +136,7 @@ public class Unit : MonoBehaviour
             {
                 sprite.material.SetFloat("_OutlineThickness", 1f);
                 sprite.material.SetColor("_OutlineColor", Color.white * 2f);
+                sprite.material.SetColor("_Color", new Color(1f, 1f, 1f, 1));
                 sprite.material.SetColor("_CharacterEmission", new Color(0.01f, 0.01f, 0.01f));
 
             }
@@ -143,6 +144,7 @@ public class Unit : MonoBehaviour
             {
                 sprite.material.SetFloat("_OutlineThickness", 1f);
                 sprite.material.SetColor("_OutlineColor", Color.black);
+                sprite.material.SetColor("_Color", new Color(0.05f, 0.05f, 0.05f, 1f));
                 sprite.material.SetColor("_CharacterEmission", new Color(-1f, -1f, -1f, 1f));
             }
             else if (state == PlayerState.DECIDING && IsPlayerControlled)
@@ -150,6 +152,7 @@ public class Unit : MonoBehaviour
 
                 sprite.material.SetFloat("_OutlineThickness", 1f);
                 sprite.material.SetColor("_OutlineColor", Color.yellow * 2f);
+                sprite.material.SetColor("_Color", new Color(1f, 1f, 1f, 1));
                 sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
 
             }
@@ -158,19 +161,29 @@ public class Unit : MonoBehaviour
 
                 sprite.material.SetFloat("_OutlineThickness", 1f);
                 sprite.material.SetColor("_OutlineColor", Color.black);
-                sprite.material.SetColor("_CharacterEmission", new Color(-0.5f, -0.5f, -0.5f, 1f) * 1.8f) ;
+                sprite.material.SetColor("_Color", new Color(0.2f, 0.2f, 0.2f, 1));
+                sprite.material.SetColor("_CharacterEmission", new Color(-0.01f, -0.01f, -0.01f, 0.1f));
 
+            }
+            else if(isDarkened)
+            {
+                sprite.material.SetFloat("_OutlineThickness", 1f);
+                sprite.material.SetColor("_OutlineColor", Color.black);
+                sprite.material.SetColor("_Color", new Color(0.2f, 0.2f, 0.2f, 1));
+                sprite.material.SetColor("_CharacterEmission", new Color(-0.01f, -0.01f, -0.01f, 0.1f));
             }
             else if (HitEmissionChanged)
             {
                 sprite.material.SetFloat("_OutlineThickness", 1f);
-                sprite.material.SetColor("_OutlineColor", Color.black * 2f);
-                sprite.material.SetColor("_CharacterEmission", new Color(1f, 1, 1));
+                sprite.material.SetColor("_OutlineColor", Color.black);
+                sprite.material.SetColor("_Color", new Color(1f, 1f, 1f, 1));
+                sprite.material.SetColor("_CharacterEmission", new Color(1f, 1f, 1f, 1f));
             }
             else
             {
                 sprite.material.SetFloat("_OutlineThickness", 1f);
                 sprite.material.SetColor("_OutlineColor", Color.black);
+                sprite.material.SetColor("_Color", new Color(1f, 1f, 1f, 1));
                 sprite.material.SetColor("_CharacterEmission", new Color(0f, 0f, 0f, 1f));
             }
         }

@@ -48,7 +48,7 @@ Material:
     m_Colors:
     - Tint: {r: 1, g: 0.8726415, b: 0.8726415, a: 1}
     - _CharacterEmission: {r: 0, g: 0, b: 0, a: 1}
-    - _Color: {r: 0, g: 0, b: 0, a: 0.6235294}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.6235294}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _Tint: {r: 0, g: 0, b: 0, a: 0.6235294}
   m_BuildTextureStacks: []

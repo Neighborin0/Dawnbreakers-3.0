@@ -44,6 +44,7 @@ public class MapNode : MonoBehaviour
 
     public IEnumerator StartLoadingNode(bool ApplyDelays = true)
     {
+       
         var button = this.GetComponent<Button>();
         button.interactable = false;
         int i = 0;
@@ -53,7 +54,7 @@ public class MapNode : MonoBehaviour
         if(ApplyDelays)
             yield return new WaitForSeconds(0.3f);
 
-
+   
         foreach (var MM in FindObjectsOfType<MiniMapIcon>())
         {
             StartCoroutine(MM.Move((this.transform.position.x + 0.7f) + (i * 1.3f), transform.position.y + 1f - (i * 0.4f), transform.position.z - 1.5f));
@@ -83,6 +84,7 @@ public class MapNode : MonoBehaviour
           yield return new WaitUntil(() => MapController.Instance.grid.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
           yield return new WaitForSeconds(1f);
         }
+      
         this.OnInteracted();
     }
     

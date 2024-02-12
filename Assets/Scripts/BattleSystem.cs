@@ -997,7 +997,7 @@ public class BattleSystem : MonoBehaviour
                 x.namePlate = NP;
                 NP.unit = x;
                 NP.defText.text = "0";
-                NP.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + unit.offset.x, x.GetComponent<SpriteRenderer>().bounds.min.y + 2, x.transform.position.z) / canvas.scaleFactor;
+                NP.transform.position = new Vector3(x.GetComponent<SpriteRenderer>().bounds.center.x + unit.offset.x, x.GetComponent<SpriteRenderer>().bounds.min.y - 1f, x.transform.position.z) / canvas.scaleFactor;
                 x.GetComponent<SpriteRenderer>().flipX = false;
 
             }
