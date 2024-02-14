@@ -284,13 +284,20 @@ public class LabCamera : MonoBehaviour
         PositonToMoveTo.z = camTransform.position.z;
     }
 
-    public IEnumerator DoSlowHorizontalSweep()
+    public void DoSlowHorizontalSweep(bool SweepDependsOnUnitAffliation, float delay = 0.0001f, float AmountToMove = 0.01f)
+    {
+        StartCoroutine(SweepCoroutine(SweepDependsOnUnitAffliation, delay, AmountToMove));
+    }
+    private IEnumerator SweepCoroutine(bool SweepDependsOnUnitAffliation, float delay = 0.0001f, float AmountToMove = 0.01f)
     {
         LabCamera.Instance.state = CameraState.SWEEP;
+        if (SweepDependsOnUnitAffliation)
+            AmountToMove *= -1;
+
         while (LabCamera.Instance.state == LabCamera.CameraState.SWEEP)
         {
-            LabCamera.Instance.transform.position += new Vector3(0.01f, 0, 0);
-            yield return new WaitForSeconds(0.0001f);
+            LabCamera.Instance.transform.position += new Vector3(AmountToMove, 0, 0);
+            yield return new WaitForSeconds(delay);
         }
     }
 

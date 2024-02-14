@@ -278,7 +278,7 @@ public class CombatTools : MonoBehaviour
 
     }
 
-    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, Quaternion rotation, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = true, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f, string AudioToPlay = "")
+    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, Quaternion rotation, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = false, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f, string AudioToPlay = "")
     {
         var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).SingleOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, rotation);
         VFX.transform.parent = null;
@@ -312,8 +312,9 @@ public class CombatTools : MonoBehaviour
                 particleMaterial.SetColor("_EmissionColor", particleColor * intensityMultiplier);
             }
 
-            if (ApplyChromaticAbberation)
+            /*if (ApplyChromaticAbberation)
                 Director.Instance.StartCoroutine(CombatTools.ApplyAndReduceChromaticAbberation(ChromaticDelay));
+            */
 
             if (VFX.GetComponent<Animator>() != null && VFX.GetComponent<Animator>().GetBool("Done"))
             {
@@ -379,7 +380,7 @@ public class CombatTools : MonoBehaviour
             CA.intensity.value = 1f;
             while (CA.intensity.value != 0)
             {
-                CA.intensity.value -= 0.04f;
+                CA.intensity.value -= 0.04f;  
                 yield return new WaitForSeconds(delay);
             }
 

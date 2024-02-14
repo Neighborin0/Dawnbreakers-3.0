@@ -54,6 +54,8 @@ public class Slam : Action
             //AudioManager.Instance.Play("slash_001");
             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(x.gameObject, "Slash", Color.yellow, Color.white, new Vector3(0, 0, -2f), Quaternion.identity));
             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "WarCry3", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), Quaternion.identity, 0.3f, 0, true, 0, 10));
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "BasicHitParticles_001", Color.yellow, Color.yellow, new Vector3(0, 0, -1f), Quaternion.identity, 1, 0, true, 0, 10));
+            Director.Instance.StartCoroutine(CombatTools.ApplyAndReduceChromaticAbberation(0.01f));
             x.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle);
         }
         Director.Instance.StartCoroutine(Tools.StopTime(0.13f));

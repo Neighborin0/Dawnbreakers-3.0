@@ -56,13 +56,13 @@ Material:
     m_Floats:
     - _AlphaClip: 1
     - _AlphaToMask: 1
-    - _Bits: 100
+    - _Bits: 20000
     - _Blend: 0
     - _CastShadows: 0
     - _Cull: 0
-    - _Dissolve: 0.8
+    - _Dissolve: 0.969
     - _DstBlend: 0
-    - _NoisePower: 1
+    - _NoisePower: 2
     - _NoiseScale: 13
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -73,8 +73,8 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _Color: {r: 13.735849, g: 3.4268868, b: 0.19437487, a: 1}
-    - _NoiseSpeed: {r: 0, g: -3, b: 0, a: 0}
-    - _TwirlCenter: {r: 0, g: -0.5, b: 0, a: 0}
+    - _Color: {r: 0, g: 14.299622, b: 32, a: 0}
+    - _NoiseSpeed: {r: 0, g: -0.4, b: 0, a: 0}
+    - _TwirlCenter: {r: 0.8, g: -0.5, b: 0, a: 0}
     - _Twirl_Speed: {r: 0, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []

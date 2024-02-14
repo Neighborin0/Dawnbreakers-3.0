@@ -65,7 +65,9 @@ public class Incinerate : Action
         Director.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "incinerate_001", 0.6f, true));
         AudioManager.QuickPlay("fire_impact_001");
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "FireImpact", new Color(255, 74, 0), new Color(255, 74, 0), new Vector3(0, 0, -2f), Quaternion.identity, 1f, 0, true, 0, 10));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "BasicHitParticles_001", new Color(255, 74, 0), new Color(255, 74, 0), new Vector3(0, 0, -1f), Quaternion.identity, 1f, 0, true, 0, 10));
         targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle, true);
+        Director.Instance.StartCoroutine(CombatTools.ApplyAndReduceChromaticAbberation(0.01f));
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(10));
         targets.ChangeUnitsLight(Light, 0, 15, new Color(255, 74, 0) * 0.01f, 0.04f, 0.001f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
