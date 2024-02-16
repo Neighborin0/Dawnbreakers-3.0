@@ -48,9 +48,12 @@ public class CutsceneTools : MonoBehaviour
     {
        BattleSystem.Instance.BattlePhasePause = false;
     }
-    public void ChangeVignetteIntensity(float DesiredValue)
+    public void ChangeVignetteIntensity(string DesiredValue)
     {
-        Tools.StartAndCheckCoroutine(vignetteIEnumerator, ChangeVignetteIntensityCoroutine(DesiredValue));
+        if(DesiredValue == "Reset")
+            Tools.StartAndCheckCoroutine(vignetteIEnumerator, ChangeVignetteIntensityCoroutine(BattleSystem.Instance.DefaultVignetteIntensity));
+        else
+            Tools.StartAndCheckCoroutine(vignetteIEnumerator, ChangeVignetteIntensityCoroutine(float.Parse(DesiredValue)));
     }
 
     public void StartMusicTrack(string TrackToPlay)

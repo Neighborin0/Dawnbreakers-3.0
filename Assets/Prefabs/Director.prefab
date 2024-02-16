@@ -3840,6 +3840,8 @@ MonoBehaviour:
   - {fileID: 812672189417083291, guid: 53a2ed9d1e806d345af7103145b7612d, type: 3}
   - {fileID: 1870680234314185692, guid: 41df0c912aa83d942b0f83604ed7a78b, type: 3}
   - {fileID: 7731703516079758148, guid: df301752e65543240817c2050dcfe885, type: 3}
+  - {fileID: 1049008539066300253, guid: d9629cedbaa571045856b54d1e7980da, type: 3}
+  - {fileID: 7731703516079758148, guid: df301752e65543240817c2050dcfe885, type: 3}
   actionDatabase:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   - {fileID: 11400000, guid: ece061d3fe4a82a4697d93c8013e8133, type: 2}

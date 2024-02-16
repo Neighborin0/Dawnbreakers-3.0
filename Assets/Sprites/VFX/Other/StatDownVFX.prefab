@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6665181731731748850}
   - component: {fileID: 6711746961215194909}
   - component: {fileID: 2452518340591046523}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: StatDownVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}

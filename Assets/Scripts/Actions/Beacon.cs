@@ -42,7 +42,7 @@ public class Beacon : Action
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
         LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0f, 10, -55, 0.5f);
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, new Color(1, 0.86f, 0.55f), 0.04f, 0.1f);
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLight", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(-2.95f, 5.02f, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLight", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(-1.56f, 6, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
         AudioManager.QuickPlay("glint_001");
 
 
@@ -53,10 +53,12 @@ public class Beacon : Action
             unit.summonables ??= fallbackSummons;
 
             var summon = Instantiate(Director.Instance.Unitdatabase.Where(obj => obj.name == unit.summonables[UnityEngine.Random.Range(0, unit.summonables.Length)]).SingleOrDefault());
-            summon.transform.localScale = new Vector3(9f, 9f, 9f);
+            summon.transform.localScale = BattleSystem.Instance.unitScale;
             summon.GetComponent<BoxCollider>().isTrigger = true;
             summon.GetComponent<Rigidbody>().useGravity = false;
-           
+            summon.GetComponent<Rigidbody>().freezeRotation = true;
+
+
             summon.IsSummon = true;
             if (unit.IsPlayerControlled)
             {
@@ -68,7 +70,7 @@ public class Beacon : Action
                     {
                         summon.transform.position = BSP.position;
                         summon.transform.SetParent(BSP.transform);
-                        summon.transform.localScale = new Vector3(9f, 9f, 9f);
+                        summon.transform.localScale = BattleSystem.Instance.unitScale;
                         summon.GetComponent<Rigidbody>().mass = 10000;
                         BattleSystem.Instance.playerUnits.Add(summon);
                         BattlePoint.Occupied = true;
@@ -107,7 +109,7 @@ public class Beacon : Action
                         LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0, 12, -70, 0.5f);
                         summon.ChangeUnitsLight(UnitLight, 150, 15, new Color(1, 0.86f, 0.55f), 0.04f, 2.4f);
                         yield return new WaitForSeconds(1f);
-                        Director.Instance.StartCoroutine(Tools.SmoothMoveObjectVertically(summon.gameObject.transform, 7.8f, 0.1f));
+                        Director.Instance.StartCoroutine(Tools.SmoothMoveObjectVertically(summon.gameObject.transform, BSP.position.y + 1, 0.1f));
                         yield return new WaitForSeconds(1f);  
                         BattleSystem.Instance.enemyUnits.Add(summon);
                         BattlePoint.Occupied = true;
@@ -116,8 +118,9 @@ public class Beacon : Action
                        
                         yield return new WaitForSeconds(1f);
                         summon.transform.SetParent(BSP.transform);
-                        summon.transform.localScale = new Vector3(9f, 9f, 9f);
+                        summon.transform.localScale = BattleSystem.Instance.unitScale;
                         summon.GetComponent<Rigidbody>().mass = 10000;
+                        summon.GetComponent<Rigidbody>().freezeRotation = true;
                         BattleSystem.Instance.SetupHUD(summon, BSP);
                         summon.unitName = CombatTools.CheckNames(summon);                       
                         break;

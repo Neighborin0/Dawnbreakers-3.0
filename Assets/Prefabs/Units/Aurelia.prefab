@@ -307,10 +307,13 @@ MonoBehaviour:
   MiniMapIcons:
   - {fileID: 21300000, guid: 99ca25e0c43390b4aa017d062af2fbed, type: 3}
   - {fileID: 21300000, guid: d1a4026457431634e94612e79ca206af, type: 3}
+  - {fileID: 21300000, guid: f18a73911f6cd8848803cb2f1d17f541, type: 3}
+  - {fileID: 21300000, guid: 651bafddf8ac5934dbf44a7199cd2658, type: 3}
   statusEffects: []
   offset: {x: -7, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
   camOffset: {x: 0, y: 0, z: 0}
+  CustomScale: {x: 0, y: 0, z: 0}
   OverrideEmission: 0
   introText: []
   inventory: []
@@ -332,8 +335,8 @@ MonoBehaviour:
   actionList:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
   - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
-  - {fileID: 11400000, guid: d5d4cebc76bc09049a7575fecb5664fa, type: 2}
-  - {fileID: 11400000, guid: 8626ced7933e1d04eb4f6721e66a6f6f, type: 2}
+  - {fileID: 11400000, guid: a367c5a61075e5d439a7f2eea9211cd5, type: 2}
+  - {fileID: 11400000, guid: 6932bd23da6b1f3478b0f7a9b429a994, type: 2}
   summonables: []
   HitEmissionChanged: 0
 --- !u!114 &3966448854374177832

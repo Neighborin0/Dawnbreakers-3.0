@@ -50,6 +50,7 @@ public class Unit : MonoBehaviour
     public Vector3 offset;
     public Vector3 enemyintentOffset;
     public Vector3 camOffset = Vector3.zero;
+    public Vector3 CustomScale = Vector3.zero;
     [NonSerialized]
     public TimeLineChild timelinechild;
     [NonSerialized]

@@ -63,6 +63,7 @@ public class BattleSystem : MonoBehaviour
     public List<LabLight> lablights;
     public float mainLightValue;
     public bool BossNode = false;
+    public float DefaultVignetteIntensity;
 
     //Tutorial Stuff
     public bool TutorialNode = false;
@@ -74,6 +75,7 @@ public class BattleSystem : MonoBehaviour
     public Vector3 cameraPos2Units;
     public Vector3 cameraPos3Units;
     public Vector3 bossNodeCamPos;
+    public Vector3 unitScale = new Vector3(11f, 11f, 11f);
     [NonSerialized]
     public bool DoPostBattleDialogue = true;
 
@@ -95,6 +97,7 @@ public class BattleSystem : MonoBehaviour
         if (BattleSystem.Instance.effectsSetting.sharedProfile.TryGet<Vignette>(out var vignette))
         {
             vignette.intensity.value = 0.28f;
+            DefaultVignetteIntensity = vignette.intensity.value;
         }
        
 
@@ -155,7 +158,12 @@ public class BattleSystem : MonoBehaviour
             for (int i = 0; i <= playerUnits.Count - 1; i++)
             {
                 playerUnits[i].gameObject.SetActive(true);
-                playerUnits[i].transform.localScale = new Vector3(11f, 11f, 11f);
+
+                if (playerUnits[i].CustomScale != Vector3.zero)
+                    playerUnits[i].transform.localScale = playerUnits[i].CustomScale;
+                else
+                    playerUnits[i].transform.localScale = unitScale;
+
                 playerUnits[i].transform.position = playerPositions[i].position;
                 playerUnits[i].transform.SetParent(playerPositions[i].transform);
                 var BSP = playerPositions[i].GetComponent<BattleSpawnPoint>();
@@ -175,7 +183,11 @@ public class BattleSystem : MonoBehaviour
             for (int i = 0; i <= enemiesToLoad.Count - 1; i++)
             {
                 var enemy = Instantiate(enemiesToLoad[i], enemyPositions[i]);
-                enemy.transform.localScale = new Vector3(11f, 11f, 11f);
+                if (enemy.CustomScale != Vector3.zero)
+                    enemy.transform.localScale = enemy.CustomScale;
+                else
+                    enemy.transform.localScale = unitScale;
+
                 enemiesToLoad[i].gameObject.SetActive(true);
                 var BSP = enemyPositions[i].GetComponent<BattleSpawnPoint>();
                 BSP.unit = enemiesToLoad[i];

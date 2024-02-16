@@ -223,7 +223,7 @@ MonoBehaviour:
   mapIcons: []
   animationStep: 0
   fpsCounter: 0
-  fps: 1
+  fps: 4
   state: 0
 --- !u!50 &4251768024213947946
 Rigidbody2D:
@@ -288,7 +288,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.18, y: 0.25}
+    oldSize: {x: 0.18, y: 0.26}
     newSize: {x: 1.5, y: 1.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

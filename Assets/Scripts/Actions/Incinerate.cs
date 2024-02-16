@@ -56,7 +56,7 @@ public class Incinerate : Action
         Light.intensity = 10f;
         AudioManager.QuickPlay("incinerate_buildup_001");
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "IncinerateParticles", new Color(255, 74, 0), new Color(255, 74, 0), new Vector3(0, -3, 0), Quaternion.identity, 5f, 0, false, 8, 10, 0.0001f, "incinerate_cackle_001"));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "IncinerateTornado", new Color(255, 74, 0), new Color(255, 74, 0), new Vector3(0, -3, -0), new Quaternion(0, -180, 0, 0), 8f, 0, true, 6, 10, 0.0001f)); 
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "IncinerateTornado_002", new Color(255, 74, 0), new Color(255, 74, 0), new Vector3(0, -10, -0), new Quaternion(0, 90, 0, 90), 8f, 0, true, 6, 10, 0.0001f)); 
         yield return new WaitForSeconds(0.8f);
         AudioManager.QuickPlay("incinerate_001");
         yield return new WaitForSeconds(0.7f);

@@ -284,7 +284,7 @@ public class Tools : MonoBehaviour
     public static IEnumerator SmoothMoveObjectVertically(Transform transform, float distanceToMove, float moveSpeed)
     {
         float initialY = transform.position.y;
-        float targetY = initialY + distanceToMove;
+        float targetY = distanceToMove;
         float SmoothTime = 0f;
 
         while (transform.position.y < targetY)

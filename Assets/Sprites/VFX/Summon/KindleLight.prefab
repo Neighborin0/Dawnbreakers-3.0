@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5023629610949144497}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: KindleLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 697351015553673198}
   - component: {fileID: 8976214463950483291}
   - component: {fileID: 6150432390416207422}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GroundSymbol (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4875,7 +4875,7 @@ GameObject:
   - component: {fileID: 6786308289926586331}
   - component: {fileID: 2122182331133369814}
   - component: {fileID: 3149845129357942750}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9705,7 +9705,7 @@ GameObject:
   - component: {fileID: 2171074675788085358}
   - component: {fileID: 2583811029407028194}
   - component: {fileID: 1845122061614799208}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GroundSymbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}

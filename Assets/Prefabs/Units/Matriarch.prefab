@@ -5044,6 +5044,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: -3, z: 0}
   camOffset: {x: 0, y: 0, z: -5}
+  CustomScale: {x: 10, y: 10, z: 10}
   OverrideEmission: 0
   introText: []
   inventory: []
@@ -5066,6 +5067,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6932bd23da6b1f3478b0f7a9b429a994, type: 2}
   - {fileID: 11400000, guid: 4d0d659b93e6dae44812aad6890a3116, type: 2}
   summonables: []
+  HitEmissionChanged: 0
 --- !u!54 &4520066770254520702
 Rigidbody:
   m_ObjectHideFlags: 0

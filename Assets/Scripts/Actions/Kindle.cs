@@ -29,9 +29,9 @@ public class Kindle : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 12, -70, 0.5f);
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "KindleLight", Color.red, Color.red, new Vector3(-2.95f, 5.02f, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "KindleLight", Color.red, Color.red, new Vector3(-1.56f, 6, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
         AudioManager.QuickPlay("glint_001");
 
         yield return new WaitForSeconds(1f);
@@ -39,7 +39,7 @@ public class Kindle : Action
         {
             Director.Instance.StartCoroutine(ActuallyDoFastStatChangesUnlikePokemon(x));
         }   
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.9f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(10));
         this.Done = true;
         LabCamera.Instance.ResetPosition();
