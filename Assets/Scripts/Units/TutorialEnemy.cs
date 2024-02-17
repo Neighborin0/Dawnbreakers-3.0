@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -124,6 +125,50 @@ public class TutorialEnemy : Unit
     {
         yield return new WaitForSeconds(0.2f);
         var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+        Aurelia.OnActionSelected += DisableSlash;
+        Aurelia.BattlePhaseClose += RevertActions;
+        foreach (var skill in Aurelia.skillUIs)
+        {
+            var actionContainer = skill.GetComponent<ActionContainer>();
+            if (actionContainer.action != null && actionContainer.action.ActionName != "Defend")
+            {
+                actionContainer.Disabled = true;
+                actionContainer.button.interactable = false;
+            }
+            else
+            {
+                actionContainer.Disabled = false;
+                actionContainer.button.interactable = true;
+            }
+
+        }
+    }
+
+    private static void RevertActions(Unit unit)
+    {
+        var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+        Aurelia.OnActionSelected -= DisableSlash;
+        Aurelia.OnActionSelected += DisableDefend;
+        foreach (var skill in Aurelia.skillUIs)
+        {
+            var actionContainer = skill.GetComponent<ActionContainer>();
+            if (actionContainer.action != null && actionContainer.action.ActionName == "Defend")
+            {
+                actionContainer.Disabled = true;
+                actionContainer.button.interactable = false;
+            }
+            else
+            {
+                actionContainer.Disabled = false;
+                actionContainer.button.interactable = true;
+            }
+
+        }
+    }
+
+    private static void DisableSlash(Unit unit, ActionContainer container)
+    {
+        var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
         foreach (var skill in Aurelia.skillUIs)
         {
             var actionContainer = skill.GetComponent<ActionContainer>();
@@ -134,7 +179,33 @@ public class TutorialEnemy : Unit
                 break;
             }
         }
+    }
 
+    private static void DisableDefend(Unit unit, ActionContainer container)
+    {
+        var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+        foreach (var skill in Aurelia.skillUIs)
+        {
+            var actionContainer = skill.GetComponent<ActionContainer>();
+            if (actionContainer.action != null && actionContainer.action.ActionName == "Defend")
+            {
+                actionContainer.Disabled = true;
+                actionContainer.button.interactable = false;
+            }
+            else
+            {
+                actionContainer.Disabled = false;               
+            }
 
+        }
+    }
+
+    private static void RevertDefend(Unit unit)
+    {
+        var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+        Aurelia.OnActionSelected -= DisableSlash;
+        Aurelia.OnActionSelected -= DisableDefend;
+        Aurelia.BattlePhaseClose -= RevertDefend;
+        Aurelia.BattlePhaseClose -= RevertActions;
     }
 }

@@ -404,6 +404,7 @@ public class MapController : MonoBehaviour
     {
         if (setup)
         {
+            LabCamera.Instance.camTransform.position = new Vector3(-42.1187248f, 51.7119102f, -46.9143143f);
             StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
             LabCamera.Instance.followDisplacement = new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f);
             LabCamera.Instance.cam.fieldOfView = defaultZoom;

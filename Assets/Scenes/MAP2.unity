@@ -1637,7 +1637,7 @@ PrefabInstance:
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
       propertyPath: party.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3164872719846570994, guid: 27fc45e474975bf4da59da7751ab29bd,
         type: 3}
@@ -1955,6 +1955,7 @@ MonoBehaviour:
   followTarget: {fileID: 0}
   followDisplacement: {x: 0, y: 40, z: -150}
   FOV: 23
+  DoneRotating: 1
   state: 0
 --- !u!114 &4584970988597713777
 MonoBehaviour:

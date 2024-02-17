@@ -148,7 +148,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.9993556, y: 0, z: 0, w: 0.035893746}
   m_LocalPosition: {x: 0, y: 0.247, z: -0.283}
-  m_LocalScale: {x: 0.8409, y: -12.3589, z: 0.8409}
+  m_LocalScale: {x: 0.69680315, y: -14.722974, z: 0.8409}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5496981911958966035}
@@ -223,7 +223,7 @@ MonoBehaviour:
   mapIcons: []
   animationStep: 0
   fpsCounter: 0
-  fps: 4
+  fps: 2
   state: 0
 --- !u!50 &4251768024213947946
 Rigidbody2D:

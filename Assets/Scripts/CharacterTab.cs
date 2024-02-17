@@ -227,10 +227,11 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         }
         else
         {
-            if (DisplaySwitcher.GetComponent<Image>().material.GetFloat("OutlineThickness") != 0)
+           /* if (DisplaySwitcher.GetComponent<Image>().material.name("OutlineThickness") != null && DisplaySwitcher.GetComponent<Image>().material.GetFloat("OutlineThickness") != 0)
             {
                 DisplaySwitcher.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
             }
+           */
             if (levelupDisplay.activeInHierarchy)
             {
                 DisplaySwitcher.image.sprite = LevelUpIcon;

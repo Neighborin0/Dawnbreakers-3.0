@@ -232,12 +232,6 @@ public class BattleSystem : MonoBehaviour
             for (int i = 0; i < TutorialText.Count; i++)
             {
                
-                TutorialText[i].fontSharedMaterial = Instantiate<Material>(TutorialText[i].fontSharedMaterial);
-                TutorialText[i].fontSharedMaterial.SetColor("_GlowColor", new Color(TutorialText[i].color.r, TutorialText[i].color.g, TutorialText[i].color.b, 1));
-                TutorialText[i].fontSharedMaterial.SetFloat("_GlowPower", 2f);
-                TutorialText[i].fontSharedMaterial.EnableKeyword("GLOW_ON");
-                TutorialText[i].ForceMeshUpdate();
-                TutorialText[i].enableVertexGradient = true;
                 StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, true, false));
                 yield return new WaitForSeconds(2f);
 
@@ -695,9 +689,11 @@ public class BattleSystem : MonoBehaviour
                         assignedAction.button.interactable = false;
                     }
                 }
-                else
-                    assignedAction.button.interactable = true;
+               
             }
+            if(assignedAction.Disabled)
+                assignedAction.button.interactable = false;
+
             var newAction = Instantiate(action);
             assignedAction.button.enabled = true;
             assignedAction.action = newAction;

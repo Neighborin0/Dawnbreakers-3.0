@@ -50,7 +50,7 @@ public class ActionContainer : MonoBehaviour
                 unit.isDarkened = false;
             }
         }
-        Disabled = false;
+        //Disabled = false;
         numberofUses = action.numberofUses;
         limited = action.limited;
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
@@ -589,7 +589,7 @@ public class ActionContainer : MonoBehaviour
 
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             //Description for Battle
-            EPtext.text = $"{action.GetDescription()}";
+            EPtext.text = $"{action.ReturnActionType()}\n{action.GetDescription()}";
             // currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();
 
             if (limited)
@@ -603,12 +603,15 @@ public class ActionContainer : MonoBehaviour
 
             if (BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
             {
-                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rectTrans.anchoredPosition.x, rectTrans.anchorMax.y + 70, 0);
+                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(
+                    rectTrans.anchoredPosition.x,
+                    rectTrans.anchorMax.y + 75 + currentEffectPopup.transform.GetComponent<RectTransform>().rect.width / (currentEffectPopup.transform.GetComponent<RectTransform>().rect.width / 2), 
+                    0);
             }
             else
             {
                 currentEffectPopup.transform.localScale = new Vector3(0.02f, 0.02f, 1);
-                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1, 0);
+                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(1, rectTrans.anchoredPosition.y, 1);
             }
 
             Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
@@ -761,6 +764,8 @@ public class ActionContainer : MonoBehaviour
         {
             button.interactable = limited ? (numberofUses > 0) : true;
         }
+        else if (Disabled)
+            button.interactable = false;
     }
 
     void DeactivateOtherActionContainers()
@@ -771,6 +776,8 @@ public class ActionContainer : MonoBehaviour
             if (x != this)
             {
                 x.SetActive(false);
+                if (x.Disabled)
+                    x.button.interactable = false;
                 UpdateButtonInteractability(x.GetComponent<Button>());
             }
         }

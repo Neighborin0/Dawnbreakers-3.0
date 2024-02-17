@@ -497,9 +497,7 @@ public class BattleLog : MonoBehaviour
         {
             GetComponent<MoveableObject>().Move(false);
         }
-
-        Tools.ToggleUiBlocker(true, true, true);
-
+    
         if (disableAfter)
         {
             x.text = "";
@@ -509,6 +507,7 @@ public class BattleLog : MonoBehaviour
         }
 
         BattleLog.Instance.state = BattleLogStates.IDLE;
+        Tools.ToggleUiBlocker(true, true, true);
     }
 
     private void AmbientCharacterText(List<LabLine> text, TMP_Text x)

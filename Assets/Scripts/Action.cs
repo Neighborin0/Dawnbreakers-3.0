@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Rendering;
 using System;
+using System.Diagnostics.Contracts;
 
 public enum DamageType
 {
@@ -83,6 +84,16 @@ public abstract class Action : ScriptableObject
         cost = newAction.cost;
     }
     public void OnActivated(){ Director.Instance.StartCoroutine(ExecuteAction()); }
+
+    public string ReturnActionType()
+    {
+        string stringToReturn = "";
+        if(actionType == ActionType.STATUS)
+            stringToReturn = $"<color=#46ff40>{actionType}</color>";
+        else
+            stringToReturn = $"<color=#ff0840>{actionType}</color>";
+        return stringToReturn;
+    }
     public virtual IEnumerator ExecuteAction() { yield break; }
 
     public virtual string GetDescription() { return ""; }

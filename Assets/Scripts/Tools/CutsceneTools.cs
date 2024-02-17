@@ -9,7 +9,7 @@ public class CutsceneTools : MonoBehaviour
     private IEnumerator vignetteIEnumerator;
     public static void ZoomOnUnit(string unitName)
     {
-        LabCamera.Instance.MoveToUnit(CombatTools.CheckAndReturnNamedUnit(unitName), Vector3.zero,0,8, -40, 0.5f, false);
+        LabCamera.Instance.MoveToUnit(CombatTools.CheckAndReturnNamedUnit(unitName), Vector3.zero, 0, 8, -40, 0.5f, false);
         AudioManager.QuickPlay("ui_woosh_002");
     }
 
@@ -32,8 +32,22 @@ public class CutsceneTools : MonoBehaviour
     public static void ResetRotation()
     {
         LabCamera.Instance.ResetRotation();
+        Director.Instance.StartCoroutine(CutsceneTools.CheckIfRotationIsDone());
+
+
     }
 
+    public static IEnumerator CheckIfRotationIsDone()
+    {
+        while (LabCamera.Instance.state != LabCamera.CameraState.SWAY)
+        {
+            Tools.ToggleUiBlocker(false, true, true);
+            yield return null;
+        }
+        Tools.ToggleUiBlocker(true, true, true);
+
+
+    }
     public static void RevealUnit(string unitName)
     {
         CombatTools.CheckAndReturnNamedUnit(unitName).IsHidden = false;
@@ -46,11 +60,11 @@ public class CutsceneTools : MonoBehaviour
 
     public static void EndBattlePhasePause()
     {
-       BattleSystem.Instance.BattlePhasePause = false;
+        BattleSystem.Instance.BattlePhasePause = false;
     }
     public void ChangeVignetteIntensity(string DesiredValue)
     {
-        if(DesiredValue == "Reset")
+        if (DesiredValue == "Reset")
             Tools.StartAndCheckCoroutine(vignetteIEnumerator, ChangeVignetteIntensityCoroutine(BattleSystem.Instance.DefaultVignetteIntensity));
         else
             Tools.StartAndCheckCoroutine(vignetteIEnumerator, ChangeVignetteIntensityCoroutine(float.Parse(DesiredValue)));
@@ -58,7 +72,7 @@ public class CutsceneTools : MonoBehaviour
 
     public void StartMusicTrack(string TrackToPlay)
     {
-       AudioManager.Instance.Play(TrackToPlay);
+        AudioManager.Instance.Play(TrackToPlay);
     }
 
     public static void ChangeMusicTrackVolume(float TargetVolume)
@@ -77,7 +91,7 @@ public class CutsceneTools : MonoBehaviour
         AudioManager.QuickPlay(AudioName);
     }
 
-  
+
     private IEnumerator ChangeVignetteIntensityCoroutine(float DesiredValue)
     {
         if (BattleSystem.Instance.effectsSetting.sharedProfile.TryGet<Vignette>(out var vignette))

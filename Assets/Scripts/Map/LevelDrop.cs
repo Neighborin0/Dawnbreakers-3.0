@@ -24,14 +24,13 @@ public class LevelDrop : MonoBehaviour
     {
         if (gameObject != null)
         {
+            LabCamera.Instance.followDisplacement = new Vector3(MapController.Instance.currentNodes[MapController.Instance.completedNodeCount].transform.position.x, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
             //Inital Fade In
             AudioManager.QuickPlay("map_opening_001");
 
 
             MainText.gameObject.SetActive(true);
-            Director.Instance.blackScreen.color = new Color(0, 0, 0, 0);
-            // LevelDropImage.material = Instantiate<Material>(LevelDropImage.material);
-            //var LevelDropMat = LevelDropImage.material;
+            Director.Instance.blackScreen.color = new Color(0, 0, 0, 0);          
             while (MainText.color.a < 1)
             {
                 MainText.color = new Color(MainText.color.r, MainText.color.g, MainText.color.b, MainText.color.a + 0.05f);

@@ -79,7 +79,7 @@ public class Director : MonoBehaviour
 #if UNITY_EDITOR
 
 #else
-             DevMode = true;
+             DevMode = false;
 #endif
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -391,7 +391,7 @@ public class Director : MonoBehaviour
 
             if (BattleSystem.Instance != null)
             {
-                Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                //Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
 
                 actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.x, actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
                 CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.x, CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);

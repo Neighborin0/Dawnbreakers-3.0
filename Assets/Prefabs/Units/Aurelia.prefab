@@ -335,8 +335,6 @@ MonoBehaviour:
   actionList:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
   - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
-  - {fileID: 11400000, guid: a367c5a61075e5d439a7f2eea9211cd5, type: 2}
-  - {fileID: 11400000, guid: 6932bd23da6b1f3478b0f7a9b429a994, type: 2}
   summonables: []
   HitEmissionChanged: 0
 --- !u!114 &3966448854374177832

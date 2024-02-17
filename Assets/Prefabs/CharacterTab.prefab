@@ -465,7 +465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 6e1e66bd31bbd2a428c4ca04d1886abc, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -619,7 +619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 6e1e66bd31bbd2a428c4ca04d1886abc, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -773,7 +773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 6e1e66bd31bbd2a428c4ca04d1886abc, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -927,7 +927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 6e1e66bd31bbd2a428c4ca04d1886abc, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1497,6 +1497,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description: Increases Armor given from actions.
   offset: {x: -2, y: 0, z: 0}
+  useCustomScale: 0
+  CustomScale: {x: 0, y: 0, z: 0}
 --- !u!114 &8083920648780801032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2402,7 +2404,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Description: Raises base damage of actions.
-  offset: {x: 0, y: -0.5, z: 0}
+  offset: {x: 0, y: -2.5, z: 0}
+  useCustomScale: 0
+  CustomScale: {x: 0, y: 0, z: 0}
 --- !u!1 &5091603077017754201
 GameObject:
   m_ObjectHideFlags: 0
@@ -2552,8 +2556,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7676e2124658cd49bf1904acfe6c70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Description: Increases Armor given from actions.
-  offset: {x: 0, y: -0.5, z: 0}
+  Description: Increases <color=#0090ff>PROT</color> given from actions.
+  offset: {x: 0, y: -2, z: 0}
+  useCustomScale: 0
+  CustomScale: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!114 &8320513116487473847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2825,6 +2831,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description: Raises base damage of actions.
   offset: {x: 0, y: 0, z: 0}
+  useCustomScale: 0
+  CustomScale: {x: 0, y: 0, z: 0}
 --- !u!114 &129254820911093782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3021,6 +3029,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description: Elements unit is weak to.
   offset: {x: 0, y: 0, z: 0}
+  useCustomScale: 0
+  CustomScale: {x: 0, y: 0, z: 0}
 --- !u!114 &5002121838761473380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3292,6 +3302,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description: Elements unit is resistant to.
   offset: {x: -2, y: 0, z: 0}
+  useCustomScale: 0
+  CustomScale: {x: 0, y: 0, z: 0}
 --- !u!114 &993373837365168012
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -59,8 +59,9 @@ public class IntentContainer : MonoBehaviour
             currentEffectPopup.SetActive(true);
         }
         currentEffectPopup.transform.GetComponent<RectTransform>().position = new Vector3(transform.position.x + 1f, transform.position.y - 1.5f, transform.position.z);
+        currentEffectPopup.transform.GetComponent<RectTransform>().rotation = new Quaternion(0, 0, 0, 0);
         var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
-        EPtext.text = $"{action.GetDescription()}";
+        EPtext.text = $"{action.ReturnActionType()}\n{action.GetDescription()}";
         StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
     }
 

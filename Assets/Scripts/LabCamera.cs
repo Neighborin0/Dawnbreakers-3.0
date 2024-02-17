@@ -32,6 +32,7 @@ public class LabCamera : MonoBehaviour
     public Vector3 followDisplacement;
     public float FOV = 23;
     bool forceSway = false;
+    public bool DoneRotating = true;
 
     public CameraState state;
 
@@ -334,6 +335,7 @@ public class LabCamera : MonoBehaviour
 
     private IEnumerator Rotating(Vector3 rotation)
     {
+        DoneRotating = false;
         if (rotation.z < 0f)
         {
             while (this.transform.eulerAngles.z != 360 + rotation.z)
@@ -351,13 +353,9 @@ public class LabCamera : MonoBehaviour
                 yield return new WaitForSeconds(0.001f);
             }
         }
-
+        DoneRotating = true;
     }
 
-    public void PanCam(float x, float y, float z)
-    {
-
-    }
    
     public void Shake(float newShakeDuration, float newShakeAmount)
     {

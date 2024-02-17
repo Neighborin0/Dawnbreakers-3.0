@@ -34,7 +34,7 @@ public class DustyEnemy : Unit
         var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
         foreach (var skill in Aurelia.skillUIs)
         {
-            var actionContainer = skill.GetComponent<ActionContainer>();        
+            var actionContainer = skill.GetComponent<ActionContainer>();
             actionContainer.Disabled = false;
             actionContainer.button.interactable = true;
         }
@@ -58,16 +58,16 @@ public class DustyEnemy : Unit
             BaseUnit = baseUnit;
             if (turn != 3)
             {
-                if(turn == 0)
+                if (turn == 0)
                 {
                     baseUnit.BattlePhaseEnd += PrePipTutorial;
                 }
 
-                if(turn == 2) 
-                {                  
+                if (turn == 2)
+                {
                     baseUnit.BattlePhaseEnd -= PrePipTutorial;
                     baseUnit.BattlePhaseEnd += PipTutorial;
-                  
+
                 }
 
                 CombatTools.SetupEnemyAction(baseUnit, turn);
@@ -98,8 +98,30 @@ public class DustyEnemy : Unit
                     actionContainer.button.interactable = false;
                 }
             }
-            
+            Aurelia.OnActionSelected -= DisableNonSweepOptions;
+            Aurelia.BattlePhaseClose += RevertActions;
             yield break;
+        }
+
+        private static void RevertActions(Unit unit)
+        {
+            var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+            Aurelia.OnActionSelected -= DisableNonSweepOptions;
+            Aurelia.BattlePhaseClose -= RevertActions;
+        }
+
+        private static void DisableNonSweepOptions(Unit unit, ActionContainer container)
+        {
+            var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+            foreach (var skill in Aurelia.skillUIs)
+            {
+                var actionContainer = skill.GetComponent<ActionContainer>();
+                if (actionContainer.action != null && actionContainer.action.ActionName != "Sweep")
+                {
+                    actionContainer.Disabled = true;
+                    actionContainer.button.interactable = false;
+                }
+            }
         }
 
         private void PrePipTutorial(Unit obj)
@@ -114,20 +136,20 @@ public class DustyEnemy : Unit
         private IEnumerator PrePipTutorialText()
         {
             BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaPrePipExplanation"), true, false, false, false, true, false);
-           yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
+            yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
             StartCoroutine(AudioManager.Instance.Fade(0f, AudioManager.Instance.currentMusicTrack, 2, false));
             BattleSystem.Instance.BattlePhasePause = true;
-            Director.Instance.blackScreen.color = new Color(0,0,0,0);
+            Director.Instance.blackScreen.color = new Color(0, 0, 0, 0);
             Director.Instance.blackScreen.transform.SetAsLastSibling();
             Director.Instance.blackScreen.gameObject.SetActive(true);
 
-            if(blackScreenFadeCoroutine != null)
+            if (blackScreenFadeCoroutine != null)
                 StopCoroutine(blackScreenFadeCoroutine);
 
             blackScreenFadeCoroutine = Tools.FadeObject(Director.Instance.blackScreen, 0.001f, true, false);
 
-            Director.Instance.StartCoroutine(blackScreenFadeCoroutine);  
-            
+            Director.Instance.StartCoroutine(blackScreenFadeCoroutine);
+
             yield return new WaitUntil(() => Director.Instance.blackScreen.color.a >= 1);
             yield return new WaitForSeconds(0.1f);
 
@@ -138,7 +160,7 @@ public class DustyEnemy : Unit
             TutorialText.fontSharedMaterial.SetColor("_GlowColor", TextColor);
             TutorialText.fontSharedMaterial.SetFloat("_GlowPower", 0.5f);
             TutorialText.color = TextColor;
-            TutorialText.text = "Burn quickly...";
+            TutorialText.text = "...Burn quickly...";
             AudioManager.QuickPlay("low_hum_001");
 
             Director.Instance.StartCoroutine(Tools.FadeText(TutorialText, 0.001f, true, false));
@@ -198,7 +220,7 @@ public class DustyEnemy : Unit
             yield return new WaitForSeconds(0.1f);
             unit.spotLight.intensity = 1;
         }
-         
+
         private void GetRidOfLightAction(Unit unit)
         {
             unit.OnActionSelected -= ForceLightAction;
@@ -216,6 +238,8 @@ public class DustyEnemy : Unit
 
         private IEnumerator PipTutorialText()
         {
+            BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaHitByLightAttack"), true, false, false, false, true, false);
+            yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
             BattleSystem.Instance.BattlePhasePause = true;
             Director.Instance.blackScreen.color = new Color(0, 0, 0, 0);
             Director.Instance.blackScreen.transform.SetAsLastSibling();
@@ -237,7 +261,7 @@ public class DustyEnemy : Unit
             TutorialText.fontSharedMaterial.SetColor("_GlowColor", TextColor);
             TutorialText.fontSharedMaterial.SetFloat("_GlowPower", 0.5f);
             TutorialText.color = TextColor;
-            TutorialText.text = "Burn stronger...";
+            TutorialText.text = "...Burn stronger...";
             AudioManager.QuickPlay("low_hum_001");
 
             Director.Instance.StartCoroutine(Tools.FadeText(TutorialText, 0.01f, true, false));
@@ -265,8 +289,8 @@ public class DustyEnemy : Unit
                 Destroy(pip.gameObject);
             }
 
-     
-           
+
+
 
             yield return new WaitUntil(() => Director.Instance.blackScreen.color.a <= 0);
             StartCoroutine(AudioManager.Instance.Fade(0.35f, AudioManager.Instance.currentMusicTrack, 2, false));

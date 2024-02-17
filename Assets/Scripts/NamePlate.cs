@@ -41,7 +41,7 @@ public class NamePlate : MonoBehaviour
                 }
                 
 
-                fadeCoroutine = Fade(true);
+                fadeCoroutine = Fade(true, this);
 
                 Director.Instance.StartCoroutine(fadeCoroutine);
             }
@@ -56,39 +56,40 @@ public class NamePlate : MonoBehaviour
                 StopCoroutine(fadeCoroutine);
             }
                 
-            fadeCoroutine = Fade(false);
+            fadeCoroutine = Fade(false, this);
             unit.armor = 0;
             Director.Instance.StartCoroutine(fadeCoroutine);
         }
     }
 
-    public IEnumerator Fade(bool FadeIn)
+    public static IEnumerator Fade(bool FadeIn, NamePlate namePlate)
     {
-        var DEfImage = DEF_icon.GetComponent<Image>();
+        var DEfImage = namePlate.DEF_icon.GetComponent<Image>();
         if (!FadeIn)
         {
-            if (gameObject != null)
+            if (namePlate.gameObject != null)
             {
-                while (DEfImage.color.a > 0 && DEF_icon != null)
+                while (DEfImage.color.a > 0 && namePlate.DEF_icon != null)
                 {
                     DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, DEfImage.color.a - 0.1f);
-                    defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a - 0.1f);
+                    namePlate.defText.color = new Color(namePlate.defText.color.r, namePlate.defText.color.g, namePlate.defText.color.b, namePlate.defText.color.a - 0.1f);
                     yield return new WaitForSeconds(0.05f);
                 }
-                unit.armor = 0;
+                namePlate.unit.armor = 0;
                 yield return new WaitUntil(() => DEfImage.color.a <= 0);
-                DEF_icon.SetActive(false);
+               if (namePlate != null)
+                namePlate.DEF_icon.SetActive(false);
             }
         } 
         else 
         {
-            if (gameObject != null)
+            if (namePlate.gameObject != null)
             {
-                DEF_icon.SetActive(true);
-                while (DEfImage.color.a < 1 && DEF_icon != null)
+                namePlate.DEF_icon.SetActive(true);
+                while (DEfImage.color.a < 1 && namePlate.DEF_icon != null)
                 {
                     DEfImage.color = new Color(DEfImage.color.r, DEfImage.color.g, DEfImage.color.b, DEfImage.color.a + 0.1f);
-                    defText.color = new Color(defText.color.r, defText.color.g, defText.color.b, defText.color.a + 0.1f);
+                    namePlate.defText.color = new Color(namePlate.defText.color.r, namePlate.defText.color.g, namePlate.defText.color.b, namePlate.defText.color.a + 0.1f);
                     yield return new WaitForSeconds(0.05f);
                 }
                 yield return new WaitUntil(() => DEfImage.color.a >= 1);   
