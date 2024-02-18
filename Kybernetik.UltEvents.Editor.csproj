@@ -62,15 +62,15 @@
   <ItemGroup>
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\AssemblyInfo.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\MemberSelectionMenu.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Editor\PersistentCallDrawer.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\SerializedPropertyContextMenu.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\PickerMenu.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Editor\BoolPref.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\UltEventDrawer.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\DrawerState.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Editor\Clipboard.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\PersistentArgumentDrawer.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\Serialization.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Editor\PersistentCallDrawer.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Editor\BoolPref.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Editor\Clipboard.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages\com.kybernetik.ultevents\Editor\Kybernetik.UltEvents.Editor.asmdef" />
@@ -418,22 +418,6 @@
     </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.11f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Plastic.Antlr3.Runtime">
-      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.1.0\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Plastic.Newtonsoft.Json">
-      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.1.0\Lib\Editor\PlasticSCM\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="log4netPlastic">
-      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.1.0\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="unityplastic">
-      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.1.0\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="nunit.framework">

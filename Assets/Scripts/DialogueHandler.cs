@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class DialogueHandler : ScriptableObject
 {
-    [SerializeField] private List<LabLine> labLines;
+    public List<LabLine> labLines;
 
     public List<LabLine> LabLines => labLines;
 

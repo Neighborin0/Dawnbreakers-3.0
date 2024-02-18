@@ -227,6 +227,7 @@ public class Healthbar : MonoBehaviour
 
                         if (TL.value <= 0)
                         {
+                            OptionsManager.Instance.StartCoroutine(CombatTools.SlowTime(0.6f));
                             TL.CanClear = true;
                             TL.GetComponent<LabUIInteractable>().CanHover = false;
                             BattleSystem.Instance.StartCoroutine(LateRemove());
@@ -235,6 +236,7 @@ public class Healthbar : MonoBehaviour
                             AudioManager.QuickPlay("stun_001");
                             BattleSystem.Instance.DoTextPopup(unit, "Stun", Color.yellow);
                             BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
+                            
                             if (!unit.IsPlayerControlled)
                             {
                                 unit.behavior.turn--;

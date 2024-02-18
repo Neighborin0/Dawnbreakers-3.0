@@ -98,7 +98,7 @@ public class DustyEnemy : Unit
                     actionContainer.button.interactable = false;
                 }
             }
-            Aurelia.OnActionSelected -= DisableNonSweepOptions;
+            Aurelia.OnActionSelected += DisableNonSweepOptions;
             Aurelia.BattlePhaseClose += RevertActions;
             yield break;
         }
@@ -210,8 +210,6 @@ public class DustyEnemy : Unit
         private void ForceLightAction(Unit unit, ActionContainer actionContainerParent)
         {
             actionContainerParent.lightButton.ModifyAction();
-            //var light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
-            //Director.Instance.StartCoroutine(DelayedLightChange(unit));
         }
 
         private IEnumerator DelayedLightChange(Unit unit)
@@ -311,6 +309,7 @@ public class DustyEnemy : Unit
             tutorialIcon.GetComponent<MoveableObject>().Move(true);
             Director.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
             Director.Instance.blackScreen.gameObject.SetActive(true);
+            Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
 
 
         }

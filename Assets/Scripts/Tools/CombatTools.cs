@@ -278,6 +278,7 @@ public class CombatTools : MonoBehaviour
 
     }
 
+
     public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, Quaternion rotation, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = false, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f, string AudioToPlay = "")
     {
         var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).FirstOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, rotation);
@@ -588,6 +589,17 @@ public class CombatTools : MonoBehaviour
             return Director.Instance.timeline.pipCounter;
         else
             return new PipCounter();
+    }
+
+    public static IEnumerator SlowTime(float duration)
+    {
+        //Debug.LogError(Time.timeScale);
+        var previousTime = 1;
+        Time.timeScale = 0.5f;
+        //Debug.LogError(Time.timeScale);
+        //Debug.LogError(duration);
+        yield return new WaitForSeconds(duration);
+        Time.timeScale = previousTime;
     }
 
 

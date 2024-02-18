@@ -93,7 +93,7 @@ public class Rat : Unit
                 CombatTools.ReturnPipCounter().AddPip();
                 CombatTools.ReturnPipCounter().AddPip();
             }
-            
+
             CombatTools.SetupEnemyAction(baseUnit, turn);
             turn++;
         }
@@ -126,10 +126,13 @@ public class Rat : Unit
                         actionContainer.button.interactable = false;
                     }
                 }
+                unit.OnActionSelected += DisableNonAttackingOptions;
+                unit.BattlePhaseClose += RevertActions;
             }
+            StartCoroutine(LateDisable());
             BattleSystem.Instance.BattlePhasePause = false;
             yield return new WaitForSeconds(0.1f);
-           
+
             BattleSystem.Instance.canvas.gameObject.SetActive(true);
             Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
             var tutorialIcon = Instantiate(GetComponent<Rat>().TutorialIcon4, Director.Instance.canvas.transform);
@@ -138,5 +141,43 @@ public class Rat : Unit
             Director.Instance.blackScreen.color = new Color(0, 0, 0, 0.5f);
             Director.Instance.blackScreen.gameObject.SetActive(true);
         }
+    }
+    private static IEnumerator LateDisable()
+    {
+        yield return new WaitForSeconds(0.2f);
+        foreach (var unit in BattleSystem.Instance.playerUnits)
+        {
+            foreach (var skill in unit.skillUIs)
+            {
+                var actionContainer = skill.GetComponent<ActionContainer>();
+                if (actionContainer.action != null && actionContainer.action.actionType != Action.ActionType.ATTACK)
+                {
+                    actionContainer.Disabled = true;
+                    actionContainer.button.interactable = false;
+                }
+            }
+            unit.OnActionSelected += DisableNonAttackingOptions;
+            unit.BattlePhaseClose += RevertActions;
+        }
+    }
+    private static void DisableNonAttackingOptions(Unit unit, ActionContainer container)
+    {
+        foreach (var skill in unit.skillUIs)
+        {
+            var actionContainer = skill.GetComponent<ActionContainer>();
+            if (actionContainer.action != null && actionContainer.action.actionType != Action.ActionType.ATTACK)
+            {
+                actionContainer.Disabled = true;
+                actionContainer.button.interactable = false;
+            }
+        }
+
+    }
+    private static void RevertActions(Unit unit)
+    {
+
+        unit.OnActionSelected -= DisableNonAttackingOptions;
+        unit.BattlePhaseClose -= RevertActions;
+
     }
 }

@@ -99,7 +99,7 @@ public class BattleSystem : MonoBehaviour
             vignette.intensity.value = 0.28f;
             DefaultVignetteIntensity = vignette.intensity.value;
         }
-       
+
 
     }
     void Start()
@@ -125,7 +125,7 @@ public class BattleSystem : MonoBehaviour
                 TransitionToState(BattleStates.WON, (isMapTransition) => TransitionToMap(isMapTransition));
             }
         }
-     
+
     }
 
     void TransitionToState(BattleStates nextState, Func<bool?, IEnumerator> transitionAction)
@@ -231,7 +231,7 @@ public class BattleSystem : MonoBehaviour
             LabCamera.Instance.transform.position = new Vector3(0, 10000, -93);
             for (int i = 0; i < TutorialText.Count; i++)
             {
-               
+
                 StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, true, false));
                 yield return new WaitForSeconds(2f);
 
@@ -259,8 +259,8 @@ public class BattleSystem : MonoBehaviour
                 TutorialText[i].gameObject.SetActive(false);
             }
         }
-        if(!TutorialNode)
-        LabCamera.Instance.camTransform.position = Camera.main.transform.position;
+        if (!TutorialNode)
+            LabCamera.Instance.camTransform.position = Camera.main.transform.position;
         LabCamera.Instance.ReadjustCam();
 
 
@@ -338,7 +338,9 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator TransitionToMap(bool? levelUpScreen = true)
     {
         yield return new WaitForSeconds(1f);
-
+        Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        Director.Instance.canvas.worldCamera = LabCamera.Instance.uicam;
+        Director.Instance.canvas.planeDistance = 20;
         foreach (Transform child in Director.Instance.timeline.transform)
         {
             if (child.GetComponent<TimeLineChild>() != null)
@@ -689,9 +691,9 @@ public class BattleSystem : MonoBehaviour
                         assignedAction.button.interactable = false;
                     }
                 }
-               
+
             }
-            if(assignedAction.Disabled)
+            if (assignedAction.Disabled)
                 assignedAction.button.interactable = false;
 
             var newAction = Instantiate(action);
@@ -776,11 +778,11 @@ public class BattleSystem : MonoBehaviour
         {
             x.state = PlayerState.WAITING;
         }
-        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x)).
-        ThenBy(x => x.unit.IsPlayerControlled).
-        ThenBy(x => x.unit.unitName).
-        Reverse().ToList();
-
+        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x))
+         .ThenBy(x => x.unit.IsPlayerControlled)
+        .ThenBy(x => x.actionType)
+        .Reverse().ToList();
+        CombatTools.UnpauseStaminaTimer();
         foreach (var action in ActionsToPerform.ToList())
         {
             if (action.unit == null)
@@ -789,14 +791,14 @@ public class BattleSystem : MonoBehaviour
                 continue;
             }
 
-            CombatTools.UnpauseStaminaTimer();
+            if (100 - Director.Instance.timeline.slider.value != 100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier)
+                CombatTools.UnpauseStaminaTimer();
+
 
             yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier) || Director.Instance.timeline.slider.value == Director.Instance.timeline.slider.maxValue);
-
+            CombatTools.PauseStaminaTimer();
             if (Director.Instance.timeline.slider.value < Director.Instance.timeline.slider.maxValue)
             {
-                CombatTools.PauseStaminaTimer();
-
                 if (action.targets == null)
                 {
                     switch (action.targetType)
@@ -863,7 +865,7 @@ public class BattleSystem : MonoBehaviour
                 ActionsToPerform = ActionsToPerform
                     .OrderBy(x => 100 - CombatTools.DetermineTrueCost(x))
                     .ThenBy(x => x.unit.IsPlayerControlled)
-                    .ThenBy(x => x.unit.unitName)
+                    .ThenBy(x => x.actionType)
                     .Reverse()
                     .ToList();
             }

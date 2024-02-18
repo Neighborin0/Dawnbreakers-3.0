@@ -60,34 +60,34 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.11f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Benchmarks\BenchmarkTestMethods.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\UltEventBase.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\UltEvent2.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Benchmarks\EnableBenchmarkUnityEvent.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Operators.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\UltEvent0.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\CollisionEvents2D.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\PersistentArgument.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\UltEvent4.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\DelayedUltEventHolder.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\UpdateEvents.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Benchmarks\ResourceInstantiateBenchmark.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\AssemblyInfo.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\ArrayCache.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\UltEventUtils.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Benchmarks\SimpleTimer.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Benchmarks\BenchmarkTestMethods.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\UltEvent2.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\LifeCycleEvents.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\UltEvent0.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\ReflectionCache.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\TriggerEvents2D.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\UltEvent3.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Benchmarks\EnableBenchmark.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\CollisionEvents2D.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\TriggerEvents3D.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\PersistentArgument.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\UltEvent4.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\CollisionEvents3D.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\UltEvent1.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\DelayedUltEventHolder.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\UpdateEvents.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Benchmarks\ResourceInstantiateBenchmark.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Names.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\AssemblyInfo.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Events\PersistentCall.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Event Holders\UltEventHolder.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\ArrayCache.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Benchmarks\EnableBenchmarkUltEvent.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\UltEventUtils.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Runtime\Misc\Benchmarks\SimpleTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages\com.kybernetik.ultevents\Runtime\Kybernetik.UltEvents.asmdef" />
@@ -431,22 +431,6 @@
     </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.11f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Plastic.Antlr3.Runtime">
-      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.1.0\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Plastic.Newtonsoft.Json">
-      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.1.0\Lib\Editor\PlasticSCM\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="log4netPlastic">
-      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.1.0\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="unityplastic">
-      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.1.0\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="netstandard">

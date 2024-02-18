@@ -49,13 +49,13 @@ public class Shriek : Action
     {
         LabCamera.Instance.MoveToPosition(new Vector3(0, 11.17f, -79.28f));
         yield return new WaitForSeconds(0.15f);
-        LabCamera.Instance.DoSlowHorizontalSweep(true, 0.0001f, -0.02f);
+        LabCamera.Instance.DoSlowHorizontalSweep(unit.IsPlayerControlled, 0.0001f, -0.02f);
         yield return new WaitForSeconds(0.4f);
         AudioManager.QuickPlay("shriek_001");
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(-0.4f, 0, -12f), Quaternion.identity, 5f));
         LabCamera.Instance.Shake(0.5f, 1.5f);
         yield return new WaitForSeconds(0.5f);
-        LabCamera.Instance.DoSlowHorizontalSweep(true, 0.0001f, -0.02f);
+        LabCamera.Instance.DoSlowHorizontalSweep(unit.IsPlayerControlled, 0.0001f, -0.02f);
         yield return new WaitForSeconds(0.2f);
         foreach (var x in CombatTools.DetermineEnemies(unit))
         {

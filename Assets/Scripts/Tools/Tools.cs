@@ -394,6 +394,17 @@ public class Tools : MonoBehaviour
         Director.print(Time.timeScale);
     }
 
+    public static IEnumerator SlowTime(float duration)
+    {
+        Debug.LogError(Time.timeScale);
+        var previousTime = Time.timeScale;
+        Time.timeScale = 0.5f;
+        Debug.LogError(Time.timeScale);
+        Debug.LogError(duration);
+        yield return new WaitForSeconds(duration);
+        Time.timeScale = previousTime;
+    }
+
 
     public static IEnumerator ChangeObjectEmissionToMaxIntensity(GameObject gameObjectToChange, Color newColor, float delay)
     {
