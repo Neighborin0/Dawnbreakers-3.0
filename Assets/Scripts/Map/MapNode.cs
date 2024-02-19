@@ -38,7 +38,8 @@ public class MapNode : MonoBehaviour
     public void DisableNode(bool ApplyDelays = true)
     {
         StartCoroutine(StartLoadingNode(ApplyDelays));
-        if(SceneManager.GetActiveScene().name == "MAP2")
+        Director.Instance.characterSlotpos.GetComponent<MoveableObject>().Move(true);
+        if (SceneManager.GetActiveScene().name == "MAP2")
             Tools.ToggleUiBlocker(false, true, true);
     }
 
@@ -51,10 +52,12 @@ public class MapNode : MonoBehaviour
         disabled = true;
         if(LabCamera.Instance != null)
             LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
+
         if(ApplyDelays)
             yield return new WaitForSeconds(0.3f);
 
-   
+
+
         foreach (var MM in FindObjectsOfType<MiniMapIcon>())
         {
             StartCoroutine(MM.Move((this.transform.position.x + 0.7f) + (i * 1.3f), transform.position.y + 1f - (i * 0.4f), transform.position.z - 1.5f));
@@ -65,6 +68,10 @@ public class MapNode : MonoBehaviour
         MapController.Instance.StartingPosition = this.transform.position;
         if (MapController.Instance.mapControlBar.activeSelf)
             MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
+
+     
+       
+
         this.gameObject.transform.localScale = oldScaleSize;
         print(gameObject.transform.localScale);
         if (scaler != null)
@@ -84,7 +91,7 @@ public class MapNode : MonoBehaviour
           yield return new WaitUntil(() => MapController.Instance.grid.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
           yield return new WaitForSeconds(1f);
         }
-      
+        Director.Instance.CharacterSlotsDisplayed = false;
         this.OnInteracted();
     }
     

@@ -19,6 +19,7 @@ public class MiniMapIcon : MonoBehaviour
     public int animationStep;
     public float fpsCounter;
     public float fps = 2;
+    public float speed = 1;
     public enum MapIconState { IDLE, MOVING, JUMPING, STATIC }
     public MapIconState state;
     private void Awake()
@@ -27,9 +28,12 @@ public class MiniMapIcon : MonoBehaviour
         state = MapIconState.IDLE;
     }
 
+
+
     public IEnumerator Move(float transformPointX, float transformPointY, float transformPointZ)
     {
         yield return new WaitUntil(() => state == MapIconState.IDLE);
+       // GetComponent<Animator>().Play("Walk");
         state = MapIconState.MOVING;
         if (mover != null)
         {
@@ -39,6 +43,7 @@ public class MiniMapIcon : MonoBehaviour
         StartCoroutine(mover);
         yield return new WaitForSeconds(0.5f);
         state = MapIconState.IDLE;
+          // GetComponent<Animator>().Play("Walk");
 
     }
 
@@ -66,6 +71,12 @@ public class MiniMapIcon : MonoBehaviour
                 fpsCounter = 0f;
 
             }
+            /*if(state == MapIconState.MOVING)
+            {
+                float y = Mathf.PingPong(Time.time * speed, 0.5f);
+                transform.localPosition = new Vector3(transform.localPosition.x, y, transform.localPosition.z);
+            }
+            */
         }
 
     }

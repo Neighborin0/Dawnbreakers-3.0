@@ -55,7 +55,7 @@ public class PrologueEnding : MonoBehaviour
             yield return new WaitForSeconds(3f);
             AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "low_hum_001", 2f, true));
             StartCoroutine(Tools.FadeText(text[i], 0.01f, false, true));
-            yield return new WaitForSeconds(7.5f);
+            yield return new WaitForSeconds(2f);
             if(i == 5)
             {
                 AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "ending_ambience_001", 1f, true));

@@ -485,10 +485,10 @@ public class ActionContainer : MonoBehaviour
             costToReturn = Director.Instance.timeline.ReturnTimeChildAction(TargetUnit).cost;
 
         if (CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType) > 1)
-            costToReturn += Director.Instance.TimelineReduction;
+            costToReturn += Director.Instance.TimelineAddition;
 
         if (action.actionStyle != Action.ActionStyle.STANDARD)
-            costToReturn += 10;
+            costToReturn += 15;
 
         if (costToReturn > 100 || action.AppliesStun)
             costToReturn = 100;

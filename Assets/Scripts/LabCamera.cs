@@ -60,6 +60,28 @@ public class LabCamera : MonoBehaviour
         {
             this.GetComponent<CinemachineConfiner>().m_BoundingVolume = MapController.Instance.mapCollider;
         }
+
+        if(BattleSystem.Instance != null)
+        {
+            var moveableObject = GetComponent<MoveableObject>();
+            if (BattleSystem.Instance.playerPositions[2].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[2].GetComponent<BattleSpawnPoint>().unit != null)
+            {
+                moveableObject.PositionDownY = BattleSystem.Instance.cameraPos3Units.y;
+                moveableObject.PositionUpX = BattleSystem.Instance.cameraPos3Units.y;
+
+            }
+            else if (BattleSystem.Instance.playerPositions[1].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[1].GetComponent<BattleSpawnPoint>().unit != null)
+            {
+                moveableObject.PositionDownY = BattleSystem.Instance.cameraPos2Units.y;
+                moveableObject.PositionUpX = BattleSystem.Instance.cameraPos2Units.y;
+
+            }
+            else
+            {
+                moveableObject.PositionDownY = BattleSystem.Instance.cameraPos1Units.y;
+                moveableObject.PositionUpX = BattleSystem.Instance.cameraPos1Units.y;
+            }
+        }
     }
 
     public void ReadjustCam()

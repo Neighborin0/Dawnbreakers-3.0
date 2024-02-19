@@ -5541,7 +5541,7 @@ MonoBehaviour:
   - {fileID: 6872593197263802180, guid: 634ecb1ffbb9b4f46acfad85dad5601d, type: 3}
   - {fileID: 6021733307070061552, guid: bd750c137d796a84eacfb8ed10e563b8, type: 3}
   - {fileID: 7809853375734531937, guid: fbf356db3bf58a946a140b20d8717d11, type: 3}
-  miniMePrefab: {fileID: -1015919992701900326, guid: f656fcbf85d8e8f44806846bb6c59e68,
+  miniMePrefab: {fileID: -1015919992701900326, guid: 2b5dac4c03fc55342a389abd81d10bf4,
     type: 3}
   mapCanvas: {fileID: 3289449406930067497}
   mapObjects:

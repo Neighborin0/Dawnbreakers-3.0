@@ -160,6 +160,8 @@ public class Healthbar : MonoBehaviour
             Debug.LogWarning(number.color.ToString());
             Debug.LogWarning("ARMOR");
             AudioManager.QuickPlay("armor_hit_001");
+            Color armorParticleColor = new Color(0, 144, 255);
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "ArmorHit_001", armorParticleColor, armorParticleColor, new Vector3(0, 0, -1f), Quaternion.identity, 1f, 0, true, 0, 10));
         }
         else
         {

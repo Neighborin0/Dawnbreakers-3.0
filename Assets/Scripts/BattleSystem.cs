@@ -261,6 +261,7 @@ public class BattleSystem : MonoBehaviour
         }
         if (!TutorialNode)
             LabCamera.Instance.camTransform.position = Camera.main.transform.position;
+
         LabCamera.Instance.ReadjustCam();
 
 
@@ -783,16 +784,31 @@ public class BattleSystem : MonoBehaviour
         .ThenBy(x => x.actionType)
         .Reverse().ToList();
         CombatTools.UnpauseStaminaTimer();
-        foreach (var action in ActionsToPerform.ToList())
+        for (int i = 0; i < ActionsToPerform.Count; i++)
         {
+            var action = ActionsToPerform[i];
             if (action.unit == null)
             {
                 ActionsToPerform.Remove(action);
                 continue;
             }
 
-            if (100 - Director.Instance.timeline.slider.value != 100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier)
+            bool isSameCostActionExists = false;
+            float currentSliderValue = 100 - Director.Instance.timeline.slider.value;
+
+            foreach (var otherAction in ActionsToPerform)
+            {
+                if (otherAction != action && CombatTools.DetermineTrueCost(otherAction) == CombatTools.DetermineTrueCost(action))
+                {
+                    isSameCostActionExists = true;
+                    break;
+                }
+            }
+
+            if (!isSameCostActionExists && currentSliderValue != 100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier)
+            {
                 CombatTools.UnpauseStaminaTimer();
+            }
 
 
             yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier) || Director.Instance.timeline.slider.value == Director.Instance.timeline.slider.maxValue);

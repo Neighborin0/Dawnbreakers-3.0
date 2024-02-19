@@ -305,10 +305,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 39dfd55d0efdc9845b7799f0f050f3b4, type: 3}
   anim: {fileID: 2642224846084036885}
   MiniMapIcons:
-  - {fileID: 21300000, guid: 99ca25e0c43390b4aa017d062af2fbed, type: 3}
-  - {fileID: 21300000, guid: d1a4026457431634e94612e79ca206af, type: 3}
-  - {fileID: 21300000, guid: f18a73911f6cd8848803cb2f1d17f541, type: 3}
-  - {fileID: 21300000, guid: 651bafddf8ac5934dbf44a7199cd2658, type: 3}
+  - {fileID: 21300000, guid: 5685d9f9f7a34d94699c740926ca29b4, type: 3}
+  - {fileID: 21300000, guid: c3c2f8e077f15b94293cbd67828bc103, type: 3}
   statusEffects: []
   offset: {x: -7, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
