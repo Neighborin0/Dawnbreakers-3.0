@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 public class TutorialMatriarch : Unit
 {
     private string[] TutorialSummons = new string[] { "Husk" };
-
+    [SerializeField]
+    public GameObject LightPosition;
     void Awake()
     {
         unitName = "Matriarch";

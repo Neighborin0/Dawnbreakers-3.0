@@ -38,15 +38,22 @@ public class MapNode : MonoBehaviour
     public void DisableNode(bool ApplyDelays = true)
     {
         StartCoroutine(StartLoadingNode(ApplyDelays));
+
         Director.Instance.characterSlotpos.GetComponent<MoveableObject>().Move(true);
+
+
         if (SceneManager.GetActiveScene().name == "MAP2")
             Tools.ToggleUiBlocker(false, true, true);
     }
 
     public IEnumerator StartLoadingNode(bool ApplyDelays = true)
     {
-       
+        OptionsManager.Instance.CanPause = false;
+        MapController.Instance.CanInput = false;
+
+
         var button = this.GetComponent<Button>();
+
         button.interactable = false;
         int i = 0;
         disabled = true;
@@ -91,7 +98,7 @@ public class MapNode : MonoBehaviour
           yield return new WaitUntil(() => MapController.Instance.grid.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
           yield return new WaitForSeconds(1f);
         }
-        Director.Instance.CharacterSlotsDisplayed = false;
+       // Director.Instance.CharacterSlotsDisplayed = false;
         this.OnInteracted();
     }
     

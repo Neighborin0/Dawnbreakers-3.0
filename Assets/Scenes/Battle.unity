@@ -602,141 +602,6 @@ Transform:
   - {fileID: 603608715}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -1.361, y: -22.964, z: -22.473}
---- !u!1 &20728679
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 20728682}
-  - component: {fileID: 20728681}
-  - component: {fileID: 20728680}
-  m_Layer: 5
-  m_Name: 7 (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &20728680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20728679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "The sun shall never set. \r"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
-    type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 11588849
-  m_fontColor: {r: 0.9433962, g: 0.8317907, b: 0.6897472, a: 0}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 1
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &20728681
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20728679}
-  m_CullTransparentMesh: 1
---- !u!224 &20728682
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20728679}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1999009419}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2, y: -258}
-  m_SizeDelta: {x: 838.5399, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &35109365
 GameObject:
   m_ObjectHideFlags: 0
@@ -1469,7 +1334,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 66725252}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.10137555, y: -0.0223314, z: 0.21392885, w: 0.97131807}
+  m_LocalRotation: {x: -0.09411458, y: -0.020732109, z: 0.21408978, w: 0.9720485}
   m_LocalPosition: {x: 37, y: -1, z: 208}
   m_LocalScale: {x: 1.6036, y: 1, z: 0.6538223}
   m_ConstrainProportionsScale: 0
@@ -1492,7 +1357,7 @@ Transform:
   - {fileID: 2032466125}
   - {fileID: 372268000}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -10.8, y: -5.067, z: 25.321}
+  m_LocalEulerAnglesHint: {x: -12.349, y: -5.818, z: 25.472}
 --- !u!1 &96890656
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,8 +1439,6 @@ MonoBehaviour:
   - {fileID: 364829058}
   - {fileID: 1991955391}
   - {fileID: 1547547812}
-  - {fileID: 2140479891}
-  - {fileID: 20728680}
   TutorialParent: {fileID: 678618137}
   cameraPos1Units: {x: 0, y: 13.5, z: -80.86}
   cameraPos2Units: {x: 0, y: 13.67, z: -86.46}
@@ -18346,7 +18209,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2, y: 38}
+  m_AnchoredPosition: {x: 1.2, y: -35}
   m_SizeDelta: {x: 838.5399, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &364829057
@@ -18377,7 +18240,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lies an empire that must forever reign,
+  m_text: Bask in the brillance of our sacred space
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
@@ -22511,11 +22374,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "The sun's warm touch, an eternal glow, \r\n\r\nBathes the kingdom in its
-    radiant flow, \r\n\r\nFor all those who enter and those who remain, \r\n\r\nLies
-    an empire that must forever reign, \r\n\r\nFor those blessed ones who will soon
-    forget, \r\n\r\nThe sun shall never set. \r\n\r\nThe sun shall never set. \r\n\r\nThe
-    sun shall never set. "
+  m_text: "Gaze upon our realm, a wonderous sight,\n\nWhere gold, glory, and grace
+    unite,\n\nPurge dark desires, let light embrace,\n\nBask in the brillance of
+    our sacred space\n\nAs you enter, hold this truth, be blessed,\n\nThe sun shall
+    never rest. \r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
@@ -22626,7 +22488,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786270577}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd6e6d8c3581b4f4ebbc419d311fa1fd, type: 3}
   m_Name: 
@@ -24970,7 +24832,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1011409432}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd6e6d8c3581b4f4ebbc419d311fa1fd, type: 3}
   m_Name: 
@@ -26572,7 +26434,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2, y: 110}
+  m_AnchoredPosition: {x: 1.2, y: 38}
   m_SizeDelta: {x: 838.5399, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1139930107
@@ -26603,7 +26465,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: For all those who enter and those who remain,
+  m_text: Purge dark desires, let light embrace,
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
@@ -33187,7 +33049,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000061035, y: 257.6}
+  m_AnchoredPosition: {x: 0.000061035, y: 184}
   m_SizeDelta: {x: 838.5399, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1390400848
@@ -33218,7 +33080,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "The sun's warm touch, an eternal glow, \r\n"
+  m_text: Gaze upon our realm, a wonderous sight,
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
@@ -34679,7 +34541,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2, y: -110}
+  m_AnchoredPosition: {x: 1.2, y: -181}
   m_SizeDelta: {x: 838.5399, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1547547811
@@ -34710,7 +34572,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "The sun shall never set. \r"
+  m_text: "The sun shall never rest. \r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
@@ -40068,7 +39930,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926815642}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40076,7 +39938,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2, y: 184.9}
+  m_AnchoredPosition: {x: 1.2, y: 111}
   m_SizeDelta: {x: 838.5399, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1926815644
@@ -40107,7 +39969,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Bathes the kingdom in its radiant flow, \r"
+  m_text: Where gold, glory, and grace unite,
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
@@ -40303,7 +40165,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930752700}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd6e6d8c3581b4f4ebbc419d311fa1fd, type: 3}
   m_Name: 
@@ -41375,7 +41237,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2, y: -38}
+  m_AnchoredPosition: {x: 1.2, y: -108}
   m_SizeDelta: {x: 838.5399, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1991955390
@@ -41406,7 +41268,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "For those blessed ones who will soon forget, \r"
+  m_text: As you enter, hold this truth, be blessed,
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
@@ -41614,8 +41476,6 @@ RectTransform:
   - {fileID: 364829056}
   - {fileID: 1991955389}
   - {fileID: 1547547810}
-  - {fileID: 2140479889}
-  - {fileID: 20728682}
   m_Father: {fileID: 678618138}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -43030,141 +42890,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &2140479888
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2140479889}
-  - component: {fileID: 2140479890}
-  - component: {fileID: 2140479891}
-  m_Layer: 5
-  m_Name: 7
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2140479889
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140479888}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1999009419}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2, y: -185}
-  m_SizeDelta: {x: 838.5399, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2140479890
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140479888}
-  m_CullTransparentMesh: 1
---- !u!114 &2140479891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2140479888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "The sun shall never set. \r"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
-    type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 11588849
-  m_fontColor: {r: 0.9433962, g: 0.8317907, b: 0.6897472, a: 0}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 1
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1001 &851844421119139036
 PrefabInstance:
   m_ObjectHideFlags: 0

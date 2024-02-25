@@ -42,7 +42,15 @@ public class Beacon : Action
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
         LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0f, 10, -55, 0.5f);
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, new Color(1, 0.86f, 0.55f), 0.04f, 0.1f);
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLight", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(-1.56f, 6, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
+        if (unit.GetComponent<TutorialMatriarch>() != null)
+        {
+            var Matriarch = unit.GetComponent<TutorialMatriarch>();
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(Matriarch.LightPosition, "BeaconLight", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), Vector3.zero, Quaternion.identity, 10f, 0, true, 0, 8));
+        }
+        else
+        {
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "BeaconLight", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(-1.56f, 6, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
+        }
         AudioManager.QuickPlay("glint_001");
 
 

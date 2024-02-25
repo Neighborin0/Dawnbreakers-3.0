@@ -10,6 +10,7 @@ using static Action;
 using JetBrains.Annotations;
 using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.InputSystem.Utilities;
 
 public class ActionContainer : MonoBehaviour
 {
@@ -60,21 +61,11 @@ public class ActionContainer : MonoBehaviour
 
     }
 
-    private void OnEnable()
-    {
-        try
-        {
-            if (BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
-                UpdateDamageNumsText();
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"Error in OnEnable: {ex.Message}");
-        }
-    }
+  
 
     private void UpdateDamageNumsText()
     {
+        if(damageNums != null)
         damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
     }
     void Update()
@@ -488,7 +479,9 @@ public class ActionContainer : MonoBehaviour
             costToReturn += Director.Instance.TimelineAddition;
 
         if (action.actionStyle != Action.ActionStyle.STANDARD)
-            costToReturn += 15;
+            costToReturn += Director.Instance.TimelineReductionNonStandardAction;
+
+        costToReturn += TargetUnit.knockbackModifider;
 
         if (costToReturn > 100 || action.AppliesStun)
             costToReturn = 100;
@@ -576,7 +569,8 @@ public class ActionContainer : MonoBehaviour
             action.unit = baseUnit;
             if (currentEffectPopup == null)
             {
-                var EP = Instantiate(Director.Instance.EffectPopUp, this.transform);
+
+                var EP = Instantiate(Director.Instance.EffectPopUp,this.transform);
                 EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 currentEffectPopup = EP;
             }
@@ -607,11 +601,13 @@ public class ActionContainer : MonoBehaviour
                     rectTrans.anchoredPosition.x,
                     rectTrans.anchorMax.y + 75 + currentEffectPopup.transform.GetComponent<RectTransform>().rect.width / (currentEffectPopup.transform.GetComponent<RectTransform>().rect.width / 2), 
                     0);
+                currentEffectPopup.transform.SetAsLastSibling();
             }
             else
             {
                 currentEffectPopup.transform.localScale = new Vector3(0.02f, 0.02f, 1);
-                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(1, rectTrans.anchoredPosition.y, 1);
+                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1, 0);
+                currentEffectPopup.transform.SetAsLastSibling();
             }
 
             Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));

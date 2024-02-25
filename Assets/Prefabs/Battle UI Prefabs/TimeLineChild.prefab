@@ -619,6 +619,9 @@ MonoBehaviour:
   CanBeHighlighted: 1
   value: 0
   offset: -12.384
+  PlayerMiniChild: {fileID: 3889650526274626284}
+  EnemyMiniChild: {fileID: 1667513840649561423}
+  miniChild: {fileID: 0}
 --- !u!114 &7428458782112312656
 MonoBehaviour:
   m_ObjectHideFlags: 0

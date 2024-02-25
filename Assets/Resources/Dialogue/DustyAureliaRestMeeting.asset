@@ -37,8 +37,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Some wondrous kingdom this turned out to be, eh? Should''ve known the
-      whole thing was daft.  '
+  - text: 'Some wonder this turned out to be, eh? Should''ve known the whole thing
+      was daft.  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -62,7 +62,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Quite the stoic one, aren''t you? You''d fit right in with my group.  '
+  - text: 'Quite the stoic one, aren''t you? You''d fit right in with the Fangs.  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -167,20 +167,7 @@ MonoBehaviour:
         m_Calls: []
     OnLineEnded:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
-            type: 3}
-          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
-          m_MethodName: QuickPlay
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: button_hit_001
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: 'Hmmph... '
@@ -204,19 +191,6 @@ MonoBehaviour:
         m_Calls: []
     OnLineEnded:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
-            type: 3}
-          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
-          m_MethodName: QuickPlay
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: button_hit_001
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}

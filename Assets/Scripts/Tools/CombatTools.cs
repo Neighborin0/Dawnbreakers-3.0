@@ -602,5 +602,15 @@ public class CombatTools : MonoBehaviour
         Time.timeScale = previousTime;
     }
 
+    public static bool CompareAffiliations(Unit unit1, Unit unit2)
+    {
+        bool SameAffiliations = false;
+        if(unit1.IsPlayerControlled && unit2.IsPlayerControlled || !unit1.IsPlayerControlled && !unit2.IsPlayerControlled)
+        {
+            SameAffiliations = true;
+        }
+        return SameAffiliations;
+    }
+
 
 }

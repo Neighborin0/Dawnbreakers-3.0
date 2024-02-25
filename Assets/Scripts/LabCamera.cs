@@ -59,6 +59,7 @@ public class LabCamera : MonoBehaviour
         if(SceneManager.GetActiveScene().name == "MAP2")
         {
             this.GetComponent<CinemachineConfiner>().m_BoundingVolume = MapController.Instance.mapCollider;
+            LabCamera.Instance.camTransform.position = new Vector3(MapController.Instance.currentNodes[MapController.Instance.completedNodeCount].transform.position.x, LabCamera.Instance.camTransform.position.y , LabCamera.Instance.camTransform.position.z);
         }
 
         if(BattleSystem.Instance != null)
@@ -66,20 +67,20 @@ public class LabCamera : MonoBehaviour
             var moveableObject = GetComponent<MoveableObject>();
             if (BattleSystem.Instance.playerPositions[2].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[2].GetComponent<BattleSpawnPoint>().unit != null)
             {
-                moveableObject.PositionDownY = BattleSystem.Instance.cameraPos3Units.y;
-                moveableObject.PositionUpX = BattleSystem.Instance.cameraPos3Units.y;
+                moveableObject.PositionDownY = BattleSystem.Instance.cameraPos1Units.y - 0.1f;
+                moveableObject.PositionUpX = BattleSystem.Instance.cameraPos1Units.y - 0.1f;
 
             }
             else if (BattleSystem.Instance.playerPositions[1].GetComponent<BattleSpawnPoint>().unit != null || BattleSystem.Instance.enemyPositions[1].GetComponent<BattleSpawnPoint>().unit != null)
             {
-                moveableObject.PositionDownY = BattleSystem.Instance.cameraPos2Units.y;
-                moveableObject.PositionUpX = BattleSystem.Instance.cameraPos2Units.y;
+                moveableObject.PositionDownY = BattleSystem.Instance.cameraPos1Units.y - 0.1f;
+                moveableObject.PositionUpX = BattleSystem.Instance.cameraPos1Units.y - 0.1f;
 
             }
             else
             {
-                moveableObject.PositionDownY = BattleSystem.Instance.cameraPos1Units.y;
-                moveableObject.PositionUpX = BattleSystem.Instance.cameraPos1Units.y;
+                moveableObject.PositionDownY = BattleSystem.Instance.cameraPos1Units.y - 0.1f;
+                moveableObject.PositionUpX = BattleSystem.Instance.cameraPos1Units.y - 0.1f;
             }
         }
     }

@@ -185,15 +185,18 @@ public class Healthbar : MonoBehaviour
                     {
                         if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1)
                         {
+                            Director.Instance.timeline.DelayCheck(TL);
                             TL.value -= Director.Instance.TimelineReduction;
                             action.cost += Director.Instance.TimelineReduction;
                             number.color = Color.red;
+                         
                         }
 
                         if (actionStyle != Action.ActionStyle.STANDARD)
                         {
-                            TL.value -= 15;
-                            action.cost += 15;
+                            Director.Instance.timeline.DelayCheck(TL);
+                            TL.value -= Director.Instance.TimelineReductionNonStandardAction;
+                            action.cost += Director.Instance.TimelineReductionNonStandardAction;
                             if (actionStyle == Action.ActionStyle.LIGHT)
                             {
                                 number.outlineColor = new Color(0, 0.635f, 0.749f);
@@ -202,6 +205,7 @@ public class Healthbar : MonoBehaviour
                             {
                                 number.outlineColor = new Color(1, 0.011f, 0);
                             }
+                           
                         }
 
 
@@ -215,13 +219,17 @@ public class Healthbar : MonoBehaviour
                         {
                             if(AppliesStun)
                             {
+                                Director.Instance.timeline.DelayCheck(TL);
                                 TL.value = -1;
                                 action.cost = 101;
+                              
                             }
                             else
                             {
+                                Director.Instance.timeline.DelayCheck(TL);
                                 TL.value -= unit.knockbackModifider;
                                 action.cost += unit.knockbackModifider;
+                               
                             }
 
                            
@@ -249,8 +257,10 @@ public class Healthbar : MonoBehaviour
                     {
                         if (TL.value <= Director.Instance.TimelineReduction)
                         {
+                            Director.Instance.timeline.DelayCheck(TL);
                             TL.value = 0;
                             action.cost = 100;
+                           
                         }
                     }
                     else if (CombatTools.ReturnIconStatus(unit, "STALWART")) //Removes Stalwart
@@ -305,6 +315,7 @@ public class Healthbar : MonoBehaviour
 
             if (unit.IsPlayerControlled)
             {
+                OptionsManager.Instance.StartCoroutine(CombatTools.SlowTime(0.6f));
                 DeathPaused = true;
                 LabCamera.Instance.state = LabCamera.CameraState.IDLE;
                 yield return new WaitForSeconds(1f);

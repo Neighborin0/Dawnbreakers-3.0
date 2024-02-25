@@ -847,7 +847,7 @@ MonoBehaviour:
   enemycharPortrait: {fileID: 392729442916950982}
   enemyPortraitparent: {fileID: 392729442916950982}
   characterdialog: {fileID: 330815495235006823}
-  indicator: {fileID: 0}
+  indicator: {fileID: 392729442144394037}
   ActionLayout: {fileID: 8335807276202100203, guid: 3b82044b18abcf74ea38b5b15bf5379d,
     type: 3}
   genericActionContainer: {fileID: 7729246865139320037, guid: eda5997d712fb004ab1d580ee8bab62f,
@@ -1896,17 +1896,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 392729442144394039}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0, z: 0.7071068, w: -0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 330815496529982144}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 904.3501, y: -25.805008}
-  m_SizeDelta: {x: 66, y: 66}
+  m_AnchoredPosition: {x: 921.67, y: -37.572}
+  m_SizeDelta: {x: 31.3586, y: 36.1367}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &392729442144394034
 CanvasRenderer:
@@ -1936,7 +1936,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cd6de1dddae9e1045ac17e1f28c9cbc3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 96b43689304e67b4f975305048207812, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3843,6 +3843,9 @@ MonoBehaviour:
   - {fileID: 1049008539066300253, guid: d9629cedbaa571045856b54d1e7980da, type: 3}
   - {fileID: 7731703516079758148, guid: df301752e65543240817c2050dcfe885, type: 3}
   - {fileID: 3145466722146502544, guid: c39e501d18fefff438add96c70d41f1b, type: 3}
+  - {fileID: 2295101507153165731, guid: 33c3998012db36246ac06354dff9bc2f, type: 3}
+  - {fileID: 1209710108587819972, guid: dc0aaab80f1190049ba3840487e5c568, type: 3}
+  - {fileID: 8928971945133373923, guid: a3ddb52c5515c714e82dcc13faeb4345, type: 3}
   actionDatabase:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   - {fileID: 11400000, guid: ece061d3fe4a82a4697d93c8013e8133, type: 2}
@@ -3909,7 +3912,9 @@ MonoBehaviour:
   WeaknessMultiplier: 1.3
   ResistanceMultiplier: 0.7
   TimelineReduction: 20
-  TimelineAddition: 10
+  TimelineAddition: 20
+  TimelineReductionNonStandardAction: 20
+  TimelineAdditionNonStandardAction: 20
   UnlockedPipSystem: 0
   previousCameraState: 0
 --- !u!1 &3208274665597491490

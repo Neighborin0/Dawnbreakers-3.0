@@ -19,6 +19,9 @@ public class IntentContainer : MonoBehaviour
     private bool CreatedTempTimelineChild = false;
     private TimeLineChild TempTL;
 
+    public Image portraitParent;
+    public Image portrait;
+
     void Start()
     {
         var ScaleComponent = GetComponent<ScalableObject>();

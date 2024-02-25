@@ -432,6 +432,8 @@ public class Unit : MonoBehaviour
                     intentUI.textMesh.color = new Color(intentUI.textMesh.color.r, intentUI.textMesh.color.g, intentUI.textMesh.color.b, intentUI.textMesh.color.a - 0.1f);
                     intentUI.damageNums.color = new Color(intentUI.damageNums.color.r, intentUI.damageNums.color.g, intentUI.damageNums.color.b, intentUI.damageNums.color.a - 0.1f);
                     intentUI.costNums.color = new Color(intentUI.costNums.color.r, intentUI.costNums.color.g, intentUI.costNums.color.b, intentUI.costNums.color.a - 0.1f);
+                    intentUI.portrait.color = new Color(intentUI.portrait.color.r, intentUI.portrait.color.g, intentUI.portrait.color.b, intentUI.portrait.color.a - 0.1f);
+                    intentUI.portraitParent.color = new Color(intentUI.portraitParent.color.r, intentUI.portraitParent.color.g, intentUI.portraitParent.color.b, intentUI.portraitParent.color.a - 0.1f);
                     yield return new WaitForSeconds(0.01f);
                 }
                 if (!FadingOutIntent)
@@ -453,6 +455,8 @@ public class Unit : MonoBehaviour
                 intentUI.textMesh.color = new Color(intentUI.textMesh.color.r, intentUI.textMesh.color.g, intentUI.textMesh.color.b, intentUI.textMesh.color.a + 0.1f);
                 intentUI.damageNums.color = new Color(intentUI.damageNums.color.r, intentUI.damageNums.color.g, intentUI.damageNums.color.b, intentUI.damageNums.color.a + 0.1f);
                 intentUI.costNums.color = new Color(intentUI.costNums.color.r, intentUI.costNums.color.g, intentUI.costNums.color.b, intentUI.costNums.color.a + 0.1f);
+                intentUI.portrait.color = new Color(intentUI.portrait.color.r, intentUI.portrait.color.g, intentUI.portrait.color.b, intentUI.portrait.color.a + 0.1f);
+                intentUI.portraitParent.color = new Color(intentUI.portraitParent.color.r, intentUI.portraitParent.color.g, intentUI.portraitParent.color.b, intentUI.portraitParent.color.a + 0.1f);
                 yield return new WaitForSeconds(0.01f);
             }
             if (!FadingOutIntent)

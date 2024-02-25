@@ -351,12 +351,12 @@ public class BattleLog : MonoBehaviour
             ClearAllBattleLogText();
             BattleSystem.Instance.state = BattleStates.TALKING;
         }
-
+        Tools.ToggleUiBlocker(false, true, true);
         foreach (var l in line)
         {
             x.text = "";
             Portraitparent.gameObject.SetActive(true);
-            Tools.ToggleUiBlocker(false, true, true);
+
 
             if (l.PositionToMoveTo != Vector3.zero)
             {
@@ -395,15 +395,15 @@ public class BattleLog : MonoBehaviour
                 Portraitparent.gameObject.SetActive(true);
                 characterIndex++;
                 //So colors don't get formatted
-                if(letter.ToString() == "<")
+                if (letter.ToString() == "<")
                 {
                     Ignoring = true;
                 }
-                else if(letter.ToString() == ">")
+                else if (letter.ToString() == ">")
                 {
                     Ignoring = false;
                 }
-               
+
                 if (!Ignoring)
                 {
                     string textToWrite = l.text.Substring(0, characterIndex) + "<color=#00000000>" + l.text.Substring(characterIndex) + "</color>";
@@ -415,8 +415,9 @@ public class BattleLog : MonoBehaviour
                     yield return new WaitForSeconds(textSpeed * OptionsManager.Instance.textSpeedMultiplier / 2.5f);
                 }
             }
-
+            indicator.gameObject.SetActive(true);
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0));
+            indicator.gameObject.SetActive(false);
             AudioManager.QuickPlay("button_Hit_006", true);
             characterdialog.text = "";
             yield return new WaitForSeconds(0.01f);
@@ -497,7 +498,9 @@ public class BattleLog : MonoBehaviour
         {
             GetComponent<MoveableObject>().Move(false);
         }
-    
+
+        Tools.ToggleUiBlocker(true, true, true);
+
         if (disableAfter)
         {
             x.text = "";
@@ -507,8 +510,8 @@ public class BattleLog : MonoBehaviour
         }
 
         BattleLog.Instance.state = BattleLogStates.IDLE;
-        Tools.ToggleUiBlocker(true, true, true);
     }
+
 
     private void AmbientCharacterText(List<LabLine> text, TMP_Text x)
     {
@@ -526,19 +529,7 @@ public class BattleLog : MonoBehaviour
         }
 
     }
-    private IEnumerator TypeText(string text, float textSpeed, TMP_Text x, bool disableAfter)
-    {
-        foreach (char letter in text)
-        {
-            x.text += letter;
-            yield return new WaitForSeconds(textSpeed);
-        }
-        if (disableAfter)
-        {
-            x.text = "";
-        }
-
-    }
+  
 
 
 }

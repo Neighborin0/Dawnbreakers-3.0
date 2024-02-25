@@ -51,7 +51,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: I don't know how much longer I can last out here alone. I need your help.
+  - text: I don't know how much longer I can last out here alone. You seem like a
+      capable sword, I need your help.
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -137,7 +138,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Aurelia. Now enough with this, I tired of dawdling here any further. '
+  - text: 'Aurelia. Now enough with this, I tire of dawdling here any further. '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

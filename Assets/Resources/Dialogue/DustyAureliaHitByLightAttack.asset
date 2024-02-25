@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DustyAureliaHitByLightAttack
   m_EditorClassIdentifier: 
   labLines:
-  - text: Errgh...How did you...?
+  - text: Errgh...You won't get the best of me yet...
     expression: neutral
     unit: Dusty
     textSpeed: 0.03

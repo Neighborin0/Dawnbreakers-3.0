@@ -223,6 +223,7 @@ public class BattleSystem : MonoBehaviour
         }
         StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+        StopCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         if (TutorialNode)
         {
@@ -239,9 +240,26 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(2f);
             for (int i = 0; i < TutorialText.Count; i++)
             {
-                StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, false, false));
+                if (i != TutorialText.Count - 1)
+                {
+                    StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, false, false));
+                }
             }
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(1.5f);
+            StartCoroutine(Tools.SmoothMoveUI(TutorialText[TutorialText.Count - 1].GetComponent<RectTransform>(), 0, 0, 0.03f));
+            yield return new WaitForSeconds(1f);
+
+            TutorialText[TutorialText.Count - 1].fontSharedMaterial = Instantiate<Material>(TutorialText[TutorialText.Count - 1].fontSharedMaterial);
+            //StartCoroutine(Tools.ChangeObjectEmissionToMaxIntensity(TutorialText[TutorialText.Count - 1].gameObject, TutorialText[TutorialText.Count - 1].color * 1f, 0.01f));
+            /*for(int i = 0; i < 50; i++)
+            {
+                TutorialText[TutorialText.Count - 1].fontSharedMaterial.SetColor(ShaderUtilities.ID_GlowColor, TutorialText[TutorialText.Count - 1].fontSharedMaterial.GetColor(ShaderUtilities.ID_GlowColor) * 1.2f);
+                TutorialText[TutorialText.Count - 1].UpdateMeshPadding();
+                yield return new WaitForSeconds(0.05f);
+            }
+            */
+            yield return new WaitForSeconds(3f);
+
             AudioManager.Instance.Play("Coronus_Battle", 0.00000001f);
             yield return new WaitForSeconds(0.001f);
             StartCoroutine(AudioManager.Instance.Fade(0.35f, "Coronus_Battle", 0.1f, false));
@@ -249,7 +267,7 @@ public class BattleSystem : MonoBehaviour
             TutorialParent.gameObject.SetActive(false);
 
             LabCamera.Instance.GetComponent<MoveableObject>().Move(false, 0.01f, 150);
-            yield return new WaitUntil(() => LabCamera.Instance.transform.position.y <= BattleSystem.Instance.cameraPos1Units.y + 0.01f);
+            yield return new WaitUntil(() => LabCamera.Instance.transform.position.y <= BattleSystem.Instance.cameraPos1Units.y + 1);
             LabCamera.Instance.GetComponent<MoveableObject>().Stop();
         }
         else
@@ -338,8 +356,9 @@ public class BattleSystem : MonoBehaviour
     }
     public IEnumerator TransitionToMap(bool? levelUpScreen = true)
     {
+        state = BattleStates.WON;
         yield return new WaitForSeconds(1f);
-        Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         Director.Instance.canvas.worldCamera = LabCamera.Instance.uicam;
         Director.Instance.canvas.planeDistance = 20;
         foreach (Transform child in Director.Instance.timeline.transform)
@@ -418,6 +437,7 @@ public class BattleSystem : MonoBehaviour
     {
 
         unit.intentUI.textMesh.text = action.ActionName;
+      
         if (CombatTools.DetermineTrueActionValue(action) != 0)
             unit.intentUI.damageNums.text = $"<sprite name=\"{action.damageType}\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType))).ToString();
         unit.intentUI.action = action;
@@ -431,14 +451,19 @@ public class BattleSystem : MonoBehaviour
             unit.intentUI.damageParent.SetActive(true);
         }
         unit.intentUI.gameObject.SetActive(true);
+        unit.intentUI.portrait.sprite = action.targets.charPortraits[0];
         Tools.SetImageColorAlphaToZero(unit.intentUI.GetComponent<Image>());
         Tools.SetTextColorAlphaToZero(unit.intentUI.textMesh);
         Tools.SetTextColorAlphaToZero(unit.intentUI.damageNums);
         Tools.SetTextColorAlphaToZero(unit.intentUI.costNums);
+        Tools.SetImageColorAlphaToZero(unit.intentUI.portraitParent);
+        Tools.SetImageColorAlphaToZero(unit.intentUI.portrait);
         StartCoroutine(Tools.FadeObject(unit.intentUI.GetComponent<Image>(), 0.005f, true, false));
         StartCoroutine(Tools.FadeText(unit.intentUI.textMesh, 0.005f, true, false));
         StartCoroutine(Tools.FadeText(unit.intentUI.damageNums, 0.005f, true, false));
         StartCoroutine(Tools.FadeText(unit.intentUI.costNums, 0.005f, true, false));
+        StartCoroutine(Tools.FadeObject(unit.intentUI.portraitParent, 0.005f, true, false));
+        StartCoroutine(Tools.FadeObject(unit.intentUI.portrait, 0.005f, true, false));
 
     }
     public void SetStatChanges(Stat statToRaise, float AmountToRaise, bool multiplicative, Unit target)
@@ -463,7 +488,7 @@ public class BattleSystem : MonoBehaviour
         popupText.text = text;
         popupText.fontSize = 1.5f;
         var labPopUp = popup.GetComponent<LabPopup>();
-        StartCoroutine(labPopUp.Rise());
+        StartCoroutine(labPopUp.Rise(0.01f));
         StartCoroutine(labPopUp.DestroyPopUp(0.9f));
     }
 
@@ -549,28 +574,12 @@ public class BattleSystem : MonoBehaviour
                         AmountToRaise = -target.armor;
                 }
                 target.namePlate.UpdateArmor(target.armor);
-                number.SetText(AmountToRaise.ToString() + " <sprite name=\"DEF BLUE\">");
-                number.outlineColor = Color.blue;
-                DoStatVFX(AmountToRaise, Color.blue, target);
+                number.SetText(AmountToRaise.ToString() + " <sprite name=\"FORTIFY\">");
+                Color armorParticleColor = new Color(0, 144, 255) * 0.2f;
+                number.outlineColor = armorParticleColor;
+                DoStatVFX(AmountToRaise, armorParticleColor, target);
                 break;
-            /*case Stat.SPD:
-                if (!multiplicative)
-                {
-                    target.speedStat += (int)Math.Ceiling(AmountToRaise);
-                }
-                else
-                {
-                    target.speedStat = (int)Math.Ceiling(target.speedStat * AmountToRaise);
-                    if (AmountToRaise > 1)
-                        AmountToRaise = target.speedStat / AmountToRaise;
-                    else
-                        AmountToRaise = target.speedStat * AmountToRaise;
-                }
-                number.SetText(AmountToRaise.ToString() + " <sprite name=\"SPD YLW\">");
-                number.outlineColor = Color.yellow;
-                DoStatVFX(AmountToRaise, Color.yellow, target);
-                break;
-            */
+         
             case Stat.HP:
                 if (!multiplicative)
                 {
@@ -610,7 +619,10 @@ public class BattleSystem : MonoBehaviour
     {
         if (AmountToRaise > 0)
         {
+           // Color colorAdder = new Color(10, 10, 10);
+            float colorMult = 5;
             StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", color, color, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, 1.3f, 0, false, 1, 10, 0.0001f, "statUp_Loop_002"));
+            StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatPulse", color * colorMult, color * colorMult, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y - 1.5f, 0), Quaternion.identity, 0.8f, 0, false, 1, 10, 0.0001f, "statUp_Loop_002"));
         }
         else
         {
@@ -793,23 +805,7 @@ public class BattleSystem : MonoBehaviour
                 continue;
             }
 
-            bool isSameCostActionExists = false;
-            float currentSliderValue = 100 - Director.Instance.timeline.slider.value;
-
-            foreach (var otherAction in ActionsToPerform)
-            {
-                if (otherAction != action && CombatTools.DetermineTrueCost(otherAction) == CombatTools.DetermineTrueCost(action))
-                {
-                    isSameCostActionExists = true;
-                    break;
-                }
-            }
-
-            if (!isSameCostActionExists && currentSliderValue != 100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier)
-            {
-                CombatTools.UnpauseStaminaTimer();
-            }
-
+            CombatTools.UnpauseStaminaTimer();
 
             yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier) || Director.Instance.timeline.slider.value == Director.Instance.timeline.slider.maxValue);
             CombatTools.PauseStaminaTimer();
@@ -835,12 +831,18 @@ public class BattleSystem : MonoBehaviour
                 action.unit.state = PlayerState.IDLE;
                 action.OnActivated();
 
-                var timelineChild = Director.Instance.timeline.ReturnTimelineChild(action.unit);
-                print(timelineChild.unit.unitName);
-                timelineChild.CanClear = true;
-                timelineChild.GetComponent<LabUIInteractable>().CanHover = false;
-                timelineChild.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.2f);
-                timelineChild.portrait.color = new Color(1, 1, 1, 0.2f);
+                foreach(var timelineChild in Director.Instance.timeline.children)
+                {
+                    if (timelineChild.unit == action.unit)
+                    {
+                        print(timelineChild.unit.unitName);
+                        timelineChild.CanClear = true;
+                        timelineChild.GetComponent<LabUIInteractable>().CanHover = false;
+                        timelineChild.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.2f);
+                        timelineChild.portrait.color = new Color(1, 1, 1, 0.2f);
+                    }
+                }
+              
 
                 if (action.limited)
                 {
@@ -856,6 +858,7 @@ public class BattleSystem : MonoBehaviour
                 yield return new WaitUntil(() => action.Done);
                 yield return new WaitUntil(() => !BattlePhasePause);
                 yield return new WaitForSeconds(0.2f);
+                Director.Instance.timeline.ReplaceMainPortraitWithMiniPortrait(action.unit.timelinechild);
                 action.ResetAction();
                 yield return new WaitForSeconds(0.01f);
 

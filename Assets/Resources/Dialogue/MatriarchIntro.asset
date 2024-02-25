@@ -76,7 +76,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: -10.75, y: 8.25, z: -66.36}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'More lost sparks... '
+  - text: 'More lost souls... '
     expression: darkened
     unit: Matriarch
     textSpeed: 0.05

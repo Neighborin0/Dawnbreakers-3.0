@@ -19,6 +19,10 @@ public class TimeLineChild : MonoBehaviour
     public bool CanBeHighlighted = true;
     public float value;
     public float offset = -12.13f;
+    public MiniTimelineChildren PlayerMiniChild;
+    public MiniTimelineChildren EnemyMiniChild;
+    public MiniTimelineChildren miniChild;
+    public bool PortraitHasBeenReplaced = false;
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -39,8 +43,9 @@ public class TimeLineChild : MonoBehaviour
             rectTransform.anchoredPosition = Vector3.Lerp(rectTransform.anchoredPosition, new Vector3(value * offset, rectTransform.anchoredPosition.y), 0.1f);
             staminaText.text = Mathf.Round(-value + 100).ToString();
         }
-
+       
     }
+
     public void MoveToNewPosition(Vector2 pos)
     {
         PositionToMoveTo = pos;
@@ -55,6 +60,14 @@ public class TimeLineChild : MonoBehaviour
             childImage.material.SetFloat("OutlineThickness", 1f);
             childImage.material.SetColor("OutlineColor", Color.white);
 
+            foreach (var TL in Director.Instance.timeline.children)
+            {
+                if (TL.miniChild != null && TL.miniChild.unit == unit)
+                {
+                    TL.miniChild.Shift(unit);
+                    break;
+                }
+            }
         }
 
     }
@@ -62,6 +75,15 @@ public class TimeLineChild : MonoBehaviour
     {
         if (gameObject != null)
         {
+            foreach (var TL in Director.Instance.timeline.children)
+            {
+                if (TL.miniChild != null && TL.miniChild.unit == unit)
+                {
+                    TL.miniChild.Return();
+                    break;
+                }
+            }
+
             childImage.material.SetFloat("OutlineThickness", 0);
             childImage.material.SetColor("OutlineColor", Color.black);
 
@@ -70,7 +92,6 @@ public class TimeLineChild : MonoBehaviour
     }
 
    
-
     public void ToggleHightlightOnUnit()
     {
         if (CanBeHighlighted)
@@ -98,4 +119,5 @@ public class TimeLineChild : MonoBehaviour
         }
     }
 
+   
 }

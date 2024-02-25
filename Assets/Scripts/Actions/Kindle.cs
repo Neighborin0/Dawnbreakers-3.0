@@ -31,7 +31,15 @@ public class Kindle : Action
     {
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 12, -70, 0.5f);
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "KindleLight", Color.red, Color.red, new Vector3(-1.56f, 6, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
+        if(unit.GetComponent<TutorialMatriarch>() != null)
+        {
+            var Matriarch = unit.GetComponent<TutorialMatriarch>();
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(Matriarch.LightPosition, "KindleLight", Color.red, Color.red, Vector3.zero, Quaternion.identity, 10f, 0, true, 0, 8));
+        }
+        else
+        {
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "KindleLight", Color.red, Color.red, new Vector3(-1.56f, 6, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
+        }    
         AudioManager.QuickPlay("glint_001");
 
         yield return new WaitForSeconds(1f);

@@ -38,7 +38,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'I am not sure how much energy I still have left... '
+  - text: 'I am not sure how much energy I still have... '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

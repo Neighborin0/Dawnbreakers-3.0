@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 985267830138793590}
   - component: {fileID: 1182382494466390571}
   - component: {fileID: 6085146198288426396}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GroundSymbol (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4839,7 +4839,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7625802996203774592}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BeaconLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4875,7 +4875,7 @@ GameObject:
   - component: {fileID: 1379975321280022840}
   - component: {fileID: 3752302232553601992}
   - component: {fileID: 6557833719990956823}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9641,7 +9641,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0f5de1339b914aa4d90f1a0ae68dab36, type: 2}
+  - {fileID: 2100000, guid: 45cf09af39f58cc44b6702f367c4c520, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9705,7 +9705,7 @@ GameObject:
   - component: {fileID: 5046360462939929410}
   - component: {fileID: 6384425188905308675}
   - component: {fileID: 1404417711612133745}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GroundSymbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}

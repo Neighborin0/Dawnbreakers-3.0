@@ -20,10 +20,10 @@ public class LabPopup : MonoBehaviour
         StartCoroutine(scaler);
     }
 
-    public IEnumerator Rise()
+    public IEnumerator Rise(float delay = 0.001f)
     {
         transform.localScale = Vector3.one;
-        dropper = Tools.SmoothMoveObject(transform, transform.position.x, transform.position.y + 1, 0.001f);
+        dropper = Tools.SmoothMoveObject(transform, transform.position.x, transform.position.y + 1, delay);
         StartCoroutine(dropper);
         yield break;
     }

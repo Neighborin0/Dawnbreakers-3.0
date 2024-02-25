@@ -39,7 +39,7 @@ public class ItemText : MonoBehaviour
                 currentEffectPopup.SetActive(true);
             }
             var rect = this.transform.GetComponent<RectTransform>();
-            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.anchoredPosition.x, rect.anchoredPosition.y + 2, 0);
+            currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(rect.anchoredPosition.x, rect.anchoredPosition.y + 1, 0);
             var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
             EPtext.text = $"{item.itemDescription}";
             //currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();

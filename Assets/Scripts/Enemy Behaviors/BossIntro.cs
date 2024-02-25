@@ -42,6 +42,7 @@ public class BossIntro : MonoBehaviour
             LabCamera.Instance.state = LabCamera.CameraState.IDLE;
             SubText.text = "High Priest of Cursed Radiance";
 
+
             //BossTitleCard.material = Instantiate<Material>(BossTitleCard.material);
 
 

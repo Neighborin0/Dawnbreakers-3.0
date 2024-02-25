@@ -82,16 +82,16 @@ VisualEffect:
         m_Overridden: 1
     m_Vector4f:
       m_Array:
-      - m_Value: {x: 0.6444799, y: 0.038204376, z: 0, w: 1}
+      - m_Value: {x: 5.155839, y: 0.305635, z: 0, w: 1}
         m_Name: TornadoCore
         m_Overridden: 1
-      - m_Value: {x: 0.9386859, y: 0.37123778, z: 0.049706575, w: 1}
+      - m_Value: {x: 3.7547436, y: 1.4849511, z: 0.1988263, w: 1}
         m_Name: Layer1Color
         m_Overridden: 1
-      - m_Value: {x: 3.823894, y: 3.652396, z: 1.0490029, w: 1}
+      - m_Value: {x: 11.984314, y: 11.446829, z: 3.2876382, w: 1}
         m_Name: Layer2Color
         m_Overridden: 1
-      - m_Value: {x: 256, y: 115.40118, z: 10.123839, w: 1}
+      - m_Value: {x: 383.49808, y: 172.8755, z: 15.16591, w: 1}
         m_Name: Layer3Color
         m_Overridden: 1
       - m_Value: {x: 0.03773582, y: 0.004449978, z: 0.004449978, w: 1}
@@ -5203,7 +5203,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 18fe8b0d21fd45f40af0db7117bfd80d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

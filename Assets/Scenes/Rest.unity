@@ -4820,7 +4820,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &461341937
 Transform:
   m_ObjectHideFlags: 0
@@ -10720,7 +10720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &543538201
 Transform:
   m_ObjectHideFlags: 0
@@ -31536,7 +31536,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1829515282
 Transform:
   m_ObjectHideFlags: 0
@@ -38001,7 +38001,10 @@ MonoBehaviour:
       _MemberName: SetDescription
       _PersistentArguments: []
   Exited:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 1996616339}
+      _MemberName: Remove
+      _PersistentArguments: []
   Clicked:
     _PersistentCalls:
     - _Target: {fileID: 0}
@@ -38042,9 +38045,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Description: Fully restores party.
-  offset: {x: 0, y: 2, z: 0}
-  useCustomScale: 0
-  CustomScale: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 100, z: 0}
+  useCustomScale: 1
+  CustomScale: {x: 1.3, y: 1.3, z: 1.3}
 --- !u!1 &1997449066
 GameObject:
   m_ObjectHideFlags: 0

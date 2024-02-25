@@ -87,7 +87,7 @@ Material:
     m_Ints: []
     m_Floats:
     - Alpha_Clip: 0
-    - MainTexPower: 2
+    - MainTexPower: 1
     - _AlphaClip: 1
     - _Blend: 0
     - _BumpScale: 1
@@ -120,7 +120,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 25.85098, g: 14.617308, b: 1.0827637, a: 1}
+    - _EmissionColor: {r: 4.8724313, g: 9.622201, b: 103.403885, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &8094858397570995265

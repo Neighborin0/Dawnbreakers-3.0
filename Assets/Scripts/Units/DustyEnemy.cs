@@ -147,9 +147,7 @@ public class DustyEnemy : Unit
                 StopCoroutine(blackScreenFadeCoroutine);
 
             blackScreenFadeCoroutine = Tools.FadeObject(Director.Instance.blackScreen, 0.001f, true, false);
-
-            Director.Instance.StartCoroutine(blackScreenFadeCoroutine);
-
+            Director.Instance.StartCoroutine(Tools.FadeObject(Director.Instance.blackScreen, 0.001f, true, false));
             yield return new WaitUntil(() => Director.Instance.blackScreen.color.a >= 1);
             yield return new WaitForSeconds(0.1f);
 
@@ -160,7 +158,7 @@ public class DustyEnemy : Unit
             TutorialText.fontSharedMaterial.SetColor("_GlowColor", TextColor);
             TutorialText.fontSharedMaterial.SetFloat("_GlowPower", 0.5f);
             TutorialText.color = TextColor;
-            TutorialText.text = "...Burn quickly...";
+            TutorialText.text = "Burn quickly...";
             AudioManager.QuickPlay("low_hum_001");
 
             Director.Instance.StartCoroutine(Tools.FadeText(TutorialText, 0.001f, true, false));
@@ -238,7 +236,7 @@ public class DustyEnemy : Unit
         {
             BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaHitByLightAttack"), true, false, false, false, true, false);
             yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
-            BattleSystem.Instance.BattlePhasePause = true;
+            BattleSystem.Instance.BattlePhasePause = true;         
             Director.Instance.blackScreen.color = new Color(0, 0, 0, 0);
             Director.Instance.blackScreen.transform.SetAsLastSibling();
             Director.Instance.blackScreen.gameObject.SetActive(true);
@@ -247,8 +245,7 @@ public class DustyEnemy : Unit
                 StopCoroutine(blackScreenFadeCoroutine);
 
             blackScreenFadeCoroutine = Tools.FadeObject(Director.Instance.blackScreen, 0.001f, true, false);
-
-            Director.Instance.StartCoroutine(blackScreenFadeCoroutine);
+            StartCoroutine(blackScreenFadeCoroutine);
             StartCoroutine(AudioManager.Instance.Fade(0f, AudioManager.Instance.currentMusicTrack, 2, false));
             yield return new WaitUntil(() => Director.Instance.blackScreen.color.a >= 1);
             yield return new WaitForSeconds(0.1f);
@@ -337,13 +334,12 @@ public class DustyEnemy : Unit
         {
             BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaMeeting(2)"), true, false, false, true);
             BattleSystem.Instance.DoPostBattleDialogue = false;
-            yield return new WaitUntil(() => !BattleLog.Instance.characterdialog.IsActive());
+            yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
             StartCoroutine(BattleSystem.Instance.TransitionToMap(true));
-            LabCamera.Instance.uicam.gameObject.SetActive(false);
+            LabCamera.Instance.uicam.gameObject.SetActive(true);
             BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
             MapController.Instance.ReEnteredMap += BattleLog.Instance.DoPostBattleDialouge;
             SceneManager.sceneLoaded += AddDusty;
-            //Tools.PauseStaminaTimer();
             BattleSystem.Instance.StopUpdating = true;
             CombatTools.TurnOffCriticalUI(BaseUnit);
         }

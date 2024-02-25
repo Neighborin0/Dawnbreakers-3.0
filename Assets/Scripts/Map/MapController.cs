@@ -48,6 +48,8 @@ public class MapController : MonoBehaviour
 
     private List<Vector3> storedDecorPositions;
 
+    public bool CanInput = true;
+
 
     public static MapController Instance { get; private set; }
     void Awake()
@@ -97,6 +99,7 @@ public class MapController : MonoBehaviour
         if (this != null)
         {
             CheckCams(scene, mode);
+           
             if (Loaded)
             {
                 foreach (var minimapIcon in GameObject.FindObjectsOfType<MiniMapIcon>())
@@ -109,7 +112,11 @@ public class MapController : MonoBehaviour
                 }
                 Loaded = false;
                 this.GetComponent<ParticleSystem>().Stop();
-
+                /*if (SceneManager.GetActiveScene().name == "MAP2")
+                {
+                    LabCamera.Instance.camTransform.position = new Vector3(currentNodes[completedNodeCount].transform.position.x, LabCamera.Instance.camTransform.position.y, LabCamera.Instance.camTransform.position.z);
+                }
+                */
             }
             else
             {
@@ -131,11 +138,13 @@ public class MapController : MonoBehaviour
                     var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
                     levelDropObj.gameObject.SetActive(true);
                     levelDropObj.bar.color = new Color(0, 0, 0, 1);
+                    //LabCamera.Instance.camTransform.position = new Vector3(currentNodes[completedNodeCount].transform.position.x, LabCamera.Instance.camTransform.position.y, LabCamera.Instance.camTransform.position.z);
                 }
                 else if (!Director.Instance.DevMode && SceneManager.GetActiveScene().name == "MAP2" && DoneOpening)
                 {
                     var levelDropObj = GameObject.FindObjectOfType<LevelDrop>();
                     levelDropObj.gameObject.SetActive(false);
+                    //LabCamera.Instance.camTransform.position = new Vector3(currentNodes[completedNodeCount].transform.position.x, LabCamera.Instance.camTransform.position.y, LabCamera.Instance.camTransform.position.z);
                 }
 
 
@@ -161,27 +170,44 @@ public class MapController : MonoBehaviour
         if (Director.Instance != null && Director.Instance.CharacterSlotsDisplayed)
         {
 
-
-            if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
+            if (CanInput)
             {
-                LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
-                AudioManager.QuickPlay("ui_woosh_002");
-            }
-
-
-            if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name == "MAP2")
-            {
-                if (enableMapControls)
+                if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
                 {
-                    enableMapControls = false;
-                    mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
-                    mapControlBar.SetActive(enableMapControls);
+                    LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
+                    AudioManager.QuickPlay("ui_woosh_002");
                 }
-                else
+
+
+                if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name == "MAP2")
                 {
-                    enableMapControls = true;
-                    mapControlBar.SetActive(enableMapControls);
-                    mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
+                    if (enableMapControls)
+                    {
+                        enableMapControls = false;
+                        mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
+                        mapControlBar.SetActive(enableMapControls);
+                    }
+                    else
+                    {
+                        enableMapControls = true;
+                        mapControlBar.SetActive(enableMapControls);
+                        mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
+
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf && SceneManager.GetActiveScene().name != "Main Menu")
+                {
+                    if (Director.Instance.CharacterSlotsDisplayed)
+                    {
+                        if (BattleLog.Instance != null)
+                            if (BattleLog.Instance.state != BattleLogStates.TALKING)
+                                Director.Instance.DisplayCharacterTab(false);
+                    }
+                    else if (Director.Instance.ItemTabGrid.transform.childCount == 0)
+                    {
+                        Director.Instance.DisableCharacterTab();
+                    }
 
                 }
             }
@@ -359,7 +385,7 @@ public class MapController : MonoBehaviour
     {
         var MM = LabCamera.Instance.followTarget;
         node.transform.localScale = new Vector3(0, 0, 0);
-
+        //LabCamera.Instance.camTransform.position = new Vector3(currentNodes[completedNodeCount].transform.position.x, LabCamera.Instance.camTransform.position.y, LabCamera.Instance.camTransform.position.z);
         LabCamera.Instance.state = LabCamera.CameraState.IDLE;
         LabCamera.Instance.MoveToGameObject(node);
 
@@ -367,7 +393,7 @@ public class MapController : MonoBehaviour
 
         if (node.GetComponent<BossNode>() != null)
         {
-            compressor = 1.8f;
+            compressor = 1f;
         }
         var lineInstance = Instantiate(linePrefab, mapCanvas.transform);
         lineInstance.gameObject.SetActive(true);
@@ -404,7 +430,7 @@ public class MapController : MonoBehaviour
     {
         if (setup)
         {
-            LabCamera.Instance.camTransform.position = new Vector3(-42.1187248f, 51.7119102f, -46.9143143f);
+            LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
             StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
             LabCamera.Instance.followDisplacement = new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f);
             LabCamera.Instance.cam.fieldOfView = defaultZoom;
@@ -419,12 +445,14 @@ public class MapController : MonoBehaviour
                 }
             }
         }
+        
         completedNodeCount++;
-
+      
         if (!DoneOpening)
         {
             Director.Instance.StartCoroutine(DoLevelDrop());
         }
+
         Tools.ToggleUiBlocker(false, true, true);
         yield return new WaitUntil(() => DoneOpening);
         yield return new WaitForSeconds(0.3f);
@@ -438,6 +466,7 @@ public class MapController : MonoBehaviour
             mapControlBar.SetActive(true);
             mapControlBar.GetComponent<MoveableObject>().Move(true);
         }
+        CanInput = true;
         ReEnteredMap?.Invoke(this);
     }
 }

@@ -77,27 +77,6 @@ public class Tools : MonoBehaviour
         text.color = tempColor;
     }
 
-
-    public static void FadeUI(Image image, bool fadeOut)
-    {
-        for (int i = 0; i < 100; i++)
-        {
-            if (image != null)
-            {
-                if (fadeOut)
-                {
-                    image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a - i);
-                }
-                else
-                {
-                    image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a + i);
-                }
-            }
-            else
-                break;
-        }
-    }
-
     public static IEnumerator FadeText(TextMeshProUGUI gameObject, float delay, bool FadeIn, bool SetInactiveAtEnd = true)
     {
         if (!gameObject.gameObject.activeSelf)

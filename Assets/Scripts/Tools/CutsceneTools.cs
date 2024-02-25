@@ -32,7 +32,7 @@ public class CutsceneTools : MonoBehaviour
     public static void ResetRotation()
     {
         LabCamera.Instance.ResetRotation();
-        Director.Instance.StartCoroutine(CutsceneTools.CheckIfRotationIsDone());
+        //Director.Instance.StartCoroutine(CutsceneTools.CheckIfRotationIsDone());
 
 
     }
@@ -44,7 +44,7 @@ public class CutsceneTools : MonoBehaviour
             Tools.ToggleUiBlocker(false, true, true);
             yield return null;
         }
-        Tools.ToggleUiBlocker(true, true, true);
+       // Tools.ToggleUiBlocker(true, true, true);
 
 
     }

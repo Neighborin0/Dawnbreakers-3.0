@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
@@ -37,13 +39,73 @@ public class TimeLine : MonoBehaviour
         if (slider.value > 0 && Resetting)
             slider.value -= Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay * 2f;
     }
+
+  
+    public void CheckTimelineForSameValues(TimeLineChild TLToCheck)
+    {
+        var timelineChildren = Director.Instance.timeline.children;
+        if (!TLToCheck.CanClear)
+        {
+            foreach (var OtherTL in timelineChildren)
+            {
+                if (OtherTL != TLToCheck && !OtherTL.CanClear && OtherTL.value == TLToCheck.value && CombatTools.CompareAffiliations(OtherTL.unit, TLToCheck.unit) && OtherTL.miniChild == null)
+                {
+                    SetupMiniChild(TLToCheck.unit, OtherTL);
+                    TLToCheck.gameObject.SetActive(false);
+                    break; 
+                }           
+            }
+        }
+
+    }
+
+
+    public void SetupMiniChild(Unit TargetUnit, TimeLineChild parent)
+    {
+        var miniChild = ReturnMiniChild(TargetUnit, parent);
+        miniChild.unit = TargetUnit;
+        miniChild.portrait.sprite = TargetUnit.charPortraits[0];
+        miniChild.parent = parent;
+        miniChild.gameObject.SetActive(true);
+        TargetUnit.HasMiniTimelineChild = true;
+    }
+
+    public MiniTimelineChildren ReturnMiniChild(Unit TargetUnit, TimeLineChild parent)
+    {
+        if (TargetUnit.IsPlayerControlled)
+            parent.miniChild = parent.PlayerMiniChild;
+        else
+            parent.miniChild = parent.EnemyMiniChild;
+
+
+        return parent.miniChild;
+    }
+    public void RemoveMiniChild(Unit TargetUnit, TimeLineChild parent)
+    {
+        foreach (TimeLineChild TL in Director.Instance.timeline.children.ToList())
+        {
+            if(TL.miniChild != null && TL.miniChild.unit != null && TL.miniChild.unit == TargetUnit)
+            {
+                TL.miniChild.gameObject.SetActive(false);
+                TL.unit.HasMiniTimelineChild = false;
+                TL.miniChild.unit = null;
+                TL.miniChild = null;
+                break;
+            }
+        }
+    }
+
     //In Battle
     public IEnumerator ResetTimeline()
     {
         Resetting = true;
 
-        foreach (var x in Tools.GetAllUnits())
-            Director.Instance.timeline.RemoveTimelineChild(x);
+        foreach (var x in children.ToList())
+        {
+            Director.Instance.timeline.children.Remove(x);
+            Destroy(x.gameObject);
+        }
+          
 
         yield return new WaitUntil(() => slider.value <= 0);
         Resetting = false;
@@ -106,45 +168,76 @@ public class TimeLine : MonoBehaviour
         return Act;
     }
 
-    public void RemoveTimelineChild(Unit unit)
+    public void ReplaceMainPortraitWithMiniPortrait(TimeLineChild TL)
     {
-        List<TimeLineChild> childrenToRemove = new List<TimeLineChild>();
-
-        foreach (TimeLineChild child in Director.Instance.timeline.children)
+        if(TL.miniChild != null && !TL.PortraitHasBeenReplaced)
         {
-            if (child != null && child.unit.unitName == unit.unitName)
-            {
-                childrenToRemove.Add(child);
-                Director.Instance.StartCoroutine(FadeOut(child));
-            }
-        }
-
-        foreach (TimeLineChild childToRemove in childrenToRemove)
-        {
-            Director.Instance.timeline.children.Remove(childToRemove);
-        }
-
-        foreach (var action in BattleSystem.Instance.ActionsToPerform)
-        {
-            if (action.unit.unitName == unit.unitName)
-            {
-                if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && action.actionStyle != Action.ActionStyle.STANDARD)
-                {
-                    CombatTools.ReturnPipCounter().AddPip();
-                }
-                foreach (var skill in action.unit.skillUIs)
-                {
-                    var actionContainer = skill.GetComponent<ActionContainer>();
-                    actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
-                    actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
-                }
-                BattleSystem.Instance.ActionsToPerform.Remove(action);
-
-                break;
-            }
+            TL.portrait.sprite = TL.miniChild.portrait.sprite;
+            TL.PortraitHasBeenReplaced = true;
         }
     }
 
+    public void RemoveTimelineChild(Unit unitToFind)
+    {
+        foreach (TimeLineChild TL in Director.Instance.timeline.children.ToList())
+        {
+            if (TL != null && TL.unit != null && (TL.unit == unitToFind || (TL.miniChild != null && TL.miniChild.unit == unitToFind)))
+            {
+               
+                //Timeline Child is Mini Child
+                if (TL.miniChild != null && TL.miniChild.unit == unitToFind)
+                {
+                    RemoveMiniChild(unitToFind, TL);
+                }
+                //Timeline has a different Mini Child
+                else if (TL.miniChild != null && TL.miniChild.unit != unitToFind)
+                {
+                    foreach (TimeLineChild SecondPass in Director.Instance.timeline.children.ToList())
+                    {
+                        if(SecondPass.unit != null && SecondPass.unit == unitToFind)
+                        {
+                            SecondPass.gameObject.SetActive(true);
+                            SecondPass.unit = SecondPass.miniChild.unit;
+                            SecondPass.portrait.sprite = SecondPass.miniChild.portrait.sprite;
+                            SecondPass.unit.timelinechild = SecondPass;
+                            RemoveMiniChild(SecondPass.unit, SecondPass);
+                            break;
+                        }
+                    }
+                }
+                //No Mini Child is found
+                else if (TL.miniChild == null)
+                {
+                    Director.Instance.timeline.children.Remove(TL);
+                    Director.Instance.StartCoroutine(FadeOut(TL));
+                }
+                break;
+            }
+        }
+
+
+            foreach (var action in BattleSystem.Instance.ActionsToPerform.ToList())
+            {
+                if (action.unit.unitName == unitToFind.unitName)
+                {
+                    if (BattleSystem.Instance.state == BattleStates.DECISION_PHASE && action.actionStyle != Action.ActionStyle.STANDARD)
+                    {
+                        CombatTools.ReturnPipCounter().AddPip();
+                    }
+                    foreach (var skill in action.unit.skillUIs)
+                    {
+                        var actionContainer = skill.GetComponent<ActionContainer>();
+                        actionContainer.lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
+                        actionContainer.heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
+                    }
+                    BattleSystem.Instance.ActionsToPerform.Remove(action);
+                    break;
+                }
+            }
+        
+    }
+
+  
     public IEnumerator FadeOut(TimeLineChild timeLineChild)
     {
         if (timeLineChild != null && timeLineChild.gameObject != null)
@@ -215,5 +308,45 @@ public class TimeLine : MonoBehaviour
     {
         var TL = SpawnTimelineChild(unit);
         TL.value -= cost * unit.actionCostMultiplier < 100 ? cost * unit.actionCostMultiplier : 100;
+        CheckTimelineForSameValues(TL);
+    }
+
+    public void DelayCheck(TimeLineChild TL)
+    {
+        if (!TL.CanClear)
+        {
+            if (TL.unit.HasMiniTimelineChild)
+            {
+                //works
+                foreach (var OtherTL in children)
+                {
+                    if (OtherTL.miniChild != null && OtherTL.miniChild.unit != null && OtherTL.miniChild.unit == TL.unit)
+                    {
+                        TL.value = OtherTL.value;
+                        TL.GetComponent<RectTransform>().anchoredPosition = OtherTL.GetComponent<RectTransform>().anchoredPosition;
+                        RemoveMiniChild(TL.unit, OtherTL);
+                        TL.gameObject.SetActive(true);
+                        break;
+                    }
+
+                }
+                TL.gameObject.SetActive(true);
+            }
+            else if (TL.miniChild != null)
+            {
+                foreach (var OtherTL in children)
+                {
+                    if (TL.miniChild.unit == OtherTL.unit)
+                    {
+                        OtherTL.value = TL.value;
+                        OtherTL.GetComponent<RectTransform>().anchoredPosition = TL.GetComponent<RectTransform>().anchoredPosition;
+                        RemoveMiniChild(OtherTL.unit, TL);
+                        OtherTL.gameObject.SetActive(true);
+                        break;
+                    }
+                }
+
+            }
+        }
     }
 }

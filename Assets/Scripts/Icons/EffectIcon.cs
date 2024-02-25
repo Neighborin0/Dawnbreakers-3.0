@@ -79,7 +79,7 @@ public class EffectIcon : MonoBehaviour
         StartCoroutine(scaler);
         yield return new WaitForSeconds(0.2f);
         StopCoroutine(scaler);
-        scaler = Tools.SmoothScaleObj(transform, new Vector3(1, 1, 0), 0.001f);
+        scaler = Tools.SmoothScaleObj(transform, new Vector3(0.7f, 0.7f, 0), 0.001f);
         StartCoroutine(scaler);
     }
 

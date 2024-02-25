@@ -76,7 +76,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: ...
+  - text: I...
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -101,18 +101,6 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: I...
-    expression: neutral
-    unit: Dusty
-    textSpeed: 0.03
-    OnLineStarted:
-      m_PersistentCalls:
-        m_Calls: []
-    OnLineEnded:
-      m_PersistentCalls:
-        m_Calls: []
-    PositionToMoveTo: {x: 0, y: 0, z: 0}
-    CameraRotation: {x: 0, y: 0, z: 0}
   - text: ...
     expression: neutral
     unit: Dusty
@@ -122,23 +110,10 @@ MonoBehaviour:
         m_Calls: []
     OnLineEnded:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 773224649268077316, guid: 91282c771fd793e4dacdd0aa81afb210,
-            type: 3}
-          m_TargetAssemblyTypeName: CutsceneTools, Assembly-CSharp
-          m_MethodName: ResetCam
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Alright...I won't stop you.
+  - text: Alright then...I won't stop you.
     expression: neutral
     unit: Dusty
     textSpeed: 0.03

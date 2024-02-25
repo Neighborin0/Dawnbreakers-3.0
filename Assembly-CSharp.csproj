@@ -93,6 +93,7 @@
     <Compile Include="Assets\Scripts\DirectorInfo.cs" />
     <Compile Include="Assets\Scripts\RunTracker.cs" />
     <Compile Include="Assets\Scripts\Actions\Bash.cs" />
+    <Compile Include="Assets\Scripts\LabBillBoard.cs" />
     <Compile Include="Assets\Scripts\Actions\Awaken.cs" />
     <Compile Include="Assets\Scripts\Actions\Strike.cs" />
     <Compile Include="Assets\Scripts\Actions\Whack.cs" />

@@ -57,9 +57,14 @@ public class Director : MonoBehaviour
     public float staminaSPDDivider;
     public float WeaknessMultiplier = 1.3f;
     public float ResistanceMultiplier = 0.3f;
+
+    //Weakness and Resistance Modifiers
     public int TimelineReduction = 50;
     public int TimelineAddition = 10;
 
+    //Action Modifiers
+    public int TimelineReductionNonStandardAction = 20;
+    public int TimelineAdditionNonStandardAction = 10;
 
     //public TextMeshProUGUI LevelDropSubText;
 
@@ -147,22 +152,7 @@ public class Director : MonoBehaviour
                     Time.timeScale = 1;
             }
         }
-        //Put Character Slots Away
-        if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf && SceneManager.GetActiveScene().name != "Main Menu")
-        {
-            if (CharacterSlotsDisplayed)
-            {
-                if (BattleLog.Instance != null)
-                    if(BattleLog.Instance.state != BattleLogStates.TALKING)
-                        DisplayCharacterTab(false);
-            }
-            else if (ItemTabGrid.transform.childCount == 0)
-            {
-                DisableCharacterTab();
-            }
-
-        }
-
+      
         if (Input.GetKeyDown(KeyCode.U) && Director.Instance.DevMode)
         {
             if(canvas.gameObject.activeSelf)

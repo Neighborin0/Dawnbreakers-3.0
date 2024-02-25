@@ -40,15 +40,7 @@ public class Husk : Unit
         {
             int move = UnityEngine.Random.Range(0, baseUnit.actionList.Count);
             CombatTools.ModifyAction(baseUnit, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0, ActionVariance01.Length)]);
-            if (CombatTools.CheckAndReturnNamedUnit("Dusty") != null)
-            {
-                CombatTools.SetupEnemyAction(baseUnit, move, CombatTools.CheckAndReturnNamedUnit("Dusty"));
-            }
-            else
-            {
-                CombatTools.SetupEnemyAction(baseUnit, move, null);
-            }
-
+            CombatTools.SetupEnemyAction(baseUnit, move, null);
         }
 
     }
