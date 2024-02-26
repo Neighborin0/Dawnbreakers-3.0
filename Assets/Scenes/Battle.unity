@@ -18240,7 +18240,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Bask in the brillance of our sacred space
+  m_text: Bask in the brillance of our sacred space,
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
@@ -34518,6 +34518,7 @@ GameObject:
   - component: {fileID: 1547547810}
   - component: {fileID: 1547547811}
   - component: {fileID: 1547547812}
+  - component: {fileID: 1547547813}
   m_Layer: 5
   m_Name: 6
   m_TagString: Untagged
@@ -34642,6 +34643,22 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1547547813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547547809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76be71277595b914d81f98f50136ef11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsShaking: 0
+  shakeAmount: 0.5
+  originalLocalPosition: {x: 0, y: 0, z: 0}
+  increaseFactor: 1.8
 --- !u!1 &1548966485
 GameObject:
   m_ObjectHideFlags: 0

@@ -245,26 +245,17 @@ public class BattleSystem : MonoBehaviour
                     StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, false, false));
                 }
             }
-            yield return new WaitForSeconds(1.5f);
-            StartCoroutine(Tools.SmoothMoveUI(TutorialText[TutorialText.Count - 1].GetComponent<RectTransform>(), 0, 0, 0.03f));
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.7f);
+            StartCoroutine(Tools.SmoothMoveUI(TutorialText[TutorialText.Count - 1].GetComponent<RectTransform>(), 0, 0, 0.025f));
 
-            TutorialText[TutorialText.Count - 1].fontSharedMaterial = Instantiate<Material>(TutorialText[TutorialText.Count - 1].fontSharedMaterial);
-            //StartCoroutine(Tools.ChangeObjectEmissionToMaxIntensity(TutorialText[TutorialText.Count - 1].gameObject, TutorialText[TutorialText.Count - 1].color * 1f, 0.01f));
-            /*for(int i = 0; i < 50; i++)
-            {
-                TutorialText[TutorialText.Count - 1].fontSharedMaterial.SetColor(ShaderUtilities.ID_GlowColor, TutorialText[TutorialText.Count - 1].fontSharedMaterial.GetColor(ShaderUtilities.ID_GlowColor) * 1.2f);
-                TutorialText[TutorialText.Count - 1].UpdateMeshPadding();
-                yield return new WaitForSeconds(0.05f);
-            }
-            */
-            yield return new WaitForSeconds(3f);
-
+            yield return new WaitForSeconds(1.8f);
+            TutorialText[TutorialText.Count - 1].GetComponent <LabShaker>().Shake();
+            yield return new WaitForSeconds(3.5f);
+            TutorialParent.gameObject.SetActive(false);
             AudioManager.Instance.Play("Coronus_Battle", 0.00000001f);
             yield return new WaitForSeconds(0.001f);
             StartCoroutine(AudioManager.Instance.Fade(0.35f, "Coronus_Battle", 0.1f, false));
             yield return new WaitForSeconds(1.5f);
-            TutorialParent.gameObject.SetActive(false);
 
             LabCamera.Instance.GetComponent<MoveableObject>().Move(false, 0.01f, 150);
             yield return new WaitUntil(() => LabCamera.Instance.transform.position.y <= BattleSystem.Instance.cameraPos1Units.y + 1);

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   labLines:
   - text: ...Huff...Huff...
-    expression: neutral
+    expression: exhausted
     unit: Aurelia
     textSpeed: 0.03
     OnLineStarted:

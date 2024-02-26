@@ -303,6 +303,7 @@ MonoBehaviour:
   charPortraits:
   - {fileID: 21300000, guid: 3e449902b5ccbab42907ae257ab9d358, type: 3}
   - {fileID: 21300000, guid: 39dfd55d0efdc9845b7799f0f050f3b4, type: 3}
+  - {fileID: 21300000, guid: bbc5629d522837d408ff2a176079ee22, type: 3}
   anim: {fileID: 2642224846084036885}
   MiniMapIcons:
   - {fileID: 21300000, guid: 5685d9f9f7a34d94699c740926ca29b4, type: 3}
@@ -333,6 +334,8 @@ MonoBehaviour:
   actionList:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
   - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
+  - {fileID: 11400000, guid: 8626ced7933e1d04eb4f6721e66a6f6f, type: 2}
+  - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   summonables: []
   HitEmissionChanged: 0
 --- !u!114 &3966448854374177832

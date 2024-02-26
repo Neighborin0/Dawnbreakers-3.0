@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   labLines:
   - text: ...I will not fall here...
-    expression: neutral
+    expression: exhausted
     unit: Aurelia
     textSpeed: 0.02
     OnLineStarted:

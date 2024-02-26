@@ -223,7 +223,7 @@ MonoBehaviour:
   mapIcons: []
   animationStep: 0
   fpsCounter: 0
-  fps: 2
+  fps: 1
   speed: 0
   state: 0
 --- !u!50 &4251768024213947946
