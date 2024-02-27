@@ -120,6 +120,11 @@ public class Unit : MonoBehaviour
         currentHP = maxHP;
         state = PlayerState.IDLE;
         spotLight = GetComponentInChildren<Light>();
+
+        if (GetComponent<Animator>() != null)
+            anim = GetComponent<Animator>();
+        else
+            Debug.LogError("UNIT DOES NOT HAVE ANIMATOR FIX THAT SHIT");
     }
 
 
@@ -189,6 +194,7 @@ public class Unit : MonoBehaviour
             }
         }
 
+       
         // Hit Detection
         if (hit.collider == GetComponent<BoxCollider>() && !isDarkened && !OverUI())
         {

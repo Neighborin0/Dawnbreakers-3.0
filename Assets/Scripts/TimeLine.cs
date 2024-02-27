@@ -170,9 +170,10 @@ public class TimeLine : MonoBehaviour
 
     public void ReplaceMainPortraitWithMiniPortrait(TimeLineChild TL)
     {
-        if(TL.miniChild != null && !TL.PortraitHasBeenReplaced)
+        
+        if(TL.miniChild != null)
         {
-            TL.portrait.sprite = TL.miniChild.portrait.sprite;
+            (TL.miniChild.portrait.sprite, TL.portrait.sprite) = (TL.portrait.sprite, TL.miniChild.portrait.sprite);
             TL.PortraitHasBeenReplaced = true;
         }
     }

@@ -51,6 +51,7 @@ public class Director : MonoBehaviour
     public TextMeshProUGUI PipTutorialText;
     public Image BossCircle;
     public BossIntro bossIntro;
+    public Image CutsceneUiBlocker;
 
     //Timeline stuff
     public TimeLine timeline;

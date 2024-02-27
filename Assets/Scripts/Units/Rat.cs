@@ -157,7 +157,7 @@ public class Rat : Unit
                 }
             }
             unit.OnActionSelected += DisableNonAttackingOptions;
-            unit.BattlePhaseClose += RevertActions;
+            unit.BattleStarted += RevertActions;
         }
     }
     private static void DisableNonAttackingOptions(Unit unit, ActionContainer container)
@@ -175,9 +175,9 @@ public class Rat : Unit
     }
     private static void RevertActions(Unit unit)
     {
-
+        unit.knockbackModifider = 0;
         unit.OnActionSelected -= DisableNonAttackingOptions;
-        unit.BattlePhaseClose -= RevertActions;
+        unit.BattleStarted -= RevertActions;
 
     }
 }

@@ -477,7 +477,7 @@ public class CombatTools : MonoBehaviour
        
         DetermineActionData(baseUnit, DecidingNum, overrideTarget);
         BattleSystem.Instance.DisplayIntent(baseUnit.actionList[DecidingNum], baseUnit);
-        DetermineActionData(baseUnit, DecidingNum, overrideTarget);
+        //DetermineActionData(baseUnit, DecidingNum, overrideTarget);
         baseUnit.state = PlayerState.READY;
         var newAction = UnityEngine.Object.Instantiate(baseUnit.actionList[DecidingNum]);
         Director.Instance.timeline.DoCost(CombatTools.DetermineTrueCost(newAction), baseUnit);

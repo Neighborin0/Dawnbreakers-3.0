@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DustyAureliaMeeting(1)
   m_EditorClassIdentifier: 
   labLines:
-  - text: What goes there!? Show yourself!
+  - text: Who goes there!? Show yourself!
     expression: neutral_darkened
     unit: Dusty
     textSpeed: 0.03

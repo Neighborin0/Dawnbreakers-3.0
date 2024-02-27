@@ -251,6 +251,8 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(1.8f);
             TutorialText[TutorialText.Count - 1].GetComponent <LabShaker>().Shake();
             yield return new WaitForSeconds(3.5f);
+            TutorialText[TutorialText.Count - 1].gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.01f);
             TutorialParent.gameObject.SetActive(false);
             AudioManager.Instance.Play("Coronus_Battle", 0.00000001f);
             yield return new WaitForSeconds(0.001f);
@@ -480,7 +482,7 @@ public class BattleSystem : MonoBehaviour
         popupText.fontSize = 1.5f;
         var labPopUp = popup.GetComponent<LabPopup>();
         StartCoroutine(labPopUp.Rise(0.01f));
-        StartCoroutine(labPopUp.DestroyPopUp(0.9f));
+        StartCoroutine(labPopUp.DestroyPopUp(1.2f));
     }
 
     public void SetTempEffect(Unit unit, string Icon, bool DoFancyStatChanges, float duration = 0, float storedValue = 0, float numberofStacks = 0)
@@ -827,10 +829,12 @@ public class BattleSystem : MonoBehaviour
                     if (timelineChild.unit == action.unit)
                     {
                         print(timelineChild.unit.unitName);
+                        Director.Instance.timeline.ReplaceMainPortraitWithMiniPortrait(timelineChild);
                         timelineChild.CanClear = true;
                         timelineChild.GetComponent<LabUIInteractable>().CanHover = false;
                         timelineChild.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.2f);
                         timelineChild.portrait.color = new Color(1, 1, 1, 0.2f);
+                       
                     }
                 }
               
@@ -849,7 +853,7 @@ public class BattleSystem : MonoBehaviour
                 yield return new WaitUntil(() => action.Done);
                 yield return new WaitUntil(() => !BattlePhasePause);
                 yield return new WaitForSeconds(0.2f);
-                Director.Instance.timeline.ReplaceMainPortraitWithMiniPortrait(action.unit.timelinechild);
+              
                 action.ResetAction();
                 yield return new WaitForSeconds(0.01f);
 

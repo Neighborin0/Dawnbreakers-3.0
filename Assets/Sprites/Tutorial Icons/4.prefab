@@ -92,7 +92,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2692540947937054934
 RectTransform:
   m_ObjectHideFlags: 0
@@ -109,8 +109,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 11.206, y: -155}
-  m_SizeDelta: {x: 1577.6, y: 61.8033}
+  m_AnchoredPosition: {x: 5.5095, y: -155}
+  m_SizeDelta: {x: 1566.2072, y: 61.8033}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &131087342020513084
 CanvasRenderer:
@@ -141,11 +141,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'Hitting an enemy''s <color=#FFEB00>WEAK</color> or using an <color=#ffffff>ignited
-    action</color> <color=#FFEB00>delays</color> them by  <color=#FFEB00>20 units</color>.
+    action</color> <color=#FFEB00>staggers</color> them by <color=#FFEB00>20 units</color>.
 
-    Delaying
-    an enemy past <color=#FFEB00>100 units</color>, <color=#FFEB00>stuns them</color>.
-    <color=#ff0840>However, this also prevents the next stun.</color>'
+    <color=#FFEB00>Staggering</color>
+    an enemy past <color=#FFEB00>100 units</color>, <color=#FFEB00>breaks them</color>.
+    <color=#ff0840>However, this also prevents the next break.</color>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
@@ -535,7 +535,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6078041834528760158
 RectTransform:
   m_ObjectHideFlags: 0
@@ -930,7 +930,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Combat Basics: WEAK, RES, and Delays'
+  m_text: 'Combat Basics: WEAK, RES, and Staggers'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,

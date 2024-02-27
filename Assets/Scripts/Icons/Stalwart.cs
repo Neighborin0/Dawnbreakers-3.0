@@ -17,7 +17,7 @@ public class Stalwart : EffectIcon
     }
     public override string GetDescription()
     {
-        description = $"Prevents next stun.";
+        description = $"Prevents next break.";
         return description;
     }
 

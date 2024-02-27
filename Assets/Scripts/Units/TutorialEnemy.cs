@@ -126,7 +126,7 @@ public class TutorialEnemy : Unit
         yield return new WaitForSeconds(0.2f);
         var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
         Aurelia.OnActionSelected += DisableSlash;
-        Aurelia.BattlePhaseClose += RevertActions;
+        Aurelia.BattlePhaseEnd += RevertActions;
         foreach (var skill in Aurelia.skillUIs)
         {
             var actionContainer = skill.GetComponent<ActionContainer>();
@@ -205,7 +205,7 @@ public class TutorialEnemy : Unit
         var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
         Aurelia.OnActionSelected -= DisableSlash;
         Aurelia.OnActionSelected -= DisableDefend;
-        Aurelia.BattlePhaseClose -= RevertDefend;
-        Aurelia.BattlePhaseClose -= RevertActions;
+        Aurelia.BattlePhaseEnd -= RevertDefend;
+        Aurelia.BattlePhaseEnd -= RevertActions;
     }
 }

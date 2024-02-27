@@ -328,6 +328,7 @@ public class BattleLog : MonoBehaviour
         BattleStates previousState = BattleStates.IDLE;
         BattleLog.Instance.state = BattleLogStates.TALKING;
         GetComponent<MoveableObject>().Move(true);
+        //Director.Instance.CutsceneUiBlocker.gameObject.SetActive(true);
         AudioManager.QuickPlay("ui_woosh_001");
         bool WasPaused = false;
 
@@ -510,6 +511,7 @@ public class BattleLog : MonoBehaviour
         }
 
         BattleLog.Instance.state = BattleLogStates.IDLE;
+        //Director.Instance.CutsceneUiBlocker.gameObject.SetActive(false);
     }
 
 

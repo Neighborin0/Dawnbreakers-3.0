@@ -358,6 +358,7 @@ public class LabCamera : MonoBehaviour
 
     private IEnumerator Rotating(Vector3 rotation)
     {
+        Director.Instance.CutsceneUiBlocker.gameObject.SetActive(true);
         DoneRotating = false;
         if (rotation.z < 0f)
         {
@@ -376,6 +377,8 @@ public class LabCamera : MonoBehaviour
                 yield return new WaitForSeconds(0.001f);
             }
         }
+        yield return new WaitForSeconds(1f);
+        Director.Instance.CutsceneUiBlocker.gameObject.SetActive(false);
         DoneRotating = true;
     }
 

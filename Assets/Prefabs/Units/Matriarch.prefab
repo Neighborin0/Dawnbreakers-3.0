@@ -5075,7 +5075,7 @@ MonoBehaviour:
   statusEffects: []
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: -3, z: 0}
-  camOffset: {x: 0, y: 0, z: -5}
+  camOffset: {x: 0, y: 0, z: 0}
   CustomScale: {x: 10, y: 10, z: 10}
   OverrideEmission: 0
   introText: []

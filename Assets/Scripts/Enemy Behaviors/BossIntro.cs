@@ -19,6 +19,7 @@ public class BossIntro : MonoBehaviour
     {
         if (gameObject != null)
         {
+            Director.Instance.CutsceneUiBlocker.gameObject.SetActive(true);
             AudioManager.Instance.StartCoroutine(AudioManager.Instance.Fade(0, "matriarch_laugh_001", 1f, true));
             AudioManager.QuickPlay("map_opening_001");
             AudioManager.Instance.UnPause("Coronus_Boss");
@@ -101,7 +102,7 @@ public class BossIntro : MonoBehaviour
            
             yield return new WaitUntil(() => Director.Instance.blackScreen.color.a <= 0);
             yield return new WaitForSeconds(0.01f);
-
+       
             Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
             BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
             BattleSystem.Instance.playerUnits[0].StartDecision();
@@ -115,6 +116,9 @@ public class BossIntro : MonoBehaviour
                     unit.intentUI.gameObject.SetActive(true);
                 }
             }
+
+            yield return new WaitForSeconds(1f);
+            Director.Instance.CutsceneUiBlocker.gameObject.SetActive(false);
         }
     }
 }

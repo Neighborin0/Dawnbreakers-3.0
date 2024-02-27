@@ -26,6 +26,7 @@ public class MiniMapIcon : MonoBehaviour
     {
         mapIcon = GetComponent<SpriteRenderer>();
         state = MapIconState.IDLE;
+        fps = 0;
     }
 
 
@@ -33,17 +34,19 @@ public class MiniMapIcon : MonoBehaviour
     public IEnumerator Move(float transformPointX, float transformPointY, float transformPointZ)
     {
         yield return new WaitUntil(() => state == MapIconState.IDLE);
+        fps = 3;
        // GetComponent<Animator>().Play("Walk");
         state = MapIconState.MOVING;
         if (mover != null)
         {
             StopCoroutine(mover);
         }
-        mover = Tools.SmoothMoveObject(gameObject.transform, transformPointX, gameObject.transform.position.y, 0.01f, false, 0, 10);
+        mover = Tools.SmoothMoveObject(gameObject.transform, transformPointX, gameObject.transform.position.y, 0.01f, false, 0, 10, 20);
         StartCoroutine(mover);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
         state = MapIconState.IDLE;
-          // GetComponent<Animator>().Play("Walk");
+        fps = 0;
+        // GetComponent<Animator>().Play("Walk");
 
     }
 

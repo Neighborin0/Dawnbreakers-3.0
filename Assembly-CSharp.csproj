@@ -111,6 +111,7 @@
     <Compile Include="Assets\Scripts\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\Carrion.cs" />
     <Compile Include="Assets\Scripts\ActionContainer.cs" />
+    <Compile Include="Assets\Scripts\Actions\Immolate.cs" />
     <Compile Include="Assets\Scripts\Icons\Vigor.cs" />
     <Compile Include="Assets\Scripts\DisplaySwitcher.cs" />
     <Compile Include="Assets\Scripts\Map\LevelDrop.cs" />
@@ -131,7 +132,6 @@
     <Compile Include="Assets\Scripts\Map\MapController.cs" />
     <Compile Include="Assets\Scripts\Main Menu\OptionsManager.cs" />
     <Compile Include="Assets\Scripts\BattleLog.cs" />
-    <Compile Include="Assets\Scripts\Actions\Incinerate.cs" />
     <Compile Include="Assets\Scripts\Actions\Kindle.cs" />
     <Compile Include="Assets\Scripts\Main Menu\MainMenuController.cs" />
     <Compile Include="Assets\Scripts\Actions\Shriek.cs" />
@@ -218,10 +218,13 @@
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\Vefects\Free Fire VFX URP\Shaders\SH_Vefects_VFX_URP_Heat_Haze_01.shader" />
+    <None Include="Assets\Vefects\Free Fire VFX URP\Shaders\SH_Vefects_VFX_URP_Particles_Erosion_01.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\Vefects\Free Fire VFX URP\Shaders\SH_Vefects_VFX_URP_Fire_Flames_01.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />

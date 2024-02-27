@@ -96,7 +96,7 @@ public class MapNode : MonoBehaviour
         if (ApplyDelays)
         {
           yield return new WaitUntil(() => MapController.Instance.grid.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
-          yield return new WaitForSeconds(1f);
+          yield return new WaitForSeconds(2f);
         }
        // Director.Instance.CharacterSlotsDisplayed = false;
         this.OnInteracted();

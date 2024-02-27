@@ -91,6 +91,16 @@ public class CutsceneTools : MonoBehaviour
         AudioManager.QuickPlay(AudioName);
     }
 
+    public void TurnOffCutsceneBlocker(float delay)
+    {
+        StartCoroutine(TurnOffCutsceneBlockerCoroutine(delay));
+    }
+
+    private IEnumerator TurnOffCutsceneBlockerCoroutine(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Director.Instance.CutsceneUiBlocker.gameObject.SetActive(false);
+    }
 
     private IEnumerator ChangeVignetteIntensityCoroutine(float DesiredValue)
     {

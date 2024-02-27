@@ -40,6 +40,8 @@ public class MiniTimelineChildren : MonoBehaviour
             childImage.material.SetFloat("OutlineThickness", 1f);
             childImage.material.SetColor("OutlineColor", Color.white);
 
+            parent.Return();
+
         }
 
     }
@@ -71,7 +73,8 @@ public class MiniTimelineChildren : MonoBehaviour
 
                 transform.SetAsLastSibling();
                 Shift(unit);
-               
+                parent.Return();
+                parent.unit.IsHighlighted = false;
 
             }
             else

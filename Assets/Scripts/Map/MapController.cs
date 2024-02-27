@@ -167,35 +167,39 @@ public class MapController : MonoBehaviour
 
     void Update()
     {
-        if (Director.Instance != null && Director.Instance.CharacterSlotsDisplayed)
+        if (Director.Instance != null)
         {
 
             if (CanInput)
             {
-                if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
+                if (Director.Instance.CharacterSlotsDisplayed)
                 {
-                    LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
-                    AudioManager.QuickPlay("ui_woosh_002");
-                }
-
-
-                if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name == "MAP2")
-                {
-                    if (enableMapControls)
+                    if (Input.GetKeyDown(KeyCode.R) && !BattleLog.Instance.characterdialog.gameObject.activeSelf)
                     {
-                        enableMapControls = false;
-                        mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
-                        mapControlBar.SetActive(enableMapControls);
+                        LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
+                        AudioManager.QuickPlay("ui_woosh_002");
                     }
-                    else
+
+
+                    if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name == "MAP2")
                     {
-                        enableMapControls = true;
-                        mapControlBar.SetActive(enableMapControls);
-                        mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
+                        if (enableMapControls)
+                        {
+                            enableMapControls = false;
+                            mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
+                            mapControlBar.SetActive(enableMapControls);
+                        }
+                        else
+                        {
+                            enableMapControls = true;
+                            mapControlBar.SetActive(enableMapControls);
+                            mapControlBar.GetComponent<MoveableObject>().Move(enableMapControls);
 
+                        }
                     }
-                }
 
+
+                }
                 if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf && SceneManager.GetActiveScene().name != "Main Menu")
                 {
                     if (Director.Instance.CharacterSlotsDisplayed)
@@ -393,7 +397,7 @@ public class MapController : MonoBehaviour
 
         if (node.GetComponent<BossNode>() != null)
         {
-            compressor = 1f;
+            compressor = 0.2f;
         }
         var lineInstance = Instantiate(linePrefab, mapCanvas.transform);
         lineInstance.gameObject.SetActive(true);
