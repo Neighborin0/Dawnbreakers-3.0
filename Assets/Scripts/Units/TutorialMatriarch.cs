@@ -103,7 +103,7 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
                         if (UnityEngine.Random.Range(0f, 1f) < prob1)
                         {
                             //Summon
-                            move = 4;
+                            move = 2;
                             print(baseUnit.actionList[4]);
                         }
                         else

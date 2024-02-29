@@ -234,7 +234,7 @@ public class BattleSystem : MonoBehaviour
             {
 
                 StartCoroutine(Tools.FadeText(TutorialText[i], 0.01f, true, false));
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(3f);
 
             }
             yield return new WaitForSeconds(2f);
@@ -273,12 +273,15 @@ public class BattleSystem : MonoBehaviour
         if (!TutorialNode)
             LabCamera.Instance.camTransform.position = Camera.main.transform.position;
 
-        LabCamera.Instance.ReadjustCam();
+        if(!TutorialNode)
+            LabCamera.Instance.ReadjustCam(30f);
+        else
+            LabCamera.Instance.ReadjustCam();
 
 
 
         if (!TutorialNode)
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(2f);
 
         if (TutorialNode)
             yield return new WaitForSeconds(0.5f);
@@ -475,7 +478,7 @@ public class BattleSystem : MonoBehaviour
     {
         var popup = Instantiate(statPopUp, new Vector3(target.GetComponent<SpriteRenderer>().bounds.center.x, target.GetComponent<SpriteRenderer>().bounds.max.y, target.transform.position.z), Quaternion.identity);
         var popupText = popup.GetComponentInChildren<TextMeshProUGUI>();
-        popupText.outlineWidth = 0.2f;
+        popupText.outlineWidth = 0.15f;
         popupText.outlineColor = Color.black;
         popupText.color = color;
         popupText.text = text;
@@ -751,9 +754,6 @@ public class BattleSystem : MonoBehaviour
 
 
 
-
-
-
     public IEnumerator PerformAction()
     {
         Director.Instance.timeline.slider.value = 0;
@@ -777,6 +777,7 @@ public class BattleSystem : MonoBehaviour
                 SetUIOff(x);
                 x.IsHighlighted = false;
             }
+            x.DoOnPreformActionStarted();
         }
         state = BattleStates.BATTLE;
         yield return new WaitForSeconds(1f);

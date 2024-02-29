@@ -150,7 +150,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 0.87058824, b: 0.7058824, a: 1}
+  m_fontColor: {r: 1, g: 0.87058824, b: 0.7058824, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3909,7 +3909,6 @@ MonoBehaviour:
   - {fileID: 3242412438195376062, guid: 5cd520cc210fb574da33f1f29ef8d89b, type: 3}
   - {fileID: 3547474473646665300, guid: fa391da371431a6409e7bfd61e6315f2, type: 3}
   - {fileID: 7072038689116451146, guid: dddb3b8a6b834c54fa21d6aed7adc1c0, type: 3}
-  - {fileID: 3658677186438796677, guid: 3133fded8b60b034fa19f272dafffba1, type: 3}
   - {fileID: 5058082555993355794, guid: 1e9dcf45645741146a6087b8d47b8232, type: 3}
   - {fileID: 7247973571535176990, guid: 48353c29fa5d1304c8d97c78c10f7323, type: 3}
   - {fileID: 1631808318496394305, guid: e492271632276ec42841645654c650c9, type: 3}
@@ -3922,6 +3921,7 @@ MonoBehaviour:
   - {fileID: 2295101507153165731, guid: 33c3998012db36246ac06354dff9bc2f, type: 3}
   - {fileID: 1209710108587819972, guid: dc0aaab80f1190049ba3840487e5c568, type: 3}
   - {fileID: 8928971945133373923, guid: a3ddb52c5515c714e82dcc13faeb4345, type: 3}
+  - {fileID: 3242412438195376062, guid: 0774ca3a2d3000142a53fb5649c43e1a, type: 3}
   actionDatabase:
   - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   - {fileID: 11400000, guid: ece061d3fe4a82a4697d93c8013e8133, type: 2}

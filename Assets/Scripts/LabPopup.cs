@@ -12,11 +12,11 @@ public class LabPopup : MonoBehaviour
     public IEnumerator dropper;
     public IEnumerator Pop()
     {
-        scaler = Tools.SmoothScaleObj(transform, new Vector3(2, 2, 0), 0.001f);
+        scaler = Tools.SmoothScaleObj(transform, new Vector3(2, 2, 0.1f), 0.001f);
         StartCoroutine(scaler);
         yield return new WaitForSeconds(0.2f);
         StopCoroutine(scaler);
-        scaler = Tools.SmoothScaleObj(transform, new Vector3(1, 1, 0), 0.001f);
+        scaler = Tools.SmoothScaleObj(transform, new Vector3(1, 1, 0.1f), 0.001f);
         StartCoroutine(scaler);
     }
 

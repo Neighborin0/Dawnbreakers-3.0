@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   labLines:
   - text: ...I'm slowing down...
-    expression: neutral
+    expression: exhausted
     unit: Aurelia
     textSpeed: 0.02
     OnLineStarted:
@@ -39,7 +39,7 @@ MonoBehaviour:
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: 'I am not sure how much energy I still have... '
-    expression: neutral
+    expression: exhausted
     unit: Aurelia
     textSpeed: 0.02
     OnLineStarted:
@@ -51,7 +51,7 @@ MonoBehaviour:
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
   - text: 'If this keeps up... '
-    expression: neutral
+    expression: exhausted
     unit: Aurelia
     textSpeed: 0.02
     OnLineStarted:

@@ -23,7 +23,7 @@ public class TutorialIcon : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !IsBeingDestroyed || Input.GetKeyDown(KeyCode.Mouse0) && !IsBeingDestroyed)
+        if (Input.GetKeyDown(KeyCode.Space) && !IsBeingDestroyed)
         {
             if(!HasAnotherTextBox)
             StartCoroutine(StartDestroying());
@@ -31,7 +31,7 @@ public class TutorialIcon : MonoBehaviour
                 SetSecondTextBlockActive();
         }
 
-        if (Input.GetKeyDown(KeyCode.Backspace) && !IsBeingDestroyed && BackButton.gameObject.activeSelf || Input.GetKeyDown(KeyCode.Mouse1) && !IsBeingDestroyed && BackButton.gameObject.activeSelf)
+        if (Input.GetKeyDown(KeyCode.Backspace) && !IsBeingDestroyed && BackButton.gameObject.activeSelf)
         {
             GoBack();
         }

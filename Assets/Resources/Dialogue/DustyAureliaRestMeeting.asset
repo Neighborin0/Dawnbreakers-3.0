@@ -25,7 +25,19 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Never thought I'd get some peace in this place.
+  - text: Never thought I'd get some peace here.
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: I mean look at this place...It's all twisted and...broken...
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -98,7 +110,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'We got separated some time ago, but it all seems...Seems like a blur now.  '
+  - text: 'We got separated some time ago, but it all seems...seems like a blur now.  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -146,7 +158,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Hold onto that feeling Wulfric...
+  - text: We still have a ways to go.
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02
@@ -158,7 +170,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: You will find them in time...
+  - text: I'm sure we'll come across them in time.
     expression: neutral
     unit: Aurelia
     textSpeed: 0.03
@@ -170,7 +182,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Hmmph... '
+  - text: ...A comforting thought I suppose...
     expression: neutral
     unit: Dusty
     textSpeed: 0.03

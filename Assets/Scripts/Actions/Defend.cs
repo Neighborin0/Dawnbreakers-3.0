@@ -35,10 +35,10 @@ public class Defend : Action
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "DefendSelf", Color.blue, Color.blue ,new Vector3(0, 1, -2f), Quaternion.identity, 0.8f, 0, true, 0, 10));      
-        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f);
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "DefendSelf", new Color(0, 144, 255), new Color(0, 144, 255), new Vector3(0, 1, -2f), Quaternion.identity, 0.8f, 0, true, 0, 1));      
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f, false, true);
         yield return new WaitForSeconds(0.8f);
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "ShieldParticles", Color.blue, Color.blue, new Vector3(0, 0, -1f), Quaternion.identity, 0.8f, 0, true, 0, 10));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "ShieldParticles", new Color(0, 144, 255), new Color(0, 144, 255), new Vector3(0, 0, -1f), Quaternion.identity, 0.8f, 0, true, 0, 1));
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;
         BattleSystem.Instance.SetStatChanges(Stat.ARMOR, statAmount + unit.defenseStat, false, targets);

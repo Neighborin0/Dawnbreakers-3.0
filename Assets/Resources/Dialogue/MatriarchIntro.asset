@@ -113,7 +113,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 4.55, y: 12.73, z: -70.48}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: That voice....You...
+  - text: That voice...You...
     expression: neutral
     unit: Dusty
     textSpeed: 0.03

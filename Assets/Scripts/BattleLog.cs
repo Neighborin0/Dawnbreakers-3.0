@@ -62,11 +62,6 @@ public class BattleLog : MonoBehaviour
 
     }
 
-    public void Start()
-    {
-        
-    }
-
    
     public void CreateActionLayout(Unit unit)
     {
@@ -315,6 +310,7 @@ public class BattleLog : MonoBehaviour
         MapController.Instance.ReEnteredMap -= DoPostBattleDialouge;
     }
 
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))
@@ -353,6 +349,7 @@ public class BattleLog : MonoBehaviour
             BattleSystem.Instance.state = BattleStates.TALKING;
         }
         Tools.ToggleUiBlocker(false, true, true);
+        yield return new WaitUntil(() => GetComponent<MoveableObject>().transform.position.y >= GetComponent<MoveableObject>().PositionUpY);
         foreach (var l in line)
         {
             x.text = "";
@@ -393,22 +390,30 @@ public class BattleLog : MonoBehaviour
             bool Ignoring = false;
             foreach (char letter in l.text.ToCharArray())
             {
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    x.text = l.text;
+                    break;
+                }
                 Portraitparent.gameObject.SetActive(true);
                 characterIndex++;
                 //So colors don't get formatted
-                if (letter.ToString() == "<")
+                if (letter.ToString() == "<" || Ignoring)
                 {
                     Ignoring = true;
-                }
-                else if (letter.ToString() == ">")
-                {
-                    Ignoring = false;
-                }
-
-                if (!Ignoring)
-                {
-                    string textToWrite = l.text.Substring(0, characterIndex) + "<color=#00000000>" + l.text.Substring(characterIndex) + "</color>";
+                    string textToWrite = l.text.Substring(0, characterIndex);
+                    textToWrite += "<color=#00000000>" + l.text.Substring(characterIndex) + "</color>";
                     x.text = textToWrite;
+
+                    if (letter.ToString() == ">")
+                        Ignoring = false;
+                }
+                else
+                {
+                    string textToWrite = l.text.Substring(0, characterIndex);
+                    textToWrite += "<color=#00000000>" + l.text.Substring(characterIndex) + "</color>";
+                    x.text = textToWrite;
+                    x.color = Tools.ChangeColorAlpha(x.color, 1);
                     if (letter.ToString() == ",")
                     {
                         yield return new WaitForSeconds(0.1f);
@@ -417,6 +422,7 @@ public class BattleLog : MonoBehaviour
                 }
             }
             indicator.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.01f);
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0));
             indicator.gameObject.SetActive(false);
             AudioManager.QuickPlay("button_Hit_006", true);

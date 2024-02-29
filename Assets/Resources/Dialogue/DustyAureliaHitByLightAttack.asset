@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   labLines:
   - text: Errgh...You won't get the best of me yet...
-    expression: neutral
+    expression: neutral_darkened
     unit: Dusty
     textSpeed: 0.03
     OnLineStarted:

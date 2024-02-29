@@ -50,15 +50,3 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: '...I wasn''t strong enough...  '
-    expression: death
-    unit: Dusty
-    textSpeed: 0.08
-    OnLineStarted:
-      m_PersistentCalls:
-        m_Calls: []
-    OnLineEnded:
-      m_PersistentCalls:
-        m_Calls: []
-    PositionToMoveTo: {x: 0, y: 0, z: 0}
-    CameraRotation: {x: 0, y: 0, z: 0}

@@ -30,7 +30,7 @@ public class Screech : Action
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
-        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 12, -70, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 12, -70, 0.5f, false, true);
         yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry", new Color(0, 0, 1, 0.1f), new Color(0, 0, 1, 0.1f),  new Vector3(0, 0, -2f), Quaternion.identity, 1.1f));
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCryParticles", new Color(0, 0, 1), new Color(0, 0, 1), new Vector3(0, 0, -2f), Quaternion.identity, 1.1f));

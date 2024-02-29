@@ -33,7 +33,7 @@ public class Mend : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f, false, true);
         yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.SetStatChanges(Stat.HP, CombatTools.DetermineTrueActionValue(this), false, targets);
         yield return new WaitForSeconds(0.5f);

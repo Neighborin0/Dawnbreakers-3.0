@@ -86,6 +86,7 @@ public class Unit : MonoBehaviour
     public event Action<Unit> OnPreDeath;
     public event Action<Unit> OnPlayerUnitDeath;
     public event Action<Unit, ActionContainer> OnActionSelected;
+    public event Action<Unit> OnPerformActionStarted;
 
     //player states
     public PlayerState state;
@@ -317,6 +318,7 @@ public class Unit : MonoBehaviour
     public void StartDecision(bool DoesNotSetToUnitPos = true)
     {
         BattleSystem.SetUIOn(this);
+        Director.Instance.CutsceneUiBlocker.gameObject.SetActive(false);
         var sprite = GetComponent<SpriteRenderer>();
         if (DoesNotSetToUnitPos)
             LabCamera.Instance.MoveToUnit(this, Vector3.zero, sprite.bounds.center.x / 5f, 0, 0, 1, true);
@@ -481,7 +483,7 @@ public class Unit : MonoBehaviour
     {
         if (BattleSystem.Instance != null && BattleSystem.Instance.state == BattleStates.DECISION_PHASE && !OverUI())
         {
-            AudioManager.QuickPlay("button_hover", true);
+            AudioManager.QuickPlay("button_hover", false);
         }
     }
 
@@ -540,6 +542,10 @@ public class Unit : MonoBehaviour
         OnActionSelected?.Invoke(this, actionContainer);
     }
 
+    public void DoOnPreformActionStarted()
+    {
+        OnPerformActionStarted?.Invoke(this);
+    }
 
 
 

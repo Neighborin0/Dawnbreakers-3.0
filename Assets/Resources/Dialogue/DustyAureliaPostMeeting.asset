@@ -37,9 +37,20 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Please. You''re the only thing in this place which has shown me any mercy.
-      If you can forgive me for my early transgressions, there''s something I want
-      to ask of you.  '
+  - text: Please. You're the only thing in this place which has shown me any mercy.
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'If you can forgive me for my early transgressions, there''s something
+      I want to ask of you.  '
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -64,7 +75,8 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'I think it would be best if we traveled together. '
+  - text: I think it would be best if we traveled together. For the time being at
+      least.
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -126,7 +138,31 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'May I have your name in turn? '
+  - text: Although...
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: ...
+    expression: neutral
+    unit: Dusty
+    textSpeed: 0.03
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: ...Well...May I have your name in turn?
     expression: neutral
     unit: Dusty
     textSpeed: 0.03

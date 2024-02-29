@@ -10,6 +10,7 @@ using JetBrains.Annotations;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.SceneManagement;
 using UnityEditor.Rendering;
+using UnityEngine.Rendering;
 
 public class AudioManager : MonoBehaviour
 {
@@ -42,9 +43,10 @@ public class AudioManager : MonoBehaviour
                 Play("Main Menu Theme", 0.5f);
             else if(SceneManager.GetActiveScene().name == "MAP2")
                 Play("Coronus_Map", 0.5f);
-           /* else if(SceneManager.GetActiveScene().name == "Prologue Ending")
-                Play("Ending", 1f);
-           */
+            /* else if(SceneManager.GetActiveScene().name == "Prologue Ending")
+                 Play("Ending", 1f);
+            */
+            AudioManager.Instance.mixer.SetFloat("MasterVolume", Mathf.Log10(0) * 20);
         }
     }
 
@@ -67,13 +69,13 @@ public class AudioManager : MonoBehaviour
                 pitchVarition = UnityEngine.Random.Range(-0.1f, 0.1f);
 
                 if(AudioName == "button_hover")
-                    pitchVarition = UnityEngine.Random.Range(-0.05f, 0.05f);
+                    pitchVarition = UnityEngine.Random.Range(-0, 0);
             }
           
             if(volume == 0)
-                s.source.volume = s.volume;
+                s.source.volume = 0;
             else
-                 s.source.volume = volume;
+                 s.source.volume = 0;
 
             if (pitch == 0)
                 s.source.pitch = s.pitch + pitchVarition;
@@ -115,7 +117,7 @@ public class AudioManager : MonoBehaviour
     public IEnumerator Fade(float TargetVolume, string AudioName, float FadeTime, bool Stop = false)
     {
         var soundSource = Array.Find(sounds, sound => sound.AudioName == AudioName);
-      
+        TargetVolume = 0;
         if (soundSource != null)
         {
             soundSource.Fading = false;

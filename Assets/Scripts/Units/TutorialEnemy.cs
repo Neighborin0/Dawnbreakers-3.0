@@ -126,7 +126,7 @@ public class TutorialEnemy : Unit
         yield return new WaitForSeconds(0.2f);
         var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
         Aurelia.OnActionSelected += DisableSlash;
-        Aurelia.BattlePhaseEnd += RevertActions;
+        Aurelia.OnPerformActionStarted += RevertActions;
         foreach (var skill in Aurelia.skillUIs)
         {
             var actionContainer = skill.GetComponent<ActionContainer>();
@@ -183,7 +183,9 @@ public class TutorialEnemy : Unit
 
     private static void DisableDefend(Unit unit, ActionContainer container)
     {
+
         var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+        Aurelia.OnPerformActionStarted += RevertDefend;
         foreach (var skill in Aurelia.skillUIs)
         {
             var actionContainer = skill.GetComponent<ActionContainer>();
@@ -203,9 +205,19 @@ public class TutorialEnemy : Unit
     private static void RevertDefend(Unit unit)
     {
         var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+        foreach (var skill in Aurelia.skillUIs)
+        {
+            var actionContainer = skill.GetComponent<ActionContainer>();
+            if (actionContainer.action != null && actionContainer.action.ActionName == "Defend")
+            {
+                actionContainer.Disabled = false;
+                actionContainer.button.interactable = true;
+            }
+          
+        }
         Aurelia.OnActionSelected -= DisableSlash;
         Aurelia.OnActionSelected -= DisableDefend;
-        Aurelia.BattlePhaseEnd -= RevertDefend;
-        Aurelia.BattlePhaseEnd -= RevertActions;
+        Aurelia.OnPerformActionStarted -= RevertDefend;
+        Aurelia.OnPerformActionStarted -= RevertActions;
     }
 }

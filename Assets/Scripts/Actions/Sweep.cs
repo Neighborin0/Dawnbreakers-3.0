@@ -50,7 +50,7 @@ public class Sweep : Action
         int AdditionalDMG = 0;
         unit.PlayUnitAction("Attack", unit);
         yield return new WaitUntil(() => unit.Execute);
-        LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f, false, true);
         yield return new WaitForSeconds(0.3f);
         //AudioManager.Instance.Play("slash_001");
         /*if(targets.statusEffects.Contains(targets.statusEffects.Where(obj => obj.iconName == "STAGGER").SingleOrDefault()))

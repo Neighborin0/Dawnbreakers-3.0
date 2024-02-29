@@ -280,7 +280,7 @@ MonoBehaviour:
 
     All <color=#FFEB00>actions</color>
     have a <color=#FFEB00>time cost</color> indicated by the <color=#FFEB00>yellow
-    numbers</color>, which shows when they will be executed on the <color=#FFEB00>timeline</color>.
+    numbers</color>, which show  when they will be executed on the <color=#FFEB00>timeline</color>.
 
 '
   m_isRightToLeft: 0

@@ -85,10 +85,11 @@ public class LabCamera : MonoBehaviour
         }
     }
 
-    public void ReadjustCam()
+    public void ReadjustCam(float customTimeDivider = 1f)
     {
         smoothingTime = 0f;
         state = CameraState.MOVING;
+        MovingTimeDivider = customTimeDivider;
         if (BattleSystem.Instance != null)
         {
             if (BattleSystem.Instance.BossNode)
@@ -253,7 +254,7 @@ public class LabCamera : MonoBehaviour
     }
 
 
-    public void MoveToUnit(Unit unit, Vector3 overrideYPos, float xOffset = 0, float yOffset = 0, float zOffset = 0, float MovingTimeDivider = 1f, bool UsesDefaultOffset = false)
+    public void MoveToUnit(Unit unit, Vector3 overrideYPos, float xOffset = 0, float yOffset = 0, float zOffset = 0, float MovingTimeDivider = 1f, bool UsesDefaultOffset = false, bool UseCamOffset = false)
     {
         state = CameraState.MOVING;
         smoothingTime = 0f;
@@ -263,31 +264,31 @@ public class LabCamera : MonoBehaviour
         if (overrideYPos.y != 0)
         {
             PositonToMoveTo.x = sprite.bounds.center.x / 5f;
-            PositonToMoveTo.y  = originalPos.y + unit.camOffset.y;
-            PositonToMoveTo.z = originalPos.z + unit.camOffset.z;
+            PositonToMoveTo.y = originalPos.y + (UseCamOffset ? unit.camOffset.y : 0);
+            PositonToMoveTo.z = originalPos.z + (UseCamOffset ? unit.camOffset.z : 0);
         }
         else if(UsesDefaultOffset)
         {
             PositonToMoveTo.x = sprite.bounds.center.x / 5f;
             if (camTransform.position.y > originalPos.y)
-            PositonToMoveTo.y = camTransform.position.y + unit.camOffset.y;
+            PositonToMoveTo.y = camTransform.position.y + (UseCamOffset ? unit.camOffset.y : 0);
             else
-                PositonToMoveTo.y = originalPos.y + unit.camOffset.y;
-            PositonToMoveTo.z = originalPos.z + unit.camOffset.z;
+                PositonToMoveTo.y = originalPos.y + (UseCamOffset ? unit.camOffset.y : 0);
+            PositonToMoveTo.z = originalPos.z + (UseCamOffset ? unit.camOffset.z : 0);
         }
         else if (xOffset == 0 && yOffset == 0 && zOffset == 0)
         {
-            PositonToMoveTo.y = BattleSystem.Instance.cameraPos1Units.y + unit.camOffset.y;
-            PositonToMoveTo.z = BattleSystem.Instance.cameraPos1Units.z + unit.camOffset.z;
+            PositonToMoveTo.y = BattleSystem.Instance.cameraPos1Units.y + (UseCamOffset ? unit.camOffset.y : 0);
+            PositonToMoveTo.z = BattleSystem.Instance.cameraPos1Units.z + (UseCamOffset ? unit.camOffset.z : 0);
         }
         else
         {
             if (unit.IsPlayerControlled)
                 xOffset *= -1;
 
-            PositonToMoveTo.x = sprite.bounds.center.x + xOffset + unit.camOffset.x;
-            PositonToMoveTo.y = sprite.bounds.center.y + yOffset + unit.camOffset.y;
-            PositonToMoveTo.z = unit.transform.position.z + zOffset + unit.camOffset.z;
+            PositonToMoveTo.x = sprite.bounds.center.x + xOffset + (UseCamOffset ? unit.camOffset.y : 0);
+            PositonToMoveTo.y = sprite.bounds.center.y + yOffset + (UseCamOffset ? unit.camOffset.y : 0);
+            PositonToMoveTo.z = unit.transform.position.z + zOffset + (UseCamOffset ? unit.camOffset.y : 0);
         }
 
     }

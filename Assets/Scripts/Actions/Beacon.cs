@@ -40,7 +40,7 @@ public class Beacon : Action
     {
         int numofUnitsToAdd = 3 - CombatTools.DetermineAllies(unit).Count;
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
-        LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0f, 10, -55, 0.5f);
+        LabCamera.Instance.MoveToUnit(unit, Vector3.zero, 0f, 10, -55, 0.5f, false, true);
         unit.ChangeUnitsLight(unit.spotLight, 150, 15, new Color(1, 0.86f, 0.55f), 0.04f, 0.1f);
         if (unit.GetComponent<TutorialMatriarch>() != null)
         {
@@ -84,7 +84,7 @@ public class Beacon : Action
                         BattlePoint.Occupied = true;
                         BattlePoint.unit = summon;
                         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(summon.gameObject, "SummonVFX", new Color(1, 0.86f, 0.55f), new Color(1, 0.86f, 0.55f), new Vector3(0, -1.82f, -2f), Quaternion.identity, 10f, 0, false, 0, 10, 0.0001f, "statUp_Loop_001"));
-                        LabCamera.Instance.MoveToUnit(summon, Vector3.zero ,0f, 15, -55, 0.5f);
+                        LabCamera.Instance.MoveToUnit(summon, Vector3.zero ,0f, 15, -55, 0.5f, false, true);
                         Director.Instance.StartCoroutine(Tools.ChangeObjectEmissionToMinIntensity(summon.gameObject, 0.01f));
                         summon.ChangeUnitsLight(summon.spotLight, 150, 15, new Color(1, 0.5409836f, 0, 1), 0.04f, 0.1f);
                         yield return new WaitForSeconds(0.5f);
@@ -107,7 +107,7 @@ public class Beacon : Action
                     summon.GetComponent<Rigidbody>().useGravity = false;
                     summon.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
                     summon.GetComponent<SpriteRenderer>().flipX = true;
-                    LabCamera.Instance.MoveToUnit(summon, Vector3.zero, 0, 15, -40, 0.5f);
+                    LabCamera.Instance.MoveToUnit(summon, Vector3.zero, 0, 15, -40, 0.5f, false, true);
                     if (!BattlePoint.Occupied)
                     {
                         AudioManager.QuickPlay("summon_001");

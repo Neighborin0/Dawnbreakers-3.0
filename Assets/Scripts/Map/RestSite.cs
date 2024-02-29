@@ -63,13 +63,13 @@ public class RestSite : MonoBehaviour
         StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
-        LabCamera.Instance.ReadjustCam();
-        yield return new WaitForSeconds(2f);
+        LabCamera.Instance.ReadjustCam(100f);
+        yield return new WaitForSeconds(1.5f);
         OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
         Tools.ToggleUiBlocker(true, true, true);     
-        LabCamera.Instance.state = LabCamera.CameraState.SWAY;
-        LabCamera.Instance.TimeDivider = 800;
-        LabCamera.Instance.amountToSway = 0.1f;
+      // LabCamera.Instance.state = LabCamera.CameraState.SWAY;
+       //LabCamera.Instance.TimeDivider = 1000;
+      // LabCamera.Instance.amountToSway = 0.1f;
         Director.Instance.CharacterSlotEnable();
         foreach (var button in buttons)
         {

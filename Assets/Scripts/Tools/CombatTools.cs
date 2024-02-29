@@ -480,6 +480,7 @@ public class CombatTools : MonoBehaviour
         //DetermineActionData(baseUnit, DecidingNum, overrideTarget);
         baseUnit.state = PlayerState.READY;
         var newAction = UnityEngine.Object.Instantiate(baseUnit.actionList[DecidingNum]);
+        newAction.cost = baseUnit.actionList[DecidingNum].cost;
         Director.Instance.timeline.DoCost(CombatTools.DetermineTrueCost(newAction), baseUnit);
         BattleSystem.Instance.AddAction(newAction);
     }
@@ -595,7 +596,7 @@ public class CombatTools : MonoBehaviour
     {
         //Debug.LogError(Time.timeScale);
         var previousTime = 1;
-        Time.timeScale = 0.5f;
+        Time.timeScale = 0.3f;
         //Debug.LogError(Time.timeScale);
         //Debug.LogError(duration);
         yield return new WaitForSeconds(duration);

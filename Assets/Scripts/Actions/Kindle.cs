@@ -29,7 +29,7 @@ public class Kindle : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 12, -70, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 12, -70, 0.5f, false, true);
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
         if(unit.GetComponent<TutorialMatriarch>() != null)
         {

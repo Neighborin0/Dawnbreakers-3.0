@@ -38,7 +38,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Don't lose composure.
+  - text: Don't lose your composure.
     expression: neutral
     unit: Aurelia
     textSpeed: 0.03

@@ -40,7 +40,7 @@ public class WarCry : Action
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
-        LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f, false, true);
         yield return new WaitForSeconds(0.3f);
         AudioManager.QuickPlay("warcry_001");
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "WarCry2", new Color(1, 0, 0, 0.1f), new Color(1, 0, 0, 0.1f), new Vector3(0, 2f, -2f), Quaternion.identity, 1.5f));

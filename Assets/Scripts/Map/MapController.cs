@@ -200,20 +200,7 @@ public class MapController : MonoBehaviour
 
 
                 }
-                if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf && SceneManager.GetActiveScene().name != "Main Menu")
-                {
-                    if (Director.Instance.CharacterSlotsDisplayed)
-                    {
-                        if (BattleLog.Instance != null)
-                            if (BattleLog.Instance.state != BattleLogStates.TALKING)
-                                Director.Instance.DisplayCharacterTab(false);
-                    }
-                    else if (Director.Instance.ItemTabGrid.transform.childCount == 0)
-                    {
-                        Director.Instance.DisableCharacterTab();
-                    }
-
-                }
+               
             }
         }
 
@@ -367,6 +354,7 @@ public class MapController : MonoBehaviour
 
     private IEnumerator DoLevelDrop()
     {
+        Director.Instance.CutsceneUiBlocker.gameObject.SetActive(true);
         Debug.LogWarning("Coronus Should Be Popping Up");
         OptionsManager.Instance.CanPause = false;
         Tools.ToggleUiBlocker(false, true);
@@ -387,6 +375,7 @@ public class MapController : MonoBehaviour
 
     private IEnumerator DrawLine(Vector3 pointToDrawTo, GameObject node)
     {
+        Director.Instance.CutsceneUiBlocker.gameObject.SetActive(true);
         var MM = LabCamera.Instance.followTarget;
         node.transform.localScale = new Vector3(0, 0, 0);
         //LabCamera.Instance.camTransform.position = new Vector3(currentNodes[completedNodeCount].transform.position.x, LabCamera.Instance.camTransform.position.y, LabCamera.Instance.camTransform.position.z);
@@ -397,13 +386,20 @@ public class MapController : MonoBehaviour
 
         if (node.GetComponent<BossNode>() != null)
         {
+            Debug.LogError("Found a Boss Node");
+            Debug.LogError("Found a Boss Node"); Debug.LogError("Found a Boss Node");
+            Debug.LogError("Found a Boss Node");
+            Debug.LogError("Found a Boss Node");
             compressor = 0.2f;
+            Debug.LogError(compressor);
         }
         var lineInstance = Instantiate(linePrefab, mapCanvas.transform);
         lineInstance.gameObject.SetActive(true);
+
         lineInstance.SetPosition(0, new Vector3(storedTransform.x + compressor, storedTransform.y, storedTransform.z));
         lineInstance.SetPosition(1, storedTransform);
         lineCoroutine = Tools.SmoothMoveLine(lineInstance, new Vector3(pointToDrawTo.x - compressor, pointToDrawTo.y, pointToDrawTo.z), 0.01f);
+        Debug.LogError(compressor);
         AudioManager.QuickPlay("map_line_draw_001");
         StartCoroutine(lineCoroutine);
         storedTransform = pointToDrawTo;
@@ -472,5 +468,6 @@ public class MapController : MonoBehaviour
         }
         CanInput = true;
         ReEnteredMap?.Invoke(this);
+        Director.Instance.CutsceneUiBlocker.gameObject.SetActive(false);
     }
 }

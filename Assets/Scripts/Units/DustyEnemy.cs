@@ -60,7 +60,14 @@ public class DustyEnemy : Unit
             {
                 if (turn == 0)
                 {
-                    baseUnit.BattlePhaseEnd += PrePipTutorial;
+                    var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+                    foreach (var skill in Aurelia.skillUIs)
+                    {
+                        var actionContainer = skill.GetComponent<ActionContainer>();
+                        actionContainer.Disabled = false;
+                        actionContainer.button.interactable = true;
+                    }
+                        baseUnit.BattlePhaseEnd += PrePipTutorial;
                 }
 
                 if (turn == 2)
@@ -225,7 +232,7 @@ public class DustyEnemy : Unit
         private void PipTutorial(Unit obj)
         {
             obj.BattlePhaseEnd -= PipTutorial;
-            BaseUnit.knockbackModifider = 50;
+            BaseUnit.knockbackModifider = 25;
             turn = 3;
             BattleSystem.Instance.canvas.gameObject.SetActive(false);
             BattleSystem.Instance.BattlePhasePause = true;

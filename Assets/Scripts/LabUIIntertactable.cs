@@ -115,7 +115,7 @@ public class LabUIInteractable : MonoBehaviour
             {
                 DoClick("button_Hit_001");
             }
-            else if (GetComponent<Button>() == null)
+            else if (GetComponent<Button>() == null && GetComponent<Slider>() == null && GetComponent<Scrollbar>() == null && gameObject.name != "Handle")
             {
                 DoClick("button_Hit_001");
             }

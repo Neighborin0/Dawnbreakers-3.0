@@ -543,6 +543,13 @@ public class Tools : MonoBehaviour
         return floatToReturn;
     }
 
+    public static Color ChangeColorAlpha(Color baseColor, float desiredAlpha)
+    {
+        Color colorToReturn = Color.black;
+        colorToReturn = new Color(baseColor.r, baseColor.g, baseColor.b, desiredAlpha);
+        return colorToReturn;
+    }
+
 
 }
 

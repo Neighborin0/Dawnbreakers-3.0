@@ -175,6 +175,38 @@ public class Director : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf && SceneManager.GetActiveScene().name != "Main Menu")
+        {
+            if (SceneManager.GetActiveScene().name == "MAP2" && MapController.Instance.CanInput)
+            {
+                if (Director.Instance.CharacterSlotsDisplayed)
+                {
+                    if (BattleLog.Instance != null)
+                        if (BattleLog.Instance.state != BattleLogStates.TALKING)
+                            Director.Instance.DisplayCharacterTab(false);
+                }
+                else if (Director.Instance.ItemTabGrid.transform.childCount == 0)
+                {
+                    Director.Instance.DisableCharacterTab();
+                }
+            }
+
+            if (SceneManager.GetActiveScene().name == "Rest" && BattleLog.Instance.state != BattleLogStates.TALKING)
+            {
+                if (Director.Instance.CharacterSlotsDisplayed)
+                {
+                    if (BattleLog.Instance != null)
+                        if (BattleLog.Instance.state != BattleLogStates.TALKING)
+                            Director.Instance.DisplayCharacterTab(false);
+                }
+                else if (Director.Instance.ItemTabGrid.transform.childCount == 0)
+                {
+                    Director.Instance.DisableCharacterTab();
+                }
+            }
+
+        }
+
     }
 
 

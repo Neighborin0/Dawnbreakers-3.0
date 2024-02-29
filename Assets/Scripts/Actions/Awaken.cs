@@ -31,7 +31,7 @@ public class Awaken : Action
     }
     public override IEnumerator ExecuteAction()
     {
-        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f);
+        LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f, false, true);
         AudioManager.QuickPlay("ui_woosh_002");
         yield return new WaitForSeconds(0.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
@@ -42,11 +42,7 @@ public class Awaken : Action
         targets.ChangeUnitsLight(Light, 150, 15, Color.red, 0.04f, 1.6f);
         LabCamera.Instance.Shake(1f, 0.3f);
         BattleSystem.Instance.SetStatChanges(Stat.ATK, 5f, false, targets);
-        yield return new WaitForSeconds(1f);
-        Light.color = Color.blue;
-        LabCamera.Instance.Shake(1f, 0.3f);
-        BattleSystem.Instance.SetStatChanges(Stat.DEF, 5f, false, targets);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(10));
         AudioManager.QuickPlay("ui_woosh_002");
         LabCamera.Instance.ResetPosition();

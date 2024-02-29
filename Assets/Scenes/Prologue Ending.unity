@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 105}
+  m_AnchoredPosition: {x: 0, y: 46}
   m_SizeDelta: {x: 1170.4066, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &192629352
@@ -182,8 +182,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "...You will not forget so easily... \r\n\n\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
+  m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -317,8 +317,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "...Remember these words little light... \r\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
+  m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -630,15 +630,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: "...Still shining as brightly as ever... \r\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
+  m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 11853567
+    rgba: 4290043647
   m_fontColor: {r: 1, g: 0.87058824, b: 0.7058824, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -740,7 +740,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0.000061035, y: 105}
+  m_AnchoredPosition: {x: 0, y: 76}
   m_SizeDelta: {x: 1170.4066, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &840231275
@@ -765,8 +765,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "...Seek out the shining city... \r\n\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
+  m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1560,7 +1560,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0.000061035, y: 105}
+  m_AnchoredPosition: {x: 0, y: 105}
   m_SizeDelta: {x: 1170.4066, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1475746142
@@ -1587,8 +1587,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
+  m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2599,7 +2599,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 105}
+  m_AnchoredPosition: {x: 0, y: 80}
   m_SizeDelta: {x: 1170.4066, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1707746988
@@ -2628,7 +2628,7 @@ MonoBehaviour:
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5487f0b2f17e72f40a53dcbd5508033c, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_sharedMaterial: {fileID: -8812209203763234201, guid: 5487f0b2f17e72f40a53dcbd5508033c,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2692,7 +2692,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1707746989

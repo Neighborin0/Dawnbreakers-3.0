@@ -149,7 +149,7 @@ public class OptionsManager : MonoBehaviour
         TextSpeedvalue.text = Math.Round(TextSpeedslider.value, 1).ToString();
         waitTimeValue.text = Math.Round(WaitTimeMultiplier.value, 1).ToString();
 
-        MasterVolumeSlider.value = Tools.CheckPlayerPrefsFloat("MasterVolume", 0.5f);
+        MasterVolumeSlider.value = Tools.CheckPlayerPrefsFloat("MasterVolume", 0f);
         SFXSlider.value = Tools.CheckPlayerPrefsFloat("SFXVolume", 0.5f);
         MusicSlider.value = Tools.CheckPlayerPrefsFloat("MusicVolume", 0.5f);
 

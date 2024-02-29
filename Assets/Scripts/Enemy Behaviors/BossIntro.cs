@@ -87,7 +87,7 @@ public class BossIntro : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
             yield return new WaitUntil(() => SubText.color.a >= 1);
-            yield return new WaitForSeconds(7f);
+            yield return new WaitForSeconds(3f);
             //Fade Out
             while (BossText.color.a > 0)
             {

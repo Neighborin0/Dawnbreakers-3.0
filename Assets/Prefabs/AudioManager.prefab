@@ -112,14 +112,14 @@ MonoBehaviour:
   - clip: {fileID: 8300000, guid: 77043c72e06621c43bbe2fe3a9726758, type: 3}
     AudioName: button_hover
     volume: 0.05
-    pitch: 1.5
+    pitch: 2
     source: {fileID: 0}
     loop: 0
     Fading: 0
     type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
   - clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
     AudioName: button_Hit_001
-    volume: 1
+    volume: 0.5
     pitch: 0.65
     source: {fileID: 0}
     loop: 0
@@ -127,7 +127,7 @@ MonoBehaviour:
     type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
   - clip: {fileID: 8300000, guid: df78e37dbc18da2489621501294438ed, type: 3}
     AudioName: ui_woosh_001
-    volume: 0.4
+    volume: 0.2
     pitch: 0.4
     source: {fileID: 0}
     loop: 0
@@ -135,7 +135,7 @@ MonoBehaviour:
     type: {fileID: -1071422438544818516, guid: 4ac2d7f13ff32e541937342829d8c065, type: 2}
   - clip: {fileID: 8300000, guid: 67cfda79942095543ac314cee0113f71, type: 3}
     AudioName: button_Hit_002
-    volume: 1
+    volume: 0.5
     pitch: 0.43
     source: {fileID: 0}
     loop: 0

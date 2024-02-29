@@ -101,7 +101,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: ...
+  - text: Do you truly mean it...
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -113,7 +113,19 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: Alright then...I won't stop you.
+  - text: I won't ask again.
+    expression: neutral
+    unit: Aurelia
+    textSpeed: 0.02
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: Fine then...I won't stop you. Just go...
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
