@@ -35,7 +35,7 @@ public class Defend : Action
     public override IEnumerator ExecuteAction()
     {
         Director.Instance.StartCoroutine(CombatTools.TurnOffDirectionalLight(10));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "DefendSelf", new Color(0, 144, 255), new Color(0, 144, 255), new Vector3(0, 1, -2f), Quaternion.identity, 0.8f, 0, true, 0, 1));      
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "DefendSelf", new Color(0, 108, 191), new Color(0, 108, 191), new Vector3(0, 1, -2f), Quaternion.identity, 0.8f, 0, true, 0, 0.22f, 0.0001f, "", false));      
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f, false, true);
         yield return new WaitForSeconds(0.8f);
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "ShieldParticles", new Color(0, 144, 255), new Color(0, 144, 255), new Vector3(0, 0, -1f), Quaternion.identity, 0.8f, 0, true, 0, 1));

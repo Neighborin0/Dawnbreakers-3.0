@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\BattleOrder.cs" />
     <Compile Include="Assets\Scripts\Enemy Behaviors\EnemyBehavior.cs" />
     <Compile Include="Assets\Scripts\Actions\Grow.cs" />
+    <Compile Include="Assets\Scripts\Actions\Cleave.cs" />
     <Compile Include="Assets\Scripts\Healthbar.cs" />
     <Compile Include="Assets\Scripts\Icons\Indomitable.cs" />
     <Compile Include="Assets\Scripts\TimeLineChild.cs" />

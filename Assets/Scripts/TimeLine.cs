@@ -29,7 +29,7 @@ public class TimeLine : MonoBehaviour
         actionDisplayer = GetComponentInChildren<ActionDisplayer>();
     }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
         if (!Paused)
         {
@@ -170,13 +170,14 @@ public class TimeLine : MonoBehaviour
 
     public void ReplaceMainPortraitWithMiniPortrait(TimeLineChild TL)
     {
-        
-        if(TL.miniChild != null)
+
+        if (TL.miniChild != null)
         {
-            (TL.miniChild.portrait.sprite, TL.portrait.sprite) = (TL.portrait.sprite, TL.miniChild.portrait.sprite);
+            (TL.portrait.sprite, TL.miniChild.portrait.sprite) = (TL.portrait.sprite, TL.miniChild.portrait.sprite);
             TL.PortraitHasBeenReplaced = true;
         }
     }
+
 
     public void RemoveTimelineChild(Unit unitToFind)
     {

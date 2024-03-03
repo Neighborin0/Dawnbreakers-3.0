@@ -60,10 +60,10 @@ public class Shriek : Action
         foreach (var x in CombatTools.DetermineEnemies(unit))
         {
             BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(x.gameObject, "Strike", new Color(156, 14, 207), new Color(156, 14, 207), new Vector3(0, 0, -2f), Quaternion.identity));
-            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "WarCry3", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), Quaternion.identity, 0.3f, 0, true, 0, 10));
-            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "BasicHitParticles_001", new Color(156, 14, 207), new Color(156, 14, 207), new Vector3(0, 0, -2f), Quaternion.identity, 1, 0, true, 0, 10));
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(x.gameObject, "WarCry3", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), Quaternion.identity, 0.3f, 0, true, 0, 10));
+            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(x.gameObject, "BasicHitParticles_001", new Color(156, 14, 207), new Color(156, 14, 207), new Vector3(0, 0, -2f), Quaternion.identity, 1, 0, true, 0, 10));
             Director.Instance.StartCoroutine(CombatTools.ApplyAndReduceChromaticAbberation(0.01f));          
-            x.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle, false, true);
+            x.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(x, damageType)), unit, damageType, actionStyle, false, true);
         }
         yield return new WaitForSeconds(1f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);

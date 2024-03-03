@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
-
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -279,7 +279,7 @@ public class CombatTools : MonoBehaviour
     }
 
 
-    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, Quaternion rotation, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = false, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f, string AudioToPlay = "")
+    public static IEnumerator PlayVFX(GameObject parent, string VFXName, Color vfxColor, Color particleColor, Vector3 offset, Quaternion rotation, float duration = 1, float stopDuration = 0, bool ApplyChromaticAbberation = false, float ExtraDelay = 0, float intensityMultiplier = 10, float ChromaticDelay = 0.0001f, string AudioToPlay = "", bool Fade = true)
     {
         var VFX = Instantiate(Director.Instance.VFXList.Where(obj => obj.name == VFXName).FirstOrDefault(), Tools.GetGameObjectPositionAsVector3(parent) + offset, rotation);
         VFX.transform.parent = null;
@@ -342,7 +342,7 @@ public class CombatTools : MonoBehaviour
                 else
                     AudioManager.Instance.Stop(AudioToPlay);
             }
-            if (VFX != null && VFX.GetComponent<SpriteRenderer>() != null)
+            if (VFX != null && VFX.GetComponent<SpriteRenderer>() != null && Fade)
             {
                 VFX.GetComponent<SpriteRenderer>().material = Instantiate(VFX.GetComponent<SpriteRenderer>().material);
                 var vfxMaterial = VFX.GetComponent<SpriteRenderer>().material;
@@ -611,6 +611,50 @@ public class CombatTools : MonoBehaviour
             SameAffiliations = true;
         }
         return SameAffiliations;
+    }
+
+    public static Unit ReturnFirstUnitInOrder(Unit firstUnitToCompare, Unit secondUnitToCompare)
+    {
+        Unit unitToReturn = null;
+        var unitArray = BattleSystem.Instance.playerUnits.ToArray();
+        foreach (var unit in unitArray.Reverse())
+        {
+            if (firstUnitToCompare.Equals(unit) || secondUnitToCompare.Equals(unit))
+            {
+                unitToReturn = unit;
+                break; // Exit the loop once a matching unit is found
+            }
+        }
+        return unitToReturn;
+    }
+
+    public static List<Unit> GetProperAffiliationList(Unit unitComparsion)
+    {
+        List<Unit> listToReturn = null;
+        if(unitComparsion.IsPlayerControlled)
+        {
+            listToReturn = BattleSystem.Instance.playerUnits;
+        }
+        else
+        {
+            listToReturn = BattleSystem.Instance.enemyUnits;
+        }
+        return listToReturn;
+    }
+
+    public static void CheckForSameCostActions() 
+    { 
+        foreach(var action in BattleSystem.Instance.ActionsToPerform)
+        {
+            foreach (var otherAction in BattleSystem.Instance.ActionsToPerform)
+            {
+                if(action != otherAction && action.cost == otherAction.cost && CompareAffiliations(action.unit, otherAction.unit))
+                {
+                    action.cost += 0.1f;
+                    break;
+                }
+            }
+        }
     }
 
 

@@ -16,7 +16,7 @@ public class Husk : Unit
         currentHP = maxHP;
         IsPlayerControlled = false;
         weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE };
-        CombatTools.ModifyAction(this, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0 , ActionVariance01.Length)]);
+        CombatTools.ModifyAction(this, "Claw", 0, ActionVariance01[UnityEngine.Random.Range(0 , ActionVariance01.Length)]);
         if (BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName.Contains("Matriarch")).SingleOrDefault())
         {
             behavior = this.gameObject.AddComponent<TutorialHuskMatriarchBehavior>();
@@ -28,7 +28,7 @@ public class Husk : Unit
         {
             behavior = this.gameObject.AddComponent<TutorialHuskMatriarchBehavior>();
             maxHP = UnityEngine.Random.Range(17, 22);
-            attackStat = UnityEngine.Random.Range(0, 2);
+            attackStat = 0;
             print("using regular behavior");
         }
     }
@@ -39,7 +39,7 @@ public class Husk : Unit
         public override void DoBehavior(Unit baseUnit)
         {
             int move = UnityEngine.Random.Range(0, baseUnit.actionList.Count);
-            CombatTools.ModifyAction(baseUnit, "Strike", 0, ActionVariance01[UnityEngine.Random.Range(0, ActionVariance01.Length)]);
+            CombatTools.ModifyAction(baseUnit, "Claw", 0, ActionVariance01[UnityEngine.Random.Range(0, ActionVariance01.Length)]);
             CombatTools.SetupEnemyAction(baseUnit, move, null);
         }
 

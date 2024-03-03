@@ -11,21 +11,17 @@ public class IronShield : Item
     private void OnEnable()
     {
         itemName = "Iron Shield";
-        itemDescription = "Applies <sprite name=\"BLOCK\"> at the start of battle.";
+        itemDescription = "Grants 2 <sprite name=\"DEF BLUE2\">.";
         CanBeTransfered = false;
         ExcludedFromLootPools = true;
     }
     public override void OnPickup(Unit unit)
     {
-        unit.BattlePostStarted += ApplyBlock;
+        unit.defenseStat += 2;
     }
 
-    public void ApplyBlock(Unit unit)
-    {
-        BattleSystem.Instance.SetTempEffect(unit, "BLOCK", false, 0, 0, 0);
-    }
     public override void OnRemoved(Unit unit)
     {
-        unit.BattlePostStarted -= ApplyBlock;
+        unit.defenseStat -= 2;
     }
 }

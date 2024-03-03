@@ -162,7 +162,7 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: ...Well...May I have your name in turn?
+  - text: ...Well in any case...May I have your name in turn?
     expression: neutral
     unit: Dusty
     textSpeed: 0.03
@@ -174,7 +174,19 @@ MonoBehaviour:
         m_Calls: []
     PositionToMoveTo: {x: 0, y: 0, z: 0}
     CameraRotation: {x: 0, y: 0, z: 0}
-  - text: 'Aurelia. Now enough with this, I tire of dawdling here any further. '
+  - text: Aurelia.
+    expression: neutral
+    unit: Aurelia
+    textSpeed: 0.02
+    OnLineStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    OnLineEnded:
+      m_PersistentCalls:
+        m_Calls: []
+    PositionToMoveTo: {x: 0, y: 0, z: 0}
+    CameraRotation: {x: 0, y: 0, z: 0}
+  - text: 'Now enough with this, I tire of dawdling here any further. '
     expression: neutral
     unit: Aurelia
     textSpeed: 0.02

@@ -390,7 +390,7 @@ public class MapController : MonoBehaviour
             Debug.LogError("Found a Boss Node"); Debug.LogError("Found a Boss Node");
             Debug.LogError("Found a Boss Node");
             Debug.LogError("Found a Boss Node");
-            compressor = 0.2f;
+            compressor = 3.2f;
             Debug.LogError(compressor);
         }
         var lineInstance = Instantiate(linePrefab, mapCanvas.transform);

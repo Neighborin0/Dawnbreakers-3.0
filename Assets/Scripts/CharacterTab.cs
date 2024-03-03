@@ -102,7 +102,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         skillRESText.text = $"RES:  {string.Join("", resistanceText.ToArray())}";
         skillATKText.text = $"ATK:{unit.attackStat}";
         skillDEFText.text = $"DEF:{unit.defenseStat}";
-        skillWEAKText.text = $"WEAK:   {string.Join("", weaknessText.ToArray())}";
+        skillWEAKText.text = $"WEAK:  {string.Join("", weaknessText.ToArray())}";
     }
 
     public void DoOnInteracted()
@@ -123,7 +123,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             CT.DEFText.text = $"DEF:{CT.unit.defenseStat}";
             CT.ATKtext.text = $"ATK: {CT.unit.attackStat}";
             CT.REStext.text = $"RES:  {string.Join("", CT.resistanceText.ToArray())}";
-            CT.WEAKText.text = $"WEAK:   {string.Join("", CT.weaknessText.ToArray())}";
+            CT.WEAKText.text = $"WEAK: {string.Join("", CT.weaknessText.ToArray())}";
             GetComponent<HighlightedObject>().disabled = false;
         }
         foreach (var CS in Director.Instance.characterSlotpos.transform.GetComponentsInChildren<CharacterSlot>())

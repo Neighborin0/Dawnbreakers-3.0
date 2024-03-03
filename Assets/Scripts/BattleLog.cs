@@ -350,6 +350,7 @@ public class BattleLog : MonoBehaviour
         }
         Tools.ToggleUiBlocker(false, true, true);
         yield return new WaitUntil(() => GetComponent<MoveableObject>().transform.position.y >= GetComponent<MoveableObject>().PositionUpY);
+        yield return new WaitForSeconds(0.02f);
         foreach (var l in line)
         {
             x.text = "";

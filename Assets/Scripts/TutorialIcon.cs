@@ -13,6 +13,10 @@ public class TutorialIcon : MonoBehaviour
     [SerializeField] 
     private TextMeshProUGUI Text2;
     [SerializeField]
+    private GameObject imageSet1;
+    [SerializeField]
+    private GameObject imageSet2;
+    [SerializeField]
     private bool HasAnotherTextBox = false;
     [SerializeField]
     private GameObject BackButton;
@@ -42,6 +46,8 @@ public class TutorialIcon : MonoBehaviour
         HasAnotherTextBox = false;
         Text1.gameObject.SetActive(false);
         Text2.gameObject.SetActive(true);
+        imageSet1.gameObject.SetActive(false);
+        imageSet2.gameObject.SetActive(true);
         BackButton.gameObject.SetActive(true);
         NextButtonText.text = "Close";
     }
@@ -51,6 +57,8 @@ public class TutorialIcon : MonoBehaviour
         HasAnotherTextBox = true;
         Text1.gameObject.SetActive(true);
         Text2.gameObject.SetActive(false);
+        imageSet1.gameObject.SetActive(true);
+        imageSet2.gameObject.SetActive(false);
         BackButton.gameObject.SetActive(false);
         NextButtonText.text = "Next";
     }

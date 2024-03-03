@@ -148,7 +148,9 @@ public class MatriarchBehaviorLV0 : EnemyBehavior
             //Destroys Aurelia
             case 4:
                 {
+                    CombatTools.ModifyAction(baseUnit, "Immolate", 3, 35f);
                     CombatTools.SetupEnemyAction(baseUnit, 3, CombatTools.CheckAndReturnNamedUnit("Aurelia"));
+                   
                 }
                 break;
             default:

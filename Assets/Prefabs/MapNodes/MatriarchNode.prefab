@@ -380,7 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeName: Boss
-  newScaleSize: {x: 2.2, y: 2.2, z: 2.2}
+  newScaleSize: {x: 2.5, y: 2.5, z: 2.5}
   oldScaleSize: {x: 2, y: 2, z: 2}
   enemies: []
   playerUnits: []
@@ -424,6 +424,7 @@ MonoBehaviour:
   Clicked:
     _PersistentCalls: []
   CanClick: 1
+  CanHover: 1
 --- !u!114 &5230564422028583892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,3 +484,4 @@ MonoBehaviour:
         _W: 0
         _Object: {fileID: 0}
   CanClick: 1
+  CanHover: 1

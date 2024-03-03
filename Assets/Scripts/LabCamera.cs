@@ -51,6 +51,8 @@ public class LabCamera : MonoBehaviour
             camTransform = transform;
             Instance = this;
             state = CameraState.IDLE;
+
+
         }
     }
 
@@ -82,6 +84,11 @@ public class LabCamera : MonoBehaviour
                 moveableObject.PositionDownY = BattleSystem.Instance.cameraPos1Units.y - 0.1f;
                 moveableObject.PositionUpX = BattleSystem.Instance.cameraPos1Units.y - 0.1f;
             }
+
+            if(BattleSystem.Instance.BossNode)
+            {
+                LabCamera.Instance.camTransform.position = new Vector3(camTransform.position.x, camTransform.position.y, -145);
+            }
         }
     }
 
@@ -89,6 +96,10 @@ public class LabCamera : MonoBehaviour
     {
         smoothingTime = 0f;
         state = CameraState.MOVING;
+        if(customTimeDivider == 1)
+        {
+            customTimeDivider = MovingTimeDivider;
+        }
         MovingTimeDivider = customTimeDivider;
         if (BattleSystem.Instance != null)
         {
@@ -286,9 +297,9 @@ public class LabCamera : MonoBehaviour
             if (unit.IsPlayerControlled)
                 xOffset *= -1;
 
-            PositonToMoveTo.x = sprite.bounds.center.x + xOffset + (UseCamOffset ? unit.camOffset.y : 0);
+            PositonToMoveTo.x = sprite.bounds.center.x + xOffset + (UseCamOffset ? unit.camOffset.x : 0);
             PositonToMoveTo.y = sprite.bounds.center.y + yOffset + (UseCamOffset ? unit.camOffset.y : 0);
-            PositonToMoveTo.z = unit.transform.position.z + zOffset + (UseCamOffset ? unit.camOffset.y : 0);
+            PositonToMoveTo.z = unit.transform.position.z + zOffset + (UseCamOffset ? unit.camOffset.z : 0);
         }
 
     }

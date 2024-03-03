@@ -274,7 +274,7 @@ public class BattleSystem : MonoBehaviour
             LabCamera.Instance.camTransform.position = Camera.main.transform.position;
 
         if(!TutorialNode)
-            LabCamera.Instance.ReadjustCam(30f);
+            LabCamera.Instance.ReadjustCam(15f);
         else
             LabCamera.Instance.ReadjustCam();
 
@@ -283,8 +283,6 @@ public class BattleSystem : MonoBehaviour
         if (!TutorialNode)
             yield return new WaitForSeconds(2f);
 
-        if (TutorialNode)
-            yield return new WaitForSeconds(0.5f);
         BattleLog.Instance.GetComponent<MoveableObject>().Move(true);
         Director.Instance.timeline.GetComponent<MoveableObject>().Move(true);
         BattleLog.Instance.ResetBattleLog();
@@ -752,7 +750,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-
+    public Action currentAction;
 
     public IEnumerator PerformAction()
     {
@@ -785,14 +783,17 @@ public class BattleSystem : MonoBehaviour
         {
             x.state = PlayerState.WAITING;
         }
+        CombatTools.CheckForSameCostActions();
         ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x))
          .ThenBy(x => x.unit.IsPlayerControlled)
         .ThenBy(x => x.actionType)
+        .ThenBy(x => CombatTools.GetProperAffiliationList(x.unit))
         .Reverse().ToList();
         CombatTools.UnpauseStaminaTimer();
         for (int i = 0; i < ActionsToPerform.Count; i++)
         {
             var action = ActionsToPerform[i];
+            currentAction = action;
             if (action.unit == null)
             {
                 ActionsToPerform.Remove(action);
@@ -854,7 +855,7 @@ public class BattleSystem : MonoBehaviour
                 yield return new WaitUntil(() => action.Done);
                 yield return new WaitUntil(() => !BattlePhasePause);
                 yield return new WaitForSeconds(0.2f);
-              
+                action.cost -= 1;
                 action.ResetAction();
                 yield return new WaitForSeconds(0.01f);
 
@@ -877,12 +878,10 @@ public class BattleSystem : MonoBehaviour
                     yield return new WaitForSeconds(0.1f);
                 }
 
-                ActionsToPerform = ActionsToPerform
-                    .OrderBy(x => 100 - CombatTools.DetermineTrueCost(x))
-                    .ThenBy(x => x.unit.IsPlayerControlled)
-                    .ThenBy(x => x.actionType)
-                    .Reverse()
-                    .ToList();
+                    ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x))
+         .ThenBy(x => x.unit.IsPlayerControlled)
+        .ThenBy(x => x.actionType)
+        .Reverse().ToList();
             }
         }
         yield return new WaitUntil(() => !BattlePhasePause);

@@ -13,7 +13,7 @@ public class Kindle : Action
     private void OnEnable()
     {
         ActionName = "Kindle";
-        cost = 60f;
+        cost = 35f;
         lightCost = 60;
         heavyCost = 60;
         actionType = ActionType.STATUS;

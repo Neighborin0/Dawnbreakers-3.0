@@ -15,6 +15,7 @@ public class StartButton : MonoBehaviour
         */
         //OptionsManager.Instance.Load("Battle");
         MapController.Instance.currentNodes[0].DisableNode(false);
+        GetComponent<Button>().interactable = false;
 
     }
 

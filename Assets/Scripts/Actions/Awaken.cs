@@ -11,7 +11,7 @@ public class Awaken : Action
 
 
         
-        cost = 100f;
+        cost = 75f;
         lightCost = 80f;
         heavyCost = 100f;
 
@@ -39,7 +39,7 @@ public class Awaken : Action
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "AwakenLight", Color.white, Color.white, new Vector3(-1.95f, 4.02f, 0f), Quaternion.identity, 10f, 0, true, 0, 8));
         yield return new WaitForSeconds(0.9f);
         var Light = targets.spotLight;
-        targets.ChangeUnitsLight(Light, 150, 15, Color.red, 0.04f, 1.6f);
+        targets.ChangeUnitsLight(Light, 150, 15, Color.red, 0.04f, 0.9f);
         LabCamera.Instance.Shake(1f, 0.3f);
         BattleSystem.Instance.SetStatChanges(Stat.ATK, 5f, false, targets);
         yield return new WaitForSeconds(1.3f);

@@ -106,17 +106,43 @@ public class DustyEnemy : Unit
                 }
             }
             Aurelia.OnActionSelected += DisableNonSweepOptions;
-            Aurelia.BattlePhaseClose += RevertActions;
+            Aurelia.OnPerformActionStarted += RevertActions;
             yield break;
         }
 
         private static void RevertActions(Unit unit)
         {
             var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
-            Aurelia.OnActionSelected -= DisableNonSweepOptions;
-            Aurelia.BattlePhaseClose -= RevertActions;
+            Aurelia.OnActionSelected += MakeSureDefendStaysEnabled;
+            for (int i = 0; i < 50; i++)
+            {
+                Aurelia.OnActionSelected -= DisableNonSweepOptions;
+                foreach (var skill in Aurelia.skillUIs)
+                {
+                    var actionContainer = skill.GetComponent<ActionContainer>();
+                    if (actionContainer.action != null && actionContainer.action.ActionName == "Defend")
+                    {
+                        actionContainer.Disabled = false;
+                        actionContainer.button.interactable = true;
+                    }
+                }
+                Aurelia.OnPerformActionStarted -= RevertActions;
+            }
+           
         }
-
+        private static void MakeSureDefendStaysEnabled(Unit unit, ActionContainer container)
+        {
+            var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+            foreach (var skill in Aurelia.skillUIs)
+            {
+                var actionContainer = skill.GetComponent<ActionContainer>();
+                if (actionContainer.action != null && actionContainer.action.ActionName == "Defend")
+                {
+                    actionContainer.Disabled = false;
+                    actionContainer.button.interactable = true;
+                }
+            }
+        }
         private static void DisableNonSweepOptions(Unit unit, ActionContainer container)
         {
             var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
@@ -187,6 +213,11 @@ public class DustyEnemy : Unit
             Director.Instance.blackScreen.gameObject.SetActive(false);
             StartCoroutine(AudioManager.Instance.Fade(0.35f, AudioManager.Instance.currentMusicTrack, 2, false));
             var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+
+            Aurelia.OnActionSelected += DisableNonSlash;
+            Aurelia.OnActionSelected += ForceLightAction;
+            Aurelia.BattlePhaseEnd += GetRidOfLightAction;
+
             foreach (var skill in Aurelia.skillUIs)
             {
                 var actionContainer = skill.GetComponent<ActionContainer>();
@@ -196,9 +227,6 @@ public class DustyEnemy : Unit
                     actionContainer.button.interactable = false;
                 }
             }
-
-            Aurelia.OnActionSelected += ForceLightAction;
-            Aurelia.BattlePhaseEnd += GetRidOfLightAction;
 
             BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaForcedLightAction"), true, false, false, false, true, false);
             yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
@@ -211,6 +239,22 @@ public class DustyEnemy : Unit
 
 
         }
+
+        private static void DisableNonSlash(Unit unit, ActionContainer container)
+        {
+            var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
+            foreach (var skill in Aurelia.skillUIs)
+            {
+                var actionContainer = skill.GetComponent<ActionContainer>();
+                if (actionContainer.action != null && actionContainer.action.ActionName != "Slash")
+                {
+                    actionContainer.Disabled = true;
+                    actionContainer.button.interactable = false;
+                    break;
+                }
+            }
+        }
+
 
         private void ForceLightAction(Unit unit, ActionContainer actionContainerParent)
         {
@@ -341,14 +385,15 @@ public class DustyEnemy : Unit
         {
             BattleLog.Instance.CharacterDialog(Director.Instance.FindObjectFromDialogueDatabase("DustyAureliaMeeting(2)"), true, false, false, true);
             BattleSystem.Instance.DoPostBattleDialogue = false;
-            yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
+            yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING); 
+            CombatTools.TurnOffCriticalUI(BaseUnit);
             StartCoroutine(BattleSystem.Instance.TransitionToMap(true));
             LabCamera.Instance.uicam.gameObject.SetActive(true);
             BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
             MapController.Instance.ReEnteredMap += BattleLog.Instance.DoPostBattleDialouge;
             SceneManager.sceneLoaded += AddDusty;
             BattleSystem.Instance.StopUpdating = true;
-            CombatTools.TurnOffCriticalUI(BaseUnit);
+          
         }
 
         private void AddDusty(Scene scene, LoadSceneMode mode)

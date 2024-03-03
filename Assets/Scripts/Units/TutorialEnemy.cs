@@ -89,24 +89,7 @@ public class TutorialEnemy : Unit
                     Director.Instance.StartCoroutine(LateDisable());
 
                 }
-                else
-                {
-                    foreach (var skill in Aurelia.skillUIs)
-                    {
-                        var actionContainer = skill.GetComponent<ActionContainer>();
-                        if (actionContainer.action != null && actionContainer.action.ActionName == "Defend")
-                        {
-                            actionContainer.Disabled = true;
-                            actionContainer.button.interactable = false;
-                        }
-                        else
-                        {
-                            actionContainer.Disabled = false;
-                            actionContainer.button.interactable = true;
-                        }
-
-                    }
-                }
+               
                 CombatTools.SetupEnemyAction(baseUnit, turn);
                 if (turn != 1)
                 {
@@ -183,7 +166,7 @@ public class TutorialEnemy : Unit
 
     private static void DisableDefend(Unit unit, ActionContainer container)
     {
-
+        Debug.LogError("Defend is gone");
         var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
         Aurelia.OnPerformActionStarted += RevertDefend;
         foreach (var skill in Aurelia.skillUIs)
@@ -204,6 +187,7 @@ public class TutorialEnemy : Unit
 
     private static void RevertDefend(Unit unit)
     {
+        Debug.LogError("Defend should be back");
         var Aurelia = CombatTools.CheckAndReturnNamedUnit("Aurelia");
         foreach (var skill in Aurelia.skillUIs)
         {
@@ -215,9 +199,13 @@ public class TutorialEnemy : Unit
             }
           
         }
-        Aurelia.OnActionSelected -= DisableSlash;
-        Aurelia.OnActionSelected -= DisableDefend;
-        Aurelia.OnPerformActionStarted -= RevertDefend;
-        Aurelia.OnPerformActionStarted -= RevertActions;
+        for(int i = 0; i < 50; i++)
+        {
+            Aurelia.OnActionSelected -= DisableSlash;
+            Aurelia.OnActionSelected -= DisableDefend;
+            Aurelia.OnPerformActionStarted -= RevertDefend;
+            Aurelia.OnPerformActionStarted -= RevertActions;
+        }
+   
     }
 }

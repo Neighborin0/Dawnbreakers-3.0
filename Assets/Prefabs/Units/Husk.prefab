@@ -225,6 +225,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
   camOffset: {x: 0, y: 0, z: 0}
+  CustomScale: {x: 0, y: 0, z: 0}
   OverrideEmission: 0
   introText: []
   inventory: []
@@ -241,7 +242,7 @@ MonoBehaviour:
   resistances: 
   weaknesses: 
   actionList:
-  - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
+  - {fileID: 11400000, guid: e916af8e95d57c646ae15ba238a00be1, type: 2}
   summonables: []
   HitEmissionChanged: 0
 --- !u!65 &8262538968179080166
