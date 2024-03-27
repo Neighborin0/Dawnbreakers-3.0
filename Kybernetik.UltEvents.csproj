@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{18C4BFE1-D777-4E94-A505-B41742C06E50}</ProjectGuid>
+    <ProjectGuid>{04601C7F-B683-608C-521F-8A3057268184}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Kybernetik.UltEvents</AssemblyName>

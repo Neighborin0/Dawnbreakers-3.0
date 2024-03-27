@@ -6,7 +6,7 @@ using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using static MapFlow;
 
 public class MapNode : MonoBehaviour
 {
@@ -27,6 +27,8 @@ public class MapNode : MonoBehaviour
     public GameObject mapline;
     [NonSerialized]
     public bool disabled = false;
+
+    public RoomType nodeType;
 
 
     private void Start()
@@ -142,6 +144,8 @@ public class MapNode : MonoBehaviour
             }
         }
     }
+
+  
 
     public virtual void OnInteracted() { }
 }

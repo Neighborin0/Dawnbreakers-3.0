@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{54852342-12AA-085B-300F-7DC4FA5578C2}</ProjectGuid>
+    <ProjectGuid>{DFF577AF-A860-D01A-B9CE-0026F9F97DE4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -93,6 +93,7 @@
     <Compile Include="Assets\Scripts\Tools\CutsceneTools.cs" />
     <Compile Include="Assets\Scripts\DirectorInfo.cs" />
     <Compile Include="Assets\Scripts\RunTracker.cs" />
+    <Compile Include="Assets\Scripts\Map\NodeSpawner.cs" />
     <Compile Include="Assets\Scripts\Actions\Bash.cs" />
     <Compile Include="Assets\Scripts\LabBillBoard.cs" />
     <Compile Include="Assets\Scripts\Actions\Awaken.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Assets\Scripts\ActionContainer.cs" />
     <Compile Include="Assets\Scripts\Actions\Immolate.cs" />
     <Compile Include="Assets\Scripts\Icons\Vigor.cs" />
+    <Compile Include="Assets\Scripts\Map\ShopNode.cs" />
     <Compile Include="Assets\Scripts\DisplaySwitcher.cs" />
     <Compile Include="Assets\Scripts\Map\LevelDrop.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\CrackedShield.cs" />
@@ -130,11 +132,13 @@
     <Compile Include="Assets\Scripts\InventoryDisplay.cs" />
     <Compile Include="Assets\Scripts\Actions\Defend.cs" />
     <Compile Include="Assets\Scripts\LabUIIntertactable.cs" />
+    <Compile Include="Assets\Scripts\Map\MapTemplate.cs" />
     <Compile Include="Assets\Scripts\Map\MapController.cs" />
     <Compile Include="Assets\Scripts\Main Menu\OptionsManager.cs" />
     <Compile Include="Assets\Scripts\BattleLog.cs" />
     <Compile Include="Assets\Scripts\Actions\Kindle.cs" />
     <Compile Include="Assets\Scripts\Main Menu\MainMenuController.cs" />
+    <Compile Include="Assets\Scripts\Map\NodeController.cs" />
     <Compile Include="Assets\Scripts\Actions\Shriek.cs" />
     <Compile Include="Assets\Scripts\ScalableObject.cs" />
     <Compile Include="Assets\Scripts\Icons\DefendEF.cs" />
@@ -154,12 +158,13 @@
     <Compile Include="Assets\Scripts\PrologueEnding.cs" />
     <Compile Include="Assets\Scripts\Stamina.cs" />
     <Compile Include="Assets\Scripts\CharacterTabPopup.cs" />
+    <Compile Include="Assets\Scripts\Map\EventNode.cs" />
     <Compile Include="Assets\Scripts\Items\ItemDisplay.cs" />
     <Compile Include="Assets\Scripts\AmbienceDoer.cs" />
     <Compile Include="Assets\Scripts\Map\CombatNode.cs" />
-    <Compile Include="Assets\Scripts\Map\MapGrid.cs" />
     <Compile Include="Assets\Scripts\PulsatingLight.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\ForgottenGreaves.cs" />
+    <Compile Include="Assets\Scripts\Map\EliteNode.cs" />
     <Compile Include="Assets\Scripts\CharacterTab.cs" />
     <Compile Include="Assets\Scripts\Main Menu\QuitButton.cs" />
     <Compile Include="Assets\Scripts\ItemText.cs" />
@@ -191,7 +196,6 @@
     <Compile Include="Assets\Scripts\BattleSpawnPoint.cs" />
     <Compile Include="Assets\Scripts\MoveableObject.cs" />
     <Compile Include="Assets\Scripts\MiniTimelineChildren.cs" />
-    <Compile Include="Assets\Scripts\Map\LabTile.cs" />
     <Compile Include="Assets\Scripts\LabLine.cs" />
     <Compile Include="Assets\Scripts\Map\MapNode.cs" />
     <Compile Include="Assets\Scripts\Actions\Sweep.cs" />
@@ -206,8 +210,8 @@
     <Compile Include="Assets\Scripts\LabExplainer.cs" />
     <Compile Include="Assets\Scripts\Actions\Slam.cs" />
     <Compile Include="Assets\Scripts\Map\BossNode.cs" />
-    <Compile Include="Assets\Scripts\Map\GridManager.cs" />
     <Compile Include="Assets\Scripts\Save\SaveTools.cs" />
+    <Compile Include="Assets\Scripts\Map\Floor.cs" />
     <Compile Include="Assets\Scripts\Tools\LabLayoutGroup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1261,14 +1265,18 @@
       <HintPath>Library\ScriptAssemblies\Cinemachine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.2D.Tilemap.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Tilemap.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Kybernetik.UltEvents.Editor.csproj">
-      <Project>{66CFC1F4-4283-937E-72E9-43D11BC8E143}</Project>
+      <Project>{BA136E00-E611-F70F-4104-5D3626442F27}</Project>
       <Name>Kybernetik.UltEvents.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Kybernetik.UltEvents.csproj">
-      <Project>{18C4BFE1-D777-4E94-A505-B41742C06E50}</Project>
+      <Project>{04601C7F-B683-608C-521F-8A3057268184}</Project>
       <Name>Kybernetik.UltEvents</Name>
     </ProjectReference>
   </ItemGroup>

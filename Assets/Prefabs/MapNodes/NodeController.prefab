@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8047263276296997761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1542732304774425680}
+  - component: {fileID: 165846127335854439}
+  m_Layer: 0
+  m_Name: NodeController
+  m_TagString: Rooms
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1542732304774425680
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8047263276296997761}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1372.3556, y: 398.81113, z: -13.934502}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &165846127335854439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8047263276296997761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e289eb8d25bf644a79f561e9d636ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentRooms: []
+  mapGrid: {fileID: 0}
+  targetScale: {x: 1, y: 1, z: 1}
+  NodePrefabs:
+  - {fileID: 8257949219971493745, guid: 011bf6dd097051641b6baf7b0e88ac09, type: 3}
+  - {fileID: 4501081378682226759, guid: 5e86ac6a1de028849b883a5f049d3687, type: 3}
+  - {fileID: 4501081378682226759, guid: 2b864a2cf00157247997d983ed9315e3, type: 3}
+  - {fileID: 9001398927329518304, guid: 634ecb1ffbb9b4f46acfad85dad5601d, type: 3}
+  - {fileID: 6021733307070061552, guid: bd750c137d796a84eacfb8ed10e563b8, type: 3}
+  - {fileID: 3332395827899279578, guid: 4d8c33deac4db8745959b03084e4b85a, type: 3}
+  - {fileID: 5963530308066413330, guid: 134a951f988c81a489f1994a5929e60a, type: 3}
+  parentCanvas: {fileID: 0}
+  spawnPoint: {x: 0, y: 0, z: 0}
+  CreatedSpawnPoint: 0
+  LastCellSpawnPoint: {x: 0, y: 0, z: 0}
+  spawnPointPrefab: {fileID: 6286896780254129032, guid: 400e6fdb378c08a408a6d6a9de2b75e2,
+    type: 3}
+  linePrefab: {fileID: 3609439395319836464, guid: 19d5340adf022084fa9d64deaf11f007,
+    type: 3}
+  DoneGenerating: 0
+  currentFloor: 0
+  currentMapTemplate: {fileID: 0}

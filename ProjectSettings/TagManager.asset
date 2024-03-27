@@ -12,6 +12,8 @@ TagManager:
   - Unit
   - StatUp
   - Playtest
+  - SpawnPoint
+  - Rooms
   layers:
   - Default
   - TransparentFX

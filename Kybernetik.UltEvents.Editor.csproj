@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{66CFC1F4-4283-937E-72E9-43D11BC8E143}</ProjectGuid>
+    <ProjectGuid>{BA136E00-E611-F70F-4104-5D3626442F27}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Kybernetik.UltEvents.Editor</AssemblyName>
@@ -943,7 +943,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Kybernetik.UltEvents.csproj">
-      <Project>{18C4BFE1-D777-4E94-A505-B41742C06E50}</Project>
+      <Project>{04601C7F-B683-608C-521F-8A3057268184}</Project>
       <Name>Kybernetik.UltEvents</Name>
     </ProjectReference>
   </ItemGroup>

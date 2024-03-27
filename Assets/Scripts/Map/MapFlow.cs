@@ -15,7 +15,7 @@ public struct LabNode
 }
 public class MapFlow : MonoBehaviour
 {
-    public enum RoomType { COMBAT, CHEST, REST, BOSS, TUTORIAL }
+    public enum RoomType { COMBAT, CHEST, REST, BOSS, TUTORIAL, EVENT, SHOP, ELITE }
 
 
     public static List<LabNode> TutorialFlow = new List<LabNode>

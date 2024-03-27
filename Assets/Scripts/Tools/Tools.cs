@@ -550,7 +550,29 @@ public class Tools : MonoBehaviour
         return colorToReturn;
     }
 
+    public static Vector3Int ReturnRandomVector3IntDirection()
+    {
+        Vector3Int intToReturn = Vector3Int.zero;
 
+        switch (UnityEngine.Random.Range(0, 4))
+        {
+            case 0: //down
+                intToReturn = Vector3Int.down;
+                break;
+            case 1://up
+                intToReturn = Vector3Int.up;
+                break;
+            case 2://left
+                intToReturn = Vector3Int.left;
+                break;
+
+            case 3://right
+                intToReturn = Vector3Int.right;
+                break;
+        }
+
+        return intToReturn;
+    }
 }
 
 

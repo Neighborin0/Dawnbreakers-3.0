@@ -14,6 +14,8 @@ public class Director : MonoBehaviour
 {
     public List<Unit> party;
     public List<Unit> currentUnitsInScene;
+
+    //databases
     public List<Unit> characterdatabase;
     public List<Unit> Unitdatabase;
     public List<Item> itemDatabase;
@@ -21,7 +23,7 @@ public class Director : MonoBehaviour
     public List<Action> actionDatabase;
     public List<GameObject> iconDatabase;
     public static List<DialogueHandler> dialogues;
-
+    public List<MapTemplate> mapTemplates;
 
 
     public CharacterTab characterTab;
@@ -90,6 +92,7 @@ public class Director : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             dialogues = Resources.LoadAll<DialogueHandler>("Dialogue").ToList();
+            mapTemplates = Resources.LoadAll<MapTemplate>("MapTemplates").ToList();
             foreach (var unit in party.ToList())
             {
                 var startingUnit = Instantiate(unit);

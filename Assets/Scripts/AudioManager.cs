@@ -90,13 +90,14 @@ public class AudioManager : MonoBehaviour
 
     public static void QuickPlay(string AudioName, bool ApplyPitchVariations = false)//For controlling audio through editor
     {
-        var s = Array.Find(AudioManager.Instance.sounds, sound => sound.AudioName == AudioName);
+        /*var s = Array.Find(AudioManager.Instance.sounds, sound => sound.AudioName == AudioName);
         float volume = 1;
         if (s != null)
         {
             volume = s.volume;
         }       
         AudioManager.Instance.Play(AudioName, s.volume, ApplyPitchVariations);
+        */
     }
 
     public void Stop(string AudioName)
