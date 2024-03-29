@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using static MapFlow;
 using JetBrains.Annotations;
 using static Autodesk.Fbx.FbxTime;
+using System;
 
 public class NodeController : MonoBehaviour
 {
@@ -40,6 +41,14 @@ public class NodeController : MonoBehaviour
     public Floor currentFloor = Floor.CORONUS;
 
     public MapTemplate currentMapTemplate;
+
+    public List<EnemyEncounterData> viableEnemyEncounters;
+
+    public NodeSpawner currentNode;
+
+    public bool Loaded = true;
+
+    public event Action<NodeController> ReEnteredMap;
     void Awake()
     {
         if (Instance != null)
@@ -57,6 +66,10 @@ public class NodeController : MonoBehaviour
     {
         generateCoroutine = GenerateNodes();
         StartCoroutine(generateCoroutine);
+
+        CreateEncounterTable();
+
+        SceneManager.sceneLoaded += SaveSceneData;
     }
 
     public void Update()
@@ -87,6 +100,39 @@ public class NodeController : MonoBehaviour
                 StartCoroutine(generateCoroutine);
                 DoneGenerating = false;
             }
+
+            if(Input.GetKeyDown(KeyCode.U))
+            {
+                UnlockAllNodes();
+            }
+        }
+    }
+
+    private void SaveSceneData(Scene scene, LoadSceneMode mode)
+    {
+        if (this != null)
+        {
+            if (Loaded)
+            {
+                Loaded = false;
+            }
+            else
+            {
+                Loaded = true;
+                OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
+                StartCoroutine(LoadSlots());
+                StartCoroutine(DoReEnteredMap());
+            }
+        }
+    }
+    public void CreateEncounterTable()
+    {
+        foreach (var enemyEncounterData in Director.Instance.enemyEncounterData)
+        {
+            if (enemyEncounterData.floorToSpawnOn == currentFloor)
+            {
+                viableEnemyEncounters.Add(enemyEncounterData);
+            }
         }
     }
 
@@ -107,7 +153,7 @@ public class NodeController : MonoBehaviour
         {
             Debug.LogError($"Insert a viable map template for the floor:{currentFloor}");
         }
-        currentMapTemplate = viableMapTemplates[Random.Range(0, viableMapTemplates.Count)];
+        currentMapTemplate = viableMapTemplates[UnityEngine.Random.Range(0, viableMapTemplates.Count)];
         print($"Using Template:{currentMapTemplate.name}");
         
 
@@ -122,7 +168,7 @@ public class NodeController : MonoBehaviour
         int spawnPointRange = 0;
 
         //sets up spawn point at a random position in the world
-        var spawnPos = mapGrid.CellToWorld(new Vector3Int(Random.Range(-spawnPointRange, spawnPointRange) * 2, Random.Range(-spawnPointRange, spawnPointRange)));
+        var spawnPos = mapGrid.CellToWorld(new Vector3Int(UnityEngine.Random.Range(-spawnPointRange, spawnPointRange) * 2, UnityEngine.Random.Range(-spawnPointRange, spawnPointRange)));
         var spawnNode = Instantiate(spawnPointPrefab, spawnPos, Quaternion.identity, parentCanvas.transform);
         spawnNode.transform.localScale = NodeController.Instance.targetScale;
         spawnNode.isSpawnPointNode = true;
@@ -135,19 +181,17 @@ public class NodeController : MonoBehaviour
 
 
         yield return new WaitUntil(() => CreatedSpawnPoint);
-
-        yield return new WaitForSeconds(0.5f);
         //new spawnPoints are generated
         for (int i = 0; i < currentMapTemplate.roomsToSpawn.Count; i++)
         {
             //moves potential spawnpoint in a certain cardinal direction
-            int RandomX = Random.Range(-1, 2);
-            int RandomY = Random.Range(-1, 2);
+            int RandomX = UnityEngine.Random.Range(-1, 2);
+            int RandomY = UnityEngine.Random.Range(-1, 2);
 
             //prevents diagonal nodes
             if (RandomX != 0 && RandomY != 0)
             {
-                float randomValue = Random.value;
+                float randomValue = UnityEngine.Random.value;
 
                 if (randomValue < 0.5f)
                 {
@@ -192,20 +236,45 @@ public class NodeController : MonoBehaviour
                     currentRooms.Add(newNode);
                 }
                 ClearNullNodes();
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.01f);
             }
         }
 
         foreach (var node in currentRooms)
         {
             node.CheckForAdjacentNodes();
+            if(!node.isSpawnPointNode)
+            {
+                node.gameObject.SetActive(false);
+                
+            }
         }
         RenameRooms();
         DoneGenerating = true;
-        DrawAllNodeLines();
         PopulateNodes();
-        //spawned = true;
+        UnlockAdajacentNodes(spawnNode);
+
     }
+
+    private void UnlockAdajacentNodes(NodeSpawner node)
+    {
+        foreach (var adjacentNode in node.adjacentNodes)
+        {
+            adjacentNode.unlocked = true;
+            adjacentNode.gameObject.SetActive(true);
+        }
+        node.DrawLinesToAdjacentNodes();    
+    }
+
+    public void UnlockAllNodes()
+    {
+        foreach(var node in currentRooms)
+        {
+            UnlockAdajacentNodes(node);
+        }
+        DrawAllNodeLines();
+    }
+
 
     private void ClearNullNodes()
     {
@@ -412,4 +481,59 @@ public class NodeController : MonoBehaviour
         unoccupiedNode.GetComponent<Image>().enabled = false;
     }
 
+    public IEnumerator LoadSlots()
+    {
+        yield return new WaitForSeconds(0.001f);
+        Tools.ClearAllCharacterSlots();
+        Director.Instance.CreateCharacterSlots(Director.Instance.party);
+    }
+
+    public IEnumerator DoReEnteredMap(bool setup = true)
+    {
+        if (setup)
+        {
+            //LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
+            StartCoroutine(Tools.FadeObject(OptionsManager.Instance.blackScreen, 0.001f, false));
+            //LabCamera.Instance.followDisplacement = new Vector3(0, MinZoom, -MapController.Instance.MinZoom * 3.4f);
+            //LabCamera.Instance.cam.fieldOfView = defaultZoom;
+            yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
+           // SpawnMiniMe(currentNodes[completedNodeCount].transform.position);
+            yield return new WaitForSeconds(1f);
+            /*foreach (Transform child in transform)
+            {
+                if (child.GetComponent<MiniMapIcon>() != null)
+                {
+                    child.GetComponent<MiniMapIcon>().state = MiniMapIcon.MapIconState.IDLE;
+                }
+            }
+            */
+        }
+
+       
+
+       /* if (!DoneOpening)
+        {
+            Director.Instance.StartCoroutine(DoLevelDrop());
+        }
+       */
+
+        Tools.ToggleUiBlocker(false, true, true);
+        //yield return new WaitUntil(() => DoneOpening);
+        yield return new WaitForSeconds(0.3f);
+        Debug.LogWarning("Line Should Be Rendering");
+        UnlockAdajacentNodes(currentNode);
+        //StartCoroutine(DrawLine(currentNodes[completedNodeCount].transform.position, currentNodes[completedNodeCount].gameObject));
+        yield return new WaitForSeconds(1f);
+        Tools.ToggleUiBlocker(true, true, true);
+        Director.Instance.CharacterSlotEnable();
+       /* if (enableMapControls)
+        {
+            mapControlBar.SetActive(true);
+            mapControlBar.GetComponent<MoveableObject>().Move(true);
+        }
+       */
+        //CanInput = true;
+        ReEnteredMap?.Invoke(this);
+        Director.Instance.CutsceneUiBlocker.gameObject.SetActive(false);
+    }
 }

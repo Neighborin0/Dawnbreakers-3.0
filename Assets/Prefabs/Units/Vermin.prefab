@@ -134,10 +134,9 @@ MonoBehaviour:
   resistances: 
   weaknesses: 
   actionList:
-  - {fileID: 11400000, guid: d5d4cebc76bc09049a7575fecb5664fa, type: 2}
-  - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
-  - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
-  - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
+  - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
+  - {fileID: 11400000, guid: 2591929b617328944b8d631f46e412a6, type: 2}
+  - {fileID: 11400000, guid: a4d8a7ac53a1c3e488204ae9b11b8fd3, type: 2}
   summonables: []
   HitEmissionChanged: 0
   TutorialIcon4: {fileID: 6123992061989291869, guid: 4a4bc514f1a6cc44b8242ea1b4cb1e42,

@@ -30,7 +30,7 @@ public class CharacterJoinSceneScript : MonoBehaviour
 
         StartCoroutine(Tools.SmoothMove(BattleLog.Instance.gameObject, 0f, 60, 0, -3.4f));
         Director.AddUnitToParty(chosenUnit.name);
-        SceneManager.LoadScene("MAP2");
+        SceneManager.LoadScene("MAP");
     }
 
 

@@ -43,15 +43,13 @@ public class MapNode : MonoBehaviour
 
         Director.Instance.characterSlotpos.GetComponent<MoveableObject>().Move(true);
 
-
-        if (SceneManager.GetActiveScene().name == "MAP2")
-            Tools.ToggleUiBlocker(false, true, true);
+         Tools.ToggleUiBlocker(false, true, true);
     }
 
     public IEnumerator StartLoadingNode(bool ApplyDelays = true)
     {
         OptionsManager.Instance.CanPause = false;
-        MapController.Instance.CanInput = false;
+       // MapController.Instance.CanInput = false;
 
 
         var button = this.GetComponent<Button>();
@@ -59,8 +57,9 @@ public class MapNode : MonoBehaviour
         button.interactable = false;
         int i = 0;
         disabled = true;
-        if(LabCamera.Instance != null)
+        /*if(LabCamera.Instance != null)
             LabCamera.Instance.followDisplacement = new Vector3(0, MapController.Instance.MinZoom, -MapController.Instance.MinZoom * 3.4f);
+        */
 
         if(ApplyDelays)
             yield return new WaitForSeconds(0.3f);
@@ -74,10 +73,10 @@ public class MapNode : MonoBehaviour
         }
         AudioManager.QuickPlay("ui_woosh_002");
 
-        MapController.Instance.StartingPosition = this.transform.position;
+        /*MapController.Instance.StartingPosition = this.transform.position;
         if (MapController.Instance.mapControlBar.activeSelf)
             MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
-
+        */
      
        
 
@@ -97,10 +96,13 @@ public class MapNode : MonoBehaviour
         NodeIsCompleted = true;
         if (ApplyDelays)
         {
-          yield return new WaitUntil(() => MapController.Instance.grid.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
-          yield return new WaitForSeconds(2f);
+          //yield return new WaitUntil(() => MapController.Instance.grid.GetComponentsInChildren<MiniMapIcon>()[0].state == MiniMapIcon.MapIconState.IDLE);
+          //yield return new WaitForSeconds(2f);
         }
-       // Director.Instance.CharacterSlotsDisplayed = false;
+        // Director.Instance.CharacterSlotsDisplayed = false;
+
+        NodeController.Instance.currentNode = this.GetComponentInParent<NodeSpawner>();
+        NodeController.Instance.parentCanvas.gameObject.SetActive(false);
         this.OnInteracted();
     }
     

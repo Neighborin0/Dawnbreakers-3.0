@@ -22,10 +22,10 @@ public class Rat : Unit
         currentHP = maxHP;
         IsPlayerControlled = false;
         //behavior = this.gameObject.AddComponent<VerminBehavior>();
-        behavior = this.gameObject.AddComponent<TutorialVerminBehavior>();
+        behavior = this.gameObject.AddComponent<VerminBehavior>();
         resistances = new DamageType[] { DamageType.STRIKE };
         weaknesses = new DamageType[] { DamageType.SLASH, DamageType.PIERCE };
-        BattleStarted += DoCharacterText;
+        //BattleStarted += DoCharacterText;
 
     }
 

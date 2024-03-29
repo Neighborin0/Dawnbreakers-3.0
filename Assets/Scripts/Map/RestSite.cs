@@ -115,7 +115,7 @@ public class RestSite : MonoBehaviour
         {
             DontDestroyOnLoad(Director.Instance.party[i].gameObject);
         }
-        OptionsManager.Instance.Load("MAP2", "Coronus_Map", 1, 0.5f);
+        OptionsManager.Instance.Load("MAP", "Coronus_Map", 1, 0.5f);
         yield return new WaitUntil(() => OptionsManager.Instance.blackScreen.color == new Color(0, 0, 0, 1));
         foreach (var unit in Tools.GetAllUnits())
         {

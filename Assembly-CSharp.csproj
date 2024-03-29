@@ -82,6 +82,8 @@
     <Compile Include="Assets\Scripts\Main Menu\StartButton.cs" />
     <Compile Include="Assets\Scripts\Actions\Mend.cs" />
     <Compile Include="Assets\Scripts\Actions\Pummel.cs" />
+    <Compile Include="Assets\Scripts\Map\EncounterDifficultly.cs" />
+    <Compile Include="Assets\Scripts\Map\EnemyEncounterData.cs" />
     <Compile Include="Assets\Scripts\Actions\Nothing.cs" />
     <Compile Include="Assets\Scripts\TargetLine.cs" />
     <Compile Include="Assets\Scripts\Actions\Stab.cs" />

@@ -24,7 +24,8 @@ public class Director : MonoBehaviour
     public List<GameObject> iconDatabase;
     public static List<DialogueHandler> dialogues;
     public List<MapTemplate> mapTemplates;
-
+    public List<EnemyEncounterData> enemyEncounterData;
+    //
 
     public CharacterTab characterTab;
     public DirectorInfo directorInfo;
@@ -91,14 +92,13 @@ public class Director : MonoBehaviour
 #endif
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            dialogues = Resources.LoadAll<DialogueHandler>("Dialogue").ToList();
-            mapTemplates = Resources.LoadAll<MapTemplate>("MapTemplates").ToList();
             foreach (var unit in party.ToList())
             {
                 var startingUnit = Instantiate(unit);
                 party.Remove(unit);
                 DontDestroyOnLoad(startingUnit);
                 party.Add(startingUnit);
+                LoadDatabases();
                 //RunTracker.Instance.partyMembersCollected.Add(startingUnit);
                 startingUnit.gameObject.SetActive(false);
                 if (!DevMode)
@@ -108,6 +108,12 @@ public class Director : MonoBehaviour
 
     }
 
+    private void LoadDatabases()
+    {
+        dialogues = Resources.LoadAll<DialogueHandler>("Dialogue").ToList();
+        mapTemplates = Resources.LoadAll<MapTemplate>("MapTemplates").ToList();
+        enemyEncounterData = Resources.LoadAll<EnemyEncounterData>("EnemyEncounterData").ToList();
+    }
     private void Start()
     {
         if (DevMode)
@@ -180,7 +186,7 @@ public class Director : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf && SceneManager.GetActiveScene().name != "Main Menu")
         {
-            if (SceneManager.GetActiveScene().name == "MAP2" && MapController.Instance.CanInput)
+            if (SceneManager.GetActiveScene().name == "MAP2" /*&& MapController.Instance.CanInput*/)
             {
                 if (Director.Instance.CharacterSlotsDisplayed)
                 {
@@ -254,9 +260,10 @@ public class Director : MonoBehaviour
         {
             characterSlotpos.GetComponent<MoveableObject>().Move(true);
             CharacterSlotsDisplayed = false;
-            if (MapController.Instance.mapControlBar != null)
+            /*if (MapController.Instance.mapControlBar != null)
                 if (MapController.Instance.mapControlBar.activeInHierarchy)
                     MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
+            */
 
 
             if (RestSite.Instance != null)
@@ -274,10 +281,10 @@ public class Director : MonoBehaviour
             {
                 characterSlotpos.GetComponent<MoveableObject>().Move(true);
                 CharacterSlotsDisplayed = false;
-                if (MapController.Instance.mapControlBar != null)
+                /*if (MapController.Instance.mapControlBar != null)
                     if (MapController.Instance.mapControlBar.activeInHierarchy)
                         MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(false);
-
+                */
 
                 if (RestSite.Instance != null)
                 {
@@ -292,9 +299,10 @@ public class Director : MonoBehaviour
             {
                 characterSlotpos.GetComponent<MoveableObject>().Move(false);
                 CharacterSlotsDisplayed = true;
-                if (MapController.Instance.mapControlBar != null)
+                /*if (MapController.Instance.mapControlBar != null)
                     if (MapController.Instance.mapControlBar.activeInHierarchy)
                         MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
+                */
 
 
                 if (RestSite.Instance != null)
@@ -482,9 +490,10 @@ public class Director : MonoBehaviour
     {
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(false);
         AudioManager.QuickPlay("ui_woosh_002");
-        if (MapController.Instance.mapControlBar != null)
+       /* if (MapController.Instance.mapControlBar != null)
             if (MapController.Instance.mapControlBar.activeInHierarchy)
                 MapController.Instance.mapControlBar.GetComponent<MoveableObject>().Move(true);
+       */
 
         if (RestSite.Instance != null)
         {
