@@ -153,6 +153,7 @@ public class BattleSystem : MonoBehaviour
         try
         {
             statStorers = new List<StatStorer>();
+            Director.Instance.InBattle = true;
             Director.Instance.timeline.gameObject.SetActive(true);
             Director.Instance.timeline.GetComponent<MoveableObject>().Move(false);
             for (int i = 0; i <= playerUnits.Count - 1; i++)
@@ -338,11 +339,13 @@ public class BattleSystem : MonoBehaviour
         {
             CombatTools.PauseStaminaTimer();
             MapController.Instance.gameObject.transform.SetParent(this.transform);
+            Director.Instance.InBattle = false;
             OptionsManager.Instance.StartCoroutine(OptionsManager.Instance.DoLoad("Prologue Ending", null));
         }
         else
         {
             //RunTracker.Instance.DisplayStats();
+            Director.Instance.InBattle = false;
             Tools.ToggleUiBlocker(false, false);
             CombatTools.PauseStaminaTimer();
         }
@@ -413,7 +416,7 @@ public class BattleSystem : MonoBehaviour
     {
         LabCamera.Instance.MoveToUnit(playerUnits[0], Vector3.zero, 0, 9f, -50, 0.8f);
         yield return new WaitForSeconds(0.4f);
-        Director.Instance.DisplayCharacterTab(true);
+        Director.Instance.itemHandler.Run();
         if (DoPostBattleDialogue)
             BattleLog.Instance.DoRandomLevelUpScreenDialogue();
     }

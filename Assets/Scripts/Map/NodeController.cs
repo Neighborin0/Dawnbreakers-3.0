@@ -7,7 +7,6 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using static MapFlow;
 using JetBrains.Annotations;
-using static Autodesk.Fbx.FbxTime;
 using System;
 
 public class NodeController : MonoBehaviour
@@ -48,6 +47,8 @@ public class NodeController : MonoBehaviour
 
     public bool Loaded = true;
 
+    public bool RevealMapOnGeneration = false;
+
     public event Action<NodeController> ReEnteredMap;
     void Awake()
     {
@@ -76,6 +77,7 @@ public class NodeController : MonoBehaviour
     {
         if (DoneGenerating)
         {
+            //Regenerates map
             if (Input.GetKeyDown(KeyCode.R))
             {
                 if (generateCoroutine != null)
@@ -101,7 +103,8 @@ public class NodeController : MonoBehaviour
                 DoneGenerating = false;
             }
 
-            if(Input.GetKeyDown(KeyCode.U))
+            //Reveals whole map
+            if(Input.GetKeyDown(KeyCode.M))
             {
                 UnlockAllNodes();
             }
@@ -253,6 +256,12 @@ public class NodeController : MonoBehaviour
         DoneGenerating = true;
         PopulateNodes();
         UnlockAdajacentNodes(spawnNode);
+        StartCoroutine(LoadSlots());
+
+        if(RevealMapOnGeneration)
+        {
+            UnlockAllNodes();
+        }
 
     }
 
@@ -536,4 +545,5 @@ public class NodeController : MonoBehaviour
         ReEnteredMap?.Invoke(this);
         Director.Instance.CutsceneUiBlocker.gameObject.SetActive(false);
     }
+
 }

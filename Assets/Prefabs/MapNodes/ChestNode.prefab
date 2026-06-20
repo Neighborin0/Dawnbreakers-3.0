@@ -291,6 +291,7 @@ MonoBehaviour:
   newScaleSize: {x: 1.2, y: 1.2, z: 1.2}
   oldScaleSize: {x: 1, y: 1, z: 1}
   nodeType: 1
+  closesMap: 0
   itemDisplayPrefab: {fileID: 448137344890289466, guid: 457b38a4e3738a24c9bc85b3257f0a99,
     type: 3}
   itemDisplays: []

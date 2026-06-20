@@ -1121,13 +1121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360b281b73d167d468ddfbce6399ced9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelupDisplay: {fileID: 8587848700969831656}
-  LevelUpButtons:
-  - {fileID: 813109551792262388}
-  - {fileID: 813109552512691907}
-  LevelDownbuttons:
-  - {fileID: 1643126345}
-  - {fileID: 2125309257}
   unit: {fileID: 0}
   portrait: {fileID: 5205059111643177324}
   skillPoints: 1

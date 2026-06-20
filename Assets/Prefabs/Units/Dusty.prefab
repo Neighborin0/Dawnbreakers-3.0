@@ -266,6 +266,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 1, z: 0}
   camOffset: {x: 0, y: 0, z: 0}
+  CustomScale: {x: 0, y: 0, z: 0}
   OverrideEmission: 0
   introText: []
   inventory: []
@@ -287,6 +288,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
   - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
   - {fileID: 11400000, guid: a68410d0d95842a44a6ed79cdaf1d746, type: 2}
+  ActionPool:
+  - {fileID: 11400000, guid: 37c52802e2be6714281a597a68b5e13f, type: 2}
+  - {fileID: 11400000, guid: a4d8a7ac53a1c3e488204ae9b11b8fd3, type: 2}
+  - {fileID: 11400000, guid: 1cb29368371cc8d439e6e132b82f3e65, type: 2}
   summonables: []
   HitEmissionChanged: 0
 --- !u!65 &960339281062212297

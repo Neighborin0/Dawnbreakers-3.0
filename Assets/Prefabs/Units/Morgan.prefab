@@ -197,7 +197,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 566fd300bbc75a1468b092f24c87e1d5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ac5c90fb43bb6264eab1c8920bde7ad2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.8901961}
   m_FlipX: 0
   m_FlipY: 0
@@ -248,8 +248,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.49668866, y: 0.5008549, z: 0.2}
-  m_Center: {x: -0.0024062276, y: 0.002652383, z: 0}
+  m_Size: {x: 0.33073464, y: 0.4140522, z: 0.2}
+  m_Center: {x: -0.0013212115, y: 0.0037374198, z: 0}
 --- !u!54 &9222240404116336846
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -338,6 +338,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   enemyintentOffset: {x: 0, y: 0, z: 0}
   camOffset: {x: 0, y: 0, z: 0}
+  CustomScale: {x: 0, y: 0, z: 0}
   OverrideEmission: 0
   introText: []
   inventory: []
@@ -356,5 +357,9 @@ MonoBehaviour:
   weaknesses: 
   actionList:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
+  ActionPool:
+  - {fileID: 11400000, guid: ece061d3fe4a82a4697d93c8013e8133, type: 2}
+  - {fileID: 11400000, guid: 7e885f14f56b74242800e9ce493cba94, type: 2}
+  - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
   summonables: []
   HitEmissionChanged: 0

@@ -88,6 +88,7 @@
     <Compile Include="Assets\Scripts\TargetLine.cs" />
     <Compile Include="Assets\Scripts\Actions\Stab.cs" />
     <Compile Include="Assets\Scripts\Units\TutorialEnemy.cs" />
+    <Compile Include="Assets\Scripts\UI\ActionRewardTab.cs" />
     <Compile Include="Assets\Scripts\Units\Husk.cs" />
     <Compile Include="Assets\Scripts\Tools\CombatTools.cs" />
     <Compile Include="Assets\Scripts\Actions\WarCry.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Assets\Scripts\Map\TutorialEncounterNode.cs" />
     <Compile Include="Assets\Scripts\DraggableObject.cs" />
     <Compile Include="Assets\Scripts\Tools\Tools.cs" />
+    <Compile Include="Assets\Scripts\ItemHandler.cs" />
     <Compile Include="Assets\Scripts\MaterialAlphaSlider.cs" />
     <Compile Include="Assets\Scripts\Actions\Hasten.cs" />
     <Compile Include="Assets\Scripts\Main Menu\FeedbackButton.cs" />
@@ -202,6 +204,7 @@
     <Compile Include="Assets\Scripts\Map\MapNode.cs" />
     <Compile Include="Assets\Scripts\Actions\Sweep.cs" />
     <Compile Include="Assets\Scripts\Icons\EffectPopUp.cs" />
+    <Compile Include="Assets\Scripts\UI\ActionRewardManager.cs" />
     <Compile Include="Assets\Scripts\Units\TestDummy.cs" />
     <Compile Include="Assets\Scripts\LabSpriteSwap.cs" />
     <Compile Include="Assets\Scripts\Map\CharacterNode.cs" />

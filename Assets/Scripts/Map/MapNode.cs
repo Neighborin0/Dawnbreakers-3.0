@@ -29,7 +29,7 @@ public class MapNode : MonoBehaviour
     public bool disabled = false;
 
     public RoomType nodeType;
-
+    public bool closesMap = true;
 
     private void Start()
     {
@@ -102,7 +102,10 @@ public class MapNode : MonoBehaviour
         // Director.Instance.CharacterSlotsDisplayed = false;
 
         NodeController.Instance.currentNode = this.GetComponentInParent<NodeSpawner>();
-        NodeController.Instance.parentCanvas.gameObject.SetActive(false);
+
+        if(NodeController.Instance.parentCanvas.gameObject != null && closesMap) 
+            NodeController.Instance.parentCanvas.gameObject.SetActive(false);
+
         this.OnInteracted();
     }
     

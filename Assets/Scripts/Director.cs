@@ -55,6 +55,8 @@ public class Director : MonoBehaviour
     public Image BossCircle;
     public BossIntro bossIntro;
     public Image CutsceneUiBlocker;
+    public bool InBattle = false;
+    public ItemHandler itemHandler;
 
     //Timeline stuff
     public TimeLine timeline;
@@ -186,7 +188,7 @@ public class Director : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E) && BattleSystem.Instance == null && !OptionsManager.Instance.blackScreen.gameObject.activeSelf && SceneManager.GetActiveScene().name != "Main Menu")
         {
-            if (SceneManager.GetActiveScene().name == "MAP2" /*&& MapController.Instance.CanInput*/)
+            if (SceneManager.GetActiveScene().name == "MAP" /*&& MapController.Instance.CanInput*/)
             {
                 if (Director.Instance.CharacterSlotsDisplayed)
                 {
@@ -359,11 +361,12 @@ public class Director : MonoBehaviour
                     {
                         Tools.ToggleUiBlocker(true, true);
                         CT.detailedDisplay.SetActive(false);
-                        CT.levelupDisplay.SetActive(true);
+                        /*CT.levelupDisplay.SetActive(true);
                         foreach (var x in characterTab.LevelUpButtons)
                         {
                             x.interactable = true;
                         }
+                        */
                         CT.unit = unit;
                         CT.DEFText.text = $"DEF: {unit.defenseStat}";
                         CT.ATKtext.text = $"ATK: {unit.attackStat}";
@@ -379,7 +382,7 @@ public class Director : MonoBehaviour
                     }
                     else
                     {
-                        CT.levelupDisplay.SetActive(false);
+                       // CT.levelupDisplay.SetActive(false);
                         CT.detailedDisplay.SetActive(true);
                         SetUpActionList(unit, CT);
                         CT.unit = unit;
@@ -408,6 +411,11 @@ public class Director : MonoBehaviour
                 }
             }
         }
+
+    }
+
+    public void DisplayItems()
+    {
 
     }
     public List<LabLine> FindObjectFromDialogueDatabase(string dialogueName)

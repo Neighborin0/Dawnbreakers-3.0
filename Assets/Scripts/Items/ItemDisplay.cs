@@ -58,12 +58,22 @@ public class ItemDisplay : MonoBehaviour
         Director.Instance.CharacterSlotEnable();
         Tools.ToggleUiBlocker(true, true);
         Tools.ToggleUiBlocker(true, false);
-        MapController.Instance.StartCoroutine(MapController.Instance.DoReEnteredMap(false));
-        foreach (var ID in GameObject.FindObjectsOfType<ItemDisplay>())
+
+
+        if (Director.Instance.InBattle)
         {
-            Destroy(ID.gameObject);
+            Director.Instance.StartCoroutine(MapController.Instance.DoReEnteredMap(false));
+            print("This is running");
+            Director.Instance.InBattle = false;
         }
 
+            foreach (var ID in GameObject.FindObjectsOfType<ItemDisplay>())
+            {
+                Destroy(ID.gameObject);
+            }
+
     }
+
+
 
 }

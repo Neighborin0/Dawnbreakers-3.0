@@ -12,9 +12,9 @@ using System.Linq;
 public class CharacterTab : MonoBehaviour, IDropHandler
 {
     //level up
-    public GameObject levelupDisplay;
-    public List<Button> LevelUpButtons;
-    public List<Button> LevelDownbuttons;
+    //public GameObject levelupDisplay;
+    //public List<Button> LevelUpButtons;
+    //public List<Button> LevelDownbuttons;
     public Unit unit;
     public Image portrait;
     public int skillPoints = 1;
@@ -66,7 +66,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             }
             this.inventoryDisplay.GetComponent<InventoryDisplay>().unit = unit;
         }
-        if (BattleSystem.Instance != null)
+        /*if (BattleSystem.Instance != null)
         {
             DisplaySwitcher.image.sprite = actionIcon;
             foreach (var action in unit.actionList)
@@ -83,6 +83,8 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         {
             DisplaySwitcher.image.sprite = itemIcon;
         }
+        */
+        DisplaySwitcher.image.sprite = itemIcon;
         if (OptionsManager.Instance != null)
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         Tools.ToggleUiBlocker(false, true);
@@ -137,7 +139,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
 
     }
 
-    public void IncreaseStat()
+    /*public void IncreaseStat()
     {
         Director.Instance.characterTab.transform.transform.SetAsFirstSibling();
         skillPoints -= 1;
@@ -160,6 +162,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         skillPointText.text = $"Stat Points: {skillPoints}";
         CheckNumberOfSkillPointsInAllTabs();
     }
+    */
 
     private void CheckNumberOfSkillPointsInAllTabs()
     {
@@ -181,7 +184,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         }
     }
 
-    public void DecreaseStat()
+    /*public void DecreaseStat()
     {
         Director.Instance.characterTab.transform.transform.SetAsFirstSibling();
         skillPoints += 1;
@@ -206,6 +209,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         }
         CheckNumberOfSkillPointsInAllTabs();
     }
+    */
      public void SwitchDetailedStates()
     {
 
@@ -232,6 +236,8 @@ public class CharacterTab : MonoBehaviour, IDropHandler
                 DisplaySwitcher.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
             }
            */
+
+            /*
             if (levelupDisplay.activeInHierarchy)
             {
                 DisplaySwitcher.image.sprite = LevelUpIcon;
@@ -251,6 +257,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
                     action.New = false;
                 }
             }
+            */
         }
     }
 

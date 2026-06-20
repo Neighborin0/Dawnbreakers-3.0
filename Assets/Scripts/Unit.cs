@@ -109,6 +109,8 @@ public class Unit : MonoBehaviour
     [NonSerialized]
     public GameObject ActionLayout;
 
+    public List<Action> ActionPool;
+
     //summon stuff 
     public string[] summonables;
     [NonSerialized]
