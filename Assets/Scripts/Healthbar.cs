@@ -144,144 +144,304 @@ public class Healthbar : MonoBehaviour
         yield break;
     }
 
-    private void HandleTypeDamage(DamageType damageType, TextMeshProUGUI number, int damage, Action.ActionStyle actionStyle, bool AppliesStun = false, int forcedDelay = 0)
+    private void HandleTypeDamage(
+     DamageType damageType,
+     TextMeshProUGUI number,
+     int damage,
+     Action.ActionStyle actionStyle,
+     bool AppliesStun = false,
+     int forcedDelay = 0)
     {
         number.SetText(damage.ToString());
 
-        if (CombatTools.ReturnTypeMultiplier(unit, damageType) < 1)
+        float typeMultiplier =
+            CombatTools.ReturnTypeMultiplier(unit, damageType);
+
+        // Damage-number presentation.
+        if (typeMultiplier < 1f)
         {
-            number.faceColor = new Color(0.5754717f, 0.4533197f, 0.4533197f);
-            Debug.LogWarning(number.color.ToString());
+            number.faceColor =
+                new Color(0.5754717f, 0.4533197f, 0.4533197f);
+
             Debug.LogWarning("NOT EFFECTIVE");
         }
         else if (damage == 0 && unit.armor > 0)
         {
-            number.color = new Color(0.04313726f, 0.4431373f, 0.5450981f);
-            Debug.LogWarning(number.color.ToString());
+            number.color =
+                new Color(0.04313726f, 0.4431373f, 0.5450981f);
+
             Debug.LogWarning("ARMOR");
+
             AudioManager.QuickPlay("armor_hit_001");
-            Color armorParticleColor = new Color(0, 144, 255);
-            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "ArmorHit_001", armorParticleColor, armorParticleColor, new Vector3(0, 0, -1f), Quaternion.identity, 1f, 0, true, 0, 10));
+
+            Color armorParticleColor =
+                new Color(0f, 0.565f, 1f);
+
+            BattleSystem.Instance.StartCoroutine(
+                CombatTools.PlayVFX(
+                    unit.gameObject,
+                    "ArmorHit_001",
+                    armorParticleColor,
+                    armorParticleColor,
+                    new Vector3(0, 0, -1f),
+                    Quaternion.identity,
+                    1f,
+                    0,
+                    true,
+                    0,
+                    10
+                )
+            );
         }
         else
         {
-            number.color = new Color(1, 0.3647059f, 0.3647059f);
-            Debug.LogWarning("NORMAL");
+            number.color =
+                new Color(1f, 0.3647059f, 0.3647059f);
 
+            Debug.LogWarning("NORMAL");
         }
+
         number.outlineColor = Color.black;
         number.outlineWidth = 0.2f;
 
-        if (Director.Instance.timeline.ReturnTimelineChild(unit) != null)
+        var timeline = Director.Instance.timeline;
+        var timelineChild = timeline.ReturnTimelineChild(unit);
+
+        if (timelineChild == null || timelineChild.CanClear)
+            return;
+
+        var selectedAction =
+            timeline.ReturnTimeChildAction(unit);
+
+        if (selectedAction == null)
+            return;
+
+        bool isEffectiveHit = typeMultiplier > 1f;
+
+        bool hasStalwart =
+            CombatTools.ReturnIconStatus(unit, "STALWART");
+
+        bool hasIndomitable =
+            CombatTools.ReturnIconStatus(unit, "INDOMITABLE");
+
+        int totalDelay = 0;
+
+        /*
+         * EFFECTIVE-HIT DELAY
+         *
+         * This includes the normal weakness delay and Expose's
+         * knockback modifier. Expose therefore only affects
+         * effective hits.
+         */
+        if (isEffectiveHit)
         {
-            var TL = Director.Instance.timeline.ReturnTimelineChild(unit);
-            var action = Director.Instance.timeline.ReturnTimeChildAction(unit);
-            var prevModifier = unit.knockbackModifider;
-            if (!TL.CanClear)
+            totalDelay += Director.Instance.TimelineReduction;
+
+            if (unit.knockbackModifider > 0)
             {
-                if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1 || actionStyle != Action.ActionStyle.STANDARD || AppliesStun || forcedDelay > 0 || unit.knockbackModifider > 0) //effective
-                {
-                    if (CombatTools.ReturnIconStatus(unit, "STALWART") && CombatTools.ReturnIconStatus(unit, "INDOMITABLE") && Director.Instance.timeline.ReturnTimelineChild(unit) != null) //Applies Stun
-                    {
-                        if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1)
-                        {
-                            Director.Instance.timeline.DelayCheck(TL);
-                            TL.value -= Director.Instance.TimelineReduction;
-                            action.cost += Director.Instance.TimelineReduction;
-                            number.color = Color.red;
-                         
-                        }
-
-                        if (actionStyle != Action.ActionStyle.STANDARD)
-                        {
-                            Director.Instance.timeline.DelayCheck(TL);
-                            TL.value -= Director.Instance.TimelineReductionNonStandardAction;
-                            action.cost += Director.Instance.TimelineReductionNonStandardAction;
-                            if (actionStyle == Action.ActionStyle.LIGHT)
-                            {
-                                number.outlineColor = new Color(0, 0.635f, 0.749f);
-                            }
-                            else if (actionStyle == Action.ActionStyle.HEAVY)
-                            {
-                                number.outlineColor = new Color(1, 0.011f, 0);
-                            }
-                           
-                        }
-
-
-                        if (AppliesStun)
-                        {
-                            unit.knockbackModifider = 100;
-                        }
-
-
-                        bool isEffectiveHit = CombatTools.ReturnTypeMultiplier(unit, damageType) > 1f;
-
-                        if (isEffectiveHit && unit.knockbackModifider > 0 && !AppliesStun)
-                        {
-                            Director.Instance.timeline.DelayCheck(TL);
-
-                            TL.value -= unit.knockbackModifider;
-                            action.cost += unit.knockbackModifider;
-                        }
-
-                        if (forcedDelay > 0 && !AppliesStun)
-                        {
-                            Director.Instance.timeline.DelayCheck(TL);
-
-                            TL.value -= forcedDelay;
-                            action.cost += forcedDelay;
-                        }
-
-                        if (TL.value <= 0)
-                        {
-                            OptionsManager.Instance.StartCoroutine(CombatTools.SlowTime(0.6f));
-                            TL.CanClear = true;
-                            TL.GetComponent<LabUIInteractable>().CanHover = false;
-                            BattleSystem.Instance.StartCoroutine(LateRemove());
-                            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), Quaternion.identity, 15f, 0, true, 0, 2));
-                            BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(unit.gameObject, "Stun", Color.yellow, Color.yellow, new Vector3(0, 2, 0f), new Quaternion(0, 180, Quaternion.identity.z, Quaternion.identity.w), 15f, 0, true, 0, 2));
-                            AudioManager.QuickPlay("stun_001");
-                            BattleSystem.Instance.DoTextPopup(unit, "BREAK", Color.yellow);
-                            BattleSystem.Instance.SetTempEffect(unit, "STALWART", false);
-                            
-                            if (!unit.IsPlayerControlled)
-                            {
-                                unit.behavior.turn--;
-                            }
-                        }
-                    }
-                    else if (CombatTools.ReturnIconStatus(unit, "INDOMITABLE"))
-                    {
-                        if (TL.value <= Director.Instance.TimelineReduction)
-                        {
-                            Director.Instance.timeline.DelayCheck(TL);
-                            TL.value = 0;
-                            action.cost = 100;
-                           
-                        }
-                    }
-                    else if (CombatTools.ReturnIconStatus(unit, "STALWART")) //Removes Stalwart
-                    {
-                        if (TL.value <= Director.Instance.TimelineReduction)
-                        {
-                            TL.value = 0;
-                            action.cost = 100;
-                            var stalwart = unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault();
-                            unit.statusEffects.Remove(unit.statusEffects.Where(obj => obj.iconName == "STALWART").SingleOrDefault());
-                            Destroy(stalwart.gameObject);
-                        }
-
-                    }
-                }
+                totalDelay += unit.knockbackModifider;
             }
 
-            if (AppliesStun)
+            number.color = Color.red;
+        }
+
+        /*
+         * LIGHT / HEAVY DELAY
+         */
+        if (actionStyle != Action.ActionStyle.STANDARD)
+        {
+            totalDelay +=
+                Director.Instance.TimelineReductionNonStandardAction;
+
+            if (actionStyle == Action.ActionStyle.LIGHT)
             {
-                unit.knockbackModifider = prevModifier;
+                number.outlineColor =
+                    new Color(0f, 0.635f, 0.749f);
+            }
+            else if (actionStyle == Action.ActionStyle.HEAVY)
+            {
+                number.outlineColor =
+                    new Color(1f, 0.011f, 0f);
             }
         }
 
+        /*
+         * ACTION-SPECIFIC DELAY
+         *
+         * Bind's light, standard, or heavy delay is passed through
+         * forcedDelay and remains independent from Expose.
+         */
+        if (forcedDelay > 0 && !AppliesStun)
+        {
+            totalDelay += forcedDelay;
+        }
+
+        // Nothing affects the timeline.
+        if (totalDelay <= 0 && !AppliesStun)
+            return;
+
+        timeline.DelayCheck(timelineChild);
+
+        bool breakPrevented = false;
+
+        /*
+         * DIRECT STUN
+         *
+         * This implementation makes explicit stun bypass Stalwart
+         * and Indomitable. Change this section if those effects are
+         * supposed to block direct stuns too.
+         */
+        if (AppliesStun)
+        {
+            timelineChild.value = -1;
+            selectedAction.cost = 101;
+        }
+        else
+        {
+            float resultingTimelineValue =
+                timelineChild.value - totalDelay;
+
+            float resultingActionCost =
+                selectedAction.cost + totalDelay;
+
+            bool wouldBreak =
+                resultingTimelineValue <= 0f;
+
+            /*
+             * INDOMITABLE
+             *
+             * Delay applies normally until it would cause a break.
+             * At that point, the action is capped at 100 cost.
+             * Indomitable is not consumed.
+             */
+            if (wouldBreak && hasIndomitable)
+            {
+                timelineChild.value = 0;
+                selectedAction.cost = 100;
+
+                breakPrevented = true;
+            }
+            /*
+             * STALWART
+             *
+             * Delay applies normally until it would cause a break.
+             * Stalwart then prevents that break, caps the action at
+             * 100 cost, and is consumed.
+             */
+            else if (wouldBreak && hasStalwart)
+            {
+                timelineChild.value = 0;
+                selectedAction.cost = 100;
+
+                breakPrevented = true;
+
+                var stalwart = unit.statusEffects
+                    .FirstOrDefault(
+                        effect => effect.iconName == "STALWART"
+                    );
+
+                if (stalwart != null)
+                {
+                    unit.statusEffects.Remove(stalwart);
+                    Destroy(stalwart.gameObject);
+                }
+            }
+            /*
+             * NORMAL DELAY
+             *
+             * This is where Bind now continues to delay a unit that
+             * has Stalwart, provided the delay does not cause a break.
+             */
+            else
+            {
+                timelineChild.value =
+                    resultingTimelineValue;
+
+                selectedAction.cost =
+                    resultingActionCost;
+            }
+        }
+
+        /*
+         * BREAK RESOLUTION
+         */
+        if (timelineChild.value <= 0 && !breakPrevented)
+        {
+            OptionsManager.Instance.StartCoroutine(
+                CombatTools.SlowTime(0.6f)
+            );
+
+            timelineChild.CanClear = true;
+
+            var interactable =
+                timelineChild.GetComponent<LabUIInteractable>();
+
+            if (interactable != null)
+            {
+                interactable.CanHover = false;
+            }
+
+            BattleSystem.Instance.StartCoroutine(
+                LateRemove()
+            );
+
+            BattleSystem.Instance.StartCoroutine(
+                CombatTools.PlayVFX(
+                    unit.gameObject,
+                    "Stun",
+                    Color.yellow,
+                    Color.yellow,
+                    new Vector3(0, 2, 0f),
+                    Quaternion.identity,
+                    15f,
+                    0,
+                    true,
+                    0,
+                    2
+                )
+            );
+
+            BattleSystem.Instance.StartCoroutine(
+                CombatTools.PlayVFX(
+                    unit.gameObject,
+                    "Stun",
+                    Color.yellow,
+                    Color.yellow,
+                    new Vector3(0, 2, 0f),
+                    new Quaternion(
+                        0,
+                        180,
+                        Quaternion.identity.z,
+                        Quaternion.identity.w
+                    ),
+                    15f,
+                    0,
+                    true,
+                    0,
+                    2
+                )
+            );
+
+            AudioManager.QuickPlay("stun_001");
+
+            BattleSystem.Instance.DoTextPopup(
+                unit,
+                "BREAK",
+                Color.yellow
+            );
+
+            BattleSystem.Instance.SetTempEffect(
+                unit,
+                "STALWART",
+                false
+            );
+
+            if (!unit.IsPlayerControlled &&
+                unit.behavior != null)
+            {
+                unit.behavior.turn--;
+            }
+        }
     }
 
     private IEnumerator DamagePopUp(int damage, DamageType damageType, Action.ActionStyle actionStyle, bool AppliesStun = false, int forcedDelay = 0)

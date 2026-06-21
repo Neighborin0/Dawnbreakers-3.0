@@ -9,31 +9,31 @@ using UnityEngine.SceneManagement;
 using static UnityEngine.ParticleSystem;
 
 
-[CreateAssetMenu(fileName = "Guard", menuName = "Assets/Actions/Guard")]
-public class Guard : Action
+[CreateAssetMenu(fileName = "Brace", menuName = "Assets/Actions/Brace")]
+public class Brace : Action
 {
     private void OnEnable()
     {
-        ActionName = "Guard";
+        ActionName = "Brace";
 
-        cost = 35f;
-        lightCost = 20f;
-        heavyCost = 50f;
+        cost = 45f;
+        lightCost = 30f;
+        heavyCost = 60f;
 
-        statAmount = 5;
-        lightStatAmount = 4;
-        heavyStatAmount = 7; 
+        statAmount = 4;
+        lightStatAmount = 3;
+        heavyStatAmount = 6; 
 
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
-        targetType = TargetType.ALLY;
+        targetType = TargetType.SELF;
 
         Done = false;
     }
 
     public override string GetDescription()
     {
-        description = $"Applies +{CombatTools.DetermineTrueActionValue(this) + unit.defenseStat} <sprite name=\"FORTIFY\"> to self or allies.";
+        description = $"Applies +{CombatTools.DetermineTrueActionValue(this) + unit.defenseStat} <sprite name=\"FORTIFY\"> to self.";
         return description;
     }
     public override IEnumerator ExecuteAction()

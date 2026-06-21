@@ -100,7 +100,7 @@ public class Unit : MonoBehaviour
 
     public Light spotLight;
     public float actionCostMultiplier = 1;
-    public float knockbackModifider = 0;
+    public int knockbackModifider = 0;
     public DamageType[] resistances;
     public DamageType[] weaknesses;
 

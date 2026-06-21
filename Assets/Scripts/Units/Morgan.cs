@@ -18,10 +18,9 @@ public class Morgan : Unit
         if (!Director.Instance.DevMode)
         {
             actionList.Clear();
-            Tools.AddNewActionToUnit(this, "Stab", false);
-            Tools.AddNewActionToUnit(this, "Guard", false);
-            Tools.AddNewActionToUnit(this, "War Cry", false);
-            Tools.AddNewActionToUnit(this, "Whack", false);
+            Tools.AddNewActionToUnit(this, "Frost", false);
+            Tools.AddNewActionToUnit(this, "Expose", false);
+            Tools.AddNewActionToUnit(this, "Bind", false);
         }
     }
 

@@ -19,10 +19,9 @@ public class Dusty : Unit
         if (!Director.Instance.DevMode)
         {
             actionList.Clear();
-            Tools.AddNewActionToUnit(this, "Stab", false);
+            Tools.AddNewActionToUnit(this, "Strike", false);
             Tools.AddNewActionToUnit(this, "Guard", false);
-            Tools.AddNewActionToUnit(this, "War Cry", false);
-            Tools.AddNewActionToUnit(this, "Whack", false);
+            Tools.AddNewActionToUnit(this, "HeavySwing", false);
         }
     }
 

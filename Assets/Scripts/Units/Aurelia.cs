@@ -30,6 +30,8 @@ public class Aurelia : Unit
             attackStat = 7;
             actionList.Clear();
             Tools.AddNewActionToUnit(this, "Slash", false);
+            Tools.AddNewActionToUnit(this, "Shine", false);
+            Tools.AddNewActionToUnit(this, "BlazingStrike", false);
         }
     }
 }

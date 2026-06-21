@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Save\SaveData.cs" />
     <Compile Include="Assets\Scripts\Units\TutorialMatriarch.cs" />
+    <Compile Include="Assets\Scripts\Actions\Brace.cs" />
     <Compile Include="Assets\Scripts\BattleOrder.cs" />
     <Compile Include="Assets\Scripts\Enemy Behaviors\EnemyBehavior.cs" />
     <Compile Include="Assets\Scripts\Actions\Grow.cs" />
@@ -79,14 +80,15 @@
     <Compile Include="Assets\Scripts\ConfirmButton.cs" />
     <Compile Include="Assets\Scripts\Actions\Bind.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
+    <Compile Include="Assets\Scripts\Actions\Lunge.cs" />
     <Compile Include="Assets\Scripts\HighlightedObject.cs" />
     <Compile Include="Assets\Scripts\Main Menu\StartButton.cs" />
     <Compile Include="Assets\Scripts\Actions\Mend.cs" />
     <Compile Include="Assets\Scripts\Actions\Pummel.cs" />
     <Compile Include="Assets\Scripts\Map\EncounterDifficultly.cs" />
     <Compile Include="Assets\Scripts\Map\EnemyEncounterData.cs" />
-    <Compile Include="Assets\Scripts\Actions\Nothing.cs" />
     <Compile Include="Assets\Scripts\Actions\Frost.cs" />
+    <Compile Include="Assets\Scripts\Actions\Nothing.cs" />
     <Compile Include="Assets\Scripts\TargetLine.cs" />
     <Compile Include="Assets\Scripts\Actions\Stab.cs" />
     <Compile Include="Assets\Scripts\Units\TutorialEnemy.cs" />
@@ -150,6 +152,7 @@
     <Compile Include="Assets\Scripts\Main Menu\MainMenuController.cs" />
     <Compile Include="Assets\Scripts\Map\NodeController.cs" />
     <Compile Include="Assets\Scripts\Actions\Shriek.cs" />
+    <Compile Include="Assets\Scripts\Units\HuskEasyA.cs" />
     <Compile Include="Assets\Scripts\ScalableObject.cs" />
     <Compile Include="Assets\Scripts\Icons\DefendEF.cs" />
     <Compile Include="Assets\Scripts\Units\Morgan.cs" />
@@ -191,6 +194,7 @@
     <Compile Include="Assets\Scripts\Map\RestSite.cs" />
     <Compile Include="Assets\Scripts\Icons\Revitalize.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\TatteredCape.cs" />
+    <Compile Include="Assets\Scripts\Actions\Swipe.cs" />
     <Compile Include="Assets\Scripts\ActionChild.cs" />
     <Compile Include="Assets\Scripts\Units\Rat.cs" />
     <Compile Include="Assets\Scripts\MiniMapIcon.cs" />

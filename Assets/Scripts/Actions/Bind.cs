@@ -37,22 +37,39 @@ public class Bind : Action
         Done = false;
     }
 
-    public override string GetDescription()   
+    public override string GetDescription()
     {
-        if (unit.IsPlayerControlled)
-        {
-            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.<color=#FFFFFF>+{statAmount} Timeline Delay</color>.";
-        }
-        else
-        {
-            if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) > 0)
-            {
-                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. <color=#FFFFFF>+{statAmount} Timeline Delay</color>.";
-            }
-            else
-                description = $"Deals <color=#FF0000>0</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. <color=#FFFFFF>+{statAmount} Timeline Delay</color>.";
-        }
+        int timelineDelay = GetTimelineDelay();
+
+        int displayedDamage = (int)(
+            (CombatTools.DetermineTrueActionValue(this) + unit.attackStat) *
+            CombatTools.ReturnTypeMultiplier(targets, damageType)
+        );
+
+        displayedDamage = Mathf.Max(displayedDamage, 0);
+
+        description =
+            $"Deals <color=#FF0000>{displayedDamage}</color> " +
+            $"<sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. " +
+            $"<color=#FFFFFF>+{timelineDelay} Timeline Delay</color>.";
+
         return description;
+    }
+
+    private int GetTimelineDelay()
+    {
+        switch (actionStyle)
+        {
+            case ActionStyle.LIGHT:
+                return lightStatAmount;
+
+            case ActionStyle.HEAVY:
+                return heavyStatAmount;
+
+            case ActionStyle.STANDARD:
+            default:
+                return statAmount;
+        }
     }
     public override IEnumerator ExecuteAction()
     {

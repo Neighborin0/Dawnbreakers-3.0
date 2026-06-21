@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static System.Collections.Specialized.BitVector32;
-using static UnityEditor.Progress;
 using static UnityEngine.UI.CanvasScaler;
 
 
