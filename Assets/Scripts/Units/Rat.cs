@@ -16,8 +16,8 @@ public class Rat : Unit
     {
         unitName = "Vermin";
         maxHP = 22;
-        attackStat = UnityEngine.Random.Range(0, 2);
-        defenseStat = 40;
+        attackStat = 0;
+        defenseStat = 0;
         //speedStat = UnityEngine.Random.Range(9, 11);
         currentHP = maxHP;
         IsPlayerControlled = false;

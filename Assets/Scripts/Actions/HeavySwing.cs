@@ -2,20 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(fileName = "Strike", menuName = "Assets/Actions/Strike")]
-public class Strike : Action
+[CreateAssetMenu(fileName = "HeavySwing", menuName = "Assets/Actions/HeavySwing")]
+public class HeavySwing : Action
 {
     private void OnEnable()
     {
-        ActionName = "Strike";
+        ActionName = "Heavy Swing";
 
-        damage = 3;
-        lightDamage = 2;
-        heavyDamage = 5;
+        damage = 6;
+        lightDamage = 5;
+        heavyDamage = 8;
 
-        cost = 40f;
-        heavyCost = 55f;
-        lightCost = 25f;
+        cost = 70f;
+        heavyCost = 85f;
+        lightCost = 55f;
 
 
         damageText = damage.ToString();

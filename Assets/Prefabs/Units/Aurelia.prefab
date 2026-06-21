@@ -333,7 +333,8 @@ MonoBehaviour:
   weaknesses: 
   actionList:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
-  - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
+  - {fileID: 11400000, guid: 4c876a66803cad546a15a61da8d3de04, type: 2}
+  - {fileID: 11400000, guid: e381875e8e7a6ec4d90dec53d1cf8d2f, type: 2}
   ActionPool:
   - {fileID: 11400000, guid: e916af8e95d57c646ae15ba238a00be1, type: 2}
   - {fileID: 11400000, guid: 37c52802e2be6714281a597a68b5e13f, type: 2}

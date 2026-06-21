@@ -8,9 +8,9 @@ public class Morgan : Unit
     void Awake()
     {
         unitName = "Morgan";
-        maxHP = 40;
-        attackStat = 3;
-        defenseStat = 4;
+        maxHP = 20;
+        attackStat = 0;
+        defenseStat = 0;
         currentHP = maxHP;
         IsPlayerControlled = true;
         resistances = new DamageType[] { DamageType.SLASH };

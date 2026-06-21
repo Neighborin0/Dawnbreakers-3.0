@@ -284,10 +284,9 @@ MonoBehaviour:
   resistances: 
   weaknesses: 
   actionList:
-  - {fileID: 11400000, guid: abf50d286d1dffc4ca1b7e3804c86162, type: 2}
+  - {fileID: 11400000, guid: 40445378c2e5e2042ae4eddbd9b96a49, type: 2}
   - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
-  - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
-  - {fileID: 11400000, guid: a68410d0d95842a44a6ed79cdaf1d746, type: 2}
+  - {fileID: 11400000, guid: 9257af14355f76742b25a0936fce5dc2, type: 2}
   ActionPool:
   - {fileID: 11400000, guid: 37c52802e2be6714281a597a68b5e13f, type: 2}
   - {fileID: 11400000, guid: a4d8a7ac53a1c3e488204ae9b11b8fd3, type: 2}

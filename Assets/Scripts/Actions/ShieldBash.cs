@@ -9,7 +9,7 @@ public class ShieldBash : Action
 {
     private void OnEnable()
     {
-        ActionName = "ShieldBash";
+        ActionName = "Shield Bash";
 
         damage = 0;
         lightDamage = -2;

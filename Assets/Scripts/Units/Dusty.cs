@@ -8,14 +8,14 @@ public class Dusty : Unit
     void Awake()
     {
         unitName = "Dusty";
-        maxHP = 40;
-        attackStat = 3;
-        defenseStat = 4;
+        maxHP = 28;
+        attackStat = 0;
+        defenseStat = 0;
         currentHP = maxHP;
         IsPlayerControlled = true;
         resistances = new DamageType[] { DamageType.SLASH };
         weaknesses = new DamageType[] { DamageType.STRIKE };
-        Tools.AddItemToInventory(this, "Iron Shield");
+        //Tools.AddItemToInventory(this, "Iron Shield");
         if (!Director.Instance.DevMode)
         {
             actionList.Clear();

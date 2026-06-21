@@ -16,13 +16,13 @@ public class Guard : Action
     {
         ActionName = "Guard";
 
-        cost = 20f;
-        lightCost = 0;
-        heavyCost = 40f;
+        cost = 35f;
+        lightCost = 20f;
+        heavyCost = 50f;
 
-        statAmount = 6;
+        statAmount = 5;
         lightStatAmount = 4;
-        heavyStatAmount = 9; 
+        heavyStatAmount = 7; 
 
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
@@ -45,8 +45,8 @@ public class Guard : Action
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "ShieldParticles", new Color(0, 108, 191), Color.blue, new Vector3(0, 0, -1f), Quaternion.identity, 0.8f, 0, true, 0, 0.22f));
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;
-        //BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, CombatTools.DetermineTrueActionValue(this) + unit.defenseStat);
-        BattleSystem.Instance.SetStatChanges(Stat.ARMOR, CombatTools.DetermineTrueActionValue(this) + unit.defenseStat, false, targets);
+        BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, CombatTools.DetermineTrueActionValue(this) + unit.defenseStat);
+        //BattleSystem.Instance.SetStatChanges(Stat.ARMOR, CombatTools.DetermineTrueActionValue(this) + unit.defenseStat, false, targets);
         yield return new WaitForSeconds(1.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(10));
         LabCamera.Instance.ResetPosition();

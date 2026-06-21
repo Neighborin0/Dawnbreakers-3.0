@@ -77,6 +77,7 @@
     <Compile Include="Assets\Scripts\PortraitDisplayPrefab.cs" />
     <Compile Include="Assets\Scripts\ActionDisplayer.cs" />
     <Compile Include="Assets\Scripts\ConfirmButton.cs" />
+    <Compile Include="Assets\Scripts\Actions\Bind.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
     <Compile Include="Assets\Scripts\HighlightedObject.cs" />
     <Compile Include="Assets\Scripts\Main Menu\StartButton.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Assets\Scripts\Map\EncounterDifficultly.cs" />
     <Compile Include="Assets\Scripts\Map\EnemyEncounterData.cs" />
     <Compile Include="Assets\Scripts\Actions\Nothing.cs" />
+    <Compile Include="Assets\Scripts\Actions\Frost.cs" />
     <Compile Include="Assets\Scripts\TargetLine.cs" />
     <Compile Include="Assets\Scripts\Actions\Stab.cs" />
     <Compile Include="Assets\Scripts\Units\TutorialEnemy.cs" />
@@ -102,15 +104,18 @@
     <Compile Include="Assets\Scripts\Actions\Awaken.cs" />
     <Compile Include="Assets\Scripts\Actions\Strike.cs" />
     <Compile Include="Assets\Scripts\Actions\Whack.cs" />
+    <Compile Include="Assets\Scripts\Actions\Expose.cs" />
     <Compile Include="Assets\Scripts\Map\ChestNode.cs" />
     <Compile Include="Assets\Scripts\Main Menu\ContinueButton.cs" />
     <Compile Include="Assets\Scripts\LabAnimator.cs" />
     <Compile Include="Assets\Scripts\Units\DustyEnemy.cs" />
+    <Compile Include="Assets\Scripts\Icons\ExposeIcon.cs" />
     <Compile Include="Assets\Scripts\Tools\AutoExpandGridLayoutGroup.cs" />
     <Compile Include="Assets\Scripts\Actions\Screech.cs" />
     <Compile Include="Assets\Scripts\Icons\EffectIcon.cs" />
     <Compile Include="Assets\Scripts\Actions\Calm.cs" />
     <Compile Include="Assets\Scripts\ActionTypeButtons.cs" />
+    <Compile Include="Assets\Scripts\Actions\Shine.cs" />
     <Compile Include="Assets\Scripts\CharacterJoinSceneScript.cs" />
     <Compile Include="Assets\Scripts\Enemy Behaviors\RandomEnemyBehavior.cs" />
     <Compile Include="Assets\Scripts\FPSCounter.cs" />
@@ -132,6 +137,7 @@
     <Compile Include="Assets\Scripts\ItemHandler.cs" />
     <Compile Include="Assets\Scripts\MaterialAlphaSlider.cs" />
     <Compile Include="Assets\Scripts\Actions\Hasten.cs" />
+    <Compile Include="Assets\Scripts\Actions\HeavySwing.cs" />
     <Compile Include="Assets\Scripts\Main Menu\FeedbackButton.cs" />
     <Compile Include="Assets\Scripts\InventoryDisplay.cs" />
     <Compile Include="Assets\Scripts\Actions\Defend.cs" />
@@ -151,6 +157,7 @@
     <Compile Include="Assets\Scripts\Actions\ShieldBash.cs" />
     <Compile Include="Assets\Scripts\ControlBar.cs" />
     <Compile Include="Assets\Scripts\DialogueHandler.cs" />
+    <Compile Include="Assets\Scripts\Actions\BlazingStrike.cs" />
     <Compile Include="Assets\Scripts\PipCounter.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\IronShield.cs" />

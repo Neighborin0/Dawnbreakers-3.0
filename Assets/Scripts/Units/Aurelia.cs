@@ -16,15 +16,15 @@ public class Aurelia : Unit
     {
         unitName = "Aurelia";
 
-        maxHP = 32;
-        attackStat = 7;
-        defenseStat = 2;
+        maxHP = 22;
+        attackStat = 0;
+        defenseStat = 0;
 
         resistances = new DamageType[] { DamageType.LIGHT};
         weaknesses = new DamageType[] { DamageType.DARK };
         currentHP = maxHP;
         IsPlayerControlled = true;
-        Tools.AddItemToInventory(this, "Tattered Cape");
+        //Tools.AddItemToInventory(this, "Tattered Cape");
         if (!Director.Instance.DevMode)
         {
             attackStat = 7;

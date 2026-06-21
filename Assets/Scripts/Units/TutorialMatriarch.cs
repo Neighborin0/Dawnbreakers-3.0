@@ -14,7 +14,7 @@ public class TutorialMatriarch : Unit
     {
         unitName = "Matriarch";
         maxHP = 200;
-        attackStat = 10;
+        attackStat = 0;
         defenseStat = 0;
         //speedStat = 10;
         currentHP = maxHP;

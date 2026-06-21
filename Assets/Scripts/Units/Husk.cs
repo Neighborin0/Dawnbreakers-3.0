@@ -21,7 +21,7 @@ public class Husk : Unit
         {
             behavior = this.gameObject.AddComponent<TutorialHuskMatriarchBehavior>();
             maxHP = UnityEngine.Random.Range(17, 22);
-            attackStat = UnityEngine.Random.Range(4, 6);
+            attackStat = 0;
             print("using Matriarch behavior");
         }
         else

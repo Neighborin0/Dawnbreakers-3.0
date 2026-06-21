@@ -3958,6 +3958,7 @@ MonoBehaviour:
   - {fileID: 2046753031281608770, guid: c67ed76d2ec83074c855f2d21e116d63, type: 3}
   - {fileID: 4023095660993884064, guid: ba6657fb2072c0a4595c3aa5d77d384a, type: 3}
   - {fileID: 2416463982262945572, guid: dee03d0c6476dcf43b7e72ddeabcf74f, type: 3}
+  - {fileID: 8581781402677393863, guid: 36b100be5d7567141bd12f1ba49b8292, type: 3}
   mapTemplates: []
   enemyEncounterData: []
   characterTab: {fileID: 813109552512736325, guid: 66ccc73082801ac4ea3ae58a7496e68a,

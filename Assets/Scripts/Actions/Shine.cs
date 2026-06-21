@@ -2,24 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(fileName = "Slash", menuName = "Assets/Actions/Slash")]
-public class Slash : Action
+[CreateAssetMenu(fileName = "Shine", menuName = "Assets/Actions/Shine")]
+public class Shine : Action
 {
      private void OnEnable()
     {
-        ActionName = "Slash";
+        ActionName = "Shine";
 
-        damage = 4;
-        lightDamage = 3;
-        heavyDamage = 6;
+        damage = 3;
+        lightDamage = 2;
+        heavyDamage = 5;
 
-        cost = 30f;
-        heavyCost = 45;
-        lightCost = 15;
+        cost = 40f;
+        heavyCost = 65;
+        lightCost = 25;
 
         targetType = TargetType.ENEMY;
         actionType = ActionType.ATTACK;
-        damageType = DamageType.SLASH;
+        damageType = DamageType.LIGHT;
         damageText = damage.ToString();
 
         Done = false;
@@ -46,9 +46,9 @@ public class Slash : Action
     {
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f, false, true);
         yield return new WaitForSeconds(0.3f);  
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Slash", Color.yellow, Color.yellow ,new Vector3(0, 0, -2f), Quaternion.identity, 1f, 0, true, 0, 10));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "WarCry3", Color.yellow, Color.yellow, new Vector3(0, 0, -2f), Quaternion.identity, 1f, 0, true, 0, 10));
-        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "BasicHitParticles_001", Color.yellow, Color.yellow, new Vector3(0, 0, -1f), Quaternion.identity, 1f, 0, true, 0, 10));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Slash", Color.white, Color.white, new Vector3(0, 0, -2f), Quaternion.identity, 1f, 0, true, 0, 10));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "WarCry3", Color.white, Color.white, new Vector3(0, 0, -2f), Quaternion.identity, 1f, 0, true, 0, 10));
+        BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "BasicHitParticles_001", Color.white, Color.white, new Vector3(0, 0, -1f), Quaternion.identity, 1f, 0, true, 0, 10));
         yield return new WaitForSeconds(0.01f);
         LabCamera.Instance.Shake(0.4f, 1.5f);
         Director.Instance.StartCoroutine(CombatTools.ApplyAndReduceChromaticAbberation(0.01f));

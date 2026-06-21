@@ -84,7 +84,7 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage, Unit damageSource, DamageType damageType, Action.ActionStyle actionStyle, bool ignoresDEF = false, bool appliesStun = false)
+    public void TakeDamage(int damage, Unit damageSource, DamageType damageType, Action.ActionStyle actionStyle, bool ignoresDEF = false, bool appliesStun = false, int forcedDelay = 0)
     {
         if (unit == null)
         {
@@ -94,7 +94,7 @@ public class Healthbar : MonoBehaviour
         int trueDamage = CalculateTrueDamage(damage, ignoresDEF);
         UpdateUnitHealth(trueDamage, damage);
         UpdateArmor();
-        StartCoroutine(ShowDamagePopup(trueDamage, damageType, actionStyle, appliesStun));
+        StartCoroutine(ShowDamagePopup(trueDamage, damageType, actionStyle, appliesStun, forcedDelay));
         StartCoroutine(HandleSlider());
     }
 
@@ -117,10 +117,10 @@ public class Healthbar : MonoBehaviour
         unit.namePlate?.UpdateArmor(unit.armor);
     }
 
-    private IEnumerator ShowDamagePopup(int trueDamage, DamageType damageType, Action.ActionStyle actionStyle, bool appliesStun)
+    private IEnumerator ShowDamagePopup(int trueDamage, DamageType damageType, Action.ActionStyle actionStyle, bool appliesStun, int forcedDelay = 0)
     {
         gameObject.SetActive(true);
-        yield return StartCoroutine(DamagePopUp(trueDamage, damageType, actionStyle, appliesStun));
+        yield return StartCoroutine(DamagePopUp(trueDamage, damageType, actionStyle, appliesStun, forcedDelay));
     }
 
     private IEnumerator HandleSlider()
@@ -144,7 +144,7 @@ public class Healthbar : MonoBehaviour
         yield break;
     }
 
-    private void HandleTypeDamage(DamageType damageType, TextMeshProUGUI number, int damage, Action.ActionStyle actionStyle, bool AppliesStun = false)
+    private void HandleTypeDamage(DamageType damageType, TextMeshProUGUI number, int damage, Action.ActionStyle actionStyle, bool AppliesStun = false, int forcedDelay = 0)
     {
         number.SetText(damage.ToString());
 
@@ -179,7 +179,7 @@ public class Healthbar : MonoBehaviour
             var prevModifier = unit.knockbackModifider;
             if (!TL.CanClear)
             {
-                if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1 || actionStyle != Action.ActionStyle.STANDARD || AppliesStun) //effective
+                if (CombatTools.ReturnTypeMultiplier(unit, damageType) > 1 || actionStyle != Action.ActionStyle.STANDARD || AppliesStun || forcedDelay > 0 || unit.knockbackModifider > 0) //effective
                 {
                     if (CombatTools.ReturnIconStatus(unit, "STALWART") && CombatTools.ReturnIconStatus(unit, "INDOMITABLE") && Director.Instance.timeline.ReturnTimelineChild(unit) != null) //Applies Stun
                     {
@@ -215,24 +215,22 @@ public class Healthbar : MonoBehaviour
                         }
 
 
-                        if (unit.knockbackModifider != 0)
-                        {
-                            if(AppliesStun)
-                            {
-                                Director.Instance.timeline.DelayCheck(TL);
-                                TL.value = -1;
-                                action.cost = 101;
-                              
-                            }
-                            else
-                            {
-                                Director.Instance.timeline.DelayCheck(TL);
-                                TL.value -= unit.knockbackModifider;
-                                action.cost += unit.knockbackModifider;
-                               
-                            }
+                        bool isEffectiveHit = CombatTools.ReturnTypeMultiplier(unit, damageType) > 1f;
 
-                           
+                        if (isEffectiveHit && unit.knockbackModifider > 0 && !AppliesStun)
+                        {
+                            Director.Instance.timeline.DelayCheck(TL);
+
+                            TL.value -= unit.knockbackModifider;
+                            action.cost += unit.knockbackModifider;
+                        }
+
+                        if (forcedDelay > 0 && !AppliesStun)
+                        {
+                            Director.Instance.timeline.DelayCheck(TL);
+
+                            TL.value -= forcedDelay;
+                            action.cost += forcedDelay;
                         }
 
                         if (TL.value <= 0)
@@ -286,7 +284,7 @@ public class Healthbar : MonoBehaviour
 
     }
 
-    private IEnumerator DamagePopUp(int damage, DamageType damageType, Action.ActionStyle actionStyle, bool AppliesStun = false)
+    private IEnumerator DamagePopUp(int damage, DamageType damageType, Action.ActionStyle actionStyle, bool AppliesStun = false, int forcedDelay = 0)
     {
         if (unit == null)
             yield break;
@@ -303,7 +301,7 @@ public class Healthbar : MonoBehaviour
 
             try
             {
-                HandleTypeDamage(damageType, number, damage, actionStyle, AppliesStun);
+                HandleTypeDamage(damageType, number, damage, actionStyle, AppliesStun, forcedDelay);
             }
             catch
             {
@@ -369,7 +367,7 @@ public class Healthbar : MonoBehaviour
 
             try
             {
-                HandleTypeDamage(damageType, number, damage, actionStyle, AppliesStun);
+                HandleTypeDamage(damageType, number, damage, actionStyle, AppliesStun, forcedDelay);
             }
             catch
             {
