@@ -22,14 +22,16 @@ public class Defend : Action
         //duration = 1;
         CanBeStyled = false;
 
-        statAmount = 5;
+        damage = 5;
+        lightDamage = 4;
+        heavyStatAmount = 7;
 
         Done = false;
     }
 
     public override string GetDescription()
     {
-        description = $"Applies +{statAmount + unit.defenseStat} <sprite name=\"FORTIFY\"> to self.";
+        description = $"Applies +{damage + unit.defenseStat} <sprite name=\"FORTIFY\"> to self.";
         return description;
     }
     public override IEnumerator ExecuteAction()
@@ -41,7 +43,7 @@ public class Defend : Action
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "ShieldParticles", new Color(0, 144, 255), new Color(0, 144, 255), new Vector3(0, 0, -1f), Quaternion.identity, 0.8f, 0, true, 0, 1));
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;
-        BattleSystem.Instance.SetStatChanges(Stat.ARMOR, statAmount + unit.defenseStat, false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.ARMOR, damage + unit.defenseStat, false, targets);
         yield return new WaitForSeconds(1.5f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(10));
         AudioManager.QuickPlay("ui_woosh_002");

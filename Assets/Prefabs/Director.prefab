@@ -3881,6 +3881,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fde959da8d5bb2a4285421c700aa0bdf, type: 2}
   - {fileID: 11400000, guid: cc1ce13079b1e7545bf0b2a47b4d352b, type: 2}
   - {fileID: 11400000, guid: 2a5d73429544fe04ba1682043f40200c, type: 2}
+  - {fileID: 11400000, guid: fe6702ee7d334c4418913f7677b58fa7, type: 2}
   VFXList:
   - {fileID: 2578568704709697131, guid: 12eb073c73d13944e93789d87847c283, type: 3}
   - {fileID: 7338884100038132889, guid: e94e3206bb99e624ebc16d1302bc6b2e, type: 3}
@@ -3960,6 +3961,7 @@ MonoBehaviour:
   - {fileID: 4023095660993884064, guid: ba6657fb2072c0a4595c3aa5d77d384a, type: 3}
   - {fileID: 2416463982262945572, guid: dee03d0c6476dcf43b7e72ddeabcf74f, type: 3}
   - {fileID: 8581781402677393863, guid: 36b100be5d7567141bd12f1ba49b8292, type: 3}
+  - {fileID: 204999616130371267, guid: 6c18ebfae6458d248938cb6403bcde41, type: 3}
   mapTemplates: []
   enemyEncounterData: []
   characterTab: {fileID: 813109552512736325, guid: 66ccc73082801ac4ea3ae58a7496e68a,

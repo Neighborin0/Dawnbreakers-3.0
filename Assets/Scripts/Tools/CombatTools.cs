@@ -487,79 +487,63 @@ public class CombatTools : MonoBehaviour
 
     public static float DetermineTrueCost(Action action)
     {
-        float floatToReturn = 0;
-        if (action != null)
+        if (action == null)
+            return 0f;
+
+        float baseCost;
+
+        switch (action.actionStyle)
         {
-            switch (action.actionStyle)
-            {
-                case Action.ActionStyle.LIGHT:
-                    {
-                        floatToReturn = action.lightCost;
-                    }
-                    break;
-                case Action.ActionStyle.HEAVY:
-                    {
-                        floatToReturn = action.heavyCost;
-                    }
-                    break;
-                case Action.ActionStyle.STANDARD:
-                    {
-                        floatToReturn = action.cost;
-                    }
-                    break;
-            }
+            case Action.ActionStyle.LIGHT:
+                baseCost = action.lightCost;
+                break;
+
+            case Action.ActionStyle.HEAVY:
+                baseCost = action.heavyCost;
+                break;
+
+            case Action.ActionStyle.STANDARD:
+            default:
+                baseCost = action.cost;
+                break;
         }
-        return floatToReturn;
+
+        if (action.unit != null)
+        {
+            baseCost =
+                (baseCost * action.unit.actionCostMultiplier) +
+                action.unit.actionCostAddend;
+        }
+
+        return Mathf.Max(0f, baseCost);
     }
 
     public static int DetermineTrueActionValue(Action action)
     {
-        int valueToReturn = 0;
-        if (action.actionType == Action.ActionType.STATUS)
-        {
-            switch (action.actionStyle)
-            {
-                case Action.ActionStyle.LIGHT:
-                    {
-                        valueToReturn = action.lightStatAmount;
-                    }
-                    break;
-                case Action.ActionStyle.HEAVY:
-                    {
-                        valueToReturn = action.heavyStatAmount;
-                    }
-                    break;
-                case Action.ActionStyle.STANDARD:
-                    {
-                        valueToReturn = action.statAmount;
-                    }
-                    break;
-            }
-        }
-        else
-        {
-            switch (action.actionStyle)
-            {
-                case Action.ActionStyle.LIGHT:
-                    {
-                        valueToReturn = action.lightDamage;
-                    }
-                    break;
-                case Action.ActionStyle.HEAVY:
-                    {
-                        valueToReturn = action.heavyDamage;
-                    }
-                    break;
-                case Action.ActionStyle.STANDARD:
-                    {
-                        valueToReturn = action.damage;
-                    }
-                    break;
-            }
+        int value;
 
+        switch (action.actionStyle)
+        {
+            case Action.ActionStyle.LIGHT:
+                value = action.lightDamage;
+                break;
+
+            case Action.ActionStyle.HEAVY:
+                value = action.heavyDamage;
+                break;
+
+            case Action.ActionStyle.STANDARD:
+            default:
+                value = action.damage;
+                break;
         }
 
-        return valueToReturn;
+        if (action.unit != null)
+        {
+            value += action.unit.actionDMGAddend;
+        }
+
+        return value;
     }
 
     public static float ReturnTypeMultiplier(Unit target, DamageType damageType)

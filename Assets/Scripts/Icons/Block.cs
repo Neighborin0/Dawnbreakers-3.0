@@ -9,8 +9,8 @@ using System.Linq;
 
 public class Block : EffectIcon
 {
-   
-    void Start()
+
+    new void Start()
     {
         iconName = "BLOCK";
         if(owner != null)

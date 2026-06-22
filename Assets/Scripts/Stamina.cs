@@ -40,7 +40,7 @@ public class Stamina : MonoBehaviour
     public void DoCost(float cost)
     {
         //backSlider.value = backSlider.maxValue;
-        value -= cost * unit.actionCostMultiplier < 100 ? cost * unit.actionCostMultiplier : 100;
+        value -= (cost + unit.actionCostAddend) * unit.actionCostMultiplier < 100 ? (cost + unit.actionCostAddend) * unit.actionCostMultiplier : 100;
     }
  
 

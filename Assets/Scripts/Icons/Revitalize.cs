@@ -9,7 +9,7 @@ using System.Linq;
 
 public class Revitalize : EffectIcon
 {
-    void Start()
+    new void Start()
     {
         iconName = "revitalize";
         if (owner != null)

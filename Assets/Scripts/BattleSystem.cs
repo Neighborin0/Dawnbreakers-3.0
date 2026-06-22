@@ -438,7 +438,7 @@ public class BattleSystem : MonoBehaviour
         if (CombatTools.DetermineTrueActionValue(action) != 0)
             unit.intentUI.damageNums.text = $"<sprite name=\"{action.damageType}\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType))).ToString();
         unit.intentUI.action = action;
-        unit.intentUI.costNums.text = CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
+        unit.intentUI.costNums.text = CombatTools.DetermineTrueCost(action) < 100 ? $"{CombatTools.DetermineTrueCost(action)}%" : $"100%";
         if (unit.intentUI.action.actionType == Action.ActionType.STATUS)
         {
             unit.intentUI.damageParent.SetActive(false);
@@ -712,7 +712,7 @@ public class BattleSystem : MonoBehaviour
             assignedAction.action.actionStyle = Action.ActionStyle.STANDARD;
             assignedAction.damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
             assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (newAction.duration).ToString();
-            assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * unit.actionCostMultiplier}%" : $"100%";
+            assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) < 100 ? $"{CombatTools.DetermineTrueCost(action)}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = newAction.ActionName;
 
@@ -757,140 +757,334 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator PerformAction()
     {
-        Director.Instance.timeline.slider.value = 0;
+        var timeline = Director.Instance.timeline;
+
+        timeline.slider.value = 0f;
+
         LabCamera.Instance.ResetPosition();
         CombatTools.PauseStaminaTimer();
+
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
-        foreach (TimeLineChild child in Director.Instance.timeline.children)
+
+        /*
+         * Use a copy in case Return() modifies the timeline collection.
+         */
+        foreach (TimeLineChild child in timeline.children.ToList())
         {
-            child.Return();
+            if (child != null)
+            {
+                child.Return();
+            }
         }
-        BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
-        foreach (var x in Tools.GetAllUnits())
+
+        BattleLog.Instance
+            .GetComponent<MoveableObject>()
+            .Move(false);
+
+        /*
+         * Close the decision phase for all active units.
+         */
+        foreach (Unit unit in Tools.GetAllUnits().Where(unit => unit != null))
         {
-            x.ExitDecision();
-            if (x.intentUI != null)
+            unit.ExitDecision();
+
+            if (unit.intentUI != null)
             {
-                x.FadeIntent(true);
+                unit.FadeIntent(true);
             }
-            if (x.skillUIs != null)
+
+            if (unit.skillUIs != null)
             {
-                SetUIOff(x);
-                x.IsHighlighted = false;
+                SetUIOff(unit);
             }
-            x.DoOnPreformActionStarted();
+
+            unit.IsHighlighted = false;
+            unit.DoOnPreformActionStarted();
         }
+
         state = BattleStates.BATTLE;
+
         yield return new WaitForSeconds(1f);
-        foreach (var x in Tools.GetAllUnits())
+
+        foreach (Unit unit in Tools.GetAllUnits().Where(unit => unit != null))
         {
-            x.state = PlayerState.WAITING;
+            unit.state = PlayerState.WAITING;
         }
+
         CombatTools.CheckForSameCostActions();
-        ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x))
-         .ThenBy(x => x.unit.IsPlayerControlled)
-        .ThenBy(x => x.actionType)
-        .ThenBy(x => CombatTools.GetProperAffiliationList(x.unit))
-        .Reverse().ToList();
-        CombatTools.UnpauseStaminaTimer();
-        for (int i = 0; i < ActionsToPerform.Count; i++)
+
+        /*
+         * A while loop is safer here because the remaining actions need
+         * to be reordered after every completed action.
+         */
+        while (ActionsToPerform.Count > 0)
         {
-            var action = ActionsToPerform[i];
-            currentAction = action;
-            if (action.unit == null)
-            {
-                ActionsToPerform.Remove(action);
+            /*
+             * Remove actions whose unit no longer exists.
+             */
+            ActionsToPerform.RemoveAll(
+                queuedAction =>
+                    queuedAction == null ||
+                    queuedAction.unit == null
+            );
+
+            if (ActionsToPerform.Count == 0)
+                break;
+
+            /*
+             * Lower final cost acts first.
+             *
+             * In a tie:
+             * - Player actions go first.
+             * - Then action type.
+             * - Then unit affiliation-list order.
+             */
+            ActionsToPerform = ActionsToPerform
+                .OrderBy(queuedAction =>
+                    CombatTools.DetermineTrueCost(queuedAction))
+                .ThenByDescending(queuedAction =>
+                    queuedAction.unit.IsPlayerControlled)
+                .ThenBy(queuedAction =>
+                    queuedAction.actionType)
+                .ThenBy(queuedAction =>
+                    CombatTools.GetProperAffiliationList(
+                        queuedAction.unit
+                    ))
+                .ToList();
+
+            Action action = ActionsToPerform[0];
+            ActionsToPerform.RemoveAt(0);
+
+            if (action == null || action.unit == null)
                 continue;
-            }
+
+            currentAction = action;
+
+            /*
+             * Keep this reference because ResetAction() may clear or
+             * change action.unit.
+             */
+            Unit actingUnit = action.unit;
 
             CombatTools.UnpauseStaminaTimer();
 
-            yield return new WaitUntil(() => (100 - Director.Instance.timeline.slider.value) <= (100 - CombatTools.DetermineTrueCost(action) * action.unit.actionCostMultiplier) || Director.Instance.timeline.slider.value == Director.Instance.timeline.slider.maxValue);
+            float finalActionCost =
+                CombatTools.DetermineTrueCost(action);
+
+            /*
+             * Recalculate the action's cost at the point it is waiting
+             * to execute. This allows effects applied by previous actions
+             * to affect its timing.
+             */
+            yield return new WaitUntil(() =>
+                timeline.slider.value >= finalActionCost ||
+                timeline.slider.value >= timeline.slider.maxValue
+            );
+
             CombatTools.PauseStaminaTimer();
-            if (Director.Instance.timeline.slider.value < Director.Instance.timeline.slider.maxValue)
+
+            /*
+             * Preserve your existing behavior: actions at or past the
+             * timeline maximum do not execute.
+             */
+            if (timeline.slider.value >= timeline.slider.maxValue)
             {
-                if (action.targets == null)
-                {
-                    switch (action.targetType)
-                    {
-                        case Action.TargetType.ENEMY:
-                            action.targets = CombatTools.GetRandomEnemy(action.unit);
-                            break;
-                        case Action.TargetType.ALLY:
-                            action.targets = CombatTools.GetRandomAlly(action.unit);
-                            break;
-                    }
-                }
-
-                Director.Instance.timeline.actionDisplayer.baseText.text = action.ActionName;
-                Director.Instance.timeline.StartFadeAction(true);
-
-                action.Done = false;
-                action.unit.state = PlayerState.IDLE;
-                action.OnActivated();
-
-                foreach(var timelineChild in Director.Instance.timeline.children)
-                {
-                    if (timelineChild.unit == action.unit)
-                    {
-                        print(timelineChild.unit.unitName);
-                        Director.Instance.timeline.ReplaceMainPortraitWithMiniPortrait(timelineChild);
-                        timelineChild.CanClear = true;
-                        timelineChild.GetComponent<LabUIInteractable>().CanHover = false;
-                        timelineChild.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.2f);
-                        timelineChild.portrait.color = new Color(1, 1, 1, 0.2f);
-                       
-                    }
-                }
-              
-
-                if (action.limited)
-                {
-                    foreach (var skillUI in action.unit.skillUIs)
-                    {
-                        if (action.ActionName == skillUI.GetComponent<ActionContainer>().action.ActionName)
-                        {
-                            skillUI.GetComponent<ActionContainer>().numberofUses--;
-                        }
-                    }
-                }
-
-                yield return new WaitUntil(() => action.Done);
-                yield return new WaitUntil(() => !BattlePhasePause);
-                yield return new WaitForSeconds(0.2f);
-                action.cost -= 1;
-                action.ResetAction();
-                yield return new WaitForSeconds(0.01f);
-
-                Director.Instance.timeline.StartFadeAction(false);
-                foreach (var unit in Tools.GetAllUnits())
-                {
-                    unit.DoActionEnded();
-                }
-
-                if (CheckDeathState())
-                {
-                    BattlePhasePause = true;
-                    CombatTools.PauseStaminaTimer();
-                    StopCoroutine(actionCo);
-                    yield break;
-                }
-                else
-                {
-                    yield return new WaitUntil(() => !BattlePhasePause);
-                    yield return new WaitForSeconds(0.1f);
-                }
-
-                    ActionsToPerform = ActionsToPerform.OrderBy(x => 100 - CombatTools.DetermineTrueCost(x))
-         .ThenBy(x => x.unit.IsPlayerControlled)
-        .ThenBy(x => x.actionType)
-        .Reverse().ToList();
+                currentAction = null;
+                continue;
             }
+
+            /*
+             * Find a replacement target if the original target no
+             * longer exists.
+             */
+            if (action.targets == null)
+            {
+                switch (action.targetType)
+                {
+                    case Action.TargetType.ENEMY:
+                        action.targets =
+                            CombatTools.GetRandomEnemy(actingUnit);
+                        break;
+
+                    case Action.TargetType.ALLY:
+                        action.targets =
+                            CombatTools.GetRandomAlly(actingUnit);
+                        break;
+
+                    case Action.TargetType.SELF:
+                        action.targets = actingUnit;
+                        break;
+                }
+            }
+
+            bool targetRequired =
+                action.targetType == Action.TargetType.ENEMY ||
+                action.targetType == Action.TargetType.ALLY ||
+                action.targetType == Action.TargetType.SELF;
+
+            /*
+             * Skip safely if no valid target remains.
+             *
+             * OnPostAction is not called here because the action did not
+             * successfully execute.
+             */
+            if (targetRequired && action.targets == null)
+            {
+                Debug.LogWarning(
+                    $"{action.ActionName} could not find a valid target."
+                );
+
+                action.ResetAction();
+                currentAction = null;
+
+                continue;
+            }
+
+            timeline.actionDisplayer.baseText.text =
+                action.ActionName;
+
+            timeline.StartFadeAction(true);
+
+            action.Done = false;
+            actingUnit.state = PlayerState.IDLE;
+
+            action.OnActivated();
+
+            /*
+             * Fade the acting unit's timeline child.
+             */
+            foreach (TimeLineChild timelineChild
+                     in timeline.children.ToList())
+            {
+                if (timelineChild == null ||
+                    timelineChild.unit != actingUnit)
+                {
+                    continue;
+                }
+
+                Debug.Log(timelineChild.unit.unitName);
+
+                timeline.ReplaceMainPortraitWithMiniPortrait(
+                    timelineChild
+                );
+
+                timelineChild.CanClear = true;
+
+                LabUIInteractable interactable =
+                    timelineChild.GetComponent<LabUIInteractable>();
+
+                if (interactable != null)
+                {
+                    interactable.CanHover = false;
+                }
+
+                Image timelineImage =
+                    timelineChild.GetComponentInChildren<Image>();
+
+                if (timelineImage != null)
+                {
+                    timelineImage.color =
+                        new Color(1f, 1f, 1f, 0.2f);
+                }
+
+                if (timelineChild.portrait != null)
+                {
+                    timelineChild.portrait.color =
+                        new Color(1f, 1f, 1f, 0.2f);
+                }
+            }
+
+            /*
+             * Reduce the remaining uses for limited actions.
+             */
+            if (action.limited && actingUnit.skillUIs != null)
+            {
+                foreach (GameObject skillUI in actingUnit.skillUIs)
+                {
+                    if (skillUI == null)
+                        continue;
+
+                    ActionContainer container =
+                        skillUI.GetComponent<ActionContainer>();
+
+                    if (container == null ||
+                        container.action == null)
+                    {
+                        continue;
+                    }
+
+                    if (container.action.ActionName ==
+                        action.ActionName)
+                    {
+                        container.numberofUses =
+                            Mathf.Max(
+                                0,
+                                container.numberofUses - 1
+                            );
+                    }
+                }
+            }
+
+
+            yield return new WaitUntil(() => action.Done);
+
+            yield return new WaitUntil(() =>
+                !BattlePhasePause
+            );
+
+            yield return new WaitForSeconds(0.2f);
+
+
+            action.cost -= 1f;
+
+            action.ResetAction();
+
+            yield return new WaitForSeconds(0.01f);
+
+            timeline.StartFadeAction(false);
+
+            foreach (Unit unit in Tools.GetAllUnits()
+                         .Where(unit => unit != null))
+            {
+                unit.DoActionEnded();
+            }
+
+            /*
+             * Only the unit that successfully completed this action gets OnPostAction.
+             */
+            if (actingUnit != null)
+            {
+                actingUnit.DoOnPostAction();
+            }
+
+            currentAction = null;
+
+            if (CheckDeathState())
+            {
+                BattlePhasePause = true;
+                CombatTools.PauseStaminaTimer();
+
+                yield break;
+            }
+
+            yield return new WaitUntil(() =>
+                !BattlePhasePause
+            );
+
+            yield return new WaitForSeconds(0.1f);
         }
-        yield return new WaitUntil(() => !BattlePhasePause);
-        yield return new WaitUntil(() => BattleLog.Instance.state != BattleLogStates.TALKING);
-        //All Actions Are Done
-        yield return new WaitUntil(() => !CheckDeathState());
+
+        yield return new WaitUntil(() =>
+            !BattlePhasePause
+        );
+
+        yield return new WaitUntil(() =>
+            BattleLog.Instance.state !=
+            BattleLogStates.TALKING
+        );
+
+        currentAction = null;
+
         actionCo = ForcePerformActionClose();
         Director.Instance.StartCoroutine(actionCo);
     }

@@ -41,7 +41,6 @@ public class ActionTypeButton : Button
                     actionContainerParent.heavyButton.state = ActionButtonState.DEFAULT;
                     newAction.actionStyle = Action.ActionStyle.LIGHT;
                     actionContainerParent.action = newAction;
-                    actionContainerParent.UpdateOnStyleSwitch();
                     actionContainerParent.SetStyleLight(false);
 
                     var target = actionContainerParent.baseUnit;
@@ -65,7 +64,6 @@ public class ActionTypeButton : Button
                     actionContainerParent.lightButton.state = ActionButtonState.DEFAULT;
                     newAction.actionStyle = Action.ActionStyle.HEAVY;
                     actionContainerParent.action = newAction;
-                    actionContainerParent.UpdateOnStyleSwitch();
                     actionContainerParent.SetStyleLight(false);
 
                     var target = actionContainerParent.baseUnit;
@@ -91,7 +89,6 @@ public class ActionTypeButton : Button
                     actionContainerParent.heavyButton.state = ActionButtonState.HEAVY;
                     action.actionStyle = Action.ActionStyle.STANDARD;
                     CombatTools.ReturnPipCounter().AddPip();
-                    actionContainerParent.UpdateOnStyleSwitch();
                     actionContainerParent.SetStyleLight(true);
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
                     actionContainerParent.baseUnit.ChangeUnitsLight(Light, 0, 15, Light.color, 0.1f, 0);

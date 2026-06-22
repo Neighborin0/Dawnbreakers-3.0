@@ -7,7 +7,7 @@ public class ExposeIcon : EffectIcon
     private const int DelayBonus = 15;
     private bool modifierApplied;
 
-    private void Start()
+    new void Start()
     {
         iconName = "Expose";
         TimedEffect = true;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,18 +30,21 @@ public class TimeLine : MonoBehaviour
         actionDisplayer = GetComponentInChildren<ActionDisplayer>();
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
-        if (!Paused)
+        float speed =OptionsManager.Instance.UserTimelineSpeedDelay;
+
+        if (!Paused && !Resetting)
         {
-            if (slider.value < slider.maxValue && !Resetting)
-                slider.value += Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay;
+            slider.value = Mathf.MoveTowards( slider.value,slider.maxValue,Time.deltaTime * speed);
         }
-        if (slider.value > 0 && Resetting)
-            slider.value -= Time.deltaTime * OptionsManager.Instance.UserTimelineSpeedDelay * 2f;
+        else if (Resetting)
+        {
+            slider.value = Mathf.MoveTowards(slider.value, slider.minValue, Time.deltaTime * speed * 2f);
+        }
     }
 
-  
+
     public void CheckTimelineForSameValues(TimeLineChild TLToCheck)
     {
         var timelineChildren = Director.Instance.timeline.children;
@@ -80,36 +84,61 @@ public class TimeLine : MonoBehaviour
 
         return parent.miniChild;
     }
-    public void RemoveMiniChild(Unit TargetUnit, TimeLineChild parent)
+    public void RemoveMiniChild(Unit targetUnit, TimeLineChild parent)
     {
-        foreach (TimeLineChild TL in Director.Instance.timeline.children.ToList())
+        if (targetUnit == null || parent == null || parent.miniChild == null)
         {
-            if(TL.miniChild != null && TL.miniChild.unit != null && TL.miniChild.unit == TargetUnit)
-            {
-                TL.miniChild.gameObject.SetActive(false);
-                TL.unit.HasMiniTimelineChild = false;
-                TL.miniChild.unit = null;
-                TL.miniChild = null;
-                break;
-            }
+            return;
         }
+
+        if (parent.miniChild.unit != targetUnit)
+            return;
+
+        parent.miniChild.gameObject.SetActive(false);
+
+        targetUnit.HasMiniTimelineChild = false;
+
+        parent.miniChild.unit = null;
+        parent.miniChild.parent = null;
+        parent.miniChild = null;
     }
 
     //In Battle
     public IEnumerator ResetTimeline()
     {
         Resetting = true;
+        Paused = true;
 
-        foreach (var x in children.ToList())
+        foreach (TimeLineChild child in children.ToList())
         {
-            Director.Instance.timeline.children.Remove(x);
-            Destroy(x.gameObject);
-        }
-          
+            if (child == null)
+                continue;
 
-        yield return new WaitUntil(() => slider.value <= 0);
+            if (child.unit != null &&
+                child.unit.timelinechild == child)
+            {
+                child.unit.timelinechild = null;
+                child.unit.HasMiniTimelineChild = false;
+            }
+
+            if (child.miniChild != null &&
+                child.miniChild.unit != null)
+            {
+                child.miniChild.unit
+                    .HasMiniTimelineChild = false;
+            }
+
+            Destroy(child.gameObject);
+        }
+
+        children.Clear();
+
+        slider.value = 0f;
+
         Resetting = false;
         Paused = true;
+
+        yield break;
     }
     //Post Battle
     public void RefreshTimeline()
@@ -213,6 +242,11 @@ public class TimeLine : MonoBehaviour
                     Director.Instance.timeline.children.Remove(TL);
                     Director.Instance.StartCoroutine(FadeOut(TL));
                 }
+
+                if (unitToFind.timelinechild != null)
+                {
+                    unitToFind.timelinechild = null;
+                }
                 break;
             }
         }
@@ -239,25 +273,55 @@ public class TimeLine : MonoBehaviour
         
     }
 
-  
-    public IEnumerator FadeOut(TimeLineChild timeLineChild)
+
+    public IEnumerator FadeOut(TimeLineChild timelineChild)
     {
-        if (timeLineChild != null && timeLineChild.gameObject != null)
+        if (timelineChild == null)
+            yield break;
+
+        while (timelineChild != null &&
+               timelineChild.childImage != null &&
+               timelineChild.childImage.color.a > 0f)
         {
-            while (timeLineChild.childImage != null && timeLineChild.childImage.color.a > 0 && timeLineChild.gameObject != null)
+            Color imageColor =
+                timelineChild.childImage.color;
+
+            imageColor.a = Mathf.Max(
+                0f,
+                imageColor.a - 0.1f
+            );
+
+            timelineChild.childImage.color =
+                imageColor;
+
+            if (timelineChild.portrait != null)
             {
-                timeLineChild.childImage.color = new Color(timeLineChild.childImage.color.r, timeLineChild.childImage.color.g, timeLineChild.childImage.color.b, timeLineChild.childImage.color.a - 0.1f);
-                timeLineChild.portrait.color = new Color(timeLineChild.portrait.color.r, timeLineChild.portrait.color.g, timeLineChild.portrait.color.b, timeLineChild.portrait.color.a - 0.1f);
-                timeLineChild.staminaText.color = new Color(timeLineChild.staminaText.color.r, timeLineChild.staminaText.color.g, timeLineChild.staminaText.color.b, timeLineChild.staminaText.color.a - 0.1f);
-                yield return null; 
+                Color portraitColor =
+                    timelineChild.portrait.color;
+
+                portraitColor.a = imageColor.a;
+
+                timelineChild.portrait.color =
+                    portraitColor;
             }
 
-            yield return new WaitUntil(() => timeLineChild.childImage.color.a <= 0);
-
-            if (timeLineChild.gameObject != null)
+            if (timelineChild.staminaText != null)
             {
-                Destroy(timeLineChild.gameObject);
+                Color textColor =
+                    timelineChild.staminaText.color;
+
+                textColor.a = imageColor.a;
+
+                timelineChild.staminaText.color =
+                    textColor;
             }
+
+            yield return null;
+        }
+
+        if (timelineChild != null)
+        {
+            Destroy(timelineChild.gameObject);
         }
     }
 
@@ -270,7 +334,6 @@ public class TimeLine : MonoBehaviour
             StopCoroutine(actionDisplayerCoroutine);
         }
         actionDisplayerCoroutine = FadeActionDisplayer(FadeIn);
-        Director.Instance.StartCoroutine(actionDisplayerCoroutine);
 
     }
     private IEnumerator FadeActionDisplayer(bool FadeIn)
@@ -305,12 +368,20 @@ public class TimeLine : MonoBehaviour
                 yield return new WaitUntil(() => img.color.a >= 1);
             }
         }
+        actionDisplayerCoroutine = null;
     }
-    public void DoCost(float cost, Unit unit)
+    public void DoCost(float finalCost, Unit unit)
     {
-        var TL = SpawnTimelineChild(unit);
-        TL.value -= cost * unit.actionCostMultiplier < 100 ? cost * unit.actionCostMultiplier : 100;
-        CheckTimelineForSameValues(TL);
+        if (unit == null)
+            return;
+
+        TimeLineChild timelineChild = SpawnTimelineChild(unit);
+
+        finalCost = Mathf.Clamp(finalCost,0f,100f
+        );
+
+        timelineChild.value = 100f - finalCost;
+        CheckTimelineForSameValues(timelineChild);
     }
 
     public void DelayCheck(TimeLineChild TL)

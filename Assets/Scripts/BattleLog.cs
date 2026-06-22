@@ -62,18 +62,42 @@ public class BattleLog : MonoBehaviour
 
     }
 
-   
+
     public void CreateActionLayout(Unit unit)
     {
+        if (unit == null)
+        {
+            Debug.LogError("Cannot create an action layout for a null unit.");
+            return;
+        }
+
         var layout = Instantiate(ActionLayout, transform);
+
         unit.ActionLayout = layout.gameObject;
-        unit.ActionLayout.gameObject.SetActive(true);
+        unit.ActionLayout.SetActive(true);
+
         for (int i = 0; i < unit.actionList.Count; i++)
         {
-            var container = Instantiate(genericActionContainer, layout.transform) as ActionContainer;
-            container.action = unit.actionList[i];
-            unit.skillUIs[i] = container.gameObject;
-            container.baseUnit = unit;
+            Action unitAction = unit.actionList[i];
+
+            if (unitAction == null)
+            {
+                Debug.LogWarning($"{unit.unitName} has a null action at index {i}.");
+                continue;
+            }
+
+            ActionContainer container = Instantiate(genericActionContainer,layout.transform);
+
+            container.Initialize(unit, unitAction);
+
+            if (i < unit.skillUIs.Count)
+            {
+                unit.skillUIs[i] = container.gameObject;
+            }
+            else
+            {
+                Debug.LogWarning($"{unit.unitName}.skillUIs is too small for " + $"{unit.actionList.Count} actions.");
+            }
         }
     }
 
@@ -126,7 +150,11 @@ public class BattleLog : MonoBehaviour
         {
             Destroy(item.gameObject);
         }
-        battlelog.STATtext.gameObject.SetActive(true);
+        foreach (var skill in unit.skillUIs)
+        {
+            var actionContainer = skill.GetComponent<ActionContainer>();
+            actionContainer.ResetUIState();
+        }
 
         var resistanceText = new List<string>();
         var weaknessText = new List<string>();

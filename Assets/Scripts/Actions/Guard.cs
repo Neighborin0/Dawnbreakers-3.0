@@ -20,9 +20,9 @@ public class Guard : Action
         lightCost = 20f;
         heavyCost = 50f;
 
-        statAmount = 5;
-        lightStatAmount = 4;
-        heavyStatAmount = 7; 
+        damage = 5;
+        lightDamage = 4;
+        heavyDamage = 7; 
 
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
@@ -33,7 +33,7 @@ public class Guard : Action
 
     public override string GetDescription()
     {
-        description = $"Applies +{CombatTools.DetermineTrueActionValue(this) + unit.defenseStat} <sprite name=\"FORTIFY\"> to self or allies.";
+        description = $"Applies +{CombatTools.DetermineTrueActionValue(this)} <sprite name=\"FORTIFY\"> to self or allies.";
         return description;
     }
     public override IEnumerator ExecuteAction()
@@ -46,7 +46,7 @@ public class Guard : Action
         var Light = targets.GetComponentInChildren<Light>();
         Light.color = Color.blue;
         //BattleSystem.Instance.SetTempEffect(targets, "DEF", true, duration, CombatTools.DetermineTrueActionValue(this) + unit.defenseStat);
-        BattleSystem.Instance.SetStatChanges(Stat.ARMOR, CombatTools.DetermineTrueActionValue(this) + unit.defenseStat, false, targets);
+        BattleSystem.Instance.SetStatChanges(Stat.ARMOR, CombatTools.DetermineTrueActionValue(this), false, targets);
         yield return new WaitForSeconds(1.3f);
         Director.Instance.StartCoroutine(CombatTools.TurnOnDirectionalLight(10));
         LabCamera.Instance.ResetPosition();

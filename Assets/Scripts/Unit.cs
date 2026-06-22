@@ -1,18 +1,18 @@
-﻿using System.Collections;
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using System.Data.Common;
 using System.Linq;
+using System.Linq.Expressions;
 using TMPro;
-
-using static System.Collections.Specialized.BitVector32;
-using static UnityEngine.UI.CanvasScaler;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.ProBuilder.Shapes;
-using System.Data.Common;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
+using static System.Collections.Specialized.BitVector32;
 using static UnityEngine.EventSystems.EventTrigger;
-using System.Linq.Expressions;
+using static UnityEngine.UI.CanvasScaler;
 
 public enum PlayerState { IDLE, DECIDING, READY, WAITING }
 public enum Stat { ATK, DEF, ARMOR, HP }
@@ -87,6 +87,8 @@ public class Unit : MonoBehaviour
     public event Action<Unit> OnPlayerUnitDeath;
     public event Action<Unit, ActionContainer> OnActionSelected;
     public event Action<Unit> OnPerformActionStarted;
+    public event Action<Unit> OnPostAction;
+    public event System.Action OnActionModifiersChanged;
 
     //player states
     public PlayerState state;
@@ -99,7 +101,6 @@ public class Unit : MonoBehaviour
 
 
     public Light spotLight;
-    public float actionCostMultiplier = 1;
     public int knockbackModifider = 0;
     public DamageType[] resistances;
     public DamageType[] weaknesses;
@@ -108,14 +109,18 @@ public class Unit : MonoBehaviour
     public List<Action> actionList;
     [NonSerialized]
     public GameObject ActionLayout;
-
     public List<Action> ActionPool;
+    public float actionCostMultiplier = 1;
+    public int actionCostAddend = 0;
+    public int actionDMGAddend = 0;
 
     //summon stuff 
     public string[] summonables;
     [NonSerialized]
     public bool IsSummon = false;
     public bool HitEmissionChanged = false;
+
+    
 
 
     void Start()
@@ -476,6 +481,33 @@ public class Unit : MonoBehaviour
         }
 
     }
+
+    /*public void EmpowerNextAction(
+     int damageBonus,
+     float costReduction)
+    {
+        // Do not stack the effect from repeated hits.
+        if (nextActionEmpowered)
+            return;
+
+        nextActionEmpowered = true;
+        nextActionDamageBonus = damageBonus;
+        nextActionCostReduction = costReduction;
+    }
+
+    public void ConsumeNextActionEmpower()
+    {
+        nextActionEmpowered = false;
+        nextActionDamageBonus = 0;
+        nextActionCostReduction = 0f;
+    }
+
+    public void ClearNextActionEmpower()
+    {
+        ConsumeNextActionEmpower();
+    }
+    */
+
     private bool OverUI()
     {
         return EventSystem.current.IsPointerOverGameObject();
@@ -547,6 +579,15 @@ public class Unit : MonoBehaviour
     public void DoOnPreformActionStarted()
     {
         OnPerformActionStarted?.Invoke(this);
+    }
+    public void DoOnPostAction()
+    {
+        OnPostAction?.Invoke(this);
+    }
+
+    public void DoActionModifiersChanged()
+    {
+        OnActionModifiersChanged?.Invoke();
     }
 
 

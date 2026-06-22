@@ -152,6 +152,7 @@
     <Compile Include="Assets\Scripts\Main Menu\MainMenuController.cs" />
     <Compile Include="Assets\Scripts\Map\NodeController.cs" />
     <Compile Include="Assets\Scripts\Actions\Shriek.cs" />
+    <Compile Include="Assets\Scripts\Items\ItemScripts\TatteredCapeNew.cs" />
     <Compile Include="Assets\Scripts\Units\HuskEasyA.cs" />
     <Compile Include="Assets\Scripts\ScalableObject.cs" />
     <Compile Include="Assets\Scripts\Icons\DefendEF.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Assets\Scripts\Map\EliteNode.cs" />
     <Compile Include="Assets\Scripts\CharacterTab.cs" />
     <Compile Include="Assets\Scripts\Main Menu\QuitButton.cs" />
+    <Compile Include="Assets\Scripts\Icons\EmpowerIcon.cs" />
     <Compile Include="Assets\Scripts\ItemText.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Icons\Stalwart.cs" />

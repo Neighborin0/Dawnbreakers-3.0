@@ -10,7 +10,7 @@ using System.Linq;
 public class Indomitable : EffectIcon
 {
    
-    void Start()
+    new void Start()
     {
         iconName = "INDOMITABLE";
         TimedEffect = false;

@@ -1,191 +1,365 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
+using System.Collections;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System;
-using static UnityEngine.UI.CanvasScaler;
-using System.Linq;
-using static Action;
-using JetBrains.Annotations;
-using UnityEngine.ProBuilder.Shapes;
-using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.InputSystem.Utilities;
 
 public class ActionContainer : MonoBehaviour
 {
-
     public ActionTypeButton lightButton;
     public ActionTypeButton heavyButton;
 
-
     public Action action;
     public TextMeshProUGUI textMesh;
+
     public bool targetting = false;
+
     public Unit baseUnit;
     public Button button;
+
     public TextMeshProUGUI damageNums;
     public TextMeshProUGUI costNums;
     public TextMeshProUGUI durationNums;
+
     public GameObject damageParent;
     public GameObject costParent;
     public GameObject durationParent;
+
     public bool Disabled = false;
+
     public int numberofUses;
     public bool limited = false;
+
     private TimeLineChild TL;
     private GameObject currentEffectPopup;
+
     private bool HasDoneOnAction = false;
+
     private bool CreatedTempTimelineChild = false;
     private TimeLineChild TempTL;
 
-    void Awake()
+    private Unit currentPreviewTarget;
+    private Unit subscribedUnit;
+
+    private static readonly Color NeutralDamageColor =
+        new Color(1f, 0.8705882f, 0.7058824f);
+
+    /*
+     * Change this if your unit shader expects a specific default
+     * outline color instead of a transparent outline.
+     */
+    private static readonly Color DefaultUnitOutlineColor =
+        Color.clear;
+
+    private static readonly Color ControlledUnitOutlineColor =
+    Color.yellow;
+
+    private static readonly Color ValidTargetOutlineColor =
+        Color.white;
+
+    private static readonly Color ResistedTargetOutlineColor =
+        new Color(
+            0.5754717f * 255f,
+            0.4533197f * 255f,
+            0.4533197f * 255f
+        ) * 0.02f;
+
+    private static readonly Color EffectiveTargetOutlineColor =
+        new Color(255f, 1f, 0f) * 0.02f;
+
+    private static readonly Color heavyColor = new Color(255f, 1f, 0f) * 0.05f;
+    private static readonly Color lightColor = new Color(0, 162, 191) * 0.05f;
+
+    private void Awake()
     {
-        if (BattleSystem.Instance != null && !Disabled)
+        if (BattleSystem.Instance != null &&
+            button != null &&
+            !Disabled)
         {
             button.interactable = true;
-            Unit[] units = Tools.GetAllUnits();
-            foreach (var unit in units)
+
+            foreach (Unit unit in Tools.GetAllUnits())
             {
-                unit.IsHighlighted = false;
-                unit.isDarkened = false;
+                if (unit == null)
+                    continue;
+
+                ResetUnitHighlight(unit);
             }
         }
-        //Disabled = false;
+
+        if (action != null)
+        {
+            numberofUses = action.numberofUses;
+            limited = action.limited;
+        }
+
+        Image image = GetComponent<Image>();
+
+        if (image != null && image.material != null)
+        {
+            image.material = Instantiate(image.material);
+        }
+
+        ScalableObject scaleComponent =
+            GetComponent<ScalableObject>();
+
+        if (scaleComponent != null)
+        {
+            scaleComponent.oldScaleSize = Vector3.one;
+
+            scaleComponent.newScaleSize =
+                scaleComponent.oldScaleSize * 1.02f;
+        }
+    }
+
+    private void Start()
+    {
+
+        if (baseUnit == null || action == null)
+            return;
+
+        action.unit = baseUnit;
+
+        SubscribeToUnit();
+        RefreshActionValues();
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeFromUnit();
+    }
+
+    public void Initialize(Unit unit, Action assignedAction)
+    {
+        UnsubscribeFromUnit();
+
+        baseUnit = unit;
+        action = assignedAction;
+
+        if (baseUnit == null || action == null)
+        {
+            Debug.LogError(
+                $"ActionContainer {name} could not be initialized.",
+                this
+            );
+
+            return;
+        }
+
+        action.unit = baseUnit;
+
         numberofUses = action.numberofUses;
         limited = action.limited;
-        GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
-        var scaleComponent = GetComponent<ScalableObject>();
-        scaleComponent.oldScaleSize = Vector3.one;
-        scaleComponent.newScaleSize = scaleComponent.oldScaleSize * 1.02f;
 
+        SubscribeToUnit();
+        RefreshActionValues();
     }
 
-  
-
-    private void UpdateDamageNumsText()
+    private void SubscribeToUnit()
     {
-        if(damageNums != null)
-        damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
+        if (baseUnit == null)
+            return;
+
+        if (subscribedUnit == baseUnit)
+            return;
+
+        UnsubscribeFromUnit();
+
+        subscribedUnit = baseUnit;
+
+        subscribedUnit.OnActionModifiersChanged -=
+            RefreshActionValues;
+
+        subscribedUnit.OnActionModifiersChanged +=
+            RefreshActionValues;
     }
-    void Update()
-    {
-        var hit = Tools.GetMousePos();
-        if (Input.GetMouseButtonUp(1))
-        {
-            SetStyleLight(true);
-        }
 
-        if (targetting && BattleSystem.Instance.state != BattleStates.WON)
-        {
-            UpdateDamageNumbers(hit);
-            UpdateCostNumbers();
-            HandleActionCancel();
-            UpdateTargetHighlights();
-            ExecuteActionOnClick(hit);
-            UpdateActionStyleOutline();
-            PerformOnActionSelected();
-        }
-        else
+    private void UnsubscribeFromUnit()
+    {
+        if (subscribedUnit == null)
+            return;
+
+        subscribedUnit.OnActionModifiersChanged -=
+            RefreshActionValues;
+
+        subscribedUnit = null;
+    }
+
+    private void Update()
+    {
+        if (!targetting ||
+            BattleSystem.Instance == null ||
+            BattleSystem.Instance.state == BattleStates.WON)
         {
             ResetUIState();
+            return;
         }
+
+        /*
+         * Cancellation must happen before any targeting work.
+         *
+         * Returning here prevents ExecuteActionOnClick() from
+         * reapplying highlights during the same frame.
+         */
+        if (HandleActionCancel())
+            return;
+
+        RaycastHit hit = Tools.GetMousePos();
+
+        UpdateDamageNumbers(hit);
+        UpdateCostNumbers();
+        UpdateTargetHighlights();
+        ExecuteActionOnClick(hit);
+        UpdateActionStyleOutline();
+        PerformOnActionSelected();
     }
 
-    void UpdateDamageNumbers(RaycastHit hit)
+    private void UpdateDamageDisplay(Unit target = null)
     {
-        if (hit.collider != null && hit.collider.gameObject.GetComponent<BoxCollider>() != null &&
-            hit.collider.gameObject.GetComponent<Unit>() != null && action.targetType == Action.TargetType.ENEMY &&
-            action.actionType == Action.ActionType.ATTACK &&
-            !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
+        if (damageNums == null ||
+            action == null ||
+            baseUnit == null)
         {
-            var targetUnit = hit.collider.gameObject.GetComponent<Unit>();
-            UpdateDamageNumbersForTargetUnit(targetUnit);
-            UpdateTempTimelineChildIfNeeded(targetUnit);
+            return;
         }
-        else if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
-        {
-            UpdateDamageNumbersForSelf();
-            DestroyTempTimelineChildIfNeeded();
-        }
-    }
-    void UpdateDamageNumbersForTargetUnit(Unit targetUnit)
-    {
-        int trueDamage = (int)((CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat) * CombatTools.ReturnTypeMultiplier(targetUnit, action.damageType));
-        damageNums.text = $"<sprite name=\"{action.damageType}\">" + (trueDamage > 0 ? trueDamage.ToString() : "0");
 
-        UpdateDamageNumberColor(targetUnit);
-    }
+        action.unit = baseUnit;
 
-    void UpdateDamageNumberColor(Unit targetUnit)
-    {
-        if (CombatTools.ReturnTypeMultiplier(targetUnit, action.damageType) < 1)
+        int baseDamage =
+            CombatTools.DetermineTrueActionValue(action) +
+            baseUnit.attackStat;
+
+        float typeMultiplier = target != null
+            ? CombatTools.ReturnTypeMultiplier(
+                target,
+                action.damageType
+            )
+            : 1f;
+
+        int finalDamage = Mathf.RoundToInt(
+            baseDamage * typeMultiplier
+        );
+
+        finalDamage = Mathf.Max(0, finalDamage);
+
+        damageNums.text =
+            $"<sprite name=\"{action.damageType}\">" +
+            finalDamage;
+
+        if (typeMultiplier < 1f)
         {
             damageNums.color = Color.red;
         }
-        else if (CombatTools.ReturnTypeMultiplier(targetUnit, action.damageType) > 1)
+        else if (typeMultiplier > 1f)
         {
             damageNums.color = Color.green;
         }
-    }
-
-    void UpdateTempTimelineChildIfNeeded(Unit targetUnit)
-    {
-        if (CombatTools.ReturnTypeMultiplier(targetUnit, action.damageType) > 1 || action.actionStyle != Action.ActionStyle.STANDARD || action.AppliesStun)
+        else
         {
-            UpdateTempTimelineChild(targetUnit);
+            damageNums.color = NeutralDamageColor;
         }
     }
 
-    void DestroyTempTimelineChildIfNeeded()
+    private Unit GetUnitFromHit(RaycastHit hit)
     {
-        if (CreatedTempTimelineChild)
+        if (hit.collider == null)
+            return null;
+
+        return hit.collider.GetComponentInParent<Unit>();
+    }
+
+    private Unit GetEnemyTargetFromHit(RaycastHit hit)
+    {
+        Unit targetUnit = GetUnitFromHit(hit);
+
+        if (targetUnit == null)
+            return null;
+
+        if (targetUnit.IsPlayerControlled)
+            return null;
+
+        return targetUnit;
+    }
+
+    private void UpdateDamageNumbers(RaycastHit hit)
+    {
+        if (action == null ||
+            action.actionType != Action.ActionType.ATTACK)
         {
-            if (TempTL != null)
-            {
-                Director.Instance.timeline.children.Remove(TempTL);
-                Destroy(TempTL.gameObject);
-            }
-            CreatedTempTimelineChild = false;
+            return;
+        }
+
+        bool targetsEnemies =
+            action.targetType == Action.TargetType.ENEMY ||
+            action.targetType == Action.TargetType.ALL_ENEMIES;
+
+        if (!targetsEnemies)
+        {
+            currentPreviewTarget = null;
+            UpdateDamageDisplay();
+            return;
+        }
+
+        Unit targetUnit = GetEnemyTargetFromHit(hit);
+
+        if (targetUnit != null)
+        {
+            currentPreviewTarget = targetUnit;
+
+            UpdateDamageDisplay(currentPreviewTarget);
+            UpdateTempTimelineChildIfNeeded(currentPreviewTarget);
+        }
+        else
+        {
+            currentPreviewTarget = null;
+
+            UpdateDamageDisplay();
+            DestroyTempTimelineChildIfNeeded();
         }
     }
 
-    void UpdateTempTimelineChild(Unit targetUnit)
+    private void UpdateCostNumbers()
     {
-        if (!CreatedTempTimelineChild && CombatTools.ReturnIconStatus(targetUnit, "INDOMITABLE") && CombatTools.DetermineTrueCost(Director.Instance.timeline.ReturnTimeChildAction(targetUnit)) >= CombatTools.DetermineTrueCost(action))
+        if (costNums == null || action == null)
+            return;
+
+        action.unit = baseUnit;
+
+        float finalCost =
+            Mathf.Clamp(
+                CombatTools.DetermineTrueCost(action),
+                0f,
+                100f
+            );
+
+        costNums.text =
+            $"{Mathf.RoundToInt(finalCost)}%";
+    }
+
+    private bool HandleActionCancel()
+    {
+        if (!Input.GetMouseButtonUp(1))
+            return false;
+
+        /*
+         * SetActive(false) calls DeactivateAction(), which clears all
+         * targeting visuals and resets the selected action.
+         */
+        SetActive(false);
+        LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), new Vector3(0, 16.8f, 0), CombatTools.FindDecidingUnit().GetComponent<SpriteRenderer>().sprite.bounds.center.x / 5f, 0, 0);
+        AudioManager.QuickPlay("ui_woosh_002");
+        SetStyleLight(true);
+        return true;
+    }
+
+    private void UpdateTargetHighlights()
+    {
+        foreach (Unit unit in Tools.GetAllUnits())
         {
-            CreateTempTimeLineChild(targetUnit);
-        }
-    }
+            if (unit == null)
+                continue;
 
-    void UpdateDamageNumbersForSelf()
-    {
-        damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
-        damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
-    }
-
-    void UpdateCostNumbers()
-    {
-        costNums.text = (CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier < 100) ?
-                        $"{CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier}%" :
-                        $"100%";
-    }
-
-    void HandleActionCancel()
-    {
-        if (Input.GetMouseButtonUp(1))
-        {
-            LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), new Vector3(0, 16.8f, 0), CombatTools.FindDecidingUnit().GetComponent<SpriteRenderer>().sprite.bounds.center.x / 5f, 0, 0);
-            AudioManager.QuickPlay("ui_woosh_002");
-            SetStyleLight(true);
-            SetActive(false);
-        }
-    }
-
-    void UpdateTargetHighlights()
-    {
-        foreach (var unit in Tools.GetAllUnits())
-        {
             if (targetting)
             {
                 UpdateUnitHighlight(unit);
@@ -197,309 +371,622 @@ public class ActionContainer : MonoBehaviour
         }
     }
 
-    void UpdateUnitHighlight(Unit unit)
+    private void UpdateUnitHighlight(Unit unit)
     {
-        if (!unit.IsPlayerControlled)
+        if (unit == null ||
+            action == null ||
+            baseUnit == null)
         {
-            if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1)
-            {
-                unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(0.5754717f * 255, 0.4533197f * 255, 0.4533197f * 255) * 0.02f);
-            }
-            else if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1)
-            {
-                unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(255, 1, 0) * 0.02f);
-            }
+            return;
         }
-    }
 
-    void ResetUnitHighlight(Unit unit)
-    {
-        unit.IsHighlighted = false;
-        unit.isDarkened = false;
-    }
+        SpriteRenderer renderer =
+            unit.GetComponent<SpriteRenderer>();
 
-    void ExecuteActionOnClick(RaycastHit hit)
-    {
+        /*
+         * The controlled unit remains yellow whenever they are
+         * choosing another target.
+         */
+        if (unit == baseUnit &&
+     action.targetType != Action.TargetType.SELF)
+        {
+            unit.IsHighlighted = true;
+            unit.isDarkened = false;
+
+            switch (action.actionStyle)
+            {
+                case Action.ActionStyle.LIGHT:
+                    {
+                        SetOutlineColor(
+                            renderer,
+                            lightColor
+                        );
+
+                        break;
+                    }
+
+                case Action.ActionStyle.HEAVY:
+                    {
+                        SetOutlineColor(
+                            renderer,
+                            heavyColor
+                        );
+
+                        break;
+                    }
+
+                case Action.ActionStyle.STANDARD:
+                default:
+                    {
+                        SetOutlineColor(
+                            renderer,
+                            ControlledUnitOutlineColor
+                        );
+
+                        break;
+                    }
+            }
+
+            return;
+        }
+    
+
         switch (action.targetType)
         {
             case Action.TargetType.ENEMY:
-
-                foreach (var unit in Tools.GetAllUnits())
+            case Action.TargetType.ALL_ENEMIES:
                 {
-                    if (targetting)
+                    if (!unit.IsPlayerControlled)
                     {
-                        if (!unit.IsPlayerControlled)
-                        {
-                            unit.IsHighlighted = true;
-                            if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1) // Not Effective
-                            {
-                                unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(0.5754717f * 255, 0.4533197f * 255, 0.4533197f * 255) * 0.02f);
-                            }
-                            else if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1) //Effective
-                            {
-                                unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(255, 1, 0) * 0.02f);
-                            }
-                        }
-                        else
-                        {
-                            unit.isDarkened = true;
-                        }
-
+                        SetUnitAsEnemyTarget(unit, renderer);
                     }
                     else
                     {
-                        unit.IsHighlighted = false;
-                        unit.isDarkened = false;
+                        SetUnitAsInvalidTarget(unit, renderer);
                     }
 
+                    break;
                 }
-                if (Input.GetMouseButtonUp(0))
-                {
-                    if (hit.collider != null && hit.collider.gameObject != null && hit.collider != baseUnit.gameObject.GetComponent<BoxCollider>() && hit.collider.gameObject.GetComponent<Unit>() != null && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
-                    {
-                        baseUnit.state = PlayerState.READY;
-                        var unit = hit.collider.GetComponent<Unit>();
 
-                        action.targets = unit;
-                        action.unit = baseUnit;
-
-                        baseUnit.Queue(action);
-                        baseUnit.timelinechild.CanMove = true;
-                        Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
-                        BattleLog.Instance.ResetBattleLog();
-                        ClearTimelineChildren();
-                        LabCamera.Instance.ResetPosition();
-                        SetStyleLight(true);
-                        AudioManager.QuickPlay("button_Hit_005");
-                        SetActive(false);
-                    }
-                }
-                break;
-            case Action.TargetType.SELF:
-                foreach (var unit in Tools.GetAllUnits())
-                {
-                    if (targetting)
-                    {
-                        if (unit != baseUnit)
-                        {
-                            unit.isDarkened = true;
-                        }
-                        baseUnit.IsHighlighted = true;
-                    }
-                }
-                if (Input.GetMouseButtonUp(0))
-                {
-                    var bU = Tools.GetMousePos();
-                    if (hit.collider != null && bU.collider.gameObject != null && bU.collider == baseUnit.gameObject.GetComponent<BoxCollider>())
-                    {
-                        baseUnit.state = PlayerState.READY;
-                        action.targets = baseUnit;
-                        action.unit = baseUnit;
-                        baseUnit.Queue(action);
-                        SetActive(false);
-                        baseUnit.timelinechild.CanMove = true;
-                        LabCamera.Instance.ResetPosition();
-                        BattleLog.Instance.ResetBattleLog();
-                        SetStyleLight(true);
-                        ClearTimelineChildren();
-                        Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
-                        AudioManager.QuickPlay("button_Hit_005");
-                    }
-                }
-                break;
             case Action.TargetType.ALLY:
-                foreach (var unit in Tools.GetAllUnits())
                 {
-                    if (targetting)
+                    if (unit.IsPlayerControlled)
                     {
-                        if (!unit.IsPlayerControlled)
-                        {
-                            unit.isDarkened = true;
-                        }
-                        else
-                        {
-                            unit.IsHighlighted = true;
-                        }
+                        SetUnitAsNeutralTarget(unit, renderer);
                     }
+                    else
+                    {
+                        SetUnitAsInvalidTarget(unit, renderer);
+                    }
+
+                    break;
                 }
-                if (Input.GetMouseButtonUp(0))
+
+            case Action.TargetType.SELF:
                 {
-                    if (hit.collider != null && hit.collider.gameObject != null && hit.collider.gameObject.GetComponent<BoxCollider>() && hit.collider.gameObject.GetComponent<Unit>() != null && hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
+                    if (unit == baseUnit)
                     {
-                        baseUnit.state = PlayerState.READY;
-                        BattleLog.Instance.ResetBattleLog();
-                        this.targetting = false;
-                        var unit = hit.collider.GetComponent<Unit>();
-                        action.targets = unit;
-                        action.unit = baseUnit;
-                        baseUnit.Queue(action);
-
-                        baseUnit.timelinechild.CanMove = true;
-                        Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
-                        SetActive(false);
-                        ClearTimelineChildren();
-                        SetStyleLight(true);
-                        AudioManager.QuickPlay("button_Hit_005");
-                        LabCamera.Instance.ResetPosition();
+                        /*
+                         * For a self-targeted action, the controlled unit is
+                         * the target, so it uses the normal white target color.
+                         */
+                        SetUnitAsNeutralTarget(unit, renderer);
                     }
-                }
-                break;
+                    else
+                    {
+                        SetUnitAsInvalidTarget(unit, renderer);
+                    }
 
-            case Action.TargetType.ALL_ENEMIES:
+                    break;
+                }
+
+            default:
                 {
-                    foreach (var unit in Tools.GetAllUnits())
-                    {
-                        if (targetting)
-                        {
-                            if (!unit.IsPlayerControlled)
-                            {
-                                unit.IsHighlighted = true;
-                                if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) < 1) // Not Effective
-                                {
-                                    unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(0.5754717f * 255, 0.4533197f * 255, 0.4533197f * 255) * 0.02f);
-                                }
-                                else if (CombatTools.ReturnTypeMultiplier(unit, action.damageType) > 1) //Effective
-                                {
-                                    unit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", new Color(255, 1, 0) * 0.02f);
-                                }
-                            }
-                            else
-                            {
-                                unit.isDarkened = true;
-                            }
-                        }
-                        else
-                        {
-                            unit.IsHighlighted = false;
-                            unit.isDarkened = false;
-                        }
-
-                    }
-                    if (Input.GetMouseButtonUp(0))
-                    {
-                        if (hit.collider != null && hit.collider.gameObject != null && hit.collider != baseUnit.gameObject.GetComponent<BoxCollider>() && hit.collider.gameObject.GetComponent<Unit>() != null && !hit.collider.gameObject.GetComponent<Unit>().IsPlayerControlled)
-                        {
-                            baseUnit.state = PlayerState.READY;
-                            var unit = hit.collider.GetComponent<Unit>();
-
-                            action.targets = unit;
-                            action.unit = baseUnit;
-
-                            baseUnit.Queue(action);
-                            baseUnit.timelinechild.CanMove = true;
-                            Director.Instance.StartCoroutine(AutoSelectNextAvailableUnit());
-                            BattleLog.Instance.ResetBattleLog();
-                            LabCamera.Instance.ResetPosition();
-                            ClearTimelineChildren();
-                            SetStyleLight(true);
-                            AudioManager.QuickPlay("button_Hit_005");
-                            SetActive(false);
-                        }
-                    }
-
+                    ResetUnitHighlight(unit);
+                    break;
                 }
-                break;
-
         }
     }
 
-    void UpdateActionStyleOutline()
+    private void SetUnitAsEnemyTarget(
+    Unit unit,
+    SpriteRenderer renderer)
     {
+        unit.IsHighlighted = true;
+        unit.isDarkened = false;
+
+        float multiplier =
+            CombatTools.ReturnTypeMultiplier(
+                unit,
+                action.damageType
+            );
+
+        if (multiplier < 1f)
+        {
+            SetOutlineColor(
+                renderer,
+                ResistedTargetOutlineColor
+            );
+        }
+        else if (multiplier > 1f)
+        {
+            SetOutlineColor(
+                renderer,
+                EffectiveTargetOutlineColor
+            );
+        }
+        else
+        {
+            SetOutlineColor(
+                renderer,
+                ValidTargetOutlineColor
+            );
+        }
+    }
+
+    private void SetUnitAsNeutralTarget(
+        Unit unit,
+        SpriteRenderer renderer)
+    {
+        unit.IsHighlighted = true;
+        unit.isDarkened = false;
+
+        SetOutlineColor(
+            renderer,
+            ValidTargetOutlineColor
+        );
+    }
+
+    private void SetUnitAsInvalidTarget(
+        Unit unit,
+        SpriteRenderer renderer)
+    {
+        unit.IsHighlighted = false;
+        unit.isDarkened = true;
+
+        ResetOutlineColor(renderer);
+    }
+
+  
+
+    private void SetOutlineColor(SpriteRenderer renderer, Color color)
+    {
+        if (renderer == null)
+            return;
+
+        renderer.material.SetColor("_OutlineColor", color);
+    }
+
+    private void ResetOutlineColor(
+        SpriteRenderer spriteRenderer)
+    {
+        if (spriteRenderer == null)
+            return;
+
+        spriteRenderer.material.SetColor(
+            "_OutlineColor",
+            DefaultUnitOutlineColor
+        );
+    }
+
+    private void ResetUnitHighlight(Unit unit)
+    {
+        if (unit == null)
+            return;
+
+        unit.IsHighlighted = false;
+        unit.isDarkened = false;
+
+        SpriteRenderer spriteRenderer =
+            unit.GetComponent<SpriteRenderer>();
+
+        ResetOutlineColor(spriteRenderer);
+    }
+
+    private void ClearAllTargetingVisuals()
+    {
+        foreach (Unit unit in Tools.GetAllUnits())
+        {
+            ResetUnitHighlight(unit);
+        }
+    }
+
+    private void UpdateTempTimelineChildIfNeeded(
+        Unit targetUnit)
+    {
+        bool effectiveHit =
+            CombatTools.ReturnTypeMultiplier(
+                targetUnit,
+                action.damageType
+            ) > 1f;
+
+        if (effectiveHit ||
+            action.actionStyle !=
+                Action.ActionStyle.STANDARD ||
+            action.AppliesStun)
+        {
+            UpdateTempTimelineChild(targetUnit);
+        }
+        else
+        {
+            DestroyTempTimelineChildIfNeeded();
+        }
+    }
+
+    private void DestroyTempTimelineChildIfNeeded()
+    {
+        if (!CreatedTempTimelineChild)
+            return;
+
+        if (TempTL != null)
+        {
+            Director.Instance.timeline.children.Remove(TempTL);
+            Destroy(TempTL.gameObject);
+        }
+
+        TempTL = null;
+        CreatedTempTimelineChild = false;
+    }
+
+    private void UpdateTempTimelineChild(Unit targetUnit)
+    {
+        if (CreatedTempTimelineChild)
+            return;
+
+        Action targetAction =
+            Director.Instance.timeline
+                .ReturnTimeChildAction(targetUnit);
+
+        if (targetAction == null)
+            return;
+
+        bool canPreview =
+            CombatTools.ReturnIconStatus(
+                targetUnit,
+                "INDOMITABLE"
+            );
+
+        if (!canPreview)
+            return;
+
+        if (CombatTools.DetermineTrueCost(targetAction) <
+            CombatTools.DetermineTrueCost(action))
+        {
+            return;
+        }
+
+        CreateTempTimeLineChild(targetUnit);
+    }
+
+    private void ExecuteActionOnClick(RaycastHit hit)
+    {
+        if (!Input.GetMouseButtonUp(0))
+            return;
+
+        Unit clickedUnit = GetUnitFromHit(hit);
+
+        switch (action.targetType)
+        {
+            case Action.TargetType.ENEMY:
+                {
+                    if (clickedUnit != null &&
+                        clickedUnit != baseUnit &&
+                        !clickedUnit.IsPlayerControlled)
+                    {
+                        QueueSelectedAction(clickedUnit);
+                    }
+
+                    break;
+                }
+
+            case Action.TargetType.SELF:
+                {
+                    if (clickedUnit == baseUnit)
+                    {
+                        QueueSelectedAction(baseUnit);
+                    }
+
+                    break;
+                }
+
+            case Action.TargetType.ALLY:
+                {
+                    if (clickedUnit != null &&
+                        clickedUnit.IsPlayerControlled)
+                    {
+                        QueueSelectedAction(clickedUnit);
+                    }
+
+                    break;
+                }
+
+            case Action.TargetType.ALL_ENEMIES:
+                {
+                    if (clickedUnit != null &&
+                        clickedUnit != baseUnit &&
+                        !clickedUnit.IsPlayerControlled)
+                    {
+                        QueueSelectedAction(clickedUnit);
+                    }
+
+                    break;
+                }
+        }
+    }
+
+    private void QueueSelectedAction(Unit target)
+    {
+        if (baseUnit == null ||
+            action == null ||
+            target == null)
+        {
+            return;
+        }
+
+        /*
+         * Clear visual state before the next unit starts deciding.
+         */
+        targetting = false;
+        currentPreviewTarget = null;
+        ClearAllTargetingVisuals();
+
+        baseUnit.state = PlayerState.READY;
+
+        action.targets = target;
+        action.unit = baseUnit;
+
+        baseUnit.Queue(action);
+
+        if (baseUnit.timelinechild != null)
+        {
+            baseUnit.timelinechild.CanMove = true;
+        }
+
+        Director.Instance.StartCoroutine(
+            AutoSelectNextAvailableUnit()
+        );
+
+        BattleLog.Instance.ResetBattleLog();
+
+        ClearTimelineChildren();
+        DestroyTempTimelineChildIfNeeded();
+
+        LabCamera.Instance.ResetPosition();
+
+        SetStyleLight(true);
+
+        AudioManager.QuickPlay("button_Hit_005");
+
+        SetActive(false);
+    }
+
+    public void UpdateActionStyleOutline()
+    {
+        Image image = GetComponent<Image>();
+
+        if (image == null || action == null)
+            return;
+
         switch (action.actionStyle)
         {
             case Action.ActionStyle.STANDARD:
                 {
-                    this.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
-                    this.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+                    image.material.SetFloat(
+                        "OutlineThickness",
+                        0f
+                    );
+
+                    image.material.SetColor(
+                        "OutlineColor",
+                        Color.white
+                    );
+
+                    break;
                 }
-                break;
+
             case Action.ActionStyle.HEAVY:
                 {
-                    Color heavyColor = new Color(225, 1, 0);
-                    this.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
-                    this.GetComponent<Image>().material.SetColor("OutlineColor", heavyColor * 10);
-                    baseUnit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", heavyColor * 0.05f);
+                    Color heavyColor =
+                        new Color(225f, 1f, 0f);
+
+                    image.material.SetFloat(
+                        "OutlineThickness",
+                        1f
+                    );
+
+                    image.material.SetColor(
+                        "OutlineColor",
+                        heavyColor * 10f
+                    );
+
+                    break;
                 }
-                break;
+
             case Action.ActionStyle.LIGHT:
                 {
-                    Color lightColor = new Color(0, 162, 191);
-                    this.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
-                    this.GetComponent<Image>().material.SetColor("OutlineColor", lightColor * 10);
-                    baseUnit.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColor", lightColor * 0.05f);
+                    Color lightColor =
+                        new Color(0f, 162f, 191f);
+
+                    image.material.SetFloat(
+                        "OutlineThickness",
+                        1f
+                    );
+
+                    image.material.SetColor(
+                        "OutlineColor",
+                        lightColor * 10f
+                    );
+
+                    break;
                 }
-                break;
         }
     }
 
-    void PerformOnActionSelected()
+    private void PerformOnActionSelected()
     {
-        if (!HasDoneOnAction)
+        if (HasDoneOnAction ||
+            baseUnit == null)
         {
-            baseUnit.DoOnActionSelected(this);
-            HasDoneOnAction = true;
+            return;
         }
+
+        baseUnit.DoOnActionSelected(this);
+        HasDoneOnAction = true;
     }
 
-    void ResetUIState()
+    public void ResetUIState()
     {
         if (damageNums != null)
-            damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
+        {
+            damageNums.color =
+                NeutralDamageColor;
+        }
 
-        GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
-        GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
+        Image image = GetComponent<Image>();
+
+        if (image != null)
+        {
+            image.material.SetFloat(
+                "OutlineThickness",
+                0f
+            );
+
+            image.material.SetColor(
+                "OutlineColor",
+                Color.white
+            );
+        }
     }
 
     public IEnumerator AutoSelectNextAvailableUnit()
     {
         yield return new WaitForSeconds(0.3f);
-        foreach (var PU in BattleSystem.Instance.playerUnits)
+
+        foreach (Unit playerUnit
+                 in BattleSystem.Instance.playerUnits)
         {
-            if (PU.state != PlayerState.READY)
+            if (playerUnit == null)
+                continue;
+
+            if (playerUnit.state != PlayerState.READY)
             {
-                PU.StartDecision();
+                playerUnit.StartDecision();
                 break;
             }
         }
     }
 
-    public void CreateTempTimeLineChild(Unit TargetUnit)
+    public void CreateTempTimeLineChild(Unit targetUnit)
     {
+        if (targetUnit == null)
+            return;
+
         CreatedTempTimelineChild = true;
-        TempTL = Instantiate(Director.Instance.timeline.borderChildprefab, Director.Instance.timeline.startpoint);
-        TempTL.unit = TargetUnit;
-        TempTL.portrait.sprite = TargetUnit.charPortraits[0];
+
+        TempTL = Instantiate(
+            Director.Instance.timeline.borderChildprefab,
+            Director.Instance.timeline.startpoint
+        );
+
+        TempTL.unit = targetUnit;
+
+        if (TempTL.portrait != null &&
+            targetUnit.charPortraits != null &&
+            targetUnit.charPortraits.Count > 0)
+        {
+            TempTL.portrait.sprite =
+                targetUnit.charPortraits[0];
+        }
+
         Director.Instance.timeline.children.Add(TempTL);
+
         TempTL.CanMove = false;
-        float costToReturn = 0;
-        if (TargetUnit != null)
-            costToReturn = Director.Instance.timeline.ReturnTimeChildAction(TargetUnit).cost;
 
-        if (CombatTools.ReturnTypeMultiplier(TargetUnit, action.damageType) > 1)
-            costToReturn += Director.Instance.TimelineAddition;
+        float costToReturn = 0f;
 
-        if (action.actionStyle != Action.ActionStyle.STANDARD)
-            costToReturn += Director.Instance.TimelineReductionNonStandardAction;
+        Action targetAction =
+            Director.Instance.timeline
+                .ReturnTimeChildAction(targetUnit);
 
-        costToReturn += TargetUnit.knockbackModifider;
+        if (targetAction != null)
+        {
+            costToReturn =
+                CombatTools.DetermineTrueCost(targetAction);
+        }
 
-        if (costToReturn > 100 || action.AppliesStun)
-            costToReturn = 100;
+        bool effectiveHit =
+            CombatTools.ReturnTypeMultiplier(
+                targetUnit,
+                action.damageType
+            ) > 1f;
 
-        if (TargetUnit.IsPlayerControlled)
-            TempTL.rectTransform.anchoredPosition = new Vector3((100 - costToReturn) * TempTL.offset, 50);
-        else
-            TempTL.rectTransform.anchoredPosition = new Vector3((100 - costToReturn) * TempTL.offset, -50);
+        if (effectiveHit)
+        {
+            costToReturn +=
+                Director.Instance.TimelineAddition;
 
-        TempTL.staminaText.text = (costToReturn).ToString();
+            costToReturn +=
+                targetUnit.knockbackModifider;
+        }
+
+        if (action.actionStyle !=
+            Action.ActionStyle.STANDARD)
+        {
+            costToReturn +=
+                Director.Instance
+                    .TimelineReductionNonStandardAction;
+        }
+
+        if (costToReturn > 100f ||
+            action.AppliesStun)
+        {
+            costToReturn = 100f;
+        }
+
+        float verticalPosition =
+            targetUnit.IsPlayerControlled
+                ? 50f
+                : -50f;
+
+        TempTL.rectTransform.anchoredPosition =
+            new Vector3(
+                (100f - costToReturn) * TempTL.offset,
+                verticalPosition
+            );
+
+        TempTL.staminaText.text =
+            Mathf.RoundToInt(costToReturn).ToString();
+
         TempTL.CanClear = true;
-        TempTL.GetComponent<LabUIInteractable>().CanHover = false;
+
+        LabUIInteractable interactable =
+            TempTL.GetComponent<LabUIInteractable>();
+
+        if (interactable != null)
+        {
+            interactable.CanHover = false;
+        }
+
         TempTL.CanBeHighlighted = false;
-        TempTL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.5f);
-        TempTL.portrait.color = new Color(1, 1, 1, 0.5f);
+
+        Image timelineImage =
+            TempTL.GetComponentInChildren<Image>();
+
+        if (timelineImage != null)
+        {
+            timelineImage.color =
+                new Color(1f, 1f, 1f, 0.5f);
+        }
+
+        if (TempTL.portrait != null)
+        {
+            TempTL.portrait.color =
+                new Color(1f, 1f, 1f, 0.5f);
+        }
     }
 
     public IEnumerator lightCoroutine;
+
     public void SetStyleLight(bool TurnOn)
     {
         if (TurnOn)
@@ -561,133 +1048,266 @@ public class ActionContainer : MonoBehaviour
             }
         }
     }
+
     public void SetDescription()
     {
-        if (isActiveAndEnabled)
+        if (!isActiveAndEnabled ||
+            action == null ||
+            baseUnit == null)
         {
-            var rectTrans = transform.GetComponent<RectTransform>();
-            action.unit = baseUnit;
-            if (currentEffectPopup == null)
-            {
-
-                var EP = Instantiate(Director.Instance.EffectPopUp,this.transform);
-                EP.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                currentEffectPopup = EP;
-            }
-            else
-            {
-                currentEffectPopup.SetActive(true);
-            }
-
-          
-
-            var EPtext = currentEffectPopup.GetComponentInChildren<TextMeshProUGUI>();
-            //Description for Battle
-            EPtext.text = $"{action.ReturnActionType()}\n{action.GetDescription()}";
-            // currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();
-
-            if (limited)
-            {
-                EPtext.text += $"\nUses: {numberofUses}.";
-            }
-            if (!action.CanBeStyled)
-            {
-                EPtext.text += "<color=#FF0000>\nCan't be ignited.</color>";
-            }
-
-            if (BattleSystem.Instance != null && BattleSystem.Instance.state != BattleStates.WON)
-            {
-                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(
-                    rectTrans.anchoredPosition.x,
-                    rectTrans.anchorMax.y + 75 + currentEffectPopup.transform.GetComponent<RectTransform>().rect.width / (currentEffectPopup.transform.GetComponent<RectTransform>().rect.width / 2), 
-                    0);
-                currentEffectPopup.transform.SetAsLastSibling();
-            }
-            else
-            {
-                currentEffectPopup.transform.localScale = new Vector3(0.02f, 0.02f, 1);
-                currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1, 0);
-                currentEffectPopup.transform.SetAsLastSibling();
-            }
-
-            Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
+            return;
         }
+
+        RectTransform rectTransform =
+            GetComponent<RectTransform>();
+
+        action.unit = baseUnit;
+
+        if (currentEffectPopup == null)
+        {
+            currentEffectPopup = Instantiate(
+                Director.Instance.EffectPopUp,
+                transform
+            );
+
+            currentEffectPopup.transform.localScale =
+                new Vector3(1.5f, 1.5f, 1.5f);
+        }
+        else
+        {
+            currentEffectPopup.SetActive(true);
+        }
+
+        TextMeshProUGUI popupText =
+            currentEffectPopup
+                .GetComponentInChildren<TextMeshProUGUI>();
+
+        popupText.text =
+            $"{action.ReturnActionType()}\n" +
+            $"{action.GetDescription()}";
+
+        if (limited)
+        {
+            popupText.text +=
+                $"\nUses: {numberofUses}.";
+        }
+
+        if (!action.CanBeStyled)
+        {
+            popupText.text +=
+                "<color=#FF0000>\n" +
+                "Can't be ignited.</color>";
+        }
+
+        RectTransform popupRect =
+            currentEffectPopup
+                .GetComponent<RectTransform>();
+
+        if (BattleSystem.Instance != null &&
+            BattleSystem.Instance.state !=
+                BattleStates.WON)
+        {
+            popupRect.anchoredPosition =
+                new Vector3(
+                    rectTransform.anchoredPosition.x,
+                    rectTransform.anchorMax.y +
+                    75f +
+                    popupRect.rect.width /
+                    (popupRect.rect.width / 2f),
+                    0f
+                );
+
+            currentEffectPopup.transform
+                .SetAsLastSibling();
+        }
+        else
+        {
+            currentEffectPopup.transform.localScale =
+                new Vector3(0.02f, 0.02f, 1f);
+
+            popupRect.anchoredPosition =
+                new Vector3(0f, 1f, 0f);
+
+            currentEffectPopup.transform
+                .SetAsLastSibling();
+        }
+
+        Director.Instance.StartCoroutine(
+            Tools.UpdateParentLayoutGroup(
+                popupText.gameObject
+            )
+        );
     }
-
-
-
 
     public void RemoveDescription()
     {
         if (currentEffectPopup != null)
+        {
             currentEffectPopup.SetActive(false);
+        }
     }
 
-
-    public void ResetAllStyleButtons(bool turnOn = false)
+    public void ResetAllStyleButtons(
+        bool turnOn = false)
     {
-        if (action.actionStyle != Action.ActionStyle.STANDARD && baseUnit.state == PlayerState.DECIDING)
+        if (action.actionStyle !=
+                Action.ActionStyle.STANDARD &&
+            baseUnit.state == PlayerState.DECIDING)
         {
             CombatTools.ReturnPipCounter().AddPip();
         }
-        AudioManager.Instance.Stop("statUp_Loop_001");
-        action.actionStyle = Action.ActionStyle.STANDARD;
-        //action.ResetAction();
-        if (baseUnit != null && baseUnit.GetComponentInChildren<Light>().intensity < 1.1)
+
+        AudioManager.Instance.Stop(
+            "statUp_Loop_001"
+        );
+
+        action.actionStyle =
+            Action.ActionStyle.STANDARD;
+
+        /*
+         * Clear the action-style outline before restoring lights.
+         */
+        if (baseUnit != null)
         {
-            var Light = baseUnit.GetComponentInChildren<Light>();
-            baseUnit.ChangeUnitsLight(Light, 0, 0, Light.color, 0f, 0);
+            SpriteRenderer renderer =
+                baseUnit.GetComponent<SpriteRenderer>();
+
+            ResetOutlineColor(renderer);
         }
 
-        lightButton.state = ActionTypeButton.ActionButtonState.LIGHT;
-        heavyButton.state = ActionTypeButton.ActionButtonState.HEAVY;
-        SetActionStyleButtonsActive(turnOn);
+        Light unitLight =
+            baseUnit != null
+                ? baseUnit.GetComponentInChildren<Light>()
+                : null;
 
+        if (unitLight != null &&
+            unitLight.intensity < 1.1f)
+        {
+            baseUnit.ChangeUnitsLight(
+                unitLight,
+                0f,
+                0f,
+                unitLight.color,
+                0f,
+                0f
+            );
+        }
+
+        if (lightButton != null)
+        {
+            lightButton.state =
+                ActionTypeButton
+                    .ActionButtonState.LIGHT;
+        }
+
+        if (heavyButton != null)
+        {
+            heavyButton.state =
+                ActionTypeButton
+                    .ActionButtonState.HEAVY;
+        }
+
+        SetActionStyleButtonsActive(turnOn);
+        RefreshActionValues();
     }
 
     public void UpdateOnStyleSwitch()
     {
-        if (TL != null)
-        {
-            TL.staminaText.text = (CombatTools.DetermineTrueCost(action)).ToString();
-            TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * TL.offset, 50);
-        }
+        RefreshActionValues();
         SetDescription();
     }
 
-    public void SetActionStyleButtonsActive(bool SetActive)
+    public void SetActionStyleButtonsActive(
+        bool setActive)
     {
-        if (Director.Instance.UnlockedPipSystem && !BattleSystem.Instance.enemyUnits.Where(obj => obj.unitName.Contains("Dusty")).SingleOrDefault())
+        if (BattleSystem.Instance == null ||
+            action == null)
+        {
+            return;
+        }
+
+        bool hasDusty =
+            BattleSystem.Instance.enemyUnits.Any(
+                enemy =>
+                    enemy != null &&
+                    enemy.unitName.Contains("Dusty")
+            );
+
+        if (Director.Instance.UnlockedPipSystem &&
+            !hasDusty)
         {
             if (action.CanBeStyled)
             {
-                lightButton.gameObject.SetActive(SetActive);
-                heavyButton.gameObject.SetActive(SetActive);
+                if (lightButton != null)
+                {
+                    lightButton.gameObject.SetActive(
+                        setActive
+                    );
+
+                    lightButton.interactable = true;
+                }
+
+                if (heavyButton != null)
+                {
+                    heavyButton.gameObject.SetActive(
+                        setActive
+                    );
+
+                    heavyButton.interactable = true;
+                }
             }
-            Director.Instance.StartCoroutine(CombatTools.StopAndDestroyVFX(0.01f));
-            lightButton.interactable = true;
-            heavyButton.interactable = true;
+
+            Director.Instance.StartCoroutine(
+                CombatTools.StopAndDestroyVFX(
+                    0.01f
+                )
+            );
         }
         else
         {
-            Director.Instance.StartCoroutine(CombatTools.StopAndDestroyVFX(0.01f));
-            lightButton.gameObject.SetActive(false);
-            heavyButton.gameObject.SetActive(false);
+            Director.Instance.StartCoroutine(
+                CombatTools.StopAndDestroyVFX(
+                    0.01f
+                )
+            );
+
+            if (lightButton != null)
+            {
+                lightButton.gameObject.SetActive(false);
+            }
+
+            if (heavyButton != null)
+            {
+                heavyButton.gameObject.SetActive(false);
+            }
         }
     }
+
     public void SetActive(bool turnOn)
     {
-        if (!Director.Instance.timeline.gameObject.activeSelf)
+        if (!Director.Instance.timeline
+                .gameObject.activeSelf)
+        {
             return;
+        }
 
-        damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
+        if (damageNums != null)
+        {
+            damageNums.color =
+                NeutralDamageColor;
+        }
 
-        if (BattleSystem.Instance != null && baseUnit != null)
+        if (BattleSystem.Instance != null &&
+            baseUnit != null)
         {
             if (targetting || !turnOn)
+            {
                 DeactivateAction();
+            }
             else
+            {
                 ActivateAction();
+            }
         }
         else
         {
@@ -696,143 +1316,340 @@ public class ActionContainer : MonoBehaviour
         }
     }
 
-    void DeactivateAction()
+    private void DeactivateAction()
     {
+        /*
+         * Set state and clear visuals first so nothing later in the
+         * method can leave an old target highlighted.
+         */
         targetting = false;
+        currentPreviewTarget = null;
+
+        ClearAllTargetingVisuals();
+
         SetActionStyleButtonsActive(false);
         SetStyleLight(true);
+
         LabCamera.Instance.ResetPosition();
 
-        if(CombatTools.FindDecidingUnit() != null)
-            LabCamera.Instance.MoveToUnit(CombatTools.FindDecidingUnit(), new Vector3(0, 16.8f, 0), CombatTools.FindDecidingUnit().GetComponent<SpriteRenderer>().sprite.bounds.center.x / 5f, 0, 0);
+        Unit decidingUnit =
+            CombatTools.FindDecidingUnit();
+
+        if (decidingUnit != null)
+        {
+            SpriteRenderer decidingRenderer =
+                decidingUnit.GetComponent<SpriteRenderer>();
+
+            float cameraOffset = 0f;
+
+            if (decidingRenderer != null &&
+                decidingRenderer.sprite != null)
+            {
+                cameraOffset =
+                    decidingRenderer.sprite
+                        .bounds.center.x / 5f;
+            }
+
+            LabCamera.Instance.MoveToUnit(
+                decidingUnit,
+                new Vector3(0f, 16.8f, 0f),
+                cameraOffset,
+                0f,
+                0f
+            );
+        }
 
         RemoveDescription();
         ResetAllStyleButtons();
+        RefreshActionValues();
 
-        if (action.targetType == Action.TargetType.ENEMY && action.actionType == Action.ActionType.ATTACK)
-        {
-            damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + baseUnit.attackStat).ToString();
-            damageNums.color = new Color(1, 0.8705882f, 0.7058824f);
-        }
-
-        costNums.text = CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier < 100 ? $"{CombatTools.DetermineTrueCost(action) * baseUnit.actionCostMultiplier}%" : $"100%";
-
-        UpdateButtonInteractability(GetComponent<Button>());
-
-        foreach (var unit in Tools.GetAllUnits())
-        {
-            unit.IsHighlighted = false;
-            unit.isDarkened = false;
-        }
+        UpdateButtonInteractability(button);
 
         ClearTimelineChildren();
+        DestroyTempTimelineChildIfNeeded();
     }
 
-    void ActivateAction()
+    private void ActivateAction()
     {
+        if (baseUnit == null || action == null)
+            return;
+
+        action.unit = baseUnit;
+
+        SubscribeToUnit();
+
         SetActionStyleButtonsActive(false);
 
         DeactivateOtherActionContainers();
-
         ClearTimelineChildren();
+
+        /*
+         * Ensure no visual state remains from the previously
+         * selected action before applying this action's targets.
+         */
+        ClearAllTargetingVisuals();
+
         SetStyleLight(true);
+
         LabCamera.Instance.ResetPosition();
+
         RemoveDescription();
 
         TL = InstantiateTimelineChild();
         SetTimelineChildProperties();
 
         targetting = true;
+
+        RefreshActionValues();
         SetDescription();
+
         SetButtonInteractable(false);
 
         ScaleObject();
 
-        SetActionStyleButtonsActive(CombatTools.ReturnPipCounter().pipCount > 0);
+        SetActionStyleButtonsActive(
+            CombatTools.ReturnPipCounter()
+                .pipCount > 0
+        );
 
-        AudioManager.QuickPlay("button_Hit_001", true);
+        AudioManager.QuickPlay(
+            "button_Hit_001",
+            true
+        );
+
         HasDoneOnAction = false;
     }
 
-    void UpdateButtonInteractability(Button button)
+    private void UpdateButtonInteractability(
+        Button targetButton)
     {
+        if (targetButton == null)
+            return;
+
         if (!Disabled)
         {
-            button.interactable = limited ? (numberofUses > 0) : true;
+            targetButton.interactable =
+                !limited || numberofUses > 0;
         }
-        else if (Disabled)
-            button.interactable = false;
-    }
-
-    void DeactivateOtherActionContainers()
-    {
-        ActionContainer[] actionContainers = UnityEngine.Object.FindObjectsOfType<ActionContainer>();
-        foreach (var x in actionContainers)
+        else
         {
-            if (x != this)
-            {
-                x.SetActive(false);
-                if (x.Disabled)
-                    x.button.interactable = false;
-                UpdateButtonInteractability(x.GetComponent<Button>());
-            }
+            targetButton.interactable = false;
         }
     }
 
-    void ClearTimelineChildren()
+    private void DeactivateOtherActionContainers()
     {
-        foreach (TimeLineChild child in Director.Instance.timeline.children.ToList())
+        ActionContainer[] actionContainers =
+            FindObjectsOfType<ActionContainer>();
+
+        foreach (ActionContainer container
+                 in actionContainers)
         {
-            if (child != null && child.CanClear)
-            {
-                Director.Instance.timeline.children.Remove(child);
-                Destroy(child.gameObject);
-                break;
-            }
+            if (container == this)
+                continue;
+
+            container.SetActive(false);
+
+            container.UpdateButtonInteractability(
+                container.button
+            );
         }
     }
 
-    TimeLineChild InstantiateTimelineChild()
+    private void ClearTimelineChildren()
     {
-        TL = Instantiate(Director.Instance.timeline.borderChildprefab, Director.Instance.timeline.startpoint);
+        foreach (TimeLineChild child
+                 in Director.Instance.timeline
+                     .children.ToList())
+        {
+            if (child == null || !child.CanClear)
+                continue;
+
+            Director.Instance.timeline
+                .children.Remove(child);
+
+            if (child == TempTL)
+            {
+                TempTL = null;
+                CreatedTempTimelineChild = false;
+            }
+
+            if (child == TL)
+            {
+                TL = null;
+            }
+
+            Destroy(child.gameObject);
+        }
+    }
+
+    private TimeLineChild InstantiateTimelineChild()
+    {
+        TL = Instantiate(
+            Director.Instance.timeline.borderChildprefab,
+            Director.Instance.timeline.startpoint
+        );
+
         TL.unit = baseUnit;
-        TL.portrait.sprite = baseUnit.charPortraits[0];
+
+        if (TL.portrait != null &&
+            baseUnit.charPortraits != null &&
+            baseUnit.charPortraits.Count > 0)
+        {
+            TL.portrait.sprite =
+                baseUnit.charPortraits[0];
+        }
+
         Director.Instance.timeline.children.Add(TL);
+
         TL.CanMove = false;
-        TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
-        TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * TL.offset, 50);
-        TL.staminaText.text = (CombatTools.DetermineTrueCost(action)).ToString();
+
+        ApplyTimelineChildCost();
+
         TL.CanClear = true;
-        TL.GetComponent<LabUIInteractable>().CanHover = false;
+
+        LabUIInteractable interactable =
+            TL.GetComponent<LabUIInteractable>();
+
+        if (interactable != null)
+        {
+            interactable.CanHover = false;
+        }
+
         TL.CanBeHighlighted = false;
-        TL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.5f);
-        TL.portrait.color = new Color(1, 1, 1, 0.5f);
+
+        Image timelineImage =
+            TL.GetComponentInChildren<Image>();
+
+        if (timelineImage != null)
+        {
+            timelineImage.color =
+                new Color(1f, 1f, 1f, 0.5f);
+        }
+
+        if (TL.portrait != null)
+        {
+            TL.portrait.color =
+                new Color(1f, 1f, 1f, 0.5f);
+        }
+
         return TL;
     }
 
-    void SetTimelineChildProperties()
+    private void SetTimelineChildProperties()
     {
-        TL.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 50);
-        TL.rectTransform.anchoredPosition = new Vector3((100 - CombatTools.DetermineTrueCost(action)) * TL.offset, 50);
-        TL.staminaText.text = (CombatTools.DetermineTrueCost(action)).ToString();
+        if (TL == null)
+            return;
+
+        ApplyTimelineChildCost();
+
         TL.CanClear = true;
-        TL.GetComponent<LabUIInteractable>().CanHover = false;
+
+        LabUIInteractable interactable =
+            TL.GetComponent<LabUIInteractable>();
+
+        if (interactable != null)
+        {
+            interactable.CanHover = false;
+        }
+
         TL.CanBeHighlighted = false;
-        TL.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0.5f);
-        TL.portrait.color = new Color(1, 1, 1, 0.5f);
+
+        Image timelineImage =
+            TL.GetComponentInChildren<Image>();
+
+        if (timelineImage != null)
+        {
+            timelineImage.color =
+                new Color(1f, 1f, 1f, 0.5f);
+        }
+
+        if (TL.portrait != null)
+        {
+            TL.portrait.color =
+                new Color(1f, 1f, 1f, 0.5f);
+        }
     }
 
-    void ScaleObject()
+    private void ApplyTimelineChildCost()
     {
-        transform.localScale = GetComponent<ScalableObject>().oldScaleSize;
+        if (TL == null ||
+            action == null ||
+            baseUnit == null)
+        {
+            return;
+        }
+
+        action.unit = baseUnit;
+
+        float finalCost =
+            Mathf.Clamp(
+                CombatTools.DetermineTrueCost(action),
+                0f,
+                100f
+            );
+
+        TL.rectTransform.anchoredPosition =
+            new Vector3(
+                (100f - finalCost) * TL.offset,
+                50f
+            );
+
+        TL.staminaText.text =
+            Mathf.RoundToInt(finalCost).ToString();
     }
 
-    void SetButtonInteractable(bool interactable)
+    private void ScaleObject()
     {
-        var button = GetComponent<Button>();
-        button.interactable = interactable;
+        ScalableObject scalableObject =
+            GetComponent<ScalableObject>();
+
+        if (scalableObject != null)
+        {
+            transform.localScale =
+                scalableObject.oldScaleSize;
+        }
     }
 
+    private void SetButtonInteractable(
+        bool interactable)
+    {
+        Button actionButton =
+            GetComponent<Button>();
+
+        if (actionButton != null)
+        {
+            actionButton.interactable =
+                interactable;
+        }
+    }
+
+    public void RefreshActionValues()
+    {
+        if (baseUnit == null || action == null)
+            return;
+
+        action.unit = baseUnit;
+
+        SubscribeToUnit();
+
+        if (damageNums != null &&
+            action.actionType ==
+                Action.ActionType.ATTACK)
+        {
+            Unit previewTarget =
+                targetting
+                    ? currentPreviewTarget
+                    : null;
+
+            UpdateDamageDisplay(previewTarget);
+        }
+
+        UpdateCostNumbers();
+
+        if (TL != null)
+        {
+            ApplyTimelineChildCost();
+        }
+    }
 }
-
-
