@@ -5,13 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using TMPro;
-[CreateAssetMenu(fileName = "IronShield", menuName = "Assets/Items/IronShield")]
-public class IronShield : Item
+[CreateAssetMenu(fileName = "UmbralTome", menuName = "Assets/Items/UmbralTome")]
+public class UmbralTome : Item
 {
     private void OnEnable()
     {
-        itemName = "Iron Shield";
-        itemDescription = "Applies <color=#FFFFFF>BLOCK</color> to a lowest <color=#FF0000>HP</color> unit at the start of battle.";
+        itemName = "Umbral Tome";
+        itemDescription = "Applies <color=#6A00FF>HEX</color> to a random enemy <color=#6C00FF>HP</color> unit at the start of battle.";
         CanBeTransfered = false;
         ExcludedFromLootPools = true;
     }
@@ -33,11 +33,9 @@ public class IronShield : Item
         if(BattleSystem.Instance == null)
             return;
 
-        List<Unit> playerUnits = BattleSystem.Instance.playerUnits;
 
-        playerUnits.OrderBy(currentHP => currentHP);
-        Unit targetUnit = playerUnits.Where(playerUnit =>playerUnit != null && playerUnit.currentHP > 0).OrderBy(playerUnit => playerUnit.currentHP).FirstOrDefault();
-        BattleSystem.Instance.SetTempEffect(targetUnit,"BLOCK", false, 0, 0, 1);
+        Unit targetUnit = BattleSystem.Instance.enemyUnits[UnityEngine.Random.Range(0, BattleSystem.Instance.enemyUnits.Count)];
+        BattleSystem.Instance.SetTempEffect(targetUnit,"HEX", false, 0, 0, 1);
     }
 
     public override void OnRemoved(Unit unit)

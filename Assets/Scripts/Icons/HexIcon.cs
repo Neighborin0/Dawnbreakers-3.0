@@ -7,15 +7,15 @@ using System;
 using UnityEngine.Rendering;
 using System.Linq;
 
-public class Block : EffectIcon
+public class HexIcon : EffectIcon
 {
 
     new void Start()
     {
-        iconName = "BLOCK";
+        iconName = "HEX";
         if(owner != null)
         {
-            this.owner.DamageModifier = 0.5f;
+            this.owner.damageAddend += 1f;
             this.owner.OnDamaged += RemoveBuff;
         }
         else
@@ -27,14 +27,13 @@ public class Block : EffectIcon
     }
     public override string GetDescription()
     {
-        description = $"Reduces the DMG of \nthe next hit by 50%.";
+        description = $"The next time this unit takes damage, it takes 1 additional damage. Then remove <color=#6C00FF>Hex</color>.";
         return description;
     }
 
     public void RemoveBuff(Unit unit)
-    {
-        Director.Instance.StartCoroutine(CombatTools.PlayVFX(owner.gameObject, "BlockBreak", new Color32(65, 38, 243, 255), new Color(65, 38, 243), new Vector3(0, 0.5f, -2f), Quaternion.identity, 0.5f, 0, false, 0, 2));AudioManager.Instance.Play("armor_hit_001", 0, false, 0.6f);
-        unit.DamageModifier = 1f;
+    {   
+        unit.damageAddend -= 1f;
         unit.OnDamaged -= RemoveBuff;
         owner.statusEffects.Remove(owner.statusEffects.Where(obj => obj.iconName == iconName).SingleOrDefault());
         Destroy(gameObject);

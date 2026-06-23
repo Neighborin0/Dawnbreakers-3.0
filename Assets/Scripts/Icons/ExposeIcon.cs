@@ -1,29 +1,87 @@
-﻿using System.Collections;
-using System.Linq;
+﻿
+using System.Collections;
 using UnityEngine;
 
 public class ExposeIcon : EffectIcon
 {
-    private const int DelayBonus = 15;
-    private bool modifierApplied;
+    private const int DelayBonusPerStack = 15;
 
-    new void Start()
+    private int totalAppliedDelay;
+
+    public override void Initalize(
+        Unit unit,
+        bool doFancyStatChanges,
+        float duration = 0f,
+        float storedValue = 0f,
+        float numberofStacks = 0f)
     {
-        iconName = "Expose";
+        iconName = "EXPOSE";
         TimedEffect = true;
+        canBeStacked = true;
 
-        bool alreadyExposed = owner.statusEffects
-            .Any(effect => effect != this && effect.iconName == iconName);
+        base.Initalize(
+            unit,
+            doFancyStatChanges,
+            duration,
+            storedValue,
+            numberofStacks
+        );
 
-        if (alreadyExposed)
+        /*
+         * Apply the gameplay modifier for the starting stacks.
+         */
+        int initialStacks =
+            Mathf.Max(1, NumberofStacks);
+
+        int delayToApply =
+            DelayBonusPerStack * initialStacks;
+
+        owner.knockbackModifider +=
+            delayToApply;
+
+        totalAppliedDelay +=
+            delayToApply;
+
+        PlayApplicationVFX();
+    }
+
+    public override void AddStacks(
+        float addedDuration,
+        float addedStoredValue,
+        int addedStacks)
+    {
+        int safeStackAmount =
+            Mathf.Max(1, addedStacks);
+
+        base.AddStacks(
+            addedDuration,
+            addedStoredValue,
+            safeStackAmount
+        );
+
+        /*
+         * Each added stack contributes another +15 delay.
+         */
+        int addedDelay =
+            DelayBonusPerStack *
+            safeStackAmount;
+
+        owner.knockbackModifider +=
+            addedDelay;
+
+        totalAppliedDelay +=
+            addedDelay;
+
+        PlayApplicationVFX();
+    }
+
+    private void PlayApplicationVFX()
+    {
+        if (owner == null ||
+            Director.Instance == null)
         {
-            owner.statusEffects.Remove(this);
-            Destroy(gameObject);
             return;
         }
-
-        owner.knockbackModifider += DelayBonus;
-        modifierApplied = true;
 
         Director.Instance.StartCoroutine(
             CombatTools.PlayVFX(
@@ -31,60 +89,76 @@ public class ExposeIcon : EffectIcon
                 "StatDownVFX",
                 Color.white,
                 Color.white,
-                new Vector3(0, 15, 0),
+                new Vector3(0f, 15f, 0f),
                 Quaternion.identity,
-                1f,
-                0,
+                0.2f,
+                0f,
                 false,
                 1f,
-                1
+                1f
             )
         );
     }
 
     public override string GetDescription()
     {
-        return $"Effective hits apply <color=#FFFFFF>+{DelayBonus} Timeline Delay</color>.";
+        return
+            $"Effective hits apply " +
+            $"<color=#FFFFFF>+{totalAppliedDelay} " +
+            $"Timeline Delay</color>.";
     }
 
     public override IEnumerator End()
     {
-        if (modifierApplied)
+        if (owner != null)
         {
             owner.knockbackModifider =
-                Mathf.Max(0, owner.knockbackModifider - DelayBonus);
-
-            modifierApplied = false;
+                Mathf.Max(
+                    0,
+                    owner.knockbackModifider -
+                    totalAppliedDelay
+                );
         }
 
-        Director.Instance.StartCoroutine(
-            CombatTools.PlayVFX(
-                owner.gameObject,
-                "StatDownVFX",
-                Color.white,
-                Color.white,
-                new Vector3(0, 15, 0),
-                Quaternion.identity,
-                1f,
-                0,
-                false,
-                1f,
-                1
-            )
-        );
+        totalAppliedDelay = 0;
 
-        owner.ChangeUnitsLight(
-            owner.spotLight,
-            20,
-            2,
-            Color.white,
-            0.04f,
-            0.1f
-        );
+        if (Director.Instance != null &&
+            owner != null)
+        {
+            Director.Instance.StartCoroutine(
+                CombatTools.PlayVFX(
+                    owner.gameObject,
+                    "StatDownVFX",
+                    Color.white,
+                    Color.white,
+                    new Vector3(0f, 15f, 0f),
+                    Quaternion.identity,
+                    0.2f,
+                    0f,
+                    false,
+                    1f,
+                    1f
+                )
+            );
 
-        owner.statusEffects.Remove(this);
+            owner.ChangeUnitsLight(
+                owner.spotLight,
+                20f,
+                2f,
+                Color.white,
+                0.04f,
+                0.1f
+            );
+        }
+
+        if (owner != null)
+        {
+            owner.statusEffects.Remove(this);
+        }
+
         Destroy(gameObject);
 
         yield break;
     }
 }
+

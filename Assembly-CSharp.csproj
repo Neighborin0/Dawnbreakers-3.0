@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\Units\TutorialEnemy.cs" />
     <Compile Include="Assets\Scripts\UI\ActionRewardTab.cs" />
     <Compile Include="Assets\Scripts\Units\Husk.cs" />
+    <Compile Include="Assets\Scripts\Items\ItemScripts\UmbralTome.cs" />
     <Compile Include="Assets\Scripts\Tools\CombatTools.cs" />
     <Compile Include="Assets\Scripts\Actions\WarCry.cs" />
     <Compile Include="Assets\Scripts\Actions\Glint.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Assets\Scripts\Items\ItemScripts\IronShield.cs" />
     <Compile Include="Assets\Scripts\Items\ItemDisplayBackButton.cs" />
     <Compile Include="Assets\Scripts\LabCamera.cs" />
+    <Compile Include="Assets\Scripts\Items\ItemScripts\FadedCloak.cs" />
     <Compile Include="Assets\Scripts\Map\ChestNodeObject.cs" />
     <Compile Include="Assets\Scripts\NamePlate.cs" />
     <Compile Include="Assets\Scripts\Director.cs" />
@@ -203,6 +205,7 @@
     <Compile Include="Assets\Scripts\Action.cs" />
     <Compile Include="Assets\Scripts\Items\ItemScripts\WornGauntlet.cs" />
     <Compile Include="Assets\Scripts\Icons\Stagger.cs" />
+    <Compile Include="Assets\Scripts\Icons\HexIcon.cs" />
     <Compile Include="Assets\Scripts\FloatingObject.cs" />
     <Compile Include="Assets\Scripts\Actions\Guard.cs" />
     <Compile Include="Assets\Scripts\Actions\Enrage.cs" />

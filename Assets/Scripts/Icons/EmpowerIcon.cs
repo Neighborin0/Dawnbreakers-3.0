@@ -41,6 +41,8 @@ public class EmpowerIcon : EffectIcon
         modifiersApplied = true;
 
         owner.DoActionModifiersChanged();
+
+        canBeStacked = true;
     }
 
     private void OnOwnerActionEnded(Unit actingUnit)

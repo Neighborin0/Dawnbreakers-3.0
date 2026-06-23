@@ -14,8 +14,8 @@ public class Dusty : Unit
         currentHP = maxHP;
         IsPlayerControlled = true;
         resistances = new DamageType[] { DamageType.SLASH };
-        weaknesses = new DamageType[] { DamageType.STRIKE };
-        //Tools.AddItemToInventory(this, "Iron Shield");
+        weaknesses = new DamageType[] { DamageType.HEAT };
+        Tools.AddItemToInventory(this, "Iron Shield");
         if (!Director.Instance.DevMode)
         {
             actionList.Clear();

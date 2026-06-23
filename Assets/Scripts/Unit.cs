@@ -89,6 +89,7 @@ public class Unit : MonoBehaviour
     public event Action<Unit> OnPerformActionStarted;
     public event Action<Unit> OnPostAction;
     public event System.Action OnActionModifiersChanged;
+    public event System.Action<Unit> DecisionPhaseStarted;
 
     //player states
     public PlayerState state;
@@ -98,6 +99,8 @@ public class Unit : MonoBehaviour
     public int attackStat;
     public int defenseStat;
     public int armor = 0;
+    public float DamageModifier = 1;
+    public float damageAddend = 0;
 
 
     public Light spotLight;
@@ -113,6 +116,7 @@ public class Unit : MonoBehaviour
     public float actionCostMultiplier = 1;
     public int actionCostAddend = 0;
     public int actionDMGAddend = 0;
+
 
     //summon stuff 
     public string[] summonables;
@@ -589,6 +593,12 @@ public class Unit : MonoBehaviour
     {
         OnActionModifiersChanged?.Invoke();
     }
+
+    public void DoDecisionPhaseStarted()
+    {
+        DecisionPhaseStarted?.Invoke(this);
+    }
+
 
 
 

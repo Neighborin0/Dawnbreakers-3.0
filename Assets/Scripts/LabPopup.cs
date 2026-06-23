@@ -1,59 +1,126 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using System;
-using UnityEngine.Rendering;
 
 public class LabPopup : MonoBehaviour
 {
     public IEnumerator scaler;
     public IEnumerator dropper;
+
     public IEnumerator Pop()
     {
-        scaler = Tools.SmoothScaleObj(transform, new Vector3(2, 2, 0.1f), 0.001f);
+        scaler = Tools.SmoothScaleObj(
+            transform,
+            new Vector3(2f, 2f, 0.1f),
+            0.001f
+        );
+
         StartCoroutine(scaler);
+
         yield return new WaitForSeconds(0.2f);
-        StopCoroutine(scaler);
-        scaler = Tools.SmoothScaleObj(transform, new Vector3(1, 1, 0.1f), 0.001f);
+
+        if (scaler != null)
+            StopCoroutine(scaler);
+
+        scaler = Tools.SmoothScaleObj(
+            transform,
+            new Vector3(1f, 1f, 0.1f),
+            0.001f
+        );
+
         StartCoroutine(scaler);
     }
 
     public IEnumerator Rise(float delay = 0.001f)
     {
         transform.localScale = Vector3.one;
-        dropper = Tools.SmoothMoveObject(transform, transform.position.x, transform.position.y + 1, delay);
-        StartCoroutine(dropper);
-        yield break;
+
+        dropper = Tools.SmoothMoveObject(
+            transform,
+            transform.position.x,
+            transform.position.y + 1f,
+            delay
+        );
+
+        yield return StartCoroutine(dropper);
     }
+
     public IEnumerator RiseAndDrop()
     {
         transform.localScale = Vector3.one;
-        dropper = Tools.SmoothMoveObject(transform, transform.position.x, transform.position.y + 2, 0.001f);
-        StartCoroutine(dropper);
+
+        dropper = Tools.SmoothMoveObject(
+            transform,
+            transform.position.x,
+            transform.position.y + 2f,
+            0.001f
+        );
+
+        yield return StartCoroutine(dropper);
+
         yield return new WaitForSeconds(0.3f);
-        StopCoroutine(dropper);
-        dropper = Tools.SmoothMoveObject(transform, transform.position.x, transform.position.y - 2, 0.001f);
-        StartCoroutine(dropper);
+
+        dropper = Tools.SmoothMoveObject(
+            transform,
+            transform.position.x,
+            transform.position.y - 2f,
+            0.001f
+        );
+
+        yield return StartCoroutine(dropper);
     }
-    public IEnumerator DestroyPopUp(float delay = 0)
+
+    public IEnumerator PlayPopup(
+        float holdDuration = 1.2f,
+        float riseDelay = 0.01f)
     {
-        yield return new WaitForSeconds(delay);
-        var number = this.GetComponentInChildren<TextMeshProUGUI>();
-        if(scaler != null)
-        StopCoroutine(scaler);
-        if (dropper != null)
-            StopCoroutine(dropper);
-        while (number.color.a > 0)
+        StartCoroutine(Rise(riseDelay));
+
+        yield return new WaitForSeconds(holdDuration);
+
+        yield return StartCoroutine(DestroyPopUp());
+    }
+
+    public IEnumerator DestroyPopUp(float delay = 0f)
+    {
+        if (delay > 0f)
+            yield return new WaitForSeconds(delay);
+
+        TextMeshProUGUI number =
+            GetComponentInChildren<TextMeshProUGUI>();
+
+        if (scaler != null)
         {
-            if (number != null)
+            StopCoroutine(scaler);
+            scaler = null;
+        }
+
+        if (dropper != null)
+        {
+            StopCoroutine(dropper);
+            dropper = null;
+        }
+
+        if (number != null)
+        {
+            while (number.color.a > 0f)
             {
-                number.color -= new Color(number.color.r, number.color.g, number.color.b, 0.1f);
+                Color currentColor = number.color;
+
+                currentColor.a =
+                    Mathf.Max(
+                        0f,
+                        currentColor.a - 0.1f
+                    );
+
+                number.color = currentColor;
+
                 yield return new WaitForSeconds(0.01f);
             }
         }
-        Destroy(this.gameObject);
-        yield break;
+
+        Destroy(gameObject);
     }
 }
+

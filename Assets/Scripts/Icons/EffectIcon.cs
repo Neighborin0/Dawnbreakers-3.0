@@ -24,6 +24,7 @@ public class EffectIcon : MonoBehaviour
     public GameObject currentEffectPopup;
     public float descriptionSize = 0.4f;
     public Color popupTextColor = Color.white;
+    public bool canBeStacked = true;
 
     public void Awake()
     {
@@ -34,43 +35,68 @@ public class EffectIcon : MonoBehaviour
     {
        timerText = GetComponentInChildren<TextMeshProUGUI>();
     }
-    public void Initalize(Unit unit, bool dofancystatchanges, float duration = 0, float storedvalue = 0, float numberofStacks = 0)
-    {
-    
-        if(duration > 0)
-        {
-            timerText.text = duration.ToString();
-        }
-        else if(numberofStacks > 0) 
-        {
-            timerText.text = numberofStacks.ToString();
-        }
-        else
-        {
-            timerText.text = string.Empty;
-        }
-        var manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable = timerText.GetComponent<RectTransform>();
-        manIHateUnityScalingSometimesAndIDontWantToBeFuckedWithThisSoHaveThisLongAssVariable.sizeDelta = new Vector2(70.24f, 21.96f);    
-        storedValue = storedvalue;
-        DoFancyStatChanges = dofancystatchanges;
-        BattleSystem.Instance.DoTextPopup(owner, iconName, popupTextColor);
+    public virtual void Initalize(Unit unit, bool doFancyStatChanges, float duration = 0f, float storedValue = 0f, float numberofStacks = 0f) 
+    { 
+        owner = unit; 
+        this.duration = duration; 
+        this.storedValue = storedValue; 
+        NumberofStacks = Mathf.Max(1, Mathf.RoundToInt(numberofStacks)); 
+        DoFancyStatChanges = doFancyStatChanges; RefreshCounterText(); 
+        if (BattleSystem.Instance != null && owner != null) 
+        { 
+            BattleSystem.Instance.DoTextPopup(owner, iconName, popupTextColor); 
+        } 
     }
 
-    public void Tick()
-    {
-        if (TimedEffect)
-        {
-            if (duration > 1)
-            {
-                duration -= 1;
-            }
-            else
-            {
-                duration -= 1;
-                DestoryEffectIcon();
-            }
-            timerText.text = duration.ToString();
-        }
+    public virtual void AddStacks(float addedDuration, float addedStoredValue, int addedStacks) 
+    { 
+        int safeStackAmount = Mathf.Max(1, addedStacks); 
+        NumberofStacks += safeStackAmount; 
+        duration += addedDuration; 
+        storedValue += addedStoredValue; 
+        RefreshCounterText(); 
+        if (BattleSystem.Instance != null && owner != null) 
+        { 
+            BattleSystem.Instance.DoTextPopup(owner, $"{iconName}", popupTextColor); 
+        } 
+    }
+    public void RefreshCounterText() 
+    { 
+        if (timerText == null) 
+        { 
+            timerText = GetComponentInChildren<TextMeshProUGUI>(); 
+        } 
+        if (timerText == null) 
+            return;  
+        if (TimedEffect && duration > 0f && canBeStacked && NumberofStacks > 1) 
+        { 
+            timerText.text = $"{Mathf.CeilToInt(duration)}"; 
+        } 
+        else if (TimedEffect && duration > 0f) 
+        { 
+            timerText.text = Mathf.CeilToInt(duration).ToString(); } 
+        else if (canBeStacked && NumberofStacks > 0) 
+        { 
+            timerText.text = $"{NumberofStacks}"; 
+        } 
+        else 
+        { 
+            timerText.text = string.Empty; 
+        } 
+        RectTransform timerRect = timerText.GetComponent<RectTransform>(); 
+        if (timerRect != null) 
+        { timerRect.sizeDelta = new Vector2(70.24f, 21.96f); } 
+    }
+    public void Tick() 
+    { 
+        if (!TimedEffect) 
+            return; 
+        duration = Mathf.Max(0f, duration - 1f); 
+        RefreshCounterText(); 
+        if (duration <= 0f) 
+        { 
+            DestoryEffectIcon(); 
+        } 
     }
 
     public IEnumerator Pop()

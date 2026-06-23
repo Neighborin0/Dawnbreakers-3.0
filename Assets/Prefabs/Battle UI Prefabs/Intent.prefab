@@ -67,7 +67,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Immolate
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0832559872f01b147b84f9ae370219f4, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
     type: 2}
   m_fontSharedMaterials: []
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: -0.20786744}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &3038690304149638131
@@ -202,7 +202,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 100%
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 543b303bfcb2c2042b654cbd24df9b7f, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
     type: 2}
   m_fontSharedMaterials: []
@@ -267,7 +267,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: -0.0000000014054997, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &3745113024426729838
@@ -720,7 +720,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: <sprite name="HEAT">10
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 543b303bfcb2c2042b654cbd24df9b7f, type: 2}
   m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
     type: 2}
   m_fontSharedMaterials: []
@@ -785,7 +785,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: -0.0000000014054997, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &8263529233947728646

@@ -351,7 +351,6 @@ MonoBehaviour:
   defenseStat: 0
   armor: 0
   spotLight: {fileID: 4101498702268122146}
-  actionCostMultiplier: 1
   knockbackModifider: 0
   resistances: 
   weaknesses: 
@@ -363,5 +362,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ece061d3fe4a82a4697d93c8013e8133, type: 2}
   - {fileID: 11400000, guid: 7e885f14f56b74242800e9ce493cba94, type: 2}
   - {fileID: 11400000, guid: 57344878126fdbf4b872922997ca4dcb, type: 2}
+  actionCostMultiplier: 1
+  actionCostAddend: 0
+  actionDMGAddend: 0
   summonables: []
   HitEmissionChanged: 0

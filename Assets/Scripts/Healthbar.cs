@@ -19,13 +19,13 @@ public class Healthbar : MonoBehaviour
     public LabPopup damagePopUp;
     public Slider backSlider;
     public bool DeathPaused = false;
-    public float DamageModifier = 1;
     [SerializeField]
     private Image healthbarImageComponent;
     [SerializeField]
     private Sprite ArmorSprite;
     [SerializeField]
     private Sprite NormalSprite;
+
 
     void Start()
     {
@@ -100,7 +100,7 @@ public class Healthbar : MonoBehaviour
 
     private int CalculateTrueDamage(int damage, bool ignoresDEF)
     {
-        int trueDamage = ignoresDEF ? damage : Mathf.Max(damage - unit.armor, 0);
+        int trueDamage = ignoresDEF ? damage : Mathf.Max((int)((damage + unit.damageAddend - unit.armor) * unit.DamageModifier), 0);
         return trueDamage;
     }
 
@@ -144,13 +144,14 @@ public class Healthbar : MonoBehaviour
         yield break;
     }
 
+
     private void HandleTypeDamage(
-     DamageType damageType,
-     TextMeshProUGUI number,
-     int damage,
-     Action.ActionStyle actionStyle,
-     bool AppliesStun = false,
-     int forcedDelay = 0)
+    DamageType damageType,
+    TextMeshProUGUI number,
+    int damage,
+    Action.ActionStyle actionStyle,
+    bool AppliesStun = false,
+    int forcedDelay = 0)
     {
         number.SetText(damage.ToString());
 
@@ -161,14 +162,22 @@ public class Healthbar : MonoBehaviour
         if (typeMultiplier < 1f)
         {
             number.faceColor =
-                new Color(0.5754717f, 0.4533197f, 0.4533197f);
+                new Color(
+                    0.5754717f,
+                    0.4533197f,
+                    0.4533197f
+                );
 
             Debug.LogWarning("NOT EFFECTIVE");
         }
         else if (damage == 0 && unit.armor > 0)
         {
             number.color =
-                new Color(0.04313726f, 0.4431373f, 0.5450981f);
+                new Color(
+                    0.04313726f,
+                    0.4431373f,
+                    0.5450981f
+                );
 
             Debug.LogWarning("ARMOR");
 
@@ -183,20 +192,24 @@ public class Healthbar : MonoBehaviour
                     "ArmorHit_001",
                     armorParticleColor,
                     armorParticleColor,
-                    new Vector3(0, 0, -1f),
+                    new Vector3(0f, 0f, -1f),
                     Quaternion.identity,
                     1f,
-                    0,
+                    0f,
                     true,
-                    0,
-                    10
+                    0f,
+                    10f
                 )
             );
         }
         else
         {
             number.color =
-                new Color(1f, 0.3647059f, 0.3647059f);
+                new Color(
+                    1f,
+                    0.3647059f,
+                    0.3647059f
+                );
 
             Debug.LogWarning("NORMAL");
         }
@@ -204,11 +217,17 @@ public class Healthbar : MonoBehaviour
         number.outlineColor = Color.black;
         number.outlineWidth = 0.2f;
 
-        var timeline = Director.Instance.timeline;
-        var timelineChild = timeline.ReturnTimelineChild(unit);
+        var timeline =
+            Director.Instance.timeline;
 
-        if (timelineChild == null || timelineChild.CanClear)
+        var timelineChild =
+            timeline.ReturnTimelineChild(unit);
+
+        if (timelineChild == null ||
+            timelineChild.CanClear)
+        {
             return;
+        }
 
         var selectedAction =
             timeline.ReturnTimeChildAction(unit);
@@ -216,13 +235,24 @@ public class Healthbar : MonoBehaviour
         if (selectedAction == null)
             return;
 
-        bool isEffectiveHit = typeMultiplier > 1f;
+        bool isEffectiveHit =
+            typeMultiplier > 1f;
 
+        /*
+         * ReturnIconStatus currently returns true when the icon
+         * is NOT present, so these calls must be negated.
+         */
         bool hasStalwart =
-            CombatTools.ReturnIconStatus(unit, "STALWART");
+            !CombatTools.ReturnIconStatus(
+                unit,
+                "STALWART"
+            );
 
         bool hasIndomitable =
-            CombatTools.ReturnIconStatus(unit, "INDOMITABLE");
+            !CombatTools.ReturnIconStatus(
+                unit,
+                "INDOMITABLE"
+            );
 
         int totalDelay = 0;
 
@@ -235,11 +265,13 @@ public class Healthbar : MonoBehaviour
          */
         if (isEffectiveHit)
         {
-            totalDelay += Director.Instance.TimelineReduction;
+            totalDelay +=
+                Director.Instance.TimelineReduction;
 
             if (unit.knockbackModifider > 0)
             {
-                totalDelay += unit.knockbackModifider;
+                totalDelay +=
+                    unit.knockbackModifider;
             }
 
             number.color = Color.red;
@@ -248,20 +280,32 @@ public class Healthbar : MonoBehaviour
         /*
          * LIGHT / HEAVY DELAY
          */
-        if (actionStyle != Action.ActionStyle.STANDARD)
+        if (actionStyle !=
+            Action.ActionStyle.STANDARD)
         {
             totalDelay +=
-                Director.Instance.TimelineReductionNonStandardAction;
+                Director.Instance
+                    .TimelineReductionNonStandardAction;
 
-            if (actionStyle == Action.ActionStyle.LIGHT)
+            if (actionStyle ==
+                Action.ActionStyle.LIGHT)
             {
                 number.outlineColor =
-                    new Color(0f, 0.635f, 0.749f);
+                    new Color(
+                        0f,
+                        0.635f,
+                        0.749f
+                    );
             }
-            else if (actionStyle == Action.ActionStyle.HEAVY)
+            else if (actionStyle ==
+                     Action.ActionStyle.HEAVY)
             {
                 number.outlineColor =
-                    new Color(1f, 0.011f, 0f);
+                    new Color(
+                        1f,
+                        0.011f,
+                        0f
+                    );
             }
         }
 
@@ -271,14 +315,18 @@ public class Healthbar : MonoBehaviour
          * Bind's light, standard, or heavy delay is passed through
          * forcedDelay and remains independent from Expose.
          */
-        if (forcedDelay > 0 && !AppliesStun)
+        if (forcedDelay > 0 &&
+            !AppliesStun)
         {
             totalDelay += forcedDelay;
         }
 
         // Nothing affects the timeline.
-        if (totalDelay <= 0 && !AppliesStun)
+        if (totalDelay <= 0 &&
+            !AppliesStun)
+        {
             return;
+        }
 
         timeline.DelayCheck(timelineChild);
 
@@ -287,14 +335,12 @@ public class Healthbar : MonoBehaviour
         /*
          * DIRECT STUN
          *
-         * This implementation makes explicit stun bypass Stalwart
-         * and Indomitable. Change this section if those effects are
-         * supposed to block direct stuns too.
+         * Explicit stun bypasses Stalwart and Indomitable.
          */
         if (AppliesStun)
         {
-            timelineChild.value = -1;
-            selectedAction.cost = 101;
+            timelineChild.value = -1f;
+            selectedAction.cost = 101f;
         }
         else
         {
@@ -304,8 +350,12 @@ public class Healthbar : MonoBehaviour
             float resultingActionCost =
                 selectedAction.cost + totalDelay;
 
+            /*
+             * Use a small tolerance so values such as 0.00001
+             * still count as reaching the break point.
+             */
             bool wouldBreak =
-                resultingTimelineValue <= 0f;
+                resultingTimelineValue <= 0.001f;
 
             /*
              * INDOMITABLE
@@ -314,10 +364,11 @@ public class Healthbar : MonoBehaviour
              * At that point, the action is capped at 100 cost.
              * Indomitable is not consumed.
              */
-            if (wouldBreak && hasIndomitable)
+            if (wouldBreak &&
+                hasIndomitable)
             {
-                timelineChild.value = 0;
-                selectedAction.cost = 100;
+                timelineChild.value = 0f;
+                selectedAction.cost = 100f;
 
                 breakPrevented = true;
             }
@@ -325,19 +376,21 @@ public class Healthbar : MonoBehaviour
              * STALWART
              *
              * Delay applies normally until it would cause a break.
-             * Stalwart then prevents that break, caps the action at
-             * 100 cost, and is consumed.
+             * Stalwart prevents the break, caps the action at 100,
+             * and is consumed.
              */
-            else if (wouldBreak && hasStalwart)
+            else if (wouldBreak &&
+                     hasStalwart)
             {
-                timelineChild.value = 0;
-                selectedAction.cost = 100;
+                timelineChild.value = 0f;
+                selectedAction.cost = 100f;
 
                 breakPrevented = true;
 
-                var stalwart = unit.statusEffects
-                    .FirstOrDefault(
-                        effect => effect.iconName == "STALWART"
+                var stalwart =
+                    unit.statusEffects.FirstOrDefault(
+                        effect =>
+                            effect.iconName == "STALWART"
                     );
 
                 if (stalwart != null)
@@ -349,8 +402,8 @@ public class Healthbar : MonoBehaviour
             /*
              * NORMAL DELAY
              *
-             * This is where Bind now continues to delay a unit that
-             * has Stalwart, provided the delay does not cause a break.
+             * Delay continues normally when no break-prevention
+             * status is active.
              */
             else
             {
@@ -365,7 +418,8 @@ public class Healthbar : MonoBehaviour
         /*
          * BREAK RESOLUTION
          */
-        if (timelineChild.value <= 0 && !breakPrevented)
+        if (timelineChild.value <= 0.001f &&
+            !breakPrevented)
         {
             OptionsManager.Instance.StartCoroutine(
                 CombatTools.SlowTime(0.6f)
@@ -374,7 +428,8 @@ public class Healthbar : MonoBehaviour
             timelineChild.CanClear = true;
 
             var interactable =
-                timelineChild.GetComponent<LabUIInteractable>();
+                timelineChild
+                    .GetComponent<LabUIInteractable>();
 
             if (interactable != null)
             {
@@ -391,13 +446,13 @@ public class Healthbar : MonoBehaviour
                     "Stun",
                     Color.yellow,
                     Color.yellow,
-                    new Vector3(0, 2, 0f),
+                    new Vector3(0f, 2f, 0f),
                     Quaternion.identity,
                     15f,
-                    0,
+                    0f,
                     true,
-                    0,
-                    2
+                    0f,
+                    2f
                 )
             );
 
@@ -407,18 +462,18 @@ public class Healthbar : MonoBehaviour
                     "Stun",
                     Color.yellow,
                     Color.yellow,
-                    new Vector3(0, 2, 0f),
+                    new Vector3(0f, 2f, 0f),
                     new Quaternion(
-                        0,
-                        180,
+                        0f,
+                        180f,
                         Quaternion.identity.z,
                         Quaternion.identity.w
                     ),
                     15f,
-                    0,
+                    0f,
                     true,
-                    0,
-                    2
+                    0f,
+                    2f
                 )
             );
 
@@ -443,6 +498,8 @@ public class Healthbar : MonoBehaviour
             }
         }
     }
+
+
 
     private IEnumerator DamagePopUp(int damage, DamageType damageType, Action.ActionStyle actionStyle, bool AppliesStun = false, int forcedDelay = 0)
     {

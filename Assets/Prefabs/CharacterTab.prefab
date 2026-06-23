@@ -1410,8 +1410,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'DEF: 6'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: 0832559872f01b147b84f9ae370219f4, type: 2}
+  m_sharedMaterial: {fileID: 8345060054342452819, guid: 0832559872f01b147b84f9ae370219f4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2819,8 +2819,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'ATK: 7'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: 0832559872f01b147b84f9ae370219f4, type: 2}
+  m_sharedMaterial: {fileID: 8345060054342452819, guid: 0832559872f01b147b84f9ae370219f4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3017,8 +3017,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'WEAK:  <sprite name="DARK">'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: 0832559872f01b147b84f9ae370219f4, type: 2}
+  m_sharedMaterial: {fileID: 8345060054342452819, guid: 0832559872f01b147b84f9ae370219f4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3290,8 +3290,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'RES :  <sprite name="LIGHT">'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: 0832559872f01b147b84f9ae370219f4, type: 2}
+  m_sharedMaterial: {fileID: 8345060054342452819, guid: 0832559872f01b147b84f9ae370219f4,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

@@ -250,7 +250,7 @@ public class BattleSystem : MonoBehaviour
             StartCoroutine(Tools.SmoothMoveUI(TutorialText[TutorialText.Count - 1].GetComponent<RectTransform>(), 0, 0, 0.025f));
 
             yield return new WaitForSeconds(1.8f);
-            TutorialText[TutorialText.Count - 1].GetComponent <LabShaker>().Shake();
+            TutorialText[TutorialText.Count - 1].GetComponent<LabShaker>().Shake();
             yield return new WaitForSeconds(3.5f);
             TutorialText[TutorialText.Count - 1].gameObject.SetActive(false);
             yield return new WaitForSeconds(0.01f);
@@ -274,7 +274,7 @@ public class BattleSystem : MonoBehaviour
         if (!TutorialNode)
             LabCamera.Instance.camTransform.position = Camera.main.transform.position;
 
-        if(!TutorialNode)
+        if (!TutorialNode)
             LabCamera.Instance.ReadjustCam(15f);
         else
             LabCamera.Instance.ReadjustCam();
@@ -306,6 +306,7 @@ public class BattleSystem : MonoBehaviour
             unit.StaminaHighlightIsDisabled = false;
             unit.DoBattleStarted();
         }
+        NotifyDecisionPhaseStarted();
         yield return new WaitForSeconds(0.5f);
         OptionsManager.Instance.blackScreen.gameObject.SetActive(false);
         if (state != BattleStates.TALKING)
@@ -327,6 +328,15 @@ public class BattleSystem : MonoBehaviour
             unit.DoPostBattleStarted();
         }
         OptionsManager.Instance.CanPause = true;
+    }
+
+    private void NotifyDecisionPhaseStarted()
+    {
+        foreach (Unit unit in Tools.GetAllUnits()
+                     .Where(unit => unit != null))
+        {
+            unit.DoDecisionPhaseStarted();
+        }
     }
 
     public IEnumerator TransitionToDeath()
@@ -434,7 +444,7 @@ public class BattleSystem : MonoBehaviour
     {
 
         unit.intentUI.textMesh.text = action.ActionName;
-      
+
         if (CombatTools.DetermineTrueActionValue(action) != 0)
             unit.intentUI.damageNums.text = $"<sprite name=\"{action.damageType}\">" + ((int)((CombatTools.DetermineTrueActionValue(action) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(action.targets, action.damageType))).ToString();
         unit.intentUI.action = action;
@@ -475,44 +485,300 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    public void DoTextPopup(Unit target, string text, Color color)
+
+    public void DoTextPopup(
+    Unit target,
+    string text,
+    Color color)
     {
-        var popup = Instantiate(statPopUp, new Vector3(target.GetComponent<SpriteRenderer>().bounds.center.x, target.GetComponent<SpriteRenderer>().bounds.max.y, target.transform.position.z), Quaternion.identity);
-        var popupText = popup.GetComponentInChildren<TextMeshProUGUI>();
-        popupText.outlineWidth = 0.15f;
-        popupText.outlineColor = Color.black;
-        popupText.color = color;
-        popupText.text = text;
-        popupText.fontSize = 1.5f;
-        var labPopUp = popup.GetComponent<LabPopup>();
-        StartCoroutine(labPopUp.Rise(0.01f));
-        StartCoroutine(labPopUp.DestroyPopUp(1.2f));
+        if (target == null)
+            return;
+
+        if (!textPopupQueues.ContainsKey(target))
+        {
+            textPopupQueues.Add(
+                target,
+                new Queue<TextPopupRequest>()
+            );
+        }
+
+        textPopupQueues[target].Enqueue(
+            new TextPopupRequest(text, color)
+        );
+
+        if (!activeTextPopupTargets.Contains(target))
+        {
+            StartCoroutine(
+                DisplayTextPopupQueue(target)
+            );
+        }
     }
 
-    public void SetTempEffect(Unit unit, string Icon, bool DoFancyStatChanges, float duration = 0, float storedValue = 0, float numberofStacks = 0)
+    private IEnumerator DisplayTextPopupQueue(Unit target)
     {
-        var icon = Instantiate(Director.Instance.iconDatabase.Where(obj => obj.name == Icon).SingleOrDefault(), unit.namePlate.IconGrid.transform);
-        var i = icon.GetComponent<EffectIcon>();
+        activeTextPopupTargets.Add(target);
 
-        foreach (Transform x in unit.namePlate.IconGrid.transform)
+        while (
+            target != null &&
+            textPopupQueues.ContainsKey(target) &&
+            textPopupQueues[target].Count > 0)
         {
-            var EI = x.gameObject.GetComponent<EffectIcon>();
-            if (EI.iconName.Contains(i.iconName) && EI != i)
+            TextPopupRequest popupRequest =
+                textPopupQueues[target].Dequeue();
+
+            SpriteRenderer targetRenderer =
+                target.GetComponent<SpriteRenderer>();
+
+            if (targetRenderer == null)
             {
-                unit.statusEffects.Remove(EI);
-                EI.DoFancyStatChanges = false;
-                EI.DestoryEffectIcon();
-                break;
+                Debug.LogWarning(
+                    $"Unable to display popup for {target.name}: " +
+                    "SpriteRenderer is missing."
+                );
+
+                continue;
+            }
+
+            Vector3 popupPosition =
+                new Vector3(
+                    targetRenderer.bounds.center.x,
+                    targetRenderer.bounds.max.y,
+                    target.transform.position.z
+                );
+
+            GameObject popup = Instantiate(
+                statPopUp,
+                popupPosition,
+                Quaternion.identity
+            );
+
+            TextMeshProUGUI popupText =
+                popup.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (popupText != null)
+            {
+                popupText.outlineWidth = 0.15f;
+                popupText.outlineColor = Color.black;
+                popupText.color = popupRequest.color;
+                popupText.text = popupRequest.text;
+                popupText.fontSize = 1.5f;
+            }
+
+            LabPopup labPopUp =
+                popup.GetComponent<LabPopup>();
+
+            if (labPopUp != null)
+            {
+                /*
+                 * Wait for this popup's full lifecycle before
+                 * displaying the next queued popup.
+                 */
+                yield return StartCoroutine(
+                    labPopUp.PlayPopup(
+                        0.8f,
+                        0.01f
+                    )
+                );
+            }
+            else
+            {
+                Destroy(popup, 0.8f);
+                yield return new WaitForSeconds(0.8f);
             }
         }
-        i.duration = duration;
-        unit.statusEffects.Add(i);
-        if (unit == null)
-            Debug.LogError("OWNER SETUP BROKEN");
-        else
-            i.owner = unit;
-        i.Initalize(unit, DoFancyStatChanges, duration, storedValue, numberofStacks);
+
+        textPopupQueues.Remove(target);
+        activeTextPopupTargets.Remove(target);
     }
+
+
+
+    private class TextPopupRequest
+    {
+        public string text;
+        public Color color;
+
+        public TextPopupRequest(string text, Color color)
+        {
+            this.text = text;
+            this.color = color;
+        }
+    }
+
+    private readonly Dictionary<Unit, Queue<TextPopupRequest>>
+        textPopupQueues =
+            new Dictionary<Unit, Queue<TextPopupRequest>>();
+
+    private readonly HashSet<Unit>
+        activeTextPopupTargets =
+            new HashSet<Unit>();
+
+    public void SetTempEffect(
+    Unit unit,
+    string Icon,
+    bool DoFancyStatChanges,
+    float duration = 0f,
+    float storedValue = 0f,
+    float numberofStacks = 0f)
+    {
+        if (unit == null)
+        {
+            Debug.LogError(
+                "SetTempEffect failed: Unit is null."
+            );
+
+            return;
+        }
+
+        if (unit.namePlate == null ||
+            unit.namePlate.IconGrid == null)
+        {
+            Debug.LogError(
+                $"SetTempEffect failed for {unit.unitName}: " +
+                "NamePlate or IconGrid is missing."
+            );
+
+            return;
+        }
+
+        if (Director.Instance == null)
+        {
+            Debug.LogError(
+                "SetTempEffect failed: Director.Instance is null."
+            );
+
+            return;
+        }
+
+        GameObject iconPrefab =
+            Director.Instance.iconDatabase.FirstOrDefault(
+                obj =>
+                    obj != null &&
+                    obj.name == Icon
+            );
+
+        if (iconPrefab == null)
+        {
+            Debug.LogError(
+                $"SetTempEffect failed: icon '{Icon}' " +
+                "was not found in the icon database."
+            );
+
+            return;
+        }
+
+        EffectIcon prefabEffect =
+            iconPrefab.GetComponent<EffectIcon>();
+
+        if (prefabEffect == null)
+        {
+            Debug.LogError(
+                $"SetTempEffect failed: icon prefab '{Icon}' " +
+                "does not have an EffectIcon component."
+            );
+
+            return;
+        }
+
+        unit.statusEffects.RemoveAll(
+            effect => effect == null
+        );
+
+        /*
+         * Use one consistent identifier.
+         *
+         * String comparison is case-insensitive so EXPOSE and Expose
+         * do not produce separate statuses.
+         */
+        string effectName =
+            string.IsNullOrWhiteSpace(prefabEffect.iconName)
+                ? Icon
+                : prefabEffect.iconName;
+
+        EffectIcon existingEffect =
+            unit.statusEffects.FirstOrDefault(
+                effect =>
+                    effect != null &&
+                    string.Equals(
+                        effect.iconName,
+                        effectName,
+                        StringComparison.OrdinalIgnoreCase
+                    )
+            );
+
+        int stacksToAdd =
+            Mathf.Max(
+                1,
+                Mathf.RoundToInt(numberofStacks)
+            );
+
+        /*
+         * EXISTING STACKABLE EFFECT
+         */
+        if (existingEffect != null &&
+            existingEffect.canBeStacked)
+        {
+            existingEffect.AddStacks(
+                duration,
+                storedValue,
+                stacksToAdd
+            );
+
+            return;
+        }
+
+        /*
+         * EXISTING NON-STACKABLE EFFECT
+         *
+         * Replace it with the new application.
+         */
+        if (existingEffect != null)
+        {
+            unit.statusEffects.Remove(existingEffect);
+
+            existingEffect.DoFancyStatChanges = false;
+            existingEffect.DestoryEffectIcon();
+        }
+
+        /*
+         * CREATE NEW EFFECT
+         */
+        GameObject iconObject = Instantiate(
+            iconPrefab,
+            unit.namePlate.IconGrid.transform
+        );
+
+        EffectIcon newEffect =
+            iconObject.GetComponent<EffectIcon>();
+
+        if (newEffect == null)
+        {
+            Debug.LogError(
+                $"The instantiated icon '{Icon}' is missing " +
+                "its EffectIcon component."
+            );
+
+            Destroy(iconObject);
+            return;
+        }
+
+        newEffect.owner = unit;
+        newEffect.iconName = effectName;
+
+        unit.statusEffects.Add(newEffect);
+
+        newEffect.Initalize(
+            unit,
+            DoFancyStatChanges,
+            duration,
+            storedValue,
+            stacksToAdd
+        );
+    }
+
+
+
+
 
     public IEnumerator ChangeStat(Stat statToRaise, float AmountToRaise, bool multiplicative, Unit target, LabPopup popup)
     {
@@ -576,7 +842,7 @@ public class BattleSystem : MonoBehaviour
                 number.outlineColor = armorParticleColor;
                 DoStatVFX(AmountToRaise, armorParticleColor, target);
                 break;
-         
+
             case Stat.HP:
                 if (!multiplicative)
                 {
@@ -616,7 +882,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (AmountToRaise > 0)
         {
-           // Color colorAdder = new Color(10, 10, 10);
+            // Color colorAdder = new Color(10, 10, 10);
             float colorMult = 5;
             StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", color, color, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, 1.3f, 0, false, 1, 10, 0.0001f, "statUp_Loop_002"));
             StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatPulse", color * colorMult, color * colorMult, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y - 1.5f, 0), Quaternion.identity, 0.8f, 0, false, 1, 10, 0.0001f, "statUp_Loop_002"));
@@ -707,12 +973,31 @@ public class BattleSystem : MonoBehaviour
                 assignedAction.button.interactable = false;
 
             var newAction = Instantiate(action);
+
+            newAction.unit = unit;
+            newAction.actionStyle =
+                Action.ActionStyle.STANDARD;
+
             assignedAction.button.enabled = true;
             assignedAction.action = newAction;
-            assignedAction.action.actionStyle = Action.ActionStyle.STANDARD;
-            assignedAction.damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
-            assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (newAction.duration).ToString();
-            assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) < 100 ? $"{CombatTools.DetermineTrueCost(action)}%" : $"100%";
+
+            assignedAction.damageNums.text =
+                $"<sprite name=\"{newAction.damageType}\">" +
+                (CombatTools.DetermineTrueActionValue(newAction) +
+                 unit.attackStat);
+
+            assignedAction.durationNums.text =
+                "<sprite name=\"Duration\">" +
+                newAction.duration;
+
+            float finalCost =
+                CombatTools.DetermineTrueCost(newAction);
+
+            assignedAction.costNums.text =
+                finalCost < 100f
+                    ? $"{Mathf.RoundToInt(finalCost)}%"
+                    : "100%";
+
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = newAction.ActionName;
 
@@ -1035,7 +1320,7 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
 
 
-            action.cost -= 1f;
+            //action.cost -= 1f;
 
             action.ResetAction();
 
@@ -1131,6 +1416,7 @@ public class BattleSystem : MonoBehaviour
         if (BattleSystem.Instance.enemyUnits.Count != 0 && BattleSystem.Instance.playerUnits.Count != 0)
         {
             BattleSystem.Instance.state = BattleStates.DECISION_PHASE;
+            NotifyDecisionPhaseStarted();
             for (int i = 0; i < BattleSystem.Instance.playerUnits.Count; i++)
             {
                 BattleSystem.Instance.playerUnits[i].state = PlayerState.IDLE;

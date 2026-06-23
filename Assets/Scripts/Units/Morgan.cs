@@ -13,8 +13,9 @@ public class Morgan : Unit
         defenseStat = 0;
         currentHP = maxHP;
         IsPlayerControlled = true;
-        resistances = new DamageType[] { DamageType.SLASH };
-        weaknesses = new DamageType[] { DamageType.STRIKE };
+        resistances = new DamageType[] { DamageType.DARK };
+        weaknesses = new DamageType[] { DamageType.SLASH };
+        Tools.AddItemToInventory(this, "Umbral Tome");
         if (!Director.Instance.DevMode)
         {
             actionList.Clear();

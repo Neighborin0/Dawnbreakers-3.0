@@ -22,7 +22,11 @@ public class Brace : Action
 
         statAmount = 4;
         lightStatAmount = 3;
-        heavyStatAmount = 6; 
+        heavyStatAmount = 6;
+
+        damage = 4;
+        lightDamage = 3;
+        heavyDamage = 6;
 
         damageText = damage.ToString();
         actionType = ActionType.STATUS;
@@ -33,7 +37,7 @@ public class Brace : Action
 
     public override string GetDescription()
     {
-        description = $"Applies +{CombatTools.DetermineTrueActionValue(this) + unit.defenseStat} <sprite name=\"FORTIFY\"> to self.";
+        description = $"Applies +{CombatTools.DetermineTrueActionValue(this)} <sprite name=\"FORTIFY\"> to self.";
         return description;
     }
     public override IEnumerator ExecuteAction()

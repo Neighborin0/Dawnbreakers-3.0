@@ -215,7 +215,8 @@ public class ActionContainer : MonoBehaviour
         PerformOnActionSelected();
     }
 
-    private void UpdateDamageDisplay(Unit target = null)
+
+private void UpdateDamageDisplay(Unit target = null)
     {
         if (damageNums == null ||
             action == null ||
@@ -230,24 +231,33 @@ public class ActionContainer : MonoBehaviour
             CombatTools.DetermineTrueActionValue(action) +
             baseUnit.attackStat;
 
-        float typeMultiplier = target != null
-            ? CombatTools.ReturnTypeMultiplier(
-                target,
-                action.damageType
-            )
-            : 1f;
+        float typeMultiplier =
+            target != null
+                ? CombatTools.ReturnTypeMultiplier(
+                    target,
+                    action.damageType
+                )
+                : 1f;
 
-        int finalDamage = Mathf.RoundToInt(
-            baseDamage * typeMultiplier
-        );
+        float modifiedDamage =
+            (baseDamage + baseUnit.damageAddend) *
+            baseUnit.DamageModifier *
+            typeMultiplier;
 
-        finalDamage = Mathf.Max(0, finalDamage);
+        int finalDamage =
+            Mathf.Max(
+                0,
+                Mathf.RoundToInt(modifiedDamage)
+            );
 
         damageNums.text =
-            $"<sprite name=\"{action.damageType}\">" +
-            finalDamage;
+            $"<sprite name=\"{action.damageType}\">{finalDamage}";
 
-        if (typeMultiplier < 1f)
+        if (target == null)
+        {
+            damageNums.color = NeutralDamageColor;
+        }
+        else if (typeMultiplier < 1f)
         {
             damageNums.color = Color.red;
         }
@@ -260,6 +270,8 @@ public class ActionContainer : MonoBehaviour
             damageNums.color = NeutralDamageColor;
         }
     }
+
+
 
     private Unit GetUnitFromHit(RaycastHit hit)
     {
@@ -429,7 +441,7 @@ public class ActionContainer : MonoBehaviour
 
             return;
         }
-    
+
 
         switch (action.targetType)
         {
@@ -547,7 +559,7 @@ public class ActionContainer : MonoBehaviour
         ResetOutlineColor(renderer);
     }
 
-  
+
 
     private void SetOutlineColor(SpriteRenderer renderer, Color color)
     {
@@ -1211,9 +1223,41 @@ public class ActionContainer : MonoBehaviour
         RefreshActionValues();
     }
 
+    public void SetActionStyle(Action.ActionStyle newStyle)
+    {
+        if (action == null || baseUnit == null)
+            return;
+
+        /*
+         * ActionContainer already owns a runtime action instance.
+         * Mutating that instance avoids losing the Unit reference
+         * and its action-cost modifiers when changing styles.
+         */
+        action.unit = baseUnit;
+        action.actionStyle = newStyle;
+
+        UpdateOnStyleSwitch();
+    }
+
     public void UpdateOnStyleSwitch()
     {
+        if (action == null || baseUnit == null)
+            return;
+
+        /*
+         * Rebind before every cost calculation. DetermineTrueCost()
+         * reads actionCostMultiplier/actionCostAddend from action.unit.
+         */
+        action.unit = baseUnit;
+
         RefreshActionValues();
+
+        if (targetting)
+        {
+            UpdateTargetHighlights();
+        }
+
+        UpdateActionStyleOutline();
         SetDescription();
     }
 

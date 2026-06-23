@@ -24,7 +24,7 @@ public class Aurelia : Unit
         weaknesses = new DamageType[] { DamageType.DARK };
         currentHP = maxHP;
         IsPlayerControlled = true;
-        Tools.AddItemToInventory(this, "TatteredCapeNew");
+        Tools.AddItemToInventory(this, "Faded Cloak");
         if (!Director.Instance.DevMode)
         {
             attackStat = 7;

@@ -187,6 +187,7 @@ public class CombatTools : MonoBehaviour
             }
         }
         Destroy(unit.health.gameObject);
+        
     }
     public static void ModifyAction(Unit unit, string actionToChange, int slotToChange, float newCost = 0f)
     {
@@ -641,5 +642,5 @@ public class CombatTools : MonoBehaviour
         }
     }
 
-
+   
 }

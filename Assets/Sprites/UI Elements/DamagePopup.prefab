@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 10 <sprite name="DEF">
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: e4c6cb2bcb2e7624aa1d7826412ee9c3, type: 2}
+  m_sharedMaterial: {fileID: 903687716506968826, guid: e4c6cb2bcb2e7624aa1d7826412ee9c3,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

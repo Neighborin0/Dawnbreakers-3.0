@@ -25,7 +25,7 @@ public class Expose : Action
 
     public override string GetDescription()   
     {
-        description = $"Applies <color=#FFFFFF>EXPOSE</color> for {duration} round";
+        description = $"Applies <color=#FFFFFF>EXPOSE</color> for {duration} rounds.";
         return description;
     }
     public override IEnumerator ExecuteAction()
@@ -33,7 +33,7 @@ public class Expose : Action
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero,0,8, -40, 0.5f, false, true);
         yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "StaggerParticles", Color.white, Color.white, new Vector3(0, 0, -2f), Quaternion.identity, 1f));
-        BattleSystem.Instance.SetTempEffect(targets, "EXPOSE", true, duration);
+        BattleSystem.Instance.SetTempEffect(targets, "EXPOSE",true,duration, 0f, 1f);
         yield return new WaitForSeconds(0.5f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
     }

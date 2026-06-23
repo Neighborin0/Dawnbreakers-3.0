@@ -73,6 +73,7 @@ public class Bind : Action
     }
     public override IEnumerator ExecuteAction()
     {
+        int timelineDelay = GetTimelineDelay();
         LabCamera.Instance.MoveToUnit(targets, Vector3.zero, 0, 8, -40, 0.5f, false, true);
         yield return new WaitForSeconds(0.3f);
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "Strike", new Color(48, 25, 52), new Color(48, 25, 52), new Vector3(0, 0, -2f), Quaternion.identity, 1f));
@@ -80,7 +81,7 @@ public class Bind : Action
         BattleSystem.Instance.StartCoroutine(CombatTools.PlayVFX(targets.gameObject, "BasicHitParticles_001", new Color(48, 25, 52), new Color(48, 25, 52), new Vector3(0, 0, -1f), Quaternion.identity, 1, 0, true, 0, 10));
         yield return new WaitForSeconds(0.01f);
         Director.Instance.StartCoroutine(CombatTools.ApplyAndReduceChromaticAbberation(0.01f));
-        targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle, false, false, statAmount);
+        targets.health.TakeDamage((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)), unit, damageType, actionStyle, false, false, timelineDelay);
         LabCamera.Instance.Shake(0.3f, 1.5f);
         yield return new WaitForSeconds(0.9f);
         CombatTools.CheckIfActionWasFatalAndResetCam(this, targets.currentHP);
