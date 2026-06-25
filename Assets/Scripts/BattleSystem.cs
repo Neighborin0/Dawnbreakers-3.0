@@ -365,9 +365,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleStates.WON;
         yield return new WaitForSeconds(1f);
-        Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        Director.Instance.canvas.worldCamera = LabCamera.Instance.uicam;
-        Director.Instance.canvas.planeDistance = 20;
+        ConfigureDirectorCanvas();
         foreach (Transform child in Director.Instance.timeline.transform)
         {
             if (child.GetComponent<TimeLineChild>() != null)
@@ -422,11 +420,26 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    private void ConfigureDirectorCanvas()
+    {
+        Canvas directorCanvas = Director.Instance.canvas;
+        Camera uiCamera = LabCamera.Instance.uicam;
+
+        if (directorCanvas == null || uiCamera == null)
+            return;
+
+        directorCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+        directorCanvas.worldCamera = uiCamera;
+        directorCanvas.planeDistance = 1f;
+
+        uiCamera.orthographic = true;
+    }
     public IEnumerator EndBattle()
     {
         LabCamera.Instance.MoveToUnit(playerUnits[0], Vector3.zero, 0, 9f, -50, 0.8f);
         yield return new WaitForSeconds(0.4f);
-        Director.Instance.itemHandler.Run();
+        //Director.Instance.itemHandler.Run();
+        Director.Instance.actionRewardManager.GetRewards();
         if (DoPostBattleDialogue)
             BattleLog.Instance.DoRandomLevelUpScreenDialogue();
     }

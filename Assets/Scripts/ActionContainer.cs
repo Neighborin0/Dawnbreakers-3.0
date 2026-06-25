@@ -42,34 +42,22 @@ public class ActionContainer : MonoBehaviour
     private Unit currentPreviewTarget;
     private Unit subscribedUnit;
 
-    private static readonly Color NeutralDamageColor =
-        new Color(1f, 0.8705882f, 0.7058824f);
+    private static readonly Color NeutralDamageColor = new Color(1f, 0.8705882f, 0.7058824f);
 
-    /*
-     * Change this if your unit shader expects a specific default
-     * outline color instead of a transparent outline.
-     */
-    private static readonly Color DefaultUnitOutlineColor =
-        Color.clear;
+    private static readonly Color DefaultUnitOutlineColor = Color.clear;
 
-    private static readonly Color ControlledUnitOutlineColor =
-    Color.yellow;
+    private static readonly Color ControlledUnitOutlineColor = Color.yellow;
 
-    private static readonly Color ValidTargetOutlineColor =
-        Color.white;
+    private static readonly Color ValidTargetOutlineColor = Color.white;
 
-    private static readonly Color ResistedTargetOutlineColor =
-        new Color(
-            0.5754717f * 255f,
-            0.4533197f * 255f,
-            0.4533197f * 255f
-        ) * 0.02f;
+    private static readonly Color ResistedTargetOutlineColor = new Color(0.5754717f * 255f, 0.4533197f * 255f, 0.4533197f * 255f) * 0.02f;
 
-    private static readonly Color EffectiveTargetOutlineColor =
-        new Color(255f, 1f, 0f) * 0.02f;
+    private static readonly Color EffectiveTargetOutlineColor = new Color(255f, 1f, 0f) * 0.02f;
+    private static readonly Color NewActionOutlineColor = Color.white;
 
     private static readonly Color heavyColor = new Color(255f, 1f, 0f) * 0.05f;
     private static readonly Color lightColor = new Color(0, 162, 191) * 0.05f;
+
 
     private void Awake()
     {
@@ -111,6 +99,8 @@ public class ActionContainer : MonoBehaviour
             scaleComponent.newScaleSize =
                 scaleComponent.oldScaleSize * 1.02f;
         }
+
+        ApplyDefaultActionOutline();
     }
 
     private void Start()
@@ -123,6 +113,7 @@ public class ActionContainer : MonoBehaviour
 
         SubscribeToUnit();
         RefreshActionValues();
+        ApplyDefaultActionOutline();
     }
 
     private void OnDestroy()
@@ -154,6 +145,7 @@ public class ActionContainer : MonoBehaviour
 
         SubscribeToUnit();
         RefreshActionValues();
+        ApplyDefaultActionOutline();
     }
 
     private void SubscribeToUnit()
@@ -196,12 +188,6 @@ public class ActionContainer : MonoBehaviour
             return;
         }
 
-        /*
-         * Cancellation must happen before any targeting work.
-         *
-         * Returning here prevents ExecuteActionOnClick() from
-         * reapplying highlights during the same frame.
-         */
         if (HandleActionCancel())
             return;
 
@@ -216,7 +202,41 @@ public class ActionContainer : MonoBehaviour
     }
 
 
-private void UpdateDamageDisplay(Unit target = null)
+
+    private void ApplyDefaultActionOutline()
+    {
+        Image image = GetComponent<Image>();
+
+        if (image == null || image.material == null)
+            return;
+
+        if (action != null && action.New)
+        {
+            image.material.SetFloat(
+                "OutlineThickness",
+                1f
+            );
+
+            image.material.SetColor(
+                "OutlineColor",
+               NewActionOutlineColor * 100
+            );
+        }
+        else
+        {
+            image.material.SetFloat(
+                "OutlineThickness",
+                0f
+            );
+
+            image.material.SetColor(
+                "OutlineColor",
+                Color.white
+            );
+        }
+    }
+
+    private void UpdateDamageDisplay(Unit target = null)
     {
         if (damageNums == null ||
             action == null ||
@@ -776,29 +796,24 @@ private void UpdateDamageDisplay(Unit target = null)
     {
         Image image = GetComponent<Image>();
 
-        if (image == null || action == null)
+        if (image == null ||
+            image.material == null ||
+            action == null)
+        {
             return;
+        }
 
         switch (action.actionStyle)
         {
             case Action.ActionStyle.STANDARD:
                 {
-                    image.material.SetFloat(
-                        "OutlineThickness",
-                        0f
-                    );
-
-                    image.material.SetColor(
-                        "OutlineColor",
-                        Color.white
-                    );
-
+                    ApplyDefaultActionOutline();
                     break;
                 }
 
             case Action.ActionStyle.HEAVY:
                 {
-                    Color heavyColor =
+                    Color heavyOutlineColor =
                         new Color(225f, 1f, 0f);
 
                     image.material.SetFloat(
@@ -808,7 +823,7 @@ private void UpdateDamageDisplay(Unit target = null)
 
                     image.material.SetColor(
                         "OutlineColor",
-                        heavyColor * 10f
+                        heavyOutlineColor * 10f
                     );
 
                     break;
@@ -816,7 +831,7 @@ private void UpdateDamageDisplay(Unit target = null)
 
             case Action.ActionStyle.LIGHT:
                 {
-                    Color lightColor =
+                    Color lightOutlineColor =
                         new Color(0f, 162f, 191f);
 
                     image.material.SetFloat(
@@ -826,12 +841,31 @@ private void UpdateDamageDisplay(Unit target = null)
 
                     image.material.SetColor(
                         "OutlineColor",
-                        lightColor * 10f
+                        lightOutlineColor * 10f
                     );
 
                     break;
                 }
         }
+    }
+
+    //Sets the outline color of the action container 
+    public void SetOutline(Color outlineColor, float outlineThickness, float colorAlpha)
+    {
+        Image image = GetComponent<Image>();
+
+        if (image == null || image.material == null)
+            return;
+
+        image.material.SetFloat(
+            "OutlineThickness",
+            outlineThickness
+        );
+
+        image.material.SetColor(
+            "OutlineColor",
+            outlineColor * colorAlpha
+        );
     }
 
     private void PerformOnActionSelected()
@@ -854,20 +888,7 @@ private void UpdateDamageDisplay(Unit target = null)
                 NeutralDamageColor;
         }
 
-        Image image = GetComponent<Image>();
-
-        if (image != null)
-        {
-            image.material.SetFloat(
-                "OutlineThickness",
-                0f
-            );
-
-            image.material.SetColor(
-                "OutlineColor",
-                Color.white
-            );
-        }
+        ApplyDefaultActionOutline();
     }
 
     public IEnumerator AutoSelectNextAvailableUnit()
@@ -1221,6 +1242,7 @@ private void UpdateDamageDisplay(Unit target = null)
 
         SetActionStyleButtonsActive(turnOn);
         RefreshActionValues();
+        ApplyDefaultActionOutline();
     }
 
     public void SetActionStyle(Action.ActionStyle newStyle)

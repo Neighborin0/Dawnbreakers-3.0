@@ -16,8 +16,13 @@ public class ConfirmButton : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
-        Director.Instance.LevelUpText.GetComponent<MoveableObject>().Move(true);
-        Director.Instance.ConfirmButton.GetComponent<MoveableObject>().Move(true);
+        if (Director.Instance.LevelUpText != null)
+            Director.Instance.LevelUpText.GetComponent<MoveableObject>().Move(true);
+
+        Director.Instance.actionRewardManager.ClearRewards();
+
+        Director.Instance.ConfirmButton.GetComponent<MoveableObject>().Move(false);
+        Director.Instance.backButton.GetComponent<MoveableObject>().Move(false);
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(false);  
         yield return new WaitForSeconds(0.5f);
         OptionsManager.Instance.Load("MAP", "Coronus_Map", 1, 0.5f);

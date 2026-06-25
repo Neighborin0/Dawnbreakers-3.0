@@ -50,7 +50,7 @@ public class Bind : Action
 
         description =
             $"Deals <color=#FF0000>{displayedDamage}</color> " +
-            $"<sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG. " +
+            $"{Tools.ReturnDamageTypeSpriteName(damageType)} DMG. " +
             $"<color=#FFFFFF>+{timelineDelay} Timeline Delay</color>.";
 
         return description;

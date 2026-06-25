@@ -164,6 +164,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     }
     */
 
+    /*
     private void CheckNumberOfSkillPointsInAllTabs()
     {
        bool allSame = Director.Instance.TabGrid.GetComponentsInChildren<CharacterTab>().All(item => item.skillPoints == 0);
@@ -183,6 +184,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             Director.Instance.ConfirmButton.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
         }
     }
+    */
 
     /*public void DecreaseStat()
     {

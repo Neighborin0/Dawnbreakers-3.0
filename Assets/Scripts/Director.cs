@@ -57,6 +57,7 @@ public class Director : MonoBehaviour
     public Image CutsceneUiBlocker;
     public bool InBattle = false;
     public ItemHandler itemHandler;
+    public ActionRewardManager actionRewardManager;
 
     //Timeline stuff
     public TimeLine timeline;
@@ -451,13 +452,26 @@ public class Director : MonoBehaviour
             assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) < 100 ? $"{CombatTools.DetermineTrueCost(action)}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = action.ActionName;
-            if (assignedAction.action.New)
+            /*if (assignedAction.action.New)
             {
-                assignedAction.GetComponent<Image>().material = Instantiate<Material>(assignedAction.GetComponent<Image>().material);
-                assignedAction.GetComponent<Image>().material.SetFloat("OutlineThickness", 2);
-                assignedAction.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
                 assignedAction.transform.SetAsFirstSibling();
+                var img = assignedAction.GetComponent<Image>();
+
+
+
+                img.material.SetFloat(
+                    "OutlineThickness",
+                    2f
+                );
+
+                img.material.SetColor(
+                    "OutlineColor",
+                    Color.white * 10f
+                );
+
+                Debug.LogError("This is being ran");
             }
+            */
             if (assignedAction.action.actionType == Action.ActionType.STATUS)
             {
                 assignedAction.damageParent.SetActive(false);

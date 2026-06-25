@@ -25,21 +25,55 @@ public class Stab : Action
         Done = false;
     }
 
-    public override string GetDescription()   
+    public override string GetDescription()
     {
-        if (unit.IsPlayerControlled)
+        string damageTypeSprite =
+            Tools.ReturnDamageTypeSprite(damageType);
+
+        if (unit == null)
         {
-            description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.";
+            description =
+                $"Deals {damageTypeSprite} DMG.";
+
+            return description;
+        }
+
+        int baseDamage =
+            CombatTools.DetermineTrueActionValue(this) +
+            unit.attackStat;
+
+        float typeMultiplier =
+            targets != null
+                ? CombatTools.ReturnTypeMultiplier(
+                    targets,
+                    damageType
+                )
+                : 1f;
+
+        int finalDamage =
+            Mathf.Max(
+                0,
+                Mathf.RoundToInt(
+                    baseDamage * typeMultiplier
+                )
+            );
+
+        bool showDamageNumber =
+            unit.IsPlayerControlled ||
+            finalDamage > 0;
+
+        if (showDamageNumber)
+        {
+            description =
+                $"Deals <color=#FF0000>{finalDamage}</color> " +
+                $"{damageTypeSprite} DMG.";
         }
         else
         {
-            if ((int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType)) > 0)
-            {
-                description = $"Deals <color=#FF0000>{(int)((CombatTools.DetermineTrueActionValue(this) + unit.attackStat) * CombatTools.ReturnTypeMultiplier(targets, damageType))}</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.";
-            }
-            else
-                description = $"Deals <color=#FF0000>0</color> <sprite name=\"{Tools.ReturnDamageTypeSpriteName(damageType)}\"> DMG.";
+            description =
+                $"Deals {damageTypeSprite} DMG.";
         }
+
         return description;
     }
     public override IEnumerator ExecuteAction()

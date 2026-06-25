@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -357,10 +358,13 @@ public class Tools : MonoBehaviour
    
     public static void AddNewActionToUnit(Unit unit, string actionName, bool ShownAsNew = true)
     {
-        var oldAction = Director.Instance.actionDatabase.Where(obj => obj.ActionName == actionName).SingleOrDefault();
+        if (unit == null) { Debug.LogError("Cannot add an action to a null unit."); return; }
+
+        var oldAction = Instantiate(Director.Instance.actionDatabase.Where(obj => obj.ActionName == actionName).SingleOrDefault());
         unit.actionList.Add(oldAction);
-        if (ShownAsNew)
-            unit.actionList[unit.actionList.Count - 1].New = true;
+        oldAction.unit = unit;
+        oldAction.New = true;
+
     }
 
     public static IEnumerator StopTime(float duration)
@@ -494,39 +498,90 @@ public class Tools : MonoBehaviour
         return random;
     }
 
-    public static string ReturnDamageTypeSpriteName(DamageType damageType)
+    public static string ReturnDamageTypeSpriteName(
+     DamageType damageType,
+     float sizePercent = 80f,
+     float verticalOffset = 0.05f)
     {
-        string stringToReturn = "";
-       switch(damageType)
+        string spriteName;
+
+        switch (damageType)
         {
             case DamageType.STRIKE:
-                {
-                    stringToReturn = "STRIKE2";
-                }
-            break;
-                case DamageType.PIERCE:
-                {
-                    stringToReturn = "PIERCE2";
-                }
-           break;
+                spriteName = "STRIKE2";
+                break;
+
+            case DamageType.PIERCE:
+                spriteName = "PIERCE2";
+                break;
+
             case DamageType.HEAT:
-                {
-                    stringToReturn = "HEAT2";
-                }
+                spriteName = "HEAT2";
                 break;
-                break;
+
             case DamageType.DARK:
-                {
-                    stringToReturn = "DARK2";
-                }
+                spriteName = "DARK2";
                 break;
+
             default:
-                {
-                    stringToReturn = damageType.ToString();
-                }
+                spriteName = damageType.ToString();
                 break;
-        }     
-        return stringToReturn;
+        }
+
+        string size =
+            sizePercent.ToString(
+                CultureInfo.InvariantCulture
+            );
+
+        string offset =
+            verticalOffset.ToString(
+                CultureInfo.InvariantCulture
+            );
+
+        return
+            $"<voffset={offset}em>" +
+            $"<size={size}%>" +
+            $"<sprite name=\"{spriteName}\">" +
+            $"</size>" +
+            $"</voffset>";
+    }
+
+    public static string ReturnDamageTypeSprite(
+     DamageType damageType,
+     float sizePercent = 80f,
+     float verticalOffset = 0.05f)
+    {
+        string spriteName;
+
+        switch (damageType)
+        {
+            case DamageType.STRIKE:
+                spriteName = "STRIKE2";
+                break;
+
+            case DamageType.PIERCE:
+                spriteName = "PIERCE2";
+                break;
+
+            case DamageType.HEAT:
+                spriteName = "HEAT2";
+                break;
+
+            case DamageType.DARK:
+                spriteName = "DARK2";
+                break;
+
+            default:
+                spriteName = damageType.ToString();
+                break;
+        }
+
+        return
+            $"<voffset={verticalOffset.ToString(System.Globalization.CultureInfo.InvariantCulture)}em>" +
+            $"<size={sizePercent.ToString(System.Globalization.CultureInfo.InvariantCulture)}%>" +
+            $"<sprite name=\"{spriteName}\">" +
+            $"</size>" +
+            $"</voffset>";
     }
 
     public static float CheckPlayerPrefsFloat(string KeyToCheck, float defaultValue)
@@ -572,6 +627,15 @@ public class Tools : MonoBehaviour
         }
 
         return intToReturn;
+    }
+
+    public static void RemoveActionFromUnit(Unit unit, string actionName)
+    {
+        if (unit == null) { Debug.LogError("Cannot add an remove from a null unit."); return; }
+        Action oldAction = Director.Instance.actionDatabase.Where(obj => obj.ActionName == actionName).SingleOrDefault();
+        unit.actionList.Remove(oldAction);
+        UnityEngine.Object.Destroy(oldAction);
+
     }
 }
 

@@ -8,80 +8,331 @@ using UnityEngine.UI;
 using static System.Collections.Specialized.BitVector32;
 using static UnityEngine.UI.CanvasScaler;
 
-
 public class ActionRewardManager : MonoBehaviour
 {
-    private Action parentAction;
-    private List<Action> actionRewards = new List<Action>();
-    private void GetRewards()
-    {
+    public List<Action> actionRewards = new List<Action>();
+    public ActionRewardTab actionRewardTabPrefab;
+    public List<ActionRewardTab> actionRewardTabDisplay = new List<ActionRewardTab>();
+    private Coroutine moveRewardsCoroutine;
 
-        if (Director.Instance.party.Count == 0)
+    public void GetRewards()
+    {
+        Tools.ToggleUiBlocker(false, true);
+        Director.Instance.CharacterSlotEnable(true);
+        BattleLog.Instance.ClearAllBattleLogText();
+        Director.Instance.LevelUpText.GetComponent<MoveableObject>().Move(false);
+
+        ClearRewards();
+
+        for (int i = 0; i < 3; i++)
         {
-            print("No units in party, how tf did you get here?");
+            ActionRewardTab tab = Instantiate(actionRewardTabPrefab, Director.Instance.canvas.transform);
+
+            float xPosition = -550f + (i * 520f);
+
+            RectTransform tabRect = tab.GetComponent<RectTransform>();
+
+            tabRect.anchoredPosition = new Vector2(xPosition, -1000f);
+
+            MoveableObject moveableObject = tab.GetComponent<MoveableObject>();
+
+            if (moveableObject != null)
+            {
+                moveableObject.PositionDownX = xPosition;
+                moveableObject.PositionUpX = xPosition;
+            }
+
+            actionRewardTabDisplay.Add(tab);
+        }
+
+        List<Unit> validPartyUnits =
+            Director.Instance.party
+                .Where(unit => unit != null)
+                .ToList();
+
+        if (validPartyUnits.Count == 0)
+        {
+            Debug.LogError("Action rewards could not be generated.");
             return;
         }
-        else if (Director.Instance.party.Count == 1)
-        {
-            GetRandomAction(Director.Instance.party[0]);
-        }
-        else if (Director.Instance.party.Count == 2)
-        {
-            foreach (var unit in Director.Instance.party)
-            {
 
-                if (unit != null && RewardTracker(unit) < 2)
+        /*
+         * Generate three rewards.
+         *
+         * One party member:
+         * Unit 1, Unit 1, Unit 1
+         *
+         * Two party members:
+         * Unit 1, Unit 2, Unit 1
+         *
+         * Three party members:
+         * Unit 1, Unit 2, Unit 3
+         */
+        for (int i = 0; i < 3; i++)
+        {
+            Action reward = null;
+            for (int unitOffset = 0; unitOffset < validPartyUnits.Count; unitOffset++)
+            {
+                int unitIndex =  (i + unitOffset) % validPartyUnits.Count;
+
+                Unit rewardUnit =  validPartyUnits[unitIndex];
+
+                reward = GetRandomAction(rewardUnit);
+
+                if (reward != null)
                 {
-                    var action = GetRandomAction(unit);
-                    if (action != null)
-                    {
-                        actionRewards.Add(action);
-                    }
+                    break;
                 }
             }
 
-        }
-        else //instances where there are 3 or more units in the party
-        {
-
-            foreach (var unit in Director.Instance.party)
+            if (reward != null)
             {
-                if (unit != null && !actionRewards.Any(x => x.unit == unit))
-                {
-                    var action = GetRandomAction(unit);
-                    if (action != null)
-                    {
-                        actionRewards.Add(action);
-                    }
-                }
+                actionRewards.Add(reward);
+
+                Debug.Log($"Generated reward '{reward.ActionName}' " +$"for {reward.unit.unitName}.");
             }
         }
 
-    }
-    private int RewardTracker(Unit unit)
-    {
-        int count = 0;
-        foreach (var action in actionRewards)
-        {
-            if (action.unit == unit)
-            {
-                count++;
-            }
-        }
-        return count;
+        DisplayRewards();
     }
 
-    private Action GetRandomAction(Unit unit)
+private Action GetRandomAction(Unit unit)
     {
-        Action action = unit.ActionPool[UnityEngine.Random.Range(0, unit.ActionPool.Count)];
-        foreach (var actionScriptable in unit.ActionPool)
+        if (unit == null ||
+            unit.ActionPool == null ||
+            unit.ActionPool.Count == 0)
         {
-            if (actionScriptable != null && actionScriptable.New)
-            {
-                action = actionScriptable;
-                break;
-            }
+            return null;
         }
+
+        HashSet<string> selectedActionNames =
+            actionRewards
+                .Where(action =>
+                    action != null &&
+                    action.unit == unit)
+                .Select(action =>
+                    action.ActionName)
+                .ToHashSet();
+
+        HashSet<string> learnedActionNames =
+            unit.actionList
+                .Where(action =>
+                    action != null)
+                .Select(action =>
+                    action.ActionName)
+                .ToHashSet();
+
+        List<Action> possibleActions =
+            unit.ActionPool
+                .Where(action =>
+                    action != null &&
+                    !selectedActionNames.Contains(
+                        action.ActionName
+                    ) &&
+                    !learnedActionNames.Contains(
+                        action.ActionName
+                    ))
+                .ToList();
+
+        if (possibleActions.Count == 0)
+        {
+            Debug.LogWarning(
+                $"No valid action rewards remain for {unit.unitName}."
+            );
+
+            return null;
+        }
+
+        List<Action> newActions =
+            possibleActions
+                .Where(action =>
+                    action.New)
+                .ToList();
+
+        List<Action> rewardPool =
+            newActions.Count > 0
+                ? newActions
+                : possibleActions;
+
+        Action actionScriptable =
+            rewardPool[
+                UnityEngine.Random.Range(
+                    0,
+                    rewardPool.Count
+                )
+            ];
+
+        Action action =
+            Instantiate(actionScriptable);
+
+        action.unit = unit;
+        action.GetDescription();
+
         return action;
     }
+
+
+
+    private void DisplayRewards()
+    {
+        Director.Instance.LevelUpText.gameObject.SetActive(true);
+
+        for (int i = 0;
+             i < actionRewardTabDisplay.Count;
+             i++)
+        {
+            ActionRewardTab tab = actionRewardTabDisplay[i];
+
+            if (i < actionRewards.Count)
+            {
+                tab.gameObject.SetActive(true);
+                tab.Initalize(actionRewards[i]);
+
+                Button button = tab.GetComponent<Button>();
+
+                if (button != null)
+                {
+                    button.interactable = false;
+                }
+
+                HighlightedObject highlightedObject = tab.GetComponent<HighlightedObject>();
+
+                if (highlightedObject != null)
+                {
+                    highlightedObject.disabled = true;
+                }
+            }
+            else
+            {
+                tab.gameObject.SetActive(false);
+            }
+        }
+
+        MoveRewards(true);
+    }
+
+
+    public void MoveRewards(bool MoveUp)
+    {
+        if (moveRewardsCoroutine != null)
+        {
+            StopCoroutine(moveRewardsCoroutine);
+        }
+
+        moveRewardsCoroutine = StartCoroutine(MoveRewardDisplaysTabs(MoveUp));
+    }
+
+    private IEnumerator MoveRewardDisplaysTabs(bool MoveUp)
+    {
+        foreach (ActionRewardTab tab in actionRewardTabDisplay)
+        {
+            if (tab == null ||
+                !tab.gameObject.activeSelf)
+            {
+                continue;
+            }
+
+            Button button =
+                tab.GetComponent<Button>();
+
+            if (button != null)
+            {
+                button.interactable = false;
+            }
+
+            HighlightedObject highlightedObject =
+                tab.GetComponent<HighlightedObject>();
+
+            if (highlightedObject != null)
+            {
+                highlightedObject.disabled = true;
+            }
+
+            if (MoveUp)
+            {
+                tab.Chosen = false;
+            }
+        }
+
+        foreach (ActionRewardTab tab in actionRewardTabDisplay)
+        {
+            if (tab == null ||
+                !tab.gameObject.activeSelf)
+            {
+                continue;
+            }
+
+            MoveableObject moveableObject =
+                tab.GetComponent<MoveableObject>();
+
+            if (moveableObject != null)
+            {
+                moveableObject.Move(MoveUp);
+            }
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        if (MoveUp)
+        {
+            foreach (ActionRewardTab tab in actionRewardTabDisplay)
+            {
+                if (tab == null ||
+                    !tab.gameObject.activeSelf)
+                {
+                    continue;
+                }
+
+                Button button =
+                    tab.GetComponent<Button>();
+
+                if (button != null)
+                {
+                    button.interactable = true;
+                }
+
+                HighlightedObject highlightedObject =
+                    tab.GetComponent<HighlightedObject>();
+
+                if (highlightedObject != null)
+                {
+                    highlightedObject.disabled = false;
+                }
+            }
+        }
+
+        moveRewardsCoroutine = null;
+    }
+
+
+
+    public void ClearRewards()
+    {
+        if (moveRewardsCoroutine != null)
+        {
+            StopCoroutine(moveRewardsCoroutine);
+            moveRewardsCoroutine = null;
+        }
+
+        foreach (ActionRewardTab tab in actionRewardTabDisplay)
+        {
+            if (tab != null)
+            {
+                Destroy(tab.gameObject);
+            }
+        }
+
+        foreach (Action action in actionRewards)
+        {
+            if (action != null)
+            {
+                Destroy(action);
+            }
+        }
+
+        actionRewardTabDisplay.Clear();
+        actionRewards.Clear();
+    }
+
 }
+

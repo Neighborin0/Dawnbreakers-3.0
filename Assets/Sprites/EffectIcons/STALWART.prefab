@@ -191,6 +191,7 @@ MonoBehaviour:
   currentEffectPopup: {fileID: 0}
   descriptionSize: 0.4
   popupTextColor: {r: 0.99381757, g: 1, b: 0, a: 1}
+  canBeStacked: 1
 --- !u!114 &7750311034726761472
 MonoBehaviour:
   m_ObjectHideFlags: 0

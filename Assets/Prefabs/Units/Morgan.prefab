@@ -350,6 +350,8 @@ MonoBehaviour:
   attackStat: 0
   defenseStat: 0
   armor: 0
+  DamageModifier: 1
+  damageAddend: 0
   spotLight: {fileID: 4101498702268122146}
   knockbackModifider: 0
   resistances: 

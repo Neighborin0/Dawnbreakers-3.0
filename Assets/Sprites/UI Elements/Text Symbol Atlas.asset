@@ -43,37 +43,37 @@ MonoBehaviour:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 0
-    m_Scale: 1.1
+    m_Scale: 1
     m_Name: ATK
     m_HashCode: 69278
   - m_ElementType: 2
     m_Unicode: 65534
-    m_GlyphIndex: 2
-    m_Scale: 1.1
-    m_Name: DEF
-    m_HashCode: 71911
-  - m_ElementType: 2
-    m_Unicode: 65534
     m_GlyphIndex: 1
-    m_Scale: 1.1
+    m_Scale: 1
     m_Name: SPD
     m_HashCode: 91911
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 3
-    m_Scale: 1.2
+    m_Scale: 1
     m_Name: Duration
     m_HashCode: -1502474018
   - m_ElementType: 2
     m_Unicode: 65534
+    m_GlyphIndex: 2
+    m_Scale: 1
+    m_Name: DEF
+    m_HashCode: 71911
+  - m_ElementType: 2
+    m_Unicode: 65534
     m_GlyphIndex: 4
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: FORTIFY
     m_HashCode: -1517073223
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 5
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: VIGOR
     m_HashCode: 104672581
   - m_ElementType: 2
@@ -85,31 +85,31 @@ MonoBehaviour:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 7
-    m_Scale: 1.2
+    m_Scale: 1
     m_Name: DEF BLUE
     m_HashCode: 1097321497
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 8
-    m_Scale: 1.1
+    m_Scale: 1
     m_Name: SPD YLW
     m_HashCode: 1623949157
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 9
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: DEF BLUE2
     m_HashCode: 1851870987
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 10
-    m_Scale: 1.1
+    m_Scale: 1
     m_Name: ATK RED2
     m_HashCode: 1136920095
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 11
-    m_Scale: 1.1
+    m_Scale: 1
     m_Name: HP
     m_HashCode: 2328
   - m_ElementType: 2
@@ -121,7 +121,7 @@ MonoBehaviour:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 13
-    m_Scale: 1.1
+    m_Scale: 1
     m_Name: STAGGER
     m_HashCode: 1773212049
   - m_ElementType: 2
@@ -163,115 +163,121 @@ MonoBehaviour:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 23
-    m_Scale: 1.2
+    m_Scale: 1
     m_Name: CLEAVE
     m_HashCode: -1585315816
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 24
-    m_Scale: 1.2
+    m_Scale: 1
     m_Name: HEAT
     m_HashCode: 2525240
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 25
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: COLD
     m_HashCode: 2484836
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 26
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: LIGHT
     m_HashCode: 87647358
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 27
-    m_Scale: 1.1
+    m_Scale: 1
     m_Name: DARK
     m_HashCode: 2377756
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 28
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: PIERCE2
     m_HashCode: -1837643590
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 29
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: STRIKE2
     m_HashCode: 1795881760
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 30
-    m_Scale: 1.2
+    m_Scale: 1
     m_Name: HEAT2
     m_HashCode: 83332874
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 21
-    m_Scale: 1.2
+    m_Scale: 1
     m_Name: PIERCE
     m_HashCode: -1227040888
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 20
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: SLASH
     m_HashCode: 101089253
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 37
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: PIERCE_ALT
     m_HashCode: 20562542
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 38
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: STRIKE_ALT
     m_HashCode: -1869199820
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 40
-    m_Scale: 1.2
+    m_Scale: 1
     m_Name: HEAT_ALT
     m_HashCode: 1144556958
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 41
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: COLD_ALT
     m_HashCode: 470226114
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 42
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: LIGHT_ALT
     m_HashCode: 340240984
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 43
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: DARK_ALT
     m_HashCode: -1961267462
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 44
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: STUN
     m_HashCode: 3037596
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 31
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: DARK2
     m_HashCode: 78465966
   - m_ElementType: 2
     m_Unicode: 65534
+    m_GlyphIndex: 45
+    m_Scale: 1
+    m_Name: SLASH_ALT
+    m_HashCode: -1550998909
+  - m_ElementType: 2
+    m_Unicode: 65534
     m_GlyphIndex: 36
-    m_Scale: 1.3
+    m_Scale: 1
     m_Name: SLASH_ALT
     m_HashCode: -1550998909
   m_SpriteGlyphTable:
@@ -674,11 +680,11 @@ MonoBehaviour:
     sprite: {fileID: 68974145, guid: 548ed9d445938f949ba1c20620b3d89b, type: 3}
   - m_Index: 24
     m_Metrics:
-      m_Width: 22
-      m_Height: 22
-      m_HorizontalBearingX: -23
-      m_HorizontalBearingY: 20
-      m_HorizontalAdvance: 7
+      m_Width: 23
+      m_Height: 23
+      m_HorizontalBearingX: -14.5
+      m_HorizontalBearingY: 18
+      m_HorizontalAdvance: 20
     m_GlyphRect:
       m_X: 95
       m_Y: 26
@@ -772,8 +778,8 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 7
       m_Height: 8
-      m_HorizontalBearingX: -7
-      m_HorizontalBearingY: 8
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 0
       m_HorizontalAdvance: 0
     m_GlyphRect:
       m_X: 235
@@ -984,10 +990,10 @@ MonoBehaviour:
       m_HorizontalBearingY: 20
       m_HorizontalAdvance: 17
     m_GlyphRect:
-      m_X: 167
-      m_Y: 1
-      m_Width: 17
-      m_Height: 22
+      m_X: 162
+      m_Y: 0
+      m_Width: 23
+      m_Height: 23
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
