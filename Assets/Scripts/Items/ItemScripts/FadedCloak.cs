@@ -16,11 +16,7 @@ public class FadedCloak : Item
     {
         itemName = "Faded Cloak";
 
-        itemDescription =
-            "The first damaging action each battle costs " +
-            "<color=#FFFF00>5 less</color>. " +
-            "After using it, the next damaging action deals " +
-            "<color=#FF0500>+1</color> DMG.";
+        itemDescription = $"The first damaging action each battle costs <color=#FFFF00>{-1 * CostReduction}</color>. After using it, the next damaging action deals <color=#FF0500>{-1 * DamageBonus}</color> DMG.";
 
         CanBeTransfered = false;
         ExcludedFromLootPools = true;

@@ -42,7 +42,7 @@ public class ActionTypeButton : Button
                     newAction.actionStyle = Action.ActionStyle.LIGHT;
                     actionContainerParent.action = newAction;
                     actionContainerParent.SetStyleLight(false);
-
+                    actionContainerParent.UpdateOnStyleSwitch();
                     var target = actionContainerParent.baseUnit;
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
                     Color lightColor = new Color(0, 216, 255);
@@ -50,7 +50,6 @@ public class ActionTypeButton : Button
                     Light.intensity = 1f;
                     AudioManager.QuickPlay("button_Hit_005", false);
                     AudioManager.Instance.Play("statUp_Loop_001", 0, false, 1f);
-
                     Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "StatUpVFX", lightColor * 0.3f, lightColor * 0.3f, new Vector3(0, target.GetComponent<SpriteRenderer>().bounds.min.y, 0), Quaternion.identity, float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
                     Director.Instance.StartCoroutine(CombatTools.PlayVFX(target.gameObject, "IgniteSmoke", lightColor * 0.3f, lightColor * 0.3f, new Vector3(0, 0, 0), Quaternion.identity, float.PositiveInfinity, 0, true, 0, 0.1f, 0.01f));
                     Director.Instance.StartCoroutine(CombatTools.ApplyAndReduceChromaticAbberation(0.01f));
@@ -65,7 +64,7 @@ public class ActionTypeButton : Button
                     newAction.actionStyle = Action.ActionStyle.HEAVY;
                     actionContainerParent.action = newAction;
                     actionContainerParent.SetStyleLight(false);
-
+                    actionContainerParent.UpdateOnStyleSwitch();
                     var target = actionContainerParent.baseUnit;
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
                     Color heavyColor = new(225, 27, 0);
@@ -86,9 +85,10 @@ public class ActionTypeButton : Button
                     action.cost = newAction.cost;
                     actionContainerParent.SetActionStyleButtonsActive(true);
                     actionContainerParent.lightButton.state = ActionButtonState.LIGHT;
-                    actionContainerParent.heavyButton.state = ActionButtonState.HEAVY;
+                    actionContainerParent.heavyButton.state = ActionButtonState.HEAVY;                 
                     action.actionStyle = Action.ActionStyle.STANDARD;
                     CombatTools.ReturnPipCounter().AddPip();
+                    actionContainerParent.UpdateOnStyleSwitch();
                     actionContainerParent.SetStyleLight(true);
                     var Light = actionContainerParent.baseUnit.GetComponentInChildren<Light>();
                     actionContainerParent.baseUnit.ChangeUnitsLight(Light, 0, 15, Light.color, 0.1f, 0);

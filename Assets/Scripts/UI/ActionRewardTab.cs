@@ -19,10 +19,7 @@ public class ActionRewardTab : MonoBehaviour
 
     public bool Chosen = false;
 
-    /*
-     * The exact runtime Action clone added to the unit.
-     * This is different from currentAction, which is the reward-display clone.
-     */
+    //The exact runtime Action clone added to the unit. This is different from currentAction, which is the reward-display clone.
     public Action grantedAction;
 
     private bool transitioning = false;
@@ -31,20 +28,13 @@ public class ActionRewardTab : MonoBehaviour
     {
         if (action == null)
         {
-            Debug.LogError(
-                "ActionRewardTab received a null action."
-            );
-
+            Debug.LogError("ActionRewardTab received a null action.");
             return;
         }
 
         if (action.unit == null)
         {
-            Debug.LogError(
-                $"The reward action '{action.ActionName}' " +
-                "does not have a unit assigned."
-            );
-
+            Debug.LogError($"The reward action '{action.ActionName}' " + "does not have a unit assigned.");
             return;
         }
 
@@ -52,29 +42,20 @@ public class ActionRewardTab : MonoBehaviour
         grantedAction = null;
         Chosen = false;
 
-        if (currentAction.unit.charPortraits != null &&
-            currentAction.unit.charPortraits.Count > 0)
+        if (currentAction.unit.charPortraits != null && currentAction.unit.charPortraits.Count > 0)
         {
-            unitPortrait.sprite =
-                currentAction.unit.charPortraits[0];
+            unitPortrait.sprite = currentAction.unit.charPortraits[0];
         }
 
-        actionName.text =
-            currentAction.ActionName;
+        actionName.text = currentAction.ActionName;
 
-        actionDesc.text =
-            currentAction.GetDescription();
+        actionDesc.text = currentAction.GetDescription();
 
-        actionCostText.text =
-            CombatTools.DetermineTrueCost(
-                currentAction
-            ).ToString();
+        actionCostText.text = CombatTools.DetermineTrueCost(currentAction).ToString();
 
-        actionTypeText.text =
-            currentAction.actionType.ToString();
+        actionTypeText.text = currentAction.actionType.ToString();
 
-        actionTargetTypeText.text =
-            currentAction.targetType.ToString();
+        actionTargetTypeText.text = currentAction.targetType.ToString();
 
         actionDurationText.gameObject.SetActive(false);
         actionDamageTypeText.gameObject.SetActive(false);
@@ -83,27 +64,22 @@ public class ActionRewardTab : MonoBehaviour
         {
             actionDurationText.gameObject.SetActive(true);
 
-            actionDurationText.text =
-                currentAction.duration.ToString();
+            actionDurationText.text = currentAction.duration.ToString();
         }
         else if (currentAction.actionType == ActionType.ATTACK)
         {
             actionDamageTypeText.gameObject.SetActive(true);
 
-            actionDamageTypeText.text =
-                currentAction.damageType.ToString();
+            actionDamageTypeText.text = currentAction.damageType.ToString();
         }
     }
 
     public void OnInteracted()
     {
-        if (transitioning ||
-            Chosen ||
-            currentAction == null)
+        if (transitioning ||Chosen || currentAction == null)
         {
             return;
         }
-
         StartCoroutine(Transition());
     }
 
@@ -111,155 +87,95 @@ public class ActionRewardTab : MonoBehaviour
     {
         transitioning = true;
 
-        if (currentAction == null ||
-            currentAction.unit == null)
+        if (currentAction == null ||currentAction.unit == null)
         {
-            Debug.LogError(
-                "The selected reward does not have a valid action or unit."
-            );
+            Debug.LogError("The selected reward does not have a valid action or unit.");
 
             transitioning = false;
             yield break;
         }
 
-        ActionRewardManager rewardManager =
-            Director.Instance.actionRewardManager;
+        ActionRewardManager rewardManager = Director.Instance.actionRewardManager;
 
         if (rewardManager == null)
         {
-            Debug.LogError(
-                "ActionRewardManager is missing."
-            );
-
+            Debug.LogError("ActionRewardManager is missing.");
             transitioning = false;
             yield break;
         }
 
-        /*
-         * Move all reward cards off-screen.
-         */
+        //Move all reward cards off-screen.
         rewardManager.MoveRewards(false);
 
         yield return new WaitForSeconds(1.6f);
 
-        bool alreadyKnown =
-            currentAction.unit.actionList.Any(
-                action =>
-                    action != null &&
-                    action.ActionName ==
-                    currentAction.ActionName
-            );
+        bool alreadyKnown = currentAction.unit.actionList.Any(action => action != null && action.ActionName == currentAction.ActionName);
 
         if (alreadyKnown)
         {
-            Debug.LogWarning(
-                $"{currentAction.unit.unitName} already knows " +
-                $"{currentAction.ActionName}."
-            );
-
+            Debug.LogWarning($"{currentAction.unit.unitName} already knows " + $"{currentAction.ActionName}.");
             rewardManager.MoveRewards(true);
-
             transitioning = false;
             yield break;
         }
 
         if (currentAction.unit.actionList.Count >= 4)
         {
-            Debug.Log(
-                $"{currentAction.unit.unitName} already has four actions."
-            );
+            print($"{currentAction.unit.unitName} already has four actions.");
 
-            /*
-             * Until replacement is implemented, return to the rewards.
-             */
+            //Until replacement is implemented, return to the rewards.
             rewardManager.MoveRewards(true);
+            transitioning = false;
+            HandleReplacement();
+            yield break;
+        }
 
+        //Record the list count before calling the existing void method.
+        int previousActionCount = currentAction.unit.actionList.Count;
+
+        Tools.AddNewActionToUnit(currentAction.unit, currentAction.ActionName, true);
+
+        //Confirm that the method actually added an action.
+        if (currentAction.unit.actionList.Count <= previousActionCount)
+        {
+            Debug.LogError($"Failed to add '{currentAction.ActionName}' " + $"to {currentAction.unit.unitName}.");
+            rewardManager.MoveRewards(true);
             transitioning = false;
             yield break;
         }
 
-        /*
-         * Record the list count before calling the existing void method.
-         */
-        int previousActionCount =
-            currentAction.unit.actionList.Count;
+        //AddNewActionToUnit appends the new runtime clone. Capture that exact object so Back can remove it safely.
 
-        Tools.AddNewActionToUnit(
-            currentAction.unit,
-            currentAction.ActionName,
-            true
-        );
+        grantedAction = currentAction.unit.actionList[currentAction.unit.actionList.Count - 1];
 
-        /*
-         * Confirm that the method actually added an action.
-         */
-        if (currentAction.unit.actionList.Count <=
-            previousActionCount)
+        if (grantedAction == null ||grantedAction.ActionName != currentAction.ActionName)
         {
-            Debug.LogError(
-                $"Failed to add '{currentAction.ActionName}' " +
-                $"to {currentAction.unit.unitName}."
-            );
-
-            rewardManager.MoveRewards(true);
-
-            transitioning = false;
-            yield break;
-        }
-
-        /*
-         * AddNewActionToUnit appends the new runtime clone.
-         * Capture that exact object so Back can remove it safely.
-         */
-        grantedAction =
-            currentAction.unit.actionList[
-                currentAction.unit.actionList.Count - 1
-            ];
-
-        if (grantedAction == null ||
-            grantedAction.ActionName != currentAction.ActionName)
-        {
-            Debug.LogError(
-                $"The newly added action could not be identified for " +
-                $"{currentAction.unit.unitName}."
-            );
-
+            Debug.LogError($"The newly added action could not be identified for " + $"{currentAction.unit.unitName}.");
             grantedAction = null;
-
             rewardManager.MoveRewards(true);
-
             transitioning = false;
             yield break;
         }
 
         Chosen = true;
 
-        Debug.Log(
-            $"{currentAction.unit.unitName} has learned " +
-            $"{currentAction.ActionName}."
+        Debug.Log( $"{currentAction.unit.unitName} has learned " + $"{currentAction.ActionName}."
         );
 
-        Director.Instance.DisplayCharacterTab(
-            false,
-            false
-        );
+        Director.Instance.DisplayCharacterTab(false,false);
 
         SetConfirmButton(true);
 
         Director.Instance.backButton.gameObject.SetActive(true);
 
-        MoveableObject backButtonMovement =
-            Director.Instance.backButton
-                .GetComponent<MoveableObject>();
+        MoveableObject backButtonMovement = Director.Instance.backButton.GetComponent<MoveableObject>();
 
         if (backButtonMovement != null)
         {
             backButtonMovement.Move(true);
         }
 
-        MoveableObject levelUpTextMovement =
-            Director.Instance.LevelUpText
-                .GetComponent<MoveableObject>();
+        MoveableObject levelUpTextMovement = Director.Instance.LevelUpText.GetComponent<MoveableObject>();
 
         if (levelUpTextMovement != null)
         {
@@ -267,6 +183,11 @@ public class ActionRewardTab : MonoBehaviour
         }
 
         transitioning = false;
+    }
+
+    private void HandleReplacement()
+    {
+        print("This is being ran");
     }
 
     private void SetConfirmButton(bool SetActive)
@@ -282,9 +203,7 @@ public class ActionRewardTab : MonoBehaviour
             Director.Instance.ConfirmButton
                 .GetComponent<Button>();
 
-        Image confirmImage =
-            Director.Instance.ConfirmButton
-                .GetComponent<Image>();
+        var CB = confirmButton.GetComponent<ConfirmButton>();
 
         if (SetActive)
         {
@@ -300,21 +219,8 @@ public class ActionRewardTab : MonoBehaviour
                 confirmButton.interactable = true;
             }
 
-            if (confirmImage != null)
-            {
-                confirmImage.material =
-                    Instantiate(confirmImage.material);
 
-                confirmImage.material.SetFloat(
-                    "OutlineThickness",
-                    1f
-                );
-
-                confirmImage.material.SetColor(
-                    "OutlineColor",
-                    Color.white
-                );
-            }
+            CB.SetOutline(1, Color.white * 100);
         }
         else
         {
@@ -328,21 +234,7 @@ public class ActionRewardTab : MonoBehaviour
                 confirmButton.interactable = false;
             }
 
-            if (confirmImage != null)
-            {
-                confirmImage.material =
-                    Instantiate(confirmImage.material);
-
-                confirmImage.material.SetFloat(
-                    "OutlineThickness",
-                    0f
-                );
-
-                confirmImage.material.SetColor(
-                    "OutlineColor",
-                    Color.white
-                );
-            }
+            CB.SetOutline(0, Color.white);
         }
     }
 }

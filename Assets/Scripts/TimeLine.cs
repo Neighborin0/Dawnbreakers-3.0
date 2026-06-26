@@ -273,6 +273,30 @@ public class TimeLine : MonoBehaviour
         
     }
 
+    public void ClearMiniChildReferences(
+    TimeLineChild timelineChild)
+    {
+        if (timelineChild == null)
+            return;
+
+        MiniTimelineChildren miniChild =
+            timelineChild.miniChild;
+
+        if (miniChild == null)
+            return;
+
+        if (miniChild.unit != null)
+        {
+            miniChild.unit.HasMiniTimelineChild = false;
+        }
+
+        miniChild.unit = null;
+        miniChild.parent = null;
+        miniChild.gameObject.SetActive(false);
+
+        timelineChild.miniChild = null;
+    }
+
 
     public IEnumerator FadeOut(TimeLineChild timelineChild)
     {
@@ -321,6 +345,7 @@ public class TimeLine : MonoBehaviour
 
         if (timelineChild != null)
         {
+            timelineChild.CleanupReferences();
             Destroy(timelineChild.gameObject);
         }
     }
@@ -421,5 +446,10 @@ public class TimeLine : MonoBehaviour
 
             }
         }
+    }
+
+    public void PruneDestroyedChildren()
+    {
+        children.RemoveAll(child => child == null);
     }
 }

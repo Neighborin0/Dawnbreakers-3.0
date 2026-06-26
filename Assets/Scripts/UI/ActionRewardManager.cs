@@ -45,10 +45,7 @@ public class ActionRewardManager : MonoBehaviour
             actionRewardTabDisplay.Add(tab);
         }
 
-        List<Unit> validPartyUnits =
-            Director.Instance.party
-                .Where(unit => unit != null)
-                .ToList();
+        List<Unit> validPartyUnits = Director.Instance.party.Where(unit => unit != null).ToList();
 
         if (validPartyUnits.Count == 0)
         {
@@ -98,73 +95,28 @@ public class ActionRewardManager : MonoBehaviour
 
 private Action GetRandomAction(Unit unit)
     {
-        if (unit == null ||
-            unit.ActionPool == null ||
-            unit.ActionPool.Count == 0)
+        if (unit == null || unit.ActionPool == null ||unit.ActionPool.Count == 0)
         {
             return null;
         }
 
-        HashSet<string> selectedActionNames =
-            actionRewards
-                .Where(action =>
-                    action != null &&
-                    action.unit == unit)
-                .Select(action =>
-                    action.ActionName)
-                .ToHashSet();
+        HashSet<string> selectedActionNames = actionRewards.Where(action =>action != null && action.unit == unit).Select(action =>action.ActionName).ToHashSet();
 
-        HashSet<string> learnedActionNames =
-            unit.actionList
-                .Where(action =>
-                    action != null)
-                .Select(action =>
-                    action.ActionName)
-                .ToHashSet();
+        HashSet<string> learnedActionNames =unit.actionList.Where(action => action != null).Select(action => action.ActionName).ToHashSet();
 
-        List<Action> possibleActions =
-            unit.ActionPool
-                .Where(action =>
-                    action != null &&
-                    !selectedActionNames.Contains(
-                        action.ActionName
-                    ) &&
-                    !learnedActionNames.Contains(
-                        action.ActionName
-                    ))
-                .ToList();
+        List<Action> possibleActions = unit.ActionPool.Where(action => action != null && !selectedActionNames.Contains(action.ActionName) &&!learnedActionNames.Contains(action.ActionName)).ToList();
 
         if (possibleActions.Count == 0)
         {
-            Debug.LogWarning(
-                $"No valid action rewards remain for {unit.unitName}."
-            );
-
+            Debug.LogWarning($"No valid action rewards remain for {unit.unitName}.");
             return null;
         }
 
-        List<Action> newActions =
-            possibleActions
-                .Where(action =>
-                    action.New)
-                .ToList();
+        List<Action> newActions = possibleActions.Where(action => action.New).ToList();
+        List<Action> rewardPool = newActions.Count > 0 ? newActions : possibleActions;
+        Action actionScriptable = rewardPool[UnityEngine.Random.Range(0,rewardPool.Count)];
 
-        List<Action> rewardPool =
-            newActions.Count > 0
-                ? newActions
-                : possibleActions;
-
-        Action actionScriptable =
-            rewardPool[
-                UnityEngine.Random.Range(
-                    0,
-                    rewardPool.Count
-                )
-            ];
-
-        Action action =
-            Instantiate(actionScriptable);
-
+        Action action = Instantiate(actionScriptable);
         action.unit = unit;
         action.GetDescription();
 
@@ -226,22 +178,19 @@ private Action GetRandomAction(Unit unit)
     {
         foreach (ActionRewardTab tab in actionRewardTabDisplay)
         {
-            if (tab == null ||
-                !tab.gameObject.activeSelf)
+            if (tab == null ||!tab.gameObject.activeSelf)
             {
                 continue;
             }
 
-            Button button =
-                tab.GetComponent<Button>();
+            Button button = tab.GetComponent<Button>();
 
             if (button != null)
             {
                 button.interactable = false;
             }
 
-            HighlightedObject highlightedObject =
-                tab.GetComponent<HighlightedObject>();
+            HighlightedObject highlightedObject = tab.GetComponent<HighlightedObject>();
 
             if (highlightedObject != null)
             {
@@ -262,15 +211,14 @@ private Action GetRandomAction(Unit unit)
                 continue;
             }
 
-            MoveableObject moveableObject =
-                tab.GetComponent<MoveableObject>();
+            MoveableObject moveableObject = tab.GetComponent<MoveableObject>();
 
             if (moveableObject != null)
             {
                 moveableObject.Move(MoveUp);
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.02f);
         }
 
         if (MoveUp)

@@ -40,7 +40,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     public Button characterTransfer;
     public Sprite actionIcon;
     public Image notification;
-    public Sprite LevelUpIcon;
+    //public Sprite LevelUpIcon;
     public Sprite itemIcon;
     public CharacterTabPopup popup;
 
@@ -55,8 +55,7 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
         DisplaySwitcher.GetComponent<Image>().material = Instantiate<Material>(DisplaySwitcher.GetComponent<Image>().material);
         DisplaySwitcher.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
-        Director.Instance.ConfirmButton.GetComponent<Image>().material = Instantiate<Material>(DisplaySwitcher.GetComponent<Image>().material);
-        Director.Instance.ConfirmButton.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
+      
 
         if (unit != null)
         {
@@ -65,31 +64,19 @@ public class CharacterTab : MonoBehaviour, IDropHandler
                 portrait.sprite = unit.charPortraits.Find(obj => obj.name == "neutral");
             }
             this.inventoryDisplay.GetComponent<InventoryDisplay>().unit = unit;
-        }
-        /*if (BattleSystem.Instance != null)
-        {
-            DisplaySwitcher.image.sprite = actionIcon;
-            foreach (var action in unit.actionList)
+            if(BattleSystem.Instance != null)
             {
-                if(action.New == true)
-                {
-                    DisplaySwitcher.GetComponent<Image>().material.SetFloat("OutlineThickness", 1f);
-                    DisplaySwitcher.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-                }
+                RectTransform inventoryRect = inventoryDisplay.GetComponent<RectTransform>();
+                var anchorPos = inventoryDisplay.GetComponent<RectTransform>().anchoredPosition;
+                inventoryRect.anchoredPosition = new Vector3(anchorPos.x, anchorPos.y, 0);
             }
-            levelupDisplay.SetActive(true);
         }
-        else
-        {
-            DisplaySwitcher.image.sprite = itemIcon;
-        }
-        */
         DisplaySwitcher.image.sprite = itemIcon;
         if (OptionsManager.Instance != null)
-        OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
+            OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
         Tools.ToggleUiBlocker(false, true);
 
-       
+
         for (int i = 0; i < unit.resistances.Length; i++)
         {
             string stringToAdd = $"<sprite name=\"{unit.resistances[i]}\">";
@@ -212,54 +199,20 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         CheckNumberOfSkillPointsInAllTabs();
     }
     */
-     public void SwitchDetailedStates()
+    public void SwitchDetailedStates()
     {
-
-        if (BattleSystem.Instance == null)
+        if (inventoryDisplay.isActiveAndEnabled)
         {
-            if (inventoryDisplay.isActiveAndEnabled)
-            {
-                DisplaySwitcher.image.sprite = itemIcon;
-                inventoryDisplay.gameObject.SetActive(false);
-                actionDisplay.gameObject.SetActive(true);
-                statText.gameObject.SetActive(true);
-            }
-            else
-            {
-                DisplaySwitcher.image.sprite = actionIcon; 
-                inventoryDisplay.gameObject.SetActive(true);
-                actionDisplay.gameObject.SetActive(false);
-            }
+            DisplaySwitcher.image.sprite = itemIcon;
+            inventoryDisplay.gameObject.SetActive(false);
+            actionDisplay.gameObject.SetActive(true);
+            statText.gameObject.SetActive(true);
         }
         else
         {
-           /* if (DisplaySwitcher.GetComponent<Image>().material.name("OutlineThickness") != null && DisplaySwitcher.GetComponent<Image>().material.GetFloat("OutlineThickness") != 0)
-            {
-                DisplaySwitcher.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
-            }
-           */
-
-            /*
-            if (levelupDisplay.activeInHierarchy)
-            {
-                DisplaySwitcher.image.sprite = LevelUpIcon;
-                levelupDisplay.SetActive(false);
-                actionDisplay.gameObject.SetActive(true);
-                detailedDisplay.gameObject.SetActive(true);
-                statText.gameObject.SetActive(true);
-            }
-            else
-            {
-                detailedDisplay.gameObject.SetActive(false);
-                DisplaySwitcher.image.sprite = actionIcon;
-                levelupDisplay.SetActive(true);
-                actionDisplay.gameObject.SetActive(false);
-                foreach(var action in unit.actionList)
-                {
-                    action.New = false;
-                }
-            }
-            */
+            DisplaySwitcher.image.sprite = actionIcon;
+            inventoryDisplay.gameObject.SetActive(true);
+            actionDisplay.gameObject.SetActive(false);
         }
     }
 
@@ -269,12 +222,12 @@ public class CharacterTab : MonoBehaviour, IDropHandler
         if (obj.GetComponent<ItemText>() != null)
         {
             var item = obj.GetComponent<ItemText>();
-            if(item.item.CanBeTransfered) 
+            if (item.item.CanBeTransfered)
             {
                 print(item.item.itemName + " owner:" + item.unit.unitName);
                 this.TransferItem(item);
             }
-          
+
         }
     }
 }

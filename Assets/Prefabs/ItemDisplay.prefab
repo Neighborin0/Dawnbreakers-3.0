@@ -247,6 +247,7 @@ MonoBehaviour:
   PositionDownX: 0
   PositionDownY: 1000
   moved: 0
+  scaleWithScreenSize: 0
 --- !u!114 &-8598226602025637627
 MonoBehaviour:
   m_ObjectHideFlags: 0

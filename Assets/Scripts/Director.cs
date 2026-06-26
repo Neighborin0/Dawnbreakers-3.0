@@ -336,7 +336,7 @@ public class Director : MonoBehaviour
         AudioManager.QuickPlay("ui_woosh_002");
         if (generalCoruntine != null)
             StopCoroutine(generalCoruntine);
-        BattleLog.Instance.ClearAllBattleLogText();
+        //BattleLog.Instance.ClearAllBattleLogText();
         Tools.ToggleUiBlocker(false, true);
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(true);
         if (Director.Instance.TabGrid.transform.childCount > 0)
@@ -394,6 +394,12 @@ public class Director : MonoBehaviour
                         CT.inventoryDisplay.gameObject.SetActive(true);
                         CT.actionDisplay.gameObject.SetActive(true);
 
+                        if (BattleSystem.Instance != null)
+                        {
+                            var rect = CT.inventoryDisplay.GetComponent<RectTransform>();
+                            Vector3 anchorPos = rect.anchoredPosition3D;
+                            rect.anchoredPosition3D = new Vector3(anchorPos.x, anchorPos.y, 0);
+                        }
 
                         foreach (var item in unit.inventory)
                         {
@@ -402,7 +408,20 @@ public class Director : MonoBehaviour
                             x.GetComponent<ItemText>().item = item;
                             x.GetComponent<ItemText>().unit = unit;
                             x.transform.SetParent(CT.inventoryDisplay.transform);
-                            x.transform.localScale = new Vector3(1, 1, 1);
+
+                            //Scaling for battles.
+                            if(BattleSystem.Instance != null)
+                            {
+                                var itemRect = x.GetComponent<RectTransform>();
+                                Vector3 itemAnchorPos = itemRect.anchoredPosition3D;
+                                itemRect.anchoredPosition3D = new Vector3(itemAnchorPos.x, itemAnchorPos.y, 0);
+                                itemRect.localScale = new Vector3(1, 1, 1);
+                            }
+                            else
+                            {
+                                x.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+                            }
+
 
                         }
                         CT.characterTransfer.interactable = Interactable;
@@ -415,10 +434,6 @@ public class Director : MonoBehaviour
 
     }
 
-    public void DisplayItems()
-    {
-
-    }
     public List<LabLine> FindObjectFromDialogueDatabase(string dialogueName)
     {
         var dialogueToReturn = dialogues.Where(obj => obj.name == dialogueName).SingleOrDefault();
@@ -452,26 +467,6 @@ public class Director : MonoBehaviour
             assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) < 100 ? $"{CombatTools.DetermineTrueCost(action)}%" : $"100%";
             assignedAction.costNums.color = Color.yellow;
             assignedAction.textMesh.text = action.ActionName;
-            /*if (assignedAction.action.New)
-            {
-                assignedAction.transform.SetAsFirstSibling();
-                var img = assignedAction.GetComponent<Image>();
-
-
-
-                img.material.SetFloat(
-                    "OutlineThickness",
-                    2f
-                );
-
-                img.material.SetColor(
-                    "OutlineColor",
-                    Color.white * 10f
-                );
-
-                Debug.LogError("This is being ran");
-            }
-            */
             if (assignedAction.action.actionType == Action.ActionType.STATUS)
             {
                 assignedAction.damageParent.SetActive(false);
@@ -508,7 +503,7 @@ public class Director : MonoBehaviour
     }
 
 
-    public void DisableCharacterTab()
+    public void DisableCharacterTab(bool MoveBattlelog = true)
     {
         Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(false);
         AudioManager.QuickPlay("ui_woosh_002");
@@ -537,25 +532,31 @@ public class Director : MonoBehaviour
         if (generalCoruntine != null)
             StopCoroutine(generalCoruntine);
 
-        generalCoruntine = DisablingCharacterTab();
+        generalCoruntine = DisablingCharacterTab(MoveBattlelog);
         StartCoroutine(generalCoruntine);
     }
 
-    public IEnumerator DisablingCharacterTab(bool MoveBattleLog = true)
+    public IEnumerator DisablingCharacterTab(bool MoveBattleLog)
     {
         characterSlotpos.GetComponent<MoveableObject>().Move(false);
         CharacterSlotsDisplayed = true;
-        Tools.ToggleUiBlocker(true, true);
-        BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
-        BattleLog.Instance.ClearAllBattleLogText();
-        yield return new WaitForSeconds(0.5f);
-        foreach (Transform child in Director.Instance.TabGrid.transform)
+        if (MoveBattleLog)
         {
-            if (MoveBattleLog)
-                BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
+            Tools.ToggleUiBlocker(true, true);
+            BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
+            BattleLog.Instance.ClearAllBattleLogText();
+            yield return new WaitForSeconds(0.5f);
+            foreach (Transform child in Director.Instance.TabGrid.transform)
+            {
+                if (MoveBattleLog)
+                    BattleLog.Instance.GetComponent<MoveableObject>().Move(false);
 
-            Destroy(child.gameObject);
+                Destroy(child.gameObject);
+            }
         }
+        else
+            yield break;
+       
     }
 
 

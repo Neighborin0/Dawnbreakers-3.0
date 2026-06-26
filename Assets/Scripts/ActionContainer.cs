@@ -662,15 +662,22 @@ public class ActionContainer : MonoBehaviour
 
     private void UpdateTempTimelineChild(Unit targetUnit)
     {
-        if (CreatedTempTimelineChild)
+        if (targetUnit == null ||
+            action == null)
+        {
+            DestroyTempTimelineChildIfNeeded();
             return;
+        }
 
         Action targetAction =
             Director.Instance.timeline
                 .ReturnTimeChildAction(targetUnit);
 
         if (targetAction == null)
+        {
+            DestroyTempTimelineChildIfNeeded();
             return;
+        }
 
         bool canPreview =
             CombatTools.ReturnIconStatus(
@@ -679,15 +686,100 @@ public class ActionContainer : MonoBehaviour
             );
 
         if (!canPreview)
+        {
+            DestroyTempTimelineChildIfNeeded();
             return;
+        }
 
         if (CombatTools.DetermineTrueCost(targetAction) <
             CombatTools.DetermineTrueCost(action))
         {
+            DestroyTempTimelineChildIfNeeded();
             return;
         }
 
-        CreateTempTimeLineChild(targetUnit);
+        if (!CreatedTempTimelineChild ||
+            TempTL == null ||
+            TempTL.unit != targetUnit)
+        {
+            DestroyTempTimelineChildIfNeeded();
+            CreateTempTimeLineChild(targetUnit);
+            return;
+        }
+
+        RefreshTempTimelineChild(targetUnit);
+    }
+
+    private void RefreshTempTimelineChild(Unit targetUnit)
+    {
+        if (TempTL == null ||
+            targetUnit == null ||
+            action == null)
+        {
+            return;
+        }
+
+        Action targetAction =
+            Director.Instance.timeline
+                .ReturnTimeChildAction(targetUnit);
+
+        if (targetAction == null)
+        {
+            DestroyTempTimelineChildIfNeeded();
+            return;
+        }
+
+        TempTL.unit = targetUnit;
+
+        if (TempTL.portrait != null &&
+            targetUnit.charPortraits != null &&
+            targetUnit.charPortraits.Count > 0)
+        {
+            TempTL.portrait.sprite =
+                targetUnit.charPortraits[0];
+        }
+
+        float costToReturn =
+            CombatTools.DetermineTrueCost(targetAction);
+
+        bool effectiveHit =
+            CombatTools.ReturnTypeMultiplier(
+                targetUnit,
+                action.damageType
+            ) > 1f;
+
+        if (effectiveHit)
+        {
+            costToReturn +=
+                Director.Instance.TimelineAddition;
+
+            costToReturn +=
+                targetUnit.knockbackModifider;
+        }
+
+        if (action.actionStyle !=
+            Action.ActionStyle.STANDARD)
+        {
+            costToReturn +=
+                Director.Instance
+                    .TimelineReductionNonStandardAction;
+        }
+
+        if (action.AppliesStun)
+        {
+            costToReturn = 100f;
+        }
+
+        float verticalPosition =
+            targetUnit.IsPlayerControlled
+                ? 50f
+                : -50f;
+
+        SetTimelineChildPreview(
+            TempTL,
+            costToReturn,
+            verticalPosition
+        );
     }
 
     private void ExecuteActionOnClick(RaycastHit hit)
@@ -781,8 +873,6 @@ public class ActionContainer : MonoBehaviour
         BattleLog.Instance.ResetBattleLog();
 
         ClearTimelineChildren();
-        DestroyTempTimelineChildIfNeeded();
-
         LabCamera.Instance.ResetPosition();
 
         SetStyleLight(true);
@@ -923,74 +1013,11 @@ public class ActionContainer : MonoBehaviour
 
         TempTL.unit = targetUnit;
 
-        if (TempTL.portrait != null &&
-            targetUnit.charPortraits != null &&
-            targetUnit.charPortraits.Count > 0)
-        {
-            TempTL.portrait.sprite =
-                targetUnit.charPortraits[0];
-        }
-
         Director.Instance.timeline.children.Add(TempTL);
 
         TempTL.CanMove = false;
-
-        float costToReturn = 0f;
-
-        Action targetAction =
-            Director.Instance.timeline
-                .ReturnTimeChildAction(targetUnit);
-
-        if (targetAction != null)
-        {
-            costToReturn =
-                CombatTools.DetermineTrueCost(targetAction);
-        }
-
-        bool effectiveHit =
-            CombatTools.ReturnTypeMultiplier(
-                targetUnit,
-                action.damageType
-            ) > 1f;
-
-        if (effectiveHit)
-        {
-            costToReturn +=
-                Director.Instance.TimelineAddition;
-
-            costToReturn +=
-                targetUnit.knockbackModifider;
-        }
-
-        if (action.actionStyle !=
-            Action.ActionStyle.STANDARD)
-        {
-            costToReturn +=
-                Director.Instance
-                    .TimelineReductionNonStandardAction;
-        }
-
-        if (costToReturn > 100f ||
-            action.AppliesStun)
-        {
-            costToReturn = 100f;
-        }
-
-        float verticalPosition =
-            targetUnit.IsPlayerControlled
-                ? 50f
-                : -50f;
-
-        TempTL.rectTransform.anchoredPosition =
-            new Vector3(
-                (100f - costToReturn) * TempTL.offset,
-                verticalPosition
-            );
-
-        TempTL.staminaText.text =
-            Mathf.RoundToInt(costToReturn).ToString();
-
         TempTL.CanClear = true;
+        TempTL.CanBeHighlighted = false;
 
         LabUIInteractable interactable =
             TempTL.GetComponent<LabUIInteractable>();
@@ -999,8 +1026,6 @@ public class ActionContainer : MonoBehaviour
         {
             interactable.CanHover = false;
         }
-
-        TempTL.CanBeHighlighted = false;
 
         Image timelineImage =
             TempTL.GetComponentInChildren<Image>();
@@ -1016,6 +1041,8 @@ public class ActionContainer : MonoBehaviour
             TempTL.portrait.color =
                 new Color(1f, 1f, 1f, 0.5f);
         }
+
+        RefreshTempTimelineChild(targetUnit);
     }
 
     public IEnumerator lightCoroutine;
@@ -1266,21 +1293,40 @@ public class ActionContainer : MonoBehaviour
         if (action == null || baseUnit == null)
             return;
 
-        /*
-         * Rebind before every cost calculation. DetermineTrueCost()
-         * reads actionCostMultiplier/actionCostAddend from action.unit.
-         */
         action.unit = baseUnit;
 
-        RefreshActionValues();
+        /*
+         * Do not manually update only the RectTransform.
+         * This updates cost text, anchored position, and TL.value.
+         */
+        ApplyTimelineChildCost();
+
+        UpdateCostNumbers();
 
         if (targetting)
         {
             UpdateTargetHighlights();
+
+            if (currentPreviewTarget != null)
+            {
+                UpdateTempTimelineChildIfNeeded(
+                    currentPreviewTarget
+                );
+            }
         }
 
         UpdateActionStyleOutline();
         SetDescription();
+
+        Debug.Log(
+            $"STYLE SWITCH | " +
+            $"Action: {action.ActionName} | " +
+            $"Style: {action.actionStyle} | " +
+            $"Cost: {CombatTools.DetermineTrueCost(action)} | " +
+            $"TL Value: {(TL != null ? TL.value : -1f)} | " +
+            $"TL Position: {(TL != null ? TL.rectTransform.anchoredPosition.x : -1f)}",
+            this
+        );
     }
 
     public void SetActionStyleButtonsActive(
@@ -1511,10 +1557,16 @@ public class ActionContainer : MonoBehaviour
         foreach (ActionContainer container
                  in actionContainers)
         {
-            if (container == this)
+            if (container == null ||
+                container == this)
+            {
                 continue;
+            }
 
-            container.SetActive(false);
+            if (container.targetting)
+            {
+                container.DeactivateAction();
+            }
 
             container.UpdateButtonInteractability(
                 container.button
@@ -1524,29 +1576,31 @@ public class ActionContainer : MonoBehaviour
 
     private void ClearTimelineChildren()
     {
-        foreach (TimeLineChild child
-                 in Director.Instance.timeline
-                     .children.ToList())
+        RemoveTimelineChild(ref TL);
+        RemoveTimelineChild(ref TempTL);
+
+        CreatedTempTimelineChild = false;
+    }
+
+    private void RemoveTimelineChild(
+        ref TimeLineChild timelineChild)
+    {
+        if (timelineChild == null)
         {
-            if (child == null || !child.CanClear)
-                continue;
-
-            Director.Instance.timeline
-                .children.Remove(child);
-
-            if (child == TempTL)
-            {
-                TempTL = null;
-                CreatedTempTimelineChild = false;
-            }
-
-            if (child == TL)
-            {
-                TL = null;
-            }
-
-            Destroy(child.gameObject);
+            timelineChild = null;
+            return;
         }
+
+        if (Director.Instance != null &&
+            Director.Instance.timeline != null)
+        {
+            Director.Instance.timeline.children.Remove(
+                timelineChild
+            );
+        }
+
+        Destroy(timelineChild.gameObject);
+        timelineChild = null;
     }
 
     private TimeLineChild InstantiateTimelineChild()
@@ -1649,21 +1703,51 @@ public class ActionContainer : MonoBehaviour
         action.unit = baseUnit;
 
         float finalCost =
-            Mathf.Clamp(
-                CombatTools.DetermineTrueCost(action),
-                0f,
-                100f
-            );
+            CombatTools.DetermineTrueCost(action);
 
-        TL.rectTransform.anchoredPosition =
-            new Vector3(
-                (100f - finalCost) * TL.offset,
-                50f
-            );
-
-        TL.staminaText.text =
-            Mathf.RoundToInt(finalCost).ToString();
+        SetTimelineChildPreview(
+            TL,
+            finalCost,
+            50f
+        );
     }
+
+    private void SetTimelineChildPreview(
+    TimeLineChild timelineChild,
+    float actionCost,
+    float verticalPosition)
+    {
+        if (timelineChild == null)
+            return;
+
+        float clampedCost =
+            Mathf.Clamp(actionCost, 0f, 100f);
+
+        /*
+         * The actual timeline model stores the amount remaining,
+         * rather than the cost itself.
+         *
+         * Cost 30 = timeline value 70.
+         */
+        float timelineValue =
+            100f - clampedCost;
+
+        timelineChild.value = timelineValue;
+
+        timelineChild.rectTransform.anchoredPosition =
+            new Vector3(
+                timelineValue * timelineChild.offset,
+                verticalPosition
+            );
+
+        if (timelineChild.staminaText != null)
+        {
+            timelineChild.staminaText.text =
+                Mathf.RoundToInt(clampedCost).ToString();
+        }
+    }
+
+
 
     private void ScaleObject()
     {
@@ -1700,8 +1784,7 @@ public class ActionContainer : MonoBehaviour
         SubscribeToUnit();
 
         if (damageNums != null &&
-            action.actionType ==
-                Action.ActionType.ATTACK)
+            action.actionType == Action.ActionType.ATTACK)
         {
             Unit previewTarget =
                 targetting
@@ -1712,10 +1795,14 @@ public class ActionContainer : MonoBehaviour
         }
 
         UpdateCostNumbers();
+        ApplyTimelineChildCost();
 
-        if (TL != null)
+        if (currentPreviewTarget != null &&
+            TempTL != null)
         {
-            ApplyTimelineChildCost();
+            RefreshTempTimelineChild(
+                currentPreviewTarget
+            );
         }
     }
 }

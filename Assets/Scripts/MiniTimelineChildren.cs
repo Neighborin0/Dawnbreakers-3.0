@@ -31,19 +31,38 @@ public class MiniTimelineChildren : MonoBehaviour
     }
 
 
-    public void Shift(Unit unit)
+    public void Shift(Unit targetUnit)
     {
+        if (gameObject == null)
+            return;
 
-        if (gameObject != null )
+        transform.SetAsLastSibling();
+
+        if (childImage != null &&
+            childImage.material != null)
         {
-            transform.SetAsLastSibling();
-            childImage.material.SetFloat("OutlineThickness", 1f);
-            childImage.material.SetColor("OutlineColor", Color.white);
+            childImage.material.SetFloat(
+                "OutlineThickness",
+                1f
+            );
 
-            parent.Return();
-
+            childImage.material.SetColor(
+                "OutlineColor",
+                Color.white
+            );
         }
 
+        if (parent != null)
+        {
+            parent.Return();
+        }
+        else
+        {
+            Debug.LogWarning(
+                $"{name} no longer has a valid timeline parent.",
+                this
+            );
+        }
     }
     public void Return()
     {
@@ -73,8 +92,16 @@ public class MiniTimelineChildren : MonoBehaviour
 
                 transform.SetAsLastSibling();
                 Shift(unit);
-                parent.Return();
-                parent.unit.IsHighlighted = false;
+
+                if (parent != null)
+                {
+                    parent.Return();
+
+                    if (parent.unit != null)
+                    {
+                        parent.unit.IsHighlighted = false;
+                    }
+                }
 
             }
             else

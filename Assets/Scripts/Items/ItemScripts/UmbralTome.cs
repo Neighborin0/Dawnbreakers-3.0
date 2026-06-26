@@ -11,7 +11,7 @@ public class UmbralTome : Item
     private void OnEnable()
     {
         itemName = "Umbral Tome";
-        itemDescription = "Applies <color=#6A00FF>HEX</color> to a random enemy <color=#6C00FF>HP</color> unit at the start of battle.";
+        itemDescription = "Applies <color=#6A00FF>HEX</color> to a random enemy unit at the start of battle.";
         CanBeTransfered = false;
         ExcludedFromLootPools = true;
     }

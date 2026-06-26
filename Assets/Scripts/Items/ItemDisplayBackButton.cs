@@ -28,6 +28,7 @@ public class ItemDisplayBackButton : MonoBehaviour
         }
     }
 
+    //This coroutine handles the transition back to the item selection screen.
     private IEnumerator Transition()
     {
         MoveableObject backButtonMovement =
@@ -86,6 +87,7 @@ public class ItemDisplayBackButton : MonoBehaviour
         Tools.ToggleUiBlocker(false, true);
     }
 
+    //This coroutine handles the transition back to the action reward screen.
     private IEnumerator ActionRewardBack()
     {
         ActionRewardManager rewardManager =
@@ -136,21 +138,9 @@ public class ItemDisplayBackButton : MonoBehaviour
             );
         }
 
-        Image confirmImage =
-            Director.Instance.ConfirmButton
-                .GetComponent<Image>();
-
-        if (confirmImage != null)
-        {
-            confirmImage.material =
-                Instantiate(confirmImage.material);
-
-            confirmImage.material.SetFloat(
-                "OutlineThickness",
-                0f
-            );
-        }
-
+        var CB = confirmButton.GetComponent<ConfirmButton>();
+        CB.SetOutline(0, Color.white);
+     
         MoveableObject levelUpTextMovement =
             Director.Instance.LevelUpText
                 .GetComponent<MoveableObject>();
@@ -233,11 +223,11 @@ public class ItemDisplayBackButton : MonoBehaviour
             ART.Chosen = false;
         }
 
-        Director.Instance.DisableCharacterTab();
+        Director.Instance.DisableCharacterTab(false);
 
         rewardManager.MoveRewards(true);
 
-        Director.Instance.DisableCharacterTab();
+        Director.Instance.DisableCharacterTab(false);
 
         rewardManager.MoveRewards(true);
 

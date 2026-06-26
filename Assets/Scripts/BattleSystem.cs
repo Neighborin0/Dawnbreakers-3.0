@@ -1040,14 +1040,28 @@ public class BattleSystem : MonoBehaviour
     public void AddAction(Action action)
     {
         BattleLog.Instance.ClearAllBattleLogText();
-        if (action.unit != null)
+
+        if (action == null || action.unit == null)
+            return;
+
+        if (Director.Instance != null &&
+            Director.Instance.timeline != null)
         {
-            ActionsToPerform.Add(action);
-            if (CombatTools.CheckIfAllUnitsAreReady())
-            {
-                actionCo = PerformAction();
-                StartCoroutine(actionCo);
-            }
+            Director.Instance.timeline.PruneDestroyedChildren();
+        }
+
+        ActionsToPerform.RemoveAll(
+            queuedAction =>
+                queuedAction == null ||
+                queuedAction.unit == null
+        );
+
+        ActionsToPerform.Add(action);
+
+        if (CombatTools.CheckIfAllUnitsAreReady())
+        {
+            actionCo = PerformAction();
+            StartCoroutine(actionCo);
         }
     }
 
@@ -1056,7 +1070,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator PerformAction()
     {
         var timeline = Director.Instance.timeline;
-
+        timeline.PruneDestroyedChildren();
         timeline.slider.value = 0f;
 
         LabCamera.Instance.ResetPosition();
@@ -1064,24 +1078,19 @@ public class BattleSystem : MonoBehaviour
 
         OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
 
-        /*
-         * Use a copy in case Return() modifies the timeline collection.
-         */
         foreach (TimeLineChild child in timeline.children.ToList())
         {
             if (child != null)
             {
-                child.Return();
+               continue;
             }
+            child.Return();
         }
 
         BattleLog.Instance
             .GetComponent<MoveableObject>()
             .Move(false);
-
-        /*
-         * Close the decision phase for all active units.
-         */
+  
         foreach (Unit unit in Tools.GetAllUnits().Where(unit => unit != null))
         {
             unit.ExitDecision();

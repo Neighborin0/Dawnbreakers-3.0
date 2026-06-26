@@ -44,6 +44,10 @@ public class ItemText : MonoBehaviour
             EPtext.text = $"{item.itemDescription}";
             //currentEffectPopup.GetComponent<EffectPopUp>().CheckForSpecialText();
             StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
+            if (!item.CanBeTransfered)
+            {
+                EPtext.text += "\n<color=#FF0000>Can't be transferred.</color>";
+            }
         }
         else
         {

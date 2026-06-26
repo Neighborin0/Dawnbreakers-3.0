@@ -1144,7 +1144,6 @@ MonoBehaviour:
   characterTransfer: {fileID: 3294738273736295110}
   actionIcon: {fileID: 21300000, guid: 45e230aa987b88542bb5e3f07e0ea649, type: 3}
   notification: {fileID: 7125151035381318648}
-  LevelUpIcon: {fileID: 21300000, guid: a57c8d46bd29fe94d928e9920dad4c7f, type: 3}
   itemIcon: {fileID: 21300000, guid: 986c196fe5266c4448df6bef19c17a7d, type: 3}
   popup: {fileID: 8051050111829744378}
   resistanceText: []
@@ -3043,7 +3042,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.6
+  m_fontSize: 0.65
   m_fontSizeBase: 0.8
   m_fontWeight: 400
   m_enableAutoSizing: 1

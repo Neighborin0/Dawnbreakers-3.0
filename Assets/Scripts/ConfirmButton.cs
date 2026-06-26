@@ -7,7 +7,15 @@ using UnityEngine.SceneManagement;
 
 public class ConfirmButton : MonoBehaviour
 {
-
+    public void Start()
+    {
+        if(Director.Instance.ConfirmButton.GetComponent<Image>().material != null)
+        {
+            Director.Instance.ConfirmButton.GetComponent<Image>().material = Instantiate<Material>(Director.Instance.ConfirmButton.GetComponent<Image>().material);
+            Director.Instance.ConfirmButton.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
+        }
+      
+    }
     public void StartDestroy()
     {
         StartCoroutine(DelayedDestroy());
@@ -46,5 +54,23 @@ public class ConfirmButton : MonoBehaviour
         print("SHOULD BE TRANSITIONING");
         this.GetComponent<Button>().interactable = false;
         yield break;
+    }
+
+    public void SetOutline(float thickness, Color color)
+    {
+        var confirmImage = Director.Instance.ConfirmButton.GetComponent<Image>();
+        if (confirmImage != null)
+        {
+
+            confirmImage.material.SetFloat(
+                "OutlineThickness",
+                thickness
+            );
+
+            confirmImage.material.SetColor(
+                "OutlineColor",
+                color
+            );
+        }
     }
 }

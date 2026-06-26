@@ -51,47 +51,106 @@ public class TimeLineChild : MonoBehaviour
         PositionToMoveTo = pos;
     }
 
-    public void Shift(Unit unit)
+    public void Shift(Unit targetUnit)
     {
-
-        if (gameObject != null)
+        if (targetUnit == null ||
+            Director.Instance == null ||
+            Director.Instance.timeline == null)
         {
-            transform.SetAsLastSibling();
-            childImage.material.SetFloat("OutlineThickness", 1f);
-            childImage.material.SetColor("OutlineColor", Color.white);
-
-            foreach (var TL in Director.Instance.timeline.children)
-            {
-                if (TL.miniChild != null && TL.miniChild.unit == unit)
-                {
-                    TL.miniChild.Shift(unit);
-                    break;
-                }
-            }
+            return;
         }
 
+        transform.SetAsLastSibling();
+
+        if (childImage != null &&
+            childImage.material != null)
+        {
+            childImage.material.SetFloat(
+                "OutlineThickness",
+                1f
+            );
+
+            childImage.material.SetColor(
+                "OutlineColor",
+                Color.white
+            );
+        }
+
+        TimeLine timeline = Director.Instance.timeline;
+
+        timeline.PruneDestroyedChildren();
+
+        foreach (TimeLineChild timelineChild
+                 in timeline.children)
+        {
+            if (timelineChild == null)
+                continue;
+
+            MiniTimelineChildren miniChild =
+                timelineChild.miniChild;
+
+            if (miniChild == null ||
+                miniChild.unit == null)
+            {
+                continue;
+            }
+
+            if (miniChild.unit != targetUnit)
+                continue;
+
+            miniChild.Shift(targetUnit);
+            break;
+        }
     }
     public void Return()
     {
-        if (gameObject != null)
+        if (Director.Instance == null ||
+            Director.Instance.timeline == null)
         {
-            foreach (var TL in Director.Instance.timeline.children)
-            {
-                if (TL.miniChild != null && TL.miniChild.unit == unit)
-                {
-                    TL.miniChild.Return();
-                    break;
-                }
-            }
-
-            childImage.material.SetFloat("OutlineThickness", 0);
-            childImage.material.SetColor("OutlineColor", Color.black);
-
+            return;
         }
 
+        TimeLine timeline = Director.Instance.timeline;
+
+        timeline.PruneDestroyedChildren();
+
+        foreach (TimeLineChild timelineChild in timeline.children)
+        {
+            if (timelineChild == null)
+                continue;
+
+            MiniTimelineChildren miniChild = timelineChild.miniChild;
+
+            if (miniChild == null || miniChild.unit == null || unit == null)
+            {
+                continue;
+            }
+
+            if (miniChild.unit != unit)
+                continue;
+
+            miniChild.Return();
+            break;
+        }
+
+        if (childImage == null ||
+            childImage.material == null)
+        {
+            return;
+        }
+
+        childImage.material.SetFloat(
+            "OutlineThickness",
+            0f
+        );
+
+        childImage.material.SetColor(
+            "OutlineColor",
+            Color.black
+        );
     }
 
-   
+
     public void ToggleHightlightOnUnit()
     {
         if (CanBeHighlighted)
@@ -119,5 +178,50 @@ public class TimeLineChild : MonoBehaviour
         }
     }
 
-   
+    private bool hasCleanedUp;
+
+    private void OnDestroy()
+    {
+        CleanupReferences();
+    }
+
+    public void CleanupReferences()
+    {
+        if (hasCleanedUp)
+            return;
+
+        hasCleanedUp = true;
+
+        //Remove this child from the timeline collection.
+        if (Director.Instance != null &&
+            Director.Instance.timeline != null)
+        {
+            Director.Instance.timeline.children.Remove(this);
+        }
+
+        //Clear the Unit's direct reference to this child.
+        if (unit != null &&
+            unit.timelinechild == this)
+        {
+            unit.timelinechild = null;
+        }
+
+        //Break the mini-child relationship before this parent becomes a destroyed Unity object.
+        if (miniChild != null)
+        {
+            if (miniChild.parent == this)
+            {
+                miniChild.parent = null;
+            }
+
+            if (miniChild.unit != null)
+            {
+                miniChild.unit.HasMiniTimelineChild = false;
+            }
+
+            miniChild = null;
+        }
+    }
 }
+
+
