@@ -7,6 +7,21 @@ public class ItemDisplayBackButton : MonoBehaviour
 {
     public void GoBack()
     {
+        ActionReplacer activeReplacer =
+        FindObjectsOfType<ActionReplacer>(true)
+            .FirstOrDefault(
+                replacer =>
+                    replacer != null &&
+                    replacer.isActiveAndEnabled &&
+                    !replacer.HasSelectedReplacement
+            );
+
+        if (activeReplacer != null)
+        {
+            activeReplacer.CancelReplacement();
+            return;
+        }
+
         ActionRewardManager rewardManager =
             Director.Instance.actionRewardManager;
 
@@ -151,14 +166,114 @@ public class ItemDisplayBackButton : MonoBehaviour
         }
 
         foreach (ActionRewardTab ART in
-                 rewardManager.actionRewardTabDisplay)
+           rewardManager.actionRewardTabDisplay)
         {
-            if (ART == null ||
-                !ART.Chosen)
+            if (ART == null || !ART.Chosen)
+                continue;
+
+            /*
+             * Replacement undo.
+             */
+            if (ART.replacedAction != null &&
+                ART.grantedAction != null &&
+                ART.replacementIndex >= 0)
             {
+                Unit unit = ART.grantedAction.unit;
+
+                if (unit == null)
+                {
+                    unit = ART.replacedAction.unit;
+                }
+
+                if (unit == null)
+                {
+                    Debug.LogWarning(
+                        "Could not undo replacement because both actions " +
+                        "had null units."
+                    );
+
+                    ART.grantedAction = null;
+                    ART.replacedAction = null;
+                    ART.replacementIndex = -1;
+                    ART.Chosen = false;
+
+                    continue;
+                }
+
+                bool restored = false;
+
+                if (ART.replacementIndex < unit.actionList.Count &&
+                    unit.actionList[ART.replacementIndex] ==
+                        ART.grantedAction)
+                {
+                    Action grantedAction =
+                        ART.grantedAction;
+
+                    unit.actionList[ART.replacementIndex] =
+                        ART.replacedAction;
+
+                    ART.replacedAction.unit = unit;
+
+                    Destroy(grantedAction);
+
+                    restored = true;
+                }
+                else
+                {
+                    /*
+                     * Fallback: remove the granted action wherever it ended up,
+                     * then restore the old action to its original index.
+                     */
+                    unit.actionList.Remove(ART.grantedAction);
+
+                    int insertIndex =
+                        Mathf.Clamp(
+                            ART.replacementIndex,
+                            0,
+                            unit.actionList.Count
+                        );
+
+                    if (!unit.actionList.Contains(ART.replacedAction))
+                    {
+                        unit.actionList.Insert(
+                            insertIndex,
+                            ART.replacedAction
+                        );
+                    }
+
+                    ART.replacedAction.unit = unit;
+
+                    Destroy(ART.grantedAction);
+
+                    restored = true;
+                }
+
+                if (restored)
+                {
+                    Debug.Log(
+                        $"{unit.unitName} restored " +
+                        $"{ART.replacedAction.ActionName}."
+                    );
+                }
+
+                ART.grantedAction = null;
+                ART.replacedAction = null;
+                ART.pendingAction = null;
+                ART.replacementIndex = -1;
+                ART.Chosen = false;
+
+                if (ART.activeReplacementTab != null)
+                {
+                    Destroy(ART.activeReplacementTab.gameObject);
+                    ART.activeReplacementTab = null;
+                }
+
                 continue;
             }
 
+            /*
+             * Normal reward undo.
+             */
             if (ART.grantedAction == null)
             {
                 Debug.LogWarning(
@@ -170,10 +285,10 @@ public class ItemDisplayBackButton : MonoBehaviour
                 continue;
             }
 
-            Unit unit =
+            Unit grantedUnit =
                 ART.grantedAction.unit;
 
-            if (unit == null)
+            if (grantedUnit == null)
             {
                 Debug.LogWarning(
                     $"The granted action '{ART.grantedAction.ActionName}' " +
@@ -186,11 +301,8 @@ public class ItemDisplayBackButton : MonoBehaviour
                 continue;
             }
 
-            /*
-             * Remove the exact runtime Action instance.
-             */
             bool removed =
-                unit.actionList.Remove(
+                grantedUnit.actionList.Remove(
                     ART.grantedAction
                 );
 
@@ -199,14 +311,10 @@ public class ItemDisplayBackButton : MonoBehaviour
                 string removedActionName =
                     ART.grantedAction.ActionName;
 
-                /*
-                 * grantedAction was instantiated at runtime, so this
-                 * Destroy call is safe.
-                 */
                 Destroy(ART.grantedAction);
 
                 Debug.Log(
-                    $"{unit.unitName} has forgotten " +
+                    $"{grantedUnit.unitName} has forgotten " +
                     $"{removedActionName}."
                 );
             }
@@ -215,17 +323,13 @@ public class ItemDisplayBackButton : MonoBehaviour
                 Debug.LogWarning(
                     $"The runtime action " +
                     $"'{ART.grantedAction.ActionName}' was not found " +
-                    $"in {unit.unitName}'s action list."
+                    $"in {grantedUnit.unitName}'s action list."
                 );
             }
 
             ART.grantedAction = null;
             ART.Chosen = false;
-        }
-
-        Director.Instance.DisableCharacterTab(false);
-
-        rewardManager.MoveRewards(true);
+    }
 
         Director.Instance.DisableCharacterTab(false);
 

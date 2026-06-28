@@ -108,6 +108,7 @@
     <Compile Include="Assets\Scripts\Actions\Strike.cs" />
     <Compile Include="Assets\Scripts\Actions\Whack.cs" />
     <Compile Include="Assets\Scripts\Actions\Expose.cs" />
+    <Compile Include="Assets\Scripts\UI\ActionReplacer.cs" />
     <Compile Include="Assets\Scripts\Map\ChestNode.cs" />
     <Compile Include="Assets\Scripts\Main Menu\ContinueButton.cs" />
     <Compile Include="Assets\Scripts\LabAnimator.cs" />
@@ -1138,10 +1139,6 @@
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Polybrush.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Polybrush.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
       <Private>False</Private>
@@ -1224,10 +1221,6 @@
     </Reference>
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Polybrush">
-      <HintPath>Library\ScriptAssemblies\Unity.Polybrush.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Timeline">

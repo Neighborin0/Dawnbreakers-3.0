@@ -14,9 +14,12 @@ public class ActionRewardManager : MonoBehaviour
     public ActionRewardTab actionRewardTabPrefab;
     public List<ActionRewardTab> actionRewardTabDisplay = new List<ActionRewardTab>();
     private Coroutine moveRewardsCoroutine;
+    public CharacterTab replacerTabPrefab;
+    public Transform replacerTabParent;
 
     public void GetRewards()
     {
+        replacerTabParent = Director.Instance.canvas.transform;
         Tools.ToggleUiBlocker(false, true);
         Director.Instance.CharacterSlotEnable(true);
         BattleLog.Instance.ClearAllBattleLogText();
@@ -44,6 +47,20 @@ public class ActionRewardManager : MonoBehaviour
 
             actionRewardTabDisplay.Add(tab);
         }
+
+        //Setting the inital position of the replacer tab to be off-screen, so it can slide into view later.
+        CharacterTab replacerTab = Instantiate(Director.Instance.characterTab, Director.Instance.canvas.transform);
+        float replacerXPosition = -30;
+        RectTransform replacerTabRect = replacerTab.GetComponent<RectTransform>();
+        replacerTabRect.anchoredPosition = new Vector2(replacerXPosition, -1000f);
+        MoveableObject replacerMoveableObject = replacerTab.GetComponent<MoveableObject>();
+        if (replacerMoveableObject != null)
+        {
+            replacerMoveableObject.PositionDownX = replacerXPosition;
+            replacerMoveableObject.PositionUpX = replacerXPosition;
+        }
+        //
+
 
         List<Unit> validPartyUnits = Director.Instance.party.Where(unit => unit != null).ToList();
 
@@ -138,7 +155,7 @@ private Action GetRandomAction(Unit unit)
             if (i < actionRewards.Count)
             {
                 tab.gameObject.SetActive(true);
-                tab.Initalize(actionRewards[i]);
+                tab.Initalize(actionRewards[i], this);
 
                 Button button = tab.GetComponent<Button>();
 

@@ -1,13 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using System.Linq;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using System;
-
-using System.Linq;
+using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class CharacterTab : MonoBehaviour, IDropHandler
 {
@@ -50,48 +50,29 @@ public class CharacterTab : MonoBehaviour, IDropHandler
 
     public event Action<CharacterTab> OnInteracted;
 
-    void Start()
+    private void Start()
     {
-        GetComponent<Image>().material = Instantiate<Material>(GetComponent<Image>().material);
-        DisplaySwitcher.GetComponent<Image>().material = Instantiate<Material>(DisplaySwitcher.GetComponent<Image>().material);
-        DisplaySwitcher.GetComponent<Image>().material.SetFloat("OutlineThickness", 0f);
-      
+        Image image = GetComponent<Image>();
 
-        if (unit != null)
+        if (image != null && image.material != null)
         {
-            if (unit.charPortraits != null)
-            {
-                portrait.sprite = unit.charPortraits.Find(obj => obj.name == "neutral");
-            }
-            this.inventoryDisplay.GetComponent<InventoryDisplay>().unit = unit;
-            if(BattleSystem.Instance != null)
-            {
-                RectTransform inventoryRect = inventoryDisplay.GetComponent<RectTransform>();
-                var anchorPos = inventoryDisplay.GetComponent<RectTransform>().anchoredPosition;
-                inventoryRect.anchoredPosition = new Vector3(anchorPos.x, anchorPos.y, 0);
-            }
-        }
-        DisplaySwitcher.image.sprite = itemIcon;
-        if (OptionsManager.Instance != null)
-            OptionsManager.Instance.blackScreen.gameObject.SetActive(true);
-        Tools.ToggleUiBlocker(false, true);
-
-
-        for (int i = 0; i < unit.resistances.Length; i++)
-        {
-            string stringToAdd = $"<sprite name=\"{unit.resistances[i]}\">";
-            resistanceText.Add(stringToAdd);
-        }
-        for (int i = 0; i < unit.weaknesses.Length; i++)
-        {
-            string stringToAdd = $"<sprite name=\"{unit.weaknesses[i]}\">";
-            weaknessText.Add(stringToAdd);
+            image.material = Instantiate(image.material);
         }
 
-        skillRESText.text = $"RES:  {string.Join("", resistanceText.ToArray())}";
-        skillATKText.text = $"ATK:{unit.attackStat}";
-        skillDEFText.text = $"DEF:{unit.defenseStat}";
-        skillWEAKText.text = $"WEAK:  {string.Join("", weaknessText.ToArray())}";
+        if (DisplaySwitcher != null &&
+            DisplaySwitcher.image != null &&
+            DisplaySwitcher.image.material != null)
+        {
+            DisplaySwitcher.image.material =
+                Instantiate(DisplaySwitcher.image.material);
+
+            DisplaySwitcher.image.material.SetFloat(
+                "OutlineThickness",
+                0f
+            );
+
+            DisplaySwitcher.image.sprite = itemIcon;
+        }
     }
 
     public void DoOnInteracted()
@@ -126,79 +107,6 @@ public class CharacterTab : MonoBehaviour, IDropHandler
 
     }
 
-    /*public void IncreaseStat()
-    {
-        Director.Instance.characterTab.transform.transform.SetAsFirstSibling();
-        skillPoints -= 1;
-        if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[0].gameObject)
-        {
-            unit.attackStat += 1;
-            skillATKText.text = $"ATK:<color=#00FF00>{unit.attackStat}</color>";
-            LevelDownbuttons[0].gameObject.SetActive(true);
-        }
-        else if (EventSystem.current.currentSelectedGameObject == LevelUpButtons[1].gameObject)
-        {
-            unit.defenseStat += 1;
-            skillDEFText.text = $"DEF:<color=#00FF00>{unit.defenseStat}</color>";
-            LevelDownbuttons[1].gameObject.SetActive(true);
-        }
-        foreach(var x in LevelUpButtons)
-        {
-            x.gameObject.SetActive(false);
-        }
-        skillPointText.text = $"Stat Points: {skillPoints}";
-        CheckNumberOfSkillPointsInAllTabs();
-    }
-    */
-
-    /*
-    private void CheckNumberOfSkillPointsInAllTabs()
-    {
-       bool allSame = Director.Instance.TabGrid.GetComponentsInChildren<CharacterTab>().All(item => item.skillPoints == 0);
-        if(allSame)
-        {
-            Director.Instance.ConfirmButton.GetComponent<Button>().interactable = true;
-            Director.Instance.ConfirmButton.GetComponent<Image>().material = Instantiate<Material>(Director.Instance.ConfirmButton.GetComponent<Image>().material);
-            Director.Instance.ConfirmButton.GetComponent<Image>().material.SetFloat("OutlineThickness", 1);
-            Director.Instance.ConfirmButton.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-
-        }
-        else
-        {
-            Director.Instance.ConfirmButton.GetComponent<Button>().interactable = false;
-            Director.Instance.ConfirmButton.GetComponent<Image>().material = Instantiate<Material>(Director.Instance.ConfirmButton.GetComponent<Image>().material);
-            Director.Instance.ConfirmButton.GetComponent<Image>().material.SetFloat("OutlineThickness", 0);
-            Director.Instance.ConfirmButton.GetComponent<Image>().material.SetColor("OutlineColor", Color.white);
-        }
-    }
-    */
-
-    /*public void DecreaseStat()
-    {
-        Director.Instance.characterTab.transform.transform.SetAsFirstSibling();
-        skillPoints += 1;
-        if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[0].gameObject)
-        {
-            unit.attackStat -= 1;
-            skillATKText.text = $"ATK:{unit.attackStat}";
-        }
-        else if (EventSystem.current.currentSelectedGameObject == LevelDownbuttons[1].gameObject)
-        {
-            unit.defenseStat -= 1;
-            skillDEFText.text = $"DEF:{unit.defenseStat}";
-        }
-        skillPointText.text = $"Stat Points: {skillPoints}";
-        foreach (var x in LevelUpButtons)
-        {
-            x.gameObject.SetActive(true);
-        }
-        foreach (var x in LevelDownbuttons)
-        {
-            x.gameObject.SetActive(false);
-        }
-        CheckNumberOfSkillPointsInAllTabs();
-    }
-    */
     public void SwitchDetailedStates()
     {
         if (inventoryDisplay.isActiveAndEnabled)
@@ -213,6 +121,162 @@ public class CharacterTab : MonoBehaviour, IDropHandler
             DisplaySwitcher.image.sprite = actionIcon;
             inventoryDisplay.gameObject.SetActive(true);
             actionDisplay.gameObject.SetActive(false);
+        }
+    }
+
+    public void Init(
+    Unit targetUnit,
+    bool levelUp,
+    bool interactable = false)
+    {
+        if (targetUnit == null)
+        {
+            Debug.LogError(
+                "CharacterTab initialized with null unit.",
+                this
+            );
+
+            return;
+        }
+
+        unit = targetUnit;
+
+        resistanceText.Clear();
+        weaknessText.Clear();
+
+        foreach (Transform child in actionDisplay.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Transform child in inventoryDisplay.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        if (unit.resistances != null)
+        {
+            for (int i = 0; i < unit.resistances.Length; i++)
+            {
+                resistanceText.Add(
+                    $"<sprite name=\"{unit.resistances[i]}\">"
+                );
+            }
+        }
+
+        if (unit.weaknesses != null)
+        {
+            for (int i = 0; i < unit.weaknesses.Length; i++)
+            {
+                weaknessText.Add(
+                    $"<sprite name=\"{unit.weaknesses[i]}\">"
+                );
+            }
+        }
+
+        string resistanceString =
+            string.Join("", resistanceText.ToArray());
+
+        string weaknessString =
+            string.Join("", weaknessText.ToArray());
+
+        DEFText.text = $"DEF: {unit.defenseStat}";
+        ATKtext.text = $"ATK: {unit.attackStat}";
+        REStext.text = $"RES:  {resistanceString}";
+        WEAKText.text = $"WEAK:   {weaknessString}";
+
+        skillDEFText.text = $"DEF: {unit.defenseStat}";
+        skillATKText.text = $"ATK: {unit.attackStat}";
+        skillRESText.text = $"RES:  {resistanceString}";
+        skillWEAKText.text = $"WEAK:   {weaknessString}";
+
+        portrait.sprite = unit.charPortraits[0];
+
+        actionDisplay.gameObject.SetActive(true);
+        SetUpActionList(unit);
+
+        inventoryDisplay.gameObject.SetActive(true);
+
+        foreach (Item item in unit.inventory)
+        {
+            if (item == null)
+                continue;
+
+            
+            Button itemButton = Instantiate(BattleLog.Instance.itemImage, inventoryDisplay.transform, false);
+            ItemText itemText = itemButton.GetComponent<ItemText>();
+            itemButton.image.sprite = item.sprite;
+            itemText.item = item;
+            itemText.unit = unit;
+
+            RectTransform itemRect =
+                itemText.GetComponent<RectTransform>();
+
+            if (itemRect != null)
+            {
+                itemRect.localScale = Vector3.one;
+            }
+        }
+
+        detailedDisplay.SetActive(!levelUp);
+
+        if (levelUp)
+        {
+            actionDisplay.gameObject.SetActive(false);
+            inventoryDisplay.gameObject.SetActive(false);
+        }
+        else
+        {
+            actionDisplay.gameObject.SetActive(true);
+            inventoryDisplay.gameObject.SetActive(false);
+        }
+
+        if (characterTransfer != null)
+        {
+            characterTransfer.interactable = interactable;
+        }
+    }
+
+    public void SetUpActionList(Unit unit)
+    {
+        foreach (var action in unit.actionList)
+        {
+            var actionContainer = Instantiate(detailedAction);
+            actionContainer.transform.SetParent(actionDisplay.transform);
+            actionContainer.transform.localScale = new Vector3(1, 1, 1);
+
+            if (BattleSystem.Instance != null)
+            {
+                //Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+                actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.x, actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
+                actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.x, actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
+            }
+
+
+            var assignedAction = actionContainer.GetComponent<ActionContainer>();
+            assignedAction.targetting = false;
+            assignedAction.baseUnit = unit;
+            assignedAction.button.interactable = true;
+            assignedAction.button.enabled = true;
+            assignedAction.action = action;
+            assignedAction.damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
+            assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (action.duration).ToString();
+            assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) < 100 ? $"{CombatTools.DetermineTrueCost(action)}%" : $"100%";
+            assignedAction.costNums.color = Color.yellow;
+            assignedAction.textMesh.text = action.ActionName;
+            if (assignedAction.action.actionType == Action.ActionType.STATUS)
+            {
+                assignedAction.damageParent.SetActive(false);
+            }
+            else
+                assignedAction.damageParent.SetActive(true);
+            if (assignedAction.action.duration > 0 && assignedAction.action.actionType == Action.ActionType.STATUS)
+            {
+                assignedAction.durationParent.SetActive(true);
+            }
+            else
+                assignedAction.durationParent.SetActive(false);
         }
     }
 

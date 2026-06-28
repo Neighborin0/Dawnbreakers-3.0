@@ -16,7 +16,7 @@ public class Director : MonoBehaviour
     public List<Unit> currentUnitsInScene;
 
     //databases
-    public List<Unit> characterdatabase;
+    //public List<Unit> characterdatabase;
     public List<Unit> Unitdatabase;
     public List<Item> itemDatabase;
     public List<GameObject> VFXList;
@@ -58,6 +58,7 @@ public class Director : MonoBehaviour
     public bool InBattle = false;
     public ItemHandler itemHandler;
     public ActionRewardManager actionRewardManager;
+
 
     //Timeline stuff
     public TimeLine timeline;
@@ -116,6 +117,14 @@ public class Director : MonoBehaviour
         dialogues = Resources.LoadAll<DialogueHandler>("Dialogue").ToList();
         mapTemplates = Resources.LoadAll<MapTemplate>("MapTemplates").ToList();
         enemyEncounterData = Resources.LoadAll<EnemyEncounterData>("EnemyEncounterData").ToList();
+        /*
+        actionDatabase = 
+        characterdatabase = 
+        Unitdatabase =
+        itemDatabase =
+        VFXList =
+        */
+
     }
     private void Start()
     {
@@ -323,7 +332,7 @@ public class Director : MonoBehaviour
 
     public static void AddUnitToParty(string unitName)
     {
-        var unitToAdd = Instantiate(Director.Instance.characterdatabase.Where(obj => obj.name == unitName).SingleOrDefault());
+        var unitToAdd = Instantiate(Director.Instance.Unitdatabase.Where(obj => obj.name == unitName).SingleOrDefault());
         DontDestroyOnLoad(unitToAdd);
         unitToAdd.gameObject.SetActive(false);
         Director.Instance.party.Add(unitToAdd);
@@ -334,104 +343,100 @@ public class Director : MonoBehaviour
     {
         CharacterSlotEnable();
         AudioManager.QuickPlay("ui_woosh_002");
+
         if (generalCoruntine != null)
-            StopCoroutine(generalCoruntine);
-        //BattleLog.Instance.ClearAllBattleLogText();
-        Tools.ToggleUiBlocker(false, true);
-        Director.Instance.TabGrid.GetComponent<MoveableObject>().Move(true);
-        if (Director.Instance.TabGrid.transform.childCount > 0)
         {
-            foreach (Transform child in Director.Instance.TabGrid.transform)
+            StopCoroutine(generalCoruntine);
+        }
+
+        Tools.ToggleUiBlocker(false, true);
+
+        MoveableObject tabGridMovement = TabGrid.GetComponent<MoveableObject>();
+
+        if (tabGridMovement != null)
+        {
+            tabGridMovement.Move(true);
+        }
+
+        /*
+         * Level-up mode needs the UI blocker on, matching the
+         * old behavior.
+         */
+        if (LevelUp)
+        {
+            Tools.ToggleUiBlocker(true, true);
+
+            MoveableObject levelUpTextMovement = LevelUpText.GetComponent<MoveableObject>();
+
+            if (levelUpTextMovement != null)
             {
-                child.gameObject.SetActive(true);
+                levelUpTextMovement.Move(false);
+            }
+
+            MoveableObject confirmMovement = ConfirmButton.GetComponent<MoveableObject>();
+
+            if (confirmMovement != null)
+            {
+                confirmMovement.Move(false);
+            }
+
+            Button confirmButton = ConfirmButton.GetComponent<Button>();
+
+            if (confirmButton != null)
+            {
+                confirmButton.interactable = false;
             }
         }
-        else
+
+        /*
+         * If the tabs already exist, reactivate and refresh them.
+         * This lets the same tabs be reused for level-up mode,
+         * normal detail mode, or replacement mode.
+         */
+        if (TabGrid.transform.childCount > 0)
         {
-            foreach (var unit in party)
+            foreach (Transform child in TabGrid.transform)
             {
-                if (!unit.IsSummon)
+                if (child == null)
+                    continue;
+
+                child.gameObject.SetActive(true);
+
+                CharacterTab tab =  child.GetComponent<CharacterTab>();
+
+                if (tab == null || tab.unit == null)
+                    continue;
+
+                tab.Init(tab.unit, LevelUp,Interactable);
+                Button tabButton = tab.GetComponent<Button>();
+
+                if (tabButton != null)
                 {
-                    CharacterTab CT = Instantiate(characterTab);
-                    if (Interactable)
-                    {
-                        CT.GetComponent<Button>().interactable = true;
-                    }
-                    CT.gameObject.transform.SetParent(TabGrid.transform, false);
-                    if (LevelUp)
-                    {
-                        Tools.ToggleUiBlocker(true, true);
-                        CT.detailedDisplay.SetActive(false);
-                        /*CT.levelupDisplay.SetActive(true);
-                        foreach (var x in characterTab.LevelUpButtons)
-                        {
-                            x.interactable = true;
-                        }
-                        */
-                        CT.unit = unit;
-                        CT.DEFText.text = $"DEF: {unit.defenseStat}";
-                        CT.ATKtext.text = $"ATK: {unit.attackStat}";
-                        CT.REStext.text = $"RES:  {string.Join("", CT.resistanceText.ToArray())}";
-                        CT.WEAKText.text = $"WEAK:   {string.Join("", CT.weaknessText.ToArray())}";
-                        CT.actionDisplay.gameObject.SetActive(true);
-                        SetUpActionList(unit, CT);
-                        CT.actionDisplay.gameObject.SetActive(false);
-                        LevelUpText.GetComponent<MoveableObject>().Move(false);
-                        ConfirmButton.GetComponent<MoveableObject>().Move(false);
-                        ConfirmButton.GetComponent<Button>().interactable = false;
-
-                    }
-                    else
-                    {
-                       // CT.levelupDisplay.SetActive(false);
-                        CT.detailedDisplay.SetActive(true);
-                        SetUpActionList(unit, CT);
-                        CT.unit = unit;
-                        CT.DEFText.text = $"DEF: {unit.defenseStat}";
-                        CT.ATKtext.text = $"ATK: {unit.attackStat}";
-                        CT.REStext.text = $"RES:  {string.Join("", CT.resistanceText.ToArray())}";
-                        CT.WEAKText.text = $"WEAK:   {string.Join("", CT.weaknessText.ToArray())}";
-                        CT.inventoryDisplay.gameObject.SetActive(true);
-                        CT.actionDisplay.gameObject.SetActive(true);
-
-                        if (BattleSystem.Instance != null)
-                        {
-                            var rect = CT.inventoryDisplay.GetComponent<RectTransform>();
-                            Vector3 anchorPos = rect.anchoredPosition3D;
-                            rect.anchoredPosition3D = new Vector3(anchorPos.x, anchorPos.y, 0);
-                        }
-
-                        foreach (var item in unit.inventory)
-                        {
-                            var x = Instantiate(BattleLog.Instance.itemImage);
-                            x.image.sprite = item.sprite;
-                            x.GetComponent<ItemText>().item = item;
-                            x.GetComponent<ItemText>().unit = unit;
-                            x.transform.SetParent(CT.inventoryDisplay.transform);
-
-                            //Scaling for battles.
-                            if(BattleSystem.Instance != null)
-                            {
-                                var itemRect = x.GetComponent<RectTransform>();
-                                Vector3 itemAnchorPos = itemRect.anchoredPosition3D;
-                                itemRect.anchoredPosition3D = new Vector3(itemAnchorPos.x, itemAnchorPos.y, 0);
-                                itemRect.localScale = new Vector3(1, 1, 1);
-                            }
-                            else
-                            {
-                                x.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-                            }
-
-
-                        }
-                        CT.characterTransfer.interactable = Interactable;
-                        CT.inventoryDisplay.gameObject.SetActive(false);
-                    }
-
+                    tabButton.interactable = Interactable;
                 }
             }
+            return;
         }
 
+        /*
+         * First-time creation.
+         */
+        foreach (Unit unit in party)
+        {
+            if (unit == null || unit.IsSummon)
+                continue;
+
+            CharacterTab tab = Instantiate(characterTab,TabGrid.transform, false);
+
+            Button tabButton = tab.GetComponent<Button>();
+
+            if (tabButton != null)
+            {
+                tabButton.interactable = Interactable;
+            }
+
+            tab.Init(unit, LevelUp,Interactable);
+        }
     }
 
     public List<LabLine> FindObjectFromDialogueDatabase(string dialogueName)
@@ -439,48 +444,7 @@ public class Director : MonoBehaviour
         var dialogueToReturn = dialogues.Where(obj => obj.name == dialogueName).SingleOrDefault();
         return dialogueToReturn.LabLines;
     }
-    private void SetUpActionList(Unit unit, CharacterTab CT)
-    {
-        foreach (var action in unit.actionList)
-        {
-            var actionContainer = Instantiate(CT.detailedAction);
-            actionContainer.transform.SetParent(CT.actionDisplay.transform);
-            actionContainer.transform.localScale = new Vector3(1, 1, 1);
-
-            if (BattleSystem.Instance != null)
-            {
-                //Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-
-                actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.x, actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
-                CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.x, CT.actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
-            }
-
-
-            var assignedAction = actionContainer.GetComponent<ActionContainer>();
-            assignedAction.targetting = false;
-            assignedAction.baseUnit = unit;
-            assignedAction.button.interactable = true;
-            assignedAction.button.enabled = true;
-            assignedAction.action = action;
-            assignedAction.damageNums.text = $"<sprite name=\"{action.damageType}\">" + (CombatTools.DetermineTrueActionValue(action) + unit.attackStat).ToString();
-            assignedAction.durationNums.text = "<sprite name=\"Duration\">" + (action.duration).ToString();
-            assignedAction.costNums.text = CombatTools.DetermineTrueCost(action) < 100 ? $"{CombatTools.DetermineTrueCost(action)}%" : $"100%";
-            assignedAction.costNums.color = Color.yellow;
-            assignedAction.textMesh.text = action.ActionName;
-            if (assignedAction.action.actionType == Action.ActionType.STATUS)
-            {
-                assignedAction.damageParent.SetActive(false);
-            }
-            else
-                assignedAction.damageParent.SetActive(true);
-            if (assignedAction.action.duration > 0 && assignedAction.action.actionType == Action.ActionType.STATUS)
-            {
-                assignedAction.durationParent.SetActive(true);
-            }
-            else
-                assignedAction.durationParent.SetActive(false);
-        }
-    }
+   
     public void ToggleEveryButton()
     {
         if (!buttonsAreDisabled)

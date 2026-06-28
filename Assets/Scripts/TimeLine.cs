@@ -354,12 +354,18 @@ public class TimeLine : MonoBehaviour
 
     public void StartFadeAction(bool FadeIn)
     {
-        if (actionDisplayerCoroutine != null)
+        if (actionDisplayerCoroutine != null && gameObject.activeInHierarchy)
         {
             StopCoroutine(actionDisplayerCoroutine);
         }
+       
         actionDisplayerCoroutine = FadeActionDisplayer(FadeIn);
 
+        if(gameObject.activeInHierarchy)
+        {
+            StartCoroutine(actionDisplayerCoroutine);
+        }
+      
     }
     private IEnumerator FadeActionDisplayer(bool FadeIn)
     {
@@ -451,5 +457,13 @@ public class TimeLine : MonoBehaviour
     public void PruneDestroyedChildren()
     {
         children.RemoveAll(child => child == null);
+    }
+
+    public void OnDestroy()
+    {
+        if (actionDisplayerCoroutine != null)
+        {
+            StopCoroutine(actionDisplayerCoroutine);
+        }
     }
 }

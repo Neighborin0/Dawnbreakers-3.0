@@ -1036,6 +1036,7 @@ GameObject:
   - component: {fileID: 3294738273736295110}
   - component: {fileID: 2155299774293514372}
   - component: {fileID: 1276709402633038253}
+  - component: {fileID: 4590625891823682060}
   m_Layer: 8
   m_Name: CharacterTab
   m_TagString: Untagged
@@ -1265,6 +1266,24 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &4590625891823682060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813109552512736313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cfc5fb545caf4245b252358dcf01641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PositionUpX: 0
+  PositionUpY: 65
+  PositionDownX: 0
+  PositionDownY: 1000
+  moved: 0
+  scaleWithScreenSize: 0
 --- !u!1 &813109552621352168
 GameObject:
   m_ObjectHideFlags: 0
@@ -3519,7 +3538,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8253464364703789478}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -42.990017}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
