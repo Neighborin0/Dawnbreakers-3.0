@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bed21647c66f8b14087b51c06e1bac93, type: 2}
-  m_sharedMaterial: {fileID: -8812209203763234201, guid: bed21647c66f8b14087b51c06e1bac93,
+  m_fontAsset: {fileID: 11400000, guid: 17072bfdcfdf2af40a5f37ddb37a70d8, type: 2}
+  m_sharedMaterial: {fileID: -6094110106082567476, guid: 17072bfdcfdf2af40a5f37ddb37a70d8,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -309,7 +309,7 @@ MonoBehaviour:
   NumberofStacks: 0
   currentEffectPopup: {fileID: 0}
   descriptionSize: 0.4
-  popupTextColor: {r: 1, g: 0.43867922, b: 0.9313587, a: 1}
+  popupTextColor: {r: 0.25490198, g: 0.14901961, b: 0.9568628, a: 1}
   canBeStacked: 1
 --- !u!114 &2944950342580299580
 MonoBehaviour:

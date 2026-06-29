@@ -1,24 +1,33 @@
 ﻿using System.Collections;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemDisplayBackButton : MonoBehaviour
 {
+    [SerializeField]
+    private float backButtonMoveTime = 0.4f;
+
+    private bool backButtonTransitioning = false;
+
     public void GoBack()
     {
+        if (backButtonTransitioning)
+            return;
+
         ActionReplacer activeReplacer =
-        FindObjectsOfType<ActionReplacer>(true)
-            .FirstOrDefault(
-                replacer =>
-                    replacer != null &&
-                    replacer.isActiveAndEnabled &&
-                    !replacer.HasSelectedReplacement
-            );
+            FindObjectsOfType<ActionReplacer>(true)
+                .FirstOrDefault(
+                    replacer =>
+                        replacer != null &&
+                        replacer.isActiveAndEnabled &&
+                        !replacer.HasSelectedReplacement
+                );
 
         if (activeReplacer != null)
         {
-            activeReplacer.CancelReplacement();
+            StartCoroutine(ReplacementBack(activeReplacer));
             return;
         }
 
@@ -43,17 +52,53 @@ public class ItemDisplayBackButton : MonoBehaviour
         }
     }
 
-    //This coroutine handles the transition back to the item selection screen.
-    private IEnumerator Transition()
+    private void SetBackButtonInteractable(bool interactable)
+    {
+        Button backButton =
+            GetComponent<Button>();
+
+        if (backButton != null)
+        {
+            backButton.interactable = interactable;
+        }
+    }
+
+    /*private void MoveBackButton(bool moveIn)
     {
         MoveableObject backButtonMovement =
-            Director.Instance.backButton
-                .GetComponent<MoveableObject>();
+            GetComponent<MoveableObject>();
 
         if (backButtonMovement != null)
         {
-            backButtonMovement.Move(false);
+            backButtonMovement.Move(moveIn);
         }
+    }
+    */
+
+    private IEnumerator ReplacementBack(
+        ActionReplacer activeReplacer)
+    {
+        backButtonTransitioning = true;
+
+        SetBackButtonInteractable(false);
+        GetComponent<MoveableObject>().Move(false);
+        if (activeReplacer != null)
+        {
+            activeReplacer.CancelReplacement();
+        }
+
+        yield return new WaitForSeconds(backButtonMoveTime);
+
+        backButtonTransitioning = false;
+    }
+
+    //This coroutine handles the transition back to the item selection screen.
+    private IEnumerator Transition()
+    {
+        backButtonTransitioning = true;
+
+        SetBackButtonInteractable(false);
+        GetComponent<MoveableObject>().Move(true);
 
         Director.Instance.DisableCharacterTab();
         Director.Instance.CharacterSlotEnable(true);
@@ -100,11 +145,22 @@ public class ItemDisplayBackButton : MonoBehaviour
             .gameObject.SetActive(true);
 
         Tools.ToggleUiBlocker(false, true);
+
+        /*
+         * The back button is now offscreen/out, so it should stay
+         * non-interactable until another system moves it back in.
+         */
+        backButtonTransitioning = false;
     }
 
     //This coroutine handles the transition back to the action reward screen.
     private IEnumerator ActionRewardBack()
     {
+        backButtonTransitioning = true;
+
+        SetBackButtonInteractable(false);
+        GetComponent<MoveableObject>().Move(false);
+
         ActionRewardManager rewardManager =
             Director.Instance.actionRewardManager;
 
@@ -115,19 +171,11 @@ public class ItemDisplayBackButton : MonoBehaviour
                 "ActionRewardManager is missing."
             );
 
+            backButtonTransitioning = false;
             yield break;
         }
 
-        Tools.ToggleUiBlocker(false, false);
-
-        MoveableObject backButtonMovement =
-            Director.Instance.backButton
-                .GetComponent<MoveableObject>();
-
-        if (backButtonMovement != null)
-        {
-            backButtonMovement.Move(false);
-        }
+        Tools.ToggleUiBlocker(false, false, false);
 
         Button confirmButton =
             Director.Instance.ConfirmButton
@@ -153,20 +201,36 @@ public class ItemDisplayBackButton : MonoBehaviour
             );
         }
 
-        var CB = confirmButton.GetComponent<ConfirmButton>();
-        CB.SetOutline(0, Color.white);
-     
+        ConfirmButton confirmButtonScript =
+            confirmButton != null
+                ? confirmButton.GetComponent<ConfirmButton>()
+                : null;
+
+        if (confirmButtonScript != null)
+        {
+            confirmButtonScript.SetOutline(0, Color.white);
+        }
+
         MoveableObject levelUpTextMovement =
             Director.Instance.LevelUpText
                 .GetComponent<MoveableObject>();
 
         if (levelUpTextMovement != null)
         {
-            levelUpTextMovement.Move(false);
+            levelUpTextMovement.Move(true);
+
+            TextMeshProUGUI levelUpText =
+                Director.Instance.LevelUpText
+                    .GetComponentInChildren<TextMeshProUGUI>();
+
+            if (levelUpText != null)
+            {
+                levelUpText.text = "Memories Return";
+            }
         }
 
         foreach (ActionRewardTab ART in
-           rewardManager.actionRewardTabDisplay)
+                 rewardManager.actionRewardTabDisplay)
         {
             if (ART == null || !ART.Chosen)
                 continue;
@@ -194,6 +258,7 @@ public class ItemDisplayBackButton : MonoBehaviour
 
                     ART.grantedAction = null;
                     ART.replacedAction = null;
+                    ART.pendingAction = null;
                     ART.replacementIndex = -1;
                     ART.Chosen = false;
 
@@ -267,8 +332,10 @@ public class ItemDisplayBackButton : MonoBehaviour
                     Destroy(ART.activeReplacementTab.gameObject);
                     ART.activeReplacementTab = null;
                 }
-
+                GetComponent<MoveableObject>().Move(false);
                 continue;
+
+                
             }
 
             /*
@@ -297,7 +364,7 @@ public class ItemDisplayBackButton : MonoBehaviour
 
                 ART.grantedAction = null;
                 ART.Chosen = false;
-
+                GetComponent<MoveableObject>().Move(false);
                 continue;
             }
 
@@ -321,7 +388,7 @@ public class ItemDisplayBackButton : MonoBehaviour
             else
             {
                 Debug.LogWarning(
-                    $"The runtime action " +
+                    "The runtime action " +
                     $"'{ART.grantedAction.ActionName}' was not found " +
                     $"in {grantedUnit.unitName}'s action list."
                 );
@@ -329,14 +396,39 @@ public class ItemDisplayBackButton : MonoBehaviour
 
             ART.grantedAction = null;
             ART.Chosen = false;
-    }
+        }
 
         Director.Instance.DisableCharacterTab(false);
 
         rewardManager.MoveRewards(true);
 
-        yield return new WaitForSeconds(1.6f);
+        GetComponent<MoveableObject>().Move(false);
 
-        Tools.ToggleUiBlocker(false, true);
+        MoveableObject levelUpTextMove =
+            Director.Instance.LevelUpText
+                .GetComponent<MoveableObject>();
+
+        if (levelUpTextMove != null)
+        {
+            levelUpTextMove.Move(false);
+        }
+
+        /*
+         * The button is moving back into view, so keep it disabled
+         * until the movement finishes.
+         */
+        yield return new WaitForSeconds(backButtonMoveTime);
+
+        SetBackButtonInteractable(true);
+
+        backButtonTransitioning = false;
+
+        Tools.ToggleUiBlocker(false, true, true);
     }
+
+   /* public void forceMoveDown()
+    {
+       this.GetComponent<MoveableObject>().Move(false);
+    }
+   */
 }

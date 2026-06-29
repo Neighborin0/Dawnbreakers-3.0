@@ -114,17 +114,49 @@ public class Director : MonoBehaviour
 
     private void LoadDatabases()
     {
-        dialogues = Resources.LoadAll<DialogueHandler>("Dialogue").ToList();
-        mapTemplates = Resources.LoadAll<MapTemplate>("MapTemplates").ToList();
-        enemyEncounterData = Resources.LoadAll<EnemyEncounterData>("EnemyEncounterData").ToList();
-        /*
-        actionDatabase = 
-        characterdatabase = 
-        Unitdatabase =
-        itemDatabase =
-        VFXList =
-        */
+        dialogues =
+            Resources.LoadAll<DialogueHandler>("Dialogue")
+                .Where(dialogue => dialogue != null)
+                .ToList();
 
+        mapTemplates =
+            Resources.LoadAll<MapTemplate>("MapTemplates")
+                .Where(template => template != null)
+                .ToList();
+
+        enemyEncounterData =
+            Resources.LoadAll<EnemyEncounterData>("EnemyEncounterData")
+                .Where(encounter => encounter != null)
+                .ToList();
+
+        actionDatabase =
+            Resources.LoadAll<Action>("ActionDatabase")
+                .Where(action => action != null)
+                .ToList();
+
+        Unitdatabase =
+            Resources.LoadAll<GameObject>("Prefabs/Units")
+                .Select(prefab => prefab.GetComponent<Unit>())
+                .Where(unit => unit != null)
+                .ToList();
+
+        itemDatabase =
+            Resources.LoadAll<Item>("ItemDatabase")
+                .Where(item => item != null)
+                .ToList();
+
+        VFXList =
+            Resources.LoadAll<GameObject>("Prefabs/VFX")
+                .Where(vfx => vfx != null)
+                .ToList();
+
+        Debug.Log($"Loaded {dialogues.Count} dialogues.");
+        Debug.Log($"Loaded {mapTemplates.Count} map templates.");
+        Debug.Log($"Loaded {enemyEncounterData.Count} enemy encounters.");
+        Debug.Log($"Loaded {actionDatabase.Count} actions.");
+        Debug.Log($"Loaded {Unitdatabase.Count} units.");
+        Debug.Log($"Loaded {itemDatabase.Count} items.");
+        Debug.Log($"Loaded {VFXList.Count} VFX prefabs.");
     }
     private void Start()
     {

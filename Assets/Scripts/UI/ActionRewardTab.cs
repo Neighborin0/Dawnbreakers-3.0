@@ -300,7 +300,7 @@ public class ActionRewardTab : MonoBehaviour
 
             if (promptMovement != null)
             {
-                promptMovement.Move(true);
+                promptMovement.Move(false);
             }
         }
 
@@ -578,7 +578,9 @@ public class ActionRewardTab : MonoBehaviour
             {
                 confirmButton.interactable = true;
             }
-
+            Director.Instance.LevelUpText.GetComponent<MoveableObject>().Move(true);
+            Director.Instance.backButton.interactable = true;
+            Director.Instance.backButton.GetComponent<MoveableObject>().Move(true);
 
             CB.SetOutline(1, Color.white * 100);
         }
@@ -593,7 +595,7 @@ public class ActionRewardTab : MonoBehaviour
             {
                 confirmButton.interactable = false;
             }
-
+            Director.Instance.backButton.GetComponent<MoveableObject>().Move(false);
             CB.SetOutline(0, Color.white);
         }
     }

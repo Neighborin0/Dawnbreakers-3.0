@@ -62,15 +62,15 @@
   <ItemGroup>
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\AssemblyInfo.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\MemberSelectionMenu.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Editor\PersistentCallDrawer.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\SerializedPropertyContextMenu.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\PickerMenu.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Editor\BoolPref.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\UltEventDrawer.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\DrawerState.cs" />
-    <Compile Include="Packages\com.kybernetik.ultevents\Editor\Clipboard.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\PersistentArgumentDrawer.cs" />
     <Compile Include="Packages\com.kybernetik.ultevents\Editor\Serialization.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Editor\PersistentCallDrawer.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Editor\BoolPref.cs" />
+    <Compile Include="Packages\com.kybernetik.ultevents\Editor\Clipboard.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages\com.kybernetik.ultevents\Editor\Kybernetik.UltEvents.Editor.asmdef" />

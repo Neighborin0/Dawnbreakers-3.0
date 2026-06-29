@@ -60,4 +60,6 @@ public class MoveableObject : MonoBehaviour
         if (generalCoroutine != null)
             StopCoroutine(generalCoroutine);
     }
+    
+   
 }
