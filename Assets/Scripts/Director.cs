@@ -45,12 +45,9 @@ public class Director : MonoBehaviour
     bool buttonsAreDisabled = false;
     public bool DevMode;
     public Image blackScreen;
-    public Button backButton;
     public GameObject LevelUpText;
     public TextMeshProUGUI chooseYourItemText;
     public GameObject EffectPopUp;
-    public GameObject ConfirmButton;
-    public GameObject CharacterSlotButtonprefab;
     public TextMeshProUGUI PipTutorialText;
     public Image BossCircle;
     public BossIntro bossIntro;
@@ -59,6 +56,11 @@ public class Director : MonoBehaviour
     public ItemHandler itemHandler;
     public ActionRewardManager actionRewardManager;
 
+    //Buttons
+    public GameObject ConfirmButton;
+    public GameObject CharacterSlotButtonprefab;
+    public Button backButton;
+    public Button skipButton;
 
     //Timeline stuff
     public TimeLine timeline;
@@ -178,8 +180,10 @@ public class Director : MonoBehaviour
         }
         else if (canvas != null)
         {
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            canvas.worldCamera = GameObject.FindFirstObjectByType<Camera>();
         }
+        
     }
 
     void Update()
@@ -315,7 +319,6 @@ public class Director : MonoBehaviour
                 foreach (var button in RestSite.Instance.buttons)
                 {
                     button.GetComponent<MoveableObject>().Move(false);
-                    button.interactable = false;
                 }
             }
         }
@@ -335,7 +338,6 @@ public class Director : MonoBehaviour
                     foreach (var button in RestSite.Instance.buttons)
                     {
                         button.GetComponent<MoveableObject>().Move(false);
-                        button.interactable = false;
                     }
                 }
             }
@@ -354,7 +356,6 @@ public class Director : MonoBehaviour
                     foreach (var button in RestSite.Instance.buttons)
                     {
                         button.GetComponent<MoveableObject>().Move(false);
-                        button.interactable = false;
                     }
                 }
             }
@@ -364,6 +365,11 @@ public class Director : MonoBehaviour
 
     public static void AddUnitToParty(string unitName)
     {
+        if(Director.Instance.Unitdatabase.Where(obj => obj.name == unitName).SingleOrDefault() == null)
+        {
+            Debug.LogError($"{unitName} is not a valid unit name.");
+            return;
+        }
         var unitToAdd = Instantiate(Director.Instance.Unitdatabase.Where(obj => obj.name == unitName).SingleOrDefault());
         DontDestroyOnLoad(unitToAdd);
         unitToAdd.gameObject.SetActive(false);

@@ -179,26 +179,12 @@ public class Tools : MonoBehaviour
         }
     }
 
-    public static IEnumerator SmoothMove(GameObject obj, float delay, int AmountofTimesToMove, float x = 0, float y = 0, float z = 0, bool destroy = false)
-    {
-        for (int i = 0; i < AmountofTimesToMove; i++)
-        {
-            if (obj != null)
-            {
-                obj.transform.position = new Vector3(obj.gameObject.transform.position.x + x, obj.gameObject.transform.position.y + y, obj.gameObject.transform.position.z + z);
-                yield return new WaitForSeconds(delay);
-            }
-        }
-        if (destroy)
-        {
-            Destroy(obj);
-        }
-    }
 
-    public static void ToggleUiBlocker(bool disable, bool DirectorBlocker = false, bool CantBeSeen = false)
+    public static void ToggleUiBlocker(bool disable, bool DirectorsBlocker = false, bool CantBeSeen = false)
     {
         var img = OptionsManager.Instance.blackScreen;
-        if (DirectorBlocker)
+        //Blocker that belongs to the director. Anything that isn't attached to the director gets blocked. 
+        if (DirectorsBlocker)
         {
             img.gameObject.SetActive(false);
             img = Director.Instance.blackScreen;
@@ -237,11 +223,28 @@ public class Tools : MonoBehaviour
     }
 
 
-
+    public static IEnumerator SmoothMove(GameObject obj, float delay, int AmountofTimesToMove, float x = 0, float y = 0, float z = 0, bool destroy = false)
+    {
+        SetMoveableObjectButtonState(obj.gameObject, false);
+        for (int i = 0; i < AmountofTimesToMove; i++)
+        {
+            if (obj != null)
+            {
+                obj.transform.position = new Vector3(obj.gameObject.transform.position.x + x, obj.gameObject.transform.position.y + y, obj.gameObject.transform.position.z + z);
+                yield return new WaitForSeconds(delay);
+            }
+        }
+        SetMoveableObjectButtonState(obj.gameObject, true);
+        if (destroy)
+        {
+            Destroy(obj);
+        }
+    }
     public static IEnumerator SmoothMoveObject(Transform obj, float transformPointX, float transformPointY, float delay, bool destroy = false, float transformPointZ = 0, float fallbackTicks = 10000, float TimeDivider = 1)
     {
         float SmoothTime = 0f;
         int i = 0;
+        SetMoveableObjectButtonState(obj.gameObject, false);
         if (transformPointZ == 0)
         {
             transformPointZ = obj.position.z;
@@ -257,6 +260,7 @@ public class Tools : MonoBehaviour
         {
             DestroyImmediate(obj.gameObject);
         }
+        SetMoveableObjectButtonState(obj.gameObject, true);
         yield break;
 
     }
@@ -266,7 +270,7 @@ public class Tools : MonoBehaviour
         float initialY = transform.position.y;
         float targetY = distanceToMove;
         float SmoothTime = 0f;
-
+        SetMoveableObjectButtonState(transform.gameObject, false);
         while (transform.position.y < targetY)
         {
             float newY = transform.position.y + moveSpeed * Time.deltaTime;
@@ -274,13 +278,14 @@ public class Tools : MonoBehaviour
             SmoothTime += Time.deltaTime * moveSpeed;
             yield return null; // Wait for the next frame
         }
-
+        SetMoveableObjectButtonState(transform.gameObject, true);
         // Ensure the object reaches the exact target position
         transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
     }
     public static IEnumerator SmoothMoveUI(RectTransform obj, float transformPointX, float transformPointY, float delay)
     {
         float SmoothTime = 0f;
+        SetMoveableObjectButtonState(obj.gameObject, false);
         while (new Vector2((int)(obj.anchoredPosition.x), (int)(obj.anchoredPosition.y)) != new Vector2(transformPointX, transformPointY))
         {
             if (obj != null)
@@ -292,8 +297,23 @@ public class Tools : MonoBehaviour
             else
                 yield break;
         }
+        SetMoveableObjectButtonState(obj.gameObject, true);
         yield break;
 
+    }
+
+    private static void SetMoveableObjectButtonState(GameObject obj,bool interactable)
+    {
+        if (obj == null)
+            return;
+
+        if (!obj.TryGetComponent(out MoveableObject moveableObject))
+            return;
+
+        if (!obj.TryGetComponent(out Button button))
+            return;
+
+        button.interactable = interactable;
     }
 
     public static IEnumerator SmoothScale(RectTransform obj, Vector3 scaleToGoTo, float delay)

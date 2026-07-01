@@ -336,11 +336,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 049d28b8fbdcde946820389894f98ee7, type: 2}
   - {fileID: 11400000, guid: 4c876a66803cad546a15a61da8d3de04, type: 2}
   - {fileID: 11400000, guid: e381875e8e7a6ec4d90dec53d1cf8d2f, type: 2}
-  - {fileID: 11400000, guid: ad44fd4869bbfd642a920bfe0085386d, type: 2}
+  actionPool:
+  - action: {fileID: 11400000, guid: ad44fd4869bbfd642a920bfe0085386d, type: 2}
+    rarity: 0
+  - action: {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
+    rarity: 0
+  - action: {fileID: 11400000, guid: 0009c14cfc4d51248a96e32b456b11c6, type: 2}
+    rarity: 0
+  - action: {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
+    rarity: 0
+  - action: {fileID: 11400000, guid: 37c52802e2be6714281a597a68b5e13f, type: 2}
+    rarity: 0
+  - action: {fileID: 11400000, guid: 8626ced7933e1d04eb4f6721e66a6f6f, type: 2}
+    rarity: 0
   ActionPool:
-  - {fileID: 11400000, guid: e916af8e95d57c646ae15ba238a00be1, type: 2}
+  - {fileID: 11400000, guid: 9d9dc81bb5935194397157e488df84d4, type: 2}
+  - {fileID: 11400000, guid: a18553835e590ed42949a78f5a7b602b, type: 2}
+  - {fileID: 11400000, guid: 0009c14cfc4d51248a96e32b456b11c6, type: 2}
   - {fileID: 11400000, guid: 37c52802e2be6714281a597a68b5e13f, type: 2}
-  - {fileID: 11400000, guid: ece061d3fe4a82a4697d93c8013e8133, type: 2}
+  - {fileID: 11400000, guid: 8626ced7933e1d04eb4f6721e66a6f6f, type: 2}
   actionCostMultiplier: 1
   actionCostAddend: 0
   actionDMGAddend: 0

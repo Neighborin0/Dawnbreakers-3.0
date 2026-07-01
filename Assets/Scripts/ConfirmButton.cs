@@ -46,6 +46,12 @@ public class ConfirmButton : MonoBehaviour
         {
             unit.StaminaHighlightIsDisabled = true;
             unit.gameObject.SetActive(false);
+
+            foreach (var action in unit.actionList)
+            {
+                action.New = false;
+            }
+
         }
         foreach (var CT in (Director.Instance.TabGrid.GetComponentsInChildren<CharacterTab>()))
         {

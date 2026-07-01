@@ -7,7 +7,8 @@ public class Glint : Action
 {
     private void OnEnable()
     {
-        ActionName = "Push";
+        //Not finished
+        ActionName = "Glint";
 
         cost = 20f;
         lightCost = 0;

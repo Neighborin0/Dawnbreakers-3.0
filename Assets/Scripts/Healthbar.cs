@@ -91,6 +91,7 @@ public class Healthbar : MonoBehaviour
             return;
         }
 
+        //unit.DoPreOnDamage();
         int trueDamage = CalculateTrueDamage(damage, ignoresDEF);
         UpdateUnitHealth(trueDamage, damage);
         UpdateArmor();

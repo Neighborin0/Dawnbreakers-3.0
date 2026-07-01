@@ -11,7 +11,7 @@ public class IronShield : Item
     private void OnEnable()
     {
         itemName = "Iron Shield";
-        itemDescription = "Applies <color=#FFFFFF>BLOCK</color> to a lowest <color=#FF0000>HP</color> unit at the start of battle.";
+        itemDescription = "Applies <color=#4126F4>BLOCK</color> to a lowest <color=#FF0000>HP</color> unit at the start of battle.";
         CanBeTransfered = false;
         ExcludedFromLootPools = true;
     }

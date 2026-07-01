@@ -15,4 +15,4 @@ MonoBehaviour:
   floorToSpawnOn: 0
   encounterDifficulty: 0
   enemiesToSpawn:
-  - TestDummy
+  - HuskEasyA

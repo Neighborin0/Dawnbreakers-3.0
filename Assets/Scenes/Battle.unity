@@ -1447,6 +1447,7 @@ MonoBehaviour:
   unitScale: {x: 11, y: 11, z: 11}
   DustyIsDead: 0
   state: 0
+  currentAction: {fileID: 0}
 --- !u!4 &96890658
 Transform:
   m_ObjectHideFlags: 0

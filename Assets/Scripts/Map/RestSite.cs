@@ -97,8 +97,7 @@ public class RestSite : MonoBehaviour
         }
         foreach (var button in buttons)
         {
-            button.GetComponent<MoveableObject>().Move(false);
-            button.interactable = false;
+            button.GetComponent<MoveableObject>().Move(false, setInteractableWhenDone: false);
         }
         StartCoroutine(TransitionToMap());
     }

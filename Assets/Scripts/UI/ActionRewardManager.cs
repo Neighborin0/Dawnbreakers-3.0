@@ -48,6 +48,7 @@ public class ActionRewardManager : MonoBehaviour
             actionRewardTabDisplay.Add(tab);
         }
 
+        
         //Setting the inital position of the replacer tab to be off-screen, so it can slide into view later.
         CharacterTab replacerTab = Instantiate(Director.Instance.characterTab, Director.Instance.canvas.transform);
         float replacerXPosition = -30;
@@ -146,6 +147,7 @@ private Action GetRandomAction(Unit unit)
     {
         Director.Instance.LevelUpText.gameObject.SetActive(true);
 
+        
         for (int i = 0;
              i < actionRewardTabDisplay.Count;
              i++)
@@ -202,11 +204,6 @@ private Action GetRandomAction(Unit unit)
 
             Button button = tab.GetComponent<Button>();
 
-            if (button != null)
-            {
-                button.interactable = false;
-            }
-
             HighlightedObject highlightedObject = tab.GetComponent<HighlightedObject>();
 
             if (highlightedObject != null)
@@ -232,11 +229,15 @@ private Action GetRandomAction(Unit unit)
 
             if (moveableObject != null)
             {
-                moveableObject.Move(MoveUp);
+                moveableObject.Move(MoveUp, setInteractableWhenDone: false);
+                //skip button moves in
+                Director.Instance.skipButton.GetComponent<MoveableObject>().Move(MoveUp);
             }
 
             yield return new WaitForSeconds(0.02f);
         }
+
+
 
         if (MoveUp)
         {
@@ -299,5 +300,50 @@ private Action GetRandomAction(Unit unit)
         actionRewards.Clear();
     }
 
+    public void SetConfirmButton(bool SetActive)
+    {
+        if (Director.Instance.ConfirmButton == null)
+            return;
+
+        MoveableObject confirmMovement =
+            Director.Instance.ConfirmButton
+                .GetComponent<MoveableObject>();
+
+        Button confirmButton =
+            Director.Instance.ConfirmButton
+                .GetComponent<Button>();
+
+        var CB = confirmButton.GetComponent<ConfirmButton>();
+
+        if (SetActive)
+        {
+            Director.Instance.ConfirmButton.gameObject.SetActive(true);
+
+            if (confirmMovement != null)
+            {
+                confirmMovement.Move(true);
+            }
+
+            if (confirmButton != null)
+            {
+                confirmButton.interactable = true;
+            }
+            Director.Instance.LevelUpText.GetComponent<MoveableObject>().Move(true);
+            Director.Instance.backButton.interactable = true;
+            Director.Instance.backButton.GetComponent<MoveableObject>().Move(true);
+
+            CB.SetOutline(1, Color.white * 100);
+        }
+        else
+        {
+            if (confirmMovement != null)
+            {
+                confirmMovement.Move(false);
+            }
+
+            Director.Instance.backButton.GetComponent<MoveableObject>().Move(false, setInteractableWhenDone: false);
+            CB.SetOutline(0, Color.white);
+        }
+    }
 }
 

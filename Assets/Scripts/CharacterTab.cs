@@ -241,18 +241,9 @@ public class CharacterTab : MonoBehaviour, IDropHandler
     {
         foreach (var action in unit.actionList)
         {
-            var actionContainer = Instantiate(detailedAction);
-            actionContainer.transform.SetParent(actionDisplay.transform);
-            actionContainer.transform.localScale = new Vector3(1, 1, 1);
-
-            if (BattleSystem.Instance != null)
-            {
-                //Director.Instance.canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-
-                actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.x, actionContainer.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
-                actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.x, actionDisplay.transform.GetComponent<RectTransform>().anchoredPosition3D.y, 1);
-            }
-
+            var actionContainer = Instantiate(detailedAction, actionDisplay.transform, false);
+            RectTransform actionRect = actionContainer.GetComponent<RectTransform>();
+            actionRect.localScale = Vector3.one;
 
             var assignedAction = actionContainer.GetComponent<ActionContainer>();
             assignedAction.targetting = false;

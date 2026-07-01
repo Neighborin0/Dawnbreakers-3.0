@@ -394,8 +394,16 @@ MonoBehaviour:
   actionDurationText: {fileID: 760263188192850254}
   actionDamageTypeText: {fileID: 8801744374453876275}
   actionTargetTypeText: {fileID: 7003961610429471071}
+  rewardManager: {fileID: 0}
+  replacedAction: {fileID: 0}
+  replacementIndex: -1
+  activeReplacementTab: {fileID: 0}
+  replacerTabPrefab: {fileID: 0}
+  replacerTabParent: {fileID: 0}
   Chosen: 0
   grantedAction: {fileID: 0}
+  pendingAction: {fileID: 0}
+  Skipped: 0
 --- !u!114 &480501905732354984
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -33,6 +33,7 @@ public class ItemText : MonoBehaviour
                 var EP = Instantiate(Director.Instance.EffectPopUp, this.transform.GetComponent<RectTransform>());
                 EP.transform.localScale = new Vector3(0.01f, 0.01f, 1);
                 currentEffectPopup = EP;
+
             }
             else
             {

@@ -15,7 +15,7 @@ public class MoveableObject : MonoBehaviour
     public bool moved = false;
     IEnumerator generalCoroutine;
     public bool scaleWithScreenSize = false;
-    public void Move(bool moveUp, float delay = 0.01f, float timeDivider = 1)
+    public void Move(bool moveUp, float delay = 0.01f, float timeDivider = 1, bool setInteractableWhenDone = true)
     {
         Stop();
 
@@ -50,6 +50,7 @@ public class MoveableObject : MonoBehaviour
             generalCoroutine = Tools.SmoothMoveUI(gameObject.GetComponent<RectTransform>(), targetX, targetY, delay);
         else
             generalCoroutine = Tools.SmoothMoveObject(gameObject.transform, targetX, targetY, delay, false, 0, 10000, timeDivider);
+
 
         StartCoroutine(generalCoroutine);
         moved = !moveUp;

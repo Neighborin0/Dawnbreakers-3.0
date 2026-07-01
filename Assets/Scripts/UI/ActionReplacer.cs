@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ActionReplacer : MonoBehaviour
@@ -121,7 +122,7 @@ public class ActionReplacer : MonoBehaviour
 
                 if (movement != null)
                 {
-                    movement.Move(false);
+                    movement.Move(false, setInteractableWhenDone: false);
                 }
 
                 Destroy(
@@ -152,6 +153,7 @@ public class ActionReplacer : MonoBehaviour
                 rewardTab.rewardManager.MoveRewards(true);
             }
         }
+
 
         Destroy(this);
     }

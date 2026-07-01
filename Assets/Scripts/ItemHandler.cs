@@ -12,6 +12,9 @@ public class ItemHandler : MonoBehaviour
     public ItemDisplay itemDisplayPrefab;
     public List<ItemDisplay> itemDisplays;
     public List<Item> alreadySelected;
+
+    //BIG REMINDER BUT CHARACTER TABS CURRENTLY DON'T NATIVELY HAVE A BUTTON COMPONENT
+    //UPDATE CODE TO CORRECT THIS
     public void Run()
     {
         Tools.ToggleUiBlocker(false, true);
@@ -50,12 +53,8 @@ public class ItemHandler : MonoBehaviour
         foreach (var id in FindObjectsOfType<ItemDisplay>())
         {
             id.GetComponent<MoveableObject>().Move(true);
-            yield return new WaitForSeconds(0.5f);
-        }
-        foreach (var id in FindObjectsOfType<ItemDisplay>())
-        {
-            id.GetComponent<Button>().interactable = true;
             id.GetComponent<HighlightedObject>().disabled = false;
+            yield return new WaitForSeconds(0.5f);
         }
     }
     private Item SelectRandom()

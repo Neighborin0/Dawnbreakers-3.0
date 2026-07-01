@@ -13,9 +13,12 @@ public class StartButton : MonoBehaviour
         /* if (PlayerPrefs.GetString("Level") != null)
              PlayerPrefs.DeleteKey("Level");
         */
-        //OptionsManager.Instance.Load("Battle");
+        //OptionsManager.Instance.Load("mAP");
+        OptionsManager.Instance.Load("MAP", "Coronus_Map", 1, 0.5f);
         MapController.Instance.currentNodes[0].DisableNode(false);
         GetComponent<Button>().interactable = false;
+
+
 
     }
 

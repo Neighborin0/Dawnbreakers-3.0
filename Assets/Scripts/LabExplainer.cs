@@ -35,7 +35,7 @@ public class LabExplainer : MonoBehaviour
         else
             currentEffectPopup.transform.localScale = new Vector3(0.015f, 0.015f, 1);
 
-        currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1, 0) + offset;
+        currentEffectPopup.transform.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1, 2) + offset;
         Director.Instance.StartCoroutine(Tools.UpdateParentLayoutGroup(EPtext.gameObject));
     }
 

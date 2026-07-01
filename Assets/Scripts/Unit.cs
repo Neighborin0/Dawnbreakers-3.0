@@ -90,6 +90,7 @@ public class Unit : MonoBehaviour
     public event Action<Unit> OnPostAction;
     public event System.Action OnActionModifiersChanged;
     public event System.Action<Unit> DecisionPhaseStarted;
+    public event System.Action<Unit> OnPreDamaged;
 
     //player states
     public PlayerState state;
@@ -110,6 +111,7 @@ public class Unit : MonoBehaviour
 
     //actions
     public List<Action> actionList;
+    public List<ActionPoolEntry> actionPool = new List<ActionPoolEntry>();
     [NonSerialized]
     public GameObject ActionLayout;
     public List<Action> ActionPool;
@@ -599,6 +601,11 @@ public class Unit : MonoBehaviour
         DecisionPhaseStarted?.Invoke(this);
     }
 
+   /* public void DoPreOnDamage()
+    {
+        OnPreDamaged?.Invoke(this);
+    }
+   */
 
 
 

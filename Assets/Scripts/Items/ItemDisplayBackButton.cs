@@ -82,6 +82,10 @@ public class ItemDisplayBackButton : MonoBehaviour
 
         SetBackButtonInteractable(false);
         GetComponent<MoveableObject>().Move(false);
+        TextMeshProUGUI levelUpText =
+               Director.Instance.LevelUpText
+                   .GetComponentInChildren<TextMeshProUGUI>();
+        levelUpText.text = "Memories return";
         if (activeReplacer != null)
         {
             activeReplacer.CancelReplacement();
@@ -103,7 +107,7 @@ public class ItemDisplayBackButton : MonoBehaviour
         Director.Instance.DisableCharacterTab();
         Director.Instance.CharacterSlotEnable(true);
 
-        Tools.ToggleUiBlocker(false, false);
+        Tools.ToggleUiBlocker(false, true);
 
         yield return new WaitForSeconds(0.3f);
 
@@ -175,7 +179,7 @@ public class ItemDisplayBackButton : MonoBehaviour
             yield break;
         }
 
-        Tools.ToggleUiBlocker(false, false, false);
+        Tools.ToggleUiBlocker(false, true);
 
         Button confirmButton =
             Director.Instance.ConfirmButton
@@ -238,9 +242,7 @@ public class ItemDisplayBackButton : MonoBehaviour
             /*
              * Replacement undo.
              */
-            if (ART.replacedAction != null &&
-                ART.grantedAction != null &&
-                ART.replacementIndex >= 0)
+            if (ART.replacedAction != null && ART.grantedAction != null && ART.replacementIndex >= 0)
             {
                 Unit unit = ART.grantedAction.unit;
 
@@ -261,10 +263,11 @@ public class ItemDisplayBackButton : MonoBehaviour
                     ART.pendingAction = null;
                     ART.replacementIndex = -1;
                     ART.Chosen = false;
-
                     continue;
                 }
 
+                Debug.LogWarning("Replacement undo is being called here.");
+                //fix levelup text
                 bool restored = false;
 
                 if (ART.replacementIndex < unit.actionList.Count &&
@@ -282,6 +285,7 @@ public class ItemDisplayBackButton : MonoBehaviour
                     Destroy(grantedAction);
 
                     restored = true;
+
                 }
                 else
                 {
@@ -311,6 +315,7 @@ public class ItemDisplayBackButton : MonoBehaviour
                     Destroy(ART.grantedAction);
 
                     restored = true;
+                    Debug.LogWarning("Fallback undo is being called here.");
                 }
 
                 if (restored)
@@ -333,6 +338,7 @@ public class ItemDisplayBackButton : MonoBehaviour
                     ART.activeReplacementTab = null;
                 }
                 GetComponent<MoveableObject>().Move(false);
+                Debug.LogWarning("should be running regardless.");
                 continue;
 
                 
@@ -410,7 +416,9 @@ public class ItemDisplayBackButton : MonoBehaviour
 
         if (levelUpTextMove != null)
         {
-            levelUpTextMove.Move(false);
+            levelUpTextMove.Move(true);
+            TextMeshProUGUI levelUpText = Director.Instance.LevelUpText.GetComponentInChildren<TextMeshProUGUI>();
+            levelUpText.text = "Memories Return";
         }
 
         /*
@@ -422,8 +430,14 @@ public class ItemDisplayBackButton : MonoBehaviour
         SetBackButtonInteractable(true);
 
         backButtonTransitioning = false;
-
-        Tools.ToggleUiBlocker(false, true, true);
+        if (levelUpTextMove != null)
+        {
+            levelUpTextMove.Move(true);
+            TextMeshProUGUI levelUpText = Director.Instance.LevelUpText.GetComponentInChildren<TextMeshProUGUI>();
+            levelUpText.text = "Memories Return";
+        }
+        levelUpTextMove.Move(false);
+        Tools.ToggleUiBlocker(false, true);
     }
 
    /* public void forceMoveDown()
